@@ -1,0 +1,8 @@
+version: "2"
+services:
+    nginx:
+        build: ./docker/nginx
+        ports:
+            - "80:80"
+        extra_hosts:
+            - "go.app:${HOST_IP_ADDRESS}"
