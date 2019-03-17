@@ -9,11 +9,15 @@ import (
 )
 
 func main() {
-	siteMux := http.NewServeMux()
-	siteMux.HandleFunc("/", controllers.Index)
-
-	handler := middlewares.AccessLog(siteMux)
+	handler := middlewares.AccessLog(getRoutes())
 
 	listener, _ := net.Listen("tcp", ":8080")
 	fcgi.Serve(listener, handler)
+}
+
+func getRoutes() http.Handler {
+	siteMux := http.NewServeMux()
+	siteMux.HandleFunc("/", controllers.Index)
+
+	return siteMux
 }

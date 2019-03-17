@@ -1,8 +1,16 @@
 version: "2"
 services:
+    source:
+        image: alpine:3.9
+        volumes:
+            - ./:/var/www/app
     nginx:
         build: ./docker/nginx
         ports:
             - "80:80"
         extra_hosts:
             - "go.app:${HOST_IP_ADDRESS}"
+        depends_on:
+            - source
+        volumes_from:
+            - source
