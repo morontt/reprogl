@@ -8,6 +8,7 @@ services:
         build: ./docker/nginx
         ports:
             - "80:80"
+            - "443:443"
         extra_hosts:
             - "go.app:${HOST_IP_ADDRESS}"
         depends_on:
