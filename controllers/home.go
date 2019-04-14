@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/gorilla/mux"
 	"fmt"
+	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
 )
