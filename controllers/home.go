@@ -1,10 +1,26 @@
 package controllers
 
 import (
+	"github.com/gorilla/mux"
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
-func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
+func IndexAction(w http.ResponseWriter, r *http.Request) {
+	var page int
+	vars := mux.Vars(r)
+	pageString := vars["page"]
+
+	if pageString == "1" {
+		http.Redirect(w, r, "/", 301)
+
+		return
+	} else if pageString == "" {
+		page = 1
+	} else {
+		page, _ = strconv.Atoi(pageString)
+	}
+
+	fmt.Fprintf(w, "Articles, page %d", page)
 }

@@ -18,7 +18,7 @@ func main() {
 
 func getRoutes() http.Handler {
 	siteMux := mux.NewRouter()
-	siteMux.HandleFunc("/", controllers.Index)
+	siteMux.HandleFunc("/{page:[0-9]*}", controllers.IndexAction)
 
 	return siteMux
 }
