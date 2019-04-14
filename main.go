@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
 	"net"
 	"net/http"
 	"net/http/fcgi"
@@ -16,7 +17,7 @@ func main() {
 }
 
 func getRoutes() http.Handler {
-	siteMux := http.NewServeMux()
+	siteMux := mux.NewRouter()
 	siteMux.HandleFunc("/", controllers.Index)
 
 	return siteMux
