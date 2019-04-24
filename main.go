@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gookit/ini"
 	"github.com/gorilla/mux"
 	"net"
 	"net/http"
@@ -10,9 +11,16 @@ import (
 )
 
 func main() {
+	err := ini.LoadExists("app.ini")
+	if err != nil {
+		panic(err)
+	}
+
+	config := ini.Default()
+
 	handler := middlewares.AccessLog(getRoutes())
 
-	listener, _ := net.Listen("tcp", ":8080")
+	listener, _ := net.Listen("tcp", ":"+config.String("PORT"))
 	fcgi.Serve(listener, handler)
 }
 

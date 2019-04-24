@@ -8,6 +8,7 @@ Copy config file from dist and build application
 
 ```bash
   cp .env{.dist,} # edit the settings if necessary
+  cp app.ini{.dist,}
 
   dep ensure
   go build
