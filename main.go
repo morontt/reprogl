@@ -1,27 +1,26 @@
 package main
 
 import (
-	"github.com/gookit/ini"
+	"fmt"
 	"github.com/gorilla/mux"
 	"net"
 	"net/http"
 	"net/http/fcgi"
+	"os"
+	"reprogl/config"
 	"reprogl/controllers"
 	"reprogl/middlewares"
 )
 
 func main() {
-	err := ini.LoadExists("app.ini")
-	if err != nil {
-		panic(err)
-	}
-
-	config := ini.Default()
+	handleError(config.Load())
 
 	handler := middlewares.AccessLog(getRoutes())
 
-	listener, _ := net.Listen("tcp", ":"+config.String("PORT"))
-	fcgi.Serve(listener, handler)
+	cfg := config.Get()
+
+	listener, _ := net.Listen("tcp", ":"+cfg.Port)
+	handleError(fcgi.Serve(listener, handler))
 }
 
 func getRoutes() http.Handler {
@@ -32,4 +31,11 @@ func getRoutes() http.Handler {
 	siteMux.HandleFunc("/info", controllers.InfoAction).Name("info_page")
 
 	return siteMux
+}
+
+func handleError(err error) {
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
 }
