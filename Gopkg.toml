@@ -5,3 +5,7 @@
 [[constraint]]
   name = "github.com/gorilla/mux"
   version = "1.7.1"
+
+[[constraint]]
+  name = "github.com/gookit/ini"
+  version = "2.0.0"
