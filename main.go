@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"net"
+	//"net"
 	"net/http"
-	"net/http/fcgi"
+	//"net/http/fcgi"
 	"os"
 	"reprogl/config"
 	"reprogl/controllers"
@@ -19,8 +19,9 @@ func main() {
 
 	cfg := config.Get()
 
-	listener, _ := net.Listen("tcp", ":"+cfg.Port)
-	handleError(fcgi.Serve(listener, handler))
+	//listener, _ := net.Listen("tcp", ":"+cfg.Port)
+	//handleError(fcgi.Serve(listener, handler))
+	handleError(http.ListenAndServe(":"+cfg.Port, handler))
 }
 
 func getRoutes() http.Handler {
