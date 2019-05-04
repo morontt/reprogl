@@ -30,6 +30,7 @@ func getRoutes() http.Handler {
 	siteMux.HandleFunc("/category/{slug}/{page:[0-9]*}", controllers.CategoryAction).Name("category")
 	siteMux.HandleFunc("/tag/{slug}/{page:[0-9]*}", controllers.TagAction).Name("tag")
 	siteMux.HandleFunc("/info", controllers.InfoAction).Name("info_page")
+	siteMux.HandleFunc("/robots.txt", controllers.RobotsTXTAction)
 
 	return siteMux
 }
