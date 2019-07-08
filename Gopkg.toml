@@ -9,3 +9,7 @@
 [[constraint]]
   name = "github.com/gookit/ini"
   version = "2.0.0"
+
+[[constraint]]
+  name = "github.com/CloudyKit/jet"
+  version = "2.1.2"

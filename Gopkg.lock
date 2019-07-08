@@ -2,6 +2,22 @@
 
 
 [[projects]]
+  branch = "master"
+  digest = "1:d4bdf20b93b78346d40681c66ee5133839780911140b70ef553f117b2a963cb7"
+  name = "github.com/CloudyKit/fastprinter"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "74b38d55f37af5d6c05ca11147d616b613a3420e"
+
+[[projects]]
+  digest = "1:5803f73e8574ed21d2d746b4abe020acea49e64838dcc97c8ae76e3b93f36964"
+  name = "github.com/CloudyKit/jet"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "2b064536b25ab0e9c54245f9e2cc5bd4766033fe"
+  version = "v2.1.2"
+
+[[projects]]
   digest = "1:abbf87f57d6cd8c54c58a748ed34d17a109800b7d40ff687fb4554c2166022ca"
   name = "github.com/gookit/ini"
   packages = [
@@ -32,6 +48,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/CloudyKit/jet",
     "github.com/gookit/ini",
     "github.com/gorilla/mux",
   ]
