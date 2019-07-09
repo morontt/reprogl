@@ -10,6 +10,7 @@ import (
 	"reprogl/config"
 	"reprogl/controllers"
 	"reprogl/middlewares"
+	"reprogl/views"
 )
 
 func main() {
@@ -18,6 +19,8 @@ func main() {
 	handler := middlewares.AccessLog(getRoutes())
 
 	cfg := config.Get()
+
+	views.LoadViewSet()
 
 	listener, _ := net.Listen("tcp", ":"+cfg.Port)
 	handleError(fcgi.Serve(listener, handler))

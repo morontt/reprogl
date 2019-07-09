@@ -1,0 +1,7 @@
+{{extends "base.jet"}}
+{{block title()}}Info Page{{end}}
+{{block body()}}
+    <main>
+        Info Page.
+    </main>
+{{end}}
