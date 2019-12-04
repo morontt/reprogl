@@ -12,4 +12,6 @@
 *.out
 /reprogl
 .env
-app.ini
+/docker/nginx/fullchain.pem
+/docker/nginx/privkey.pem
+/app.ini

@@ -3,7 +3,7 @@ package controllers
 import (
 	"github.com/CloudyKit/jet"
 	"net/http"
-	"reprogl/views"
+	"xelbot.com/reprogl/views"
 )
 
 func InfoAction(w http.ResponseWriter, _ *http.Request) {

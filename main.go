@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"net/http/fcgi"
 	"os"
-	"reprogl/config"
-	"reprogl/controllers"
-	"reprogl/middlewares"
-	"reprogl/views"
+	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/controllers"
+	"xelbot.com/reprogl/middlewares"
+	"xelbot.com/reprogl/views"
 )
 
 func main() {

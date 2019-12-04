@@ -2,7 +2,7 @@ package config
 
 import (
 	"errors"
-	"github.com/gookit/ini"
+	ini "github.com/gookit/ini/v2"
 )
 
 type AppConfig struct {

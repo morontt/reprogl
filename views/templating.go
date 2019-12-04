@@ -2,7 +2,7 @@ package views
 
 import (
 	"github.com/CloudyKit/jet"
-	"reprogl/config"
+	"xelbot.com/reprogl/config"
 )
 
 var ViewSet *jet.Set

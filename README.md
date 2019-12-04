@@ -10,7 +10,6 @@ Copy config file from dist and build application
   cp .env{.dist,} # edit the settings if necessary
   cp app.ini{.dist,}
 
-  dep ensure
   go build
 ```
 
