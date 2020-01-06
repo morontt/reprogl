@@ -1,19 +1,17 @@
 package controllers
 
 import (
-	"github.com/CloudyKit/jet"
+	"fmt"
 	"net/http"
+	"os"
 	"xelbot.com/reprogl/views"
 )
 
 func InfoAction(w http.ResponseWriter, _ *http.Request) {
-	tmpl, err := views.ViewSet.GetTemplate("static/info.jet")
+	err := views.RenderTemplate(w, "static/info", nil)
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(os.Stderr, "%+v\n", err)
 	}
-
-	vars := make(jet.VarMap)
-	tmpl.Execute(w, vars, nil)
 }
 
 func RobotsTXTAction(w http.ResponseWriter, _ *http.Request) {

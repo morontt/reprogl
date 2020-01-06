@@ -20,7 +20,7 @@ func main() {
 
 	cfg := config.Get()
 
-	views.LoadViewSet()
+	handleError(views.LoadViewSet())
 
 	listener, _ := net.Listen("tcp", ":"+cfg.Port)
 	handleError(fcgi.Serve(listener, handler))
@@ -39,7 +39,7 @@ func getRoutes() http.Handler {
 
 func handleError(err error) {
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
+		fmt.Fprintf(os.Stderr, "%+v\n", err)
 		os.Exit(1)
 	}
 }

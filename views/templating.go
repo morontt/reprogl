@@ -1,15 +1,37 @@
 package views
 
 import (
-	"github.com/CloudyKit/jet"
-	"xelbot.com/reprogl/config"
+	"fmt"
+	"html/template"
+	"net/http"
 )
 
-var ViewSet *jet.Set
+var templates map[string]*template.Template
 
-func LoadViewSet() {
-	ViewSet = jet.NewHTMLSet("./templates")
+func LoadViewSet() error {
+	templates = make(map[string]*template.Template)
 
-	cfg := config.Get()
-	ViewSet.SetDevelopmentMode(cfg.DevMode)
+	files := []string{
+		"./templates/static/info.gohtml",
+		"./templates/base.gohtml",
+	}
+
+	tmpl, err := template.ParseFiles(files...)
+	if err != nil {
+		return err
+	}
+	templates["static/info"] = tmpl
+
+	return nil
+}
+
+func RenderTemplate(w http.ResponseWriter, name string, data interface{}) error {
+	tmpl, ok := templates[name]
+	if !ok {
+		return fmt.Errorf("the template %s does not exist", name)
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	return tmpl.Execute(w, data)
 }
