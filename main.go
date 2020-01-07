@@ -3,10 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"net"
 	"net/http"
-	"net/http/fcgi"
 	"os"
+	"time"
 	"xelbot.com/reprogl/config"
 	"xelbot.com/reprogl/controllers"
 	"xelbot.com/reprogl/middlewares"
@@ -22,8 +21,14 @@ func main() {
 
 	handleError(views.LoadViewSet())
 
-	listener, _ := net.Listen("tcp", ":"+cfg.Port)
-	handleError(fcgi.Serve(listener, handler))
+	server := &http.Server{
+		Handler:      handler,
+		Addr:         ":" + cfg.Port,
+		WriteTimeout: 10 * time.Second,
+		ReadTimeout:  10 * time.Second,
+	}
+
+	handleError(server.ListenAndServe())
 }
 
 func getRoutes() http.Handler {
