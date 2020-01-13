@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 	"xelbot.com/reprogl/config"
-	"xelbot.com/reprogl/controllers"
+	"xelbot.com/reprogl/handlers"
 	"xelbot.com/reprogl/middlewares"
 	"xelbot.com/reprogl/views"
 )
@@ -33,11 +33,11 @@ func main() {
 
 func getRoutes() http.Handler {
 	siteMux := mux.NewRouter()
-	siteMux.HandleFunc("/{page:[0-9]*}", controllers.IndexAction).Name("blog-page")
-	siteMux.HandleFunc("/category/{slug}/{page:[0-9]*}", controllers.CategoryAction).Name("category")
-	siteMux.HandleFunc("/tag/{slug}/{page:[0-9]*}", controllers.TagAction).Name("tag")
-	siteMux.HandleFunc("/info", controllers.InfoAction).Name("info_page")
-	siteMux.HandleFunc("/robots.txt", controllers.RobotsTXTAction)
+	siteMux.HandleFunc("/{page:[0-9]*}", handlers.IndexAction).Name("blog-page")
+	siteMux.HandleFunc("/category/{slug}/{page:[0-9]*}", handlers.CategoryAction).Name("category")
+	siteMux.HandleFunc("/tag/{slug}/{page:[0-9]*}", handlers.TagAction).Name("tag")
+	siteMux.HandleFunc("/info", handlers.InfoAction).Name("info_page")
+	siteMux.HandleFunc("/robots.txt", handlers.RobotsTXTAction)
 
 	return siteMux
 }
