@@ -6,8 +6,9 @@ import (
 )
 
 type AppConfig struct {
-	Port    string
-	DevMode bool
+	Port        string
+	DevMode     bool
+	DatabaseDSN string
 }
 
 var cnf AppConfig
@@ -28,6 +29,12 @@ func Load() error {
 		cnf.DevMode = ini.Bool("DEV_MODE")
 	} else {
 		return errors.New("app.ini: Undefined parameter \"DEV_MODE\"")
+	}
+
+	if _, ok := ini.GetValue("DB"); ok {
+		cnf.DatabaseDSN = ini.String("DB")
+	} else {
+		return errors.New("app.ini: Undefined parameter \"DB\"")
 	}
 
 	return nil

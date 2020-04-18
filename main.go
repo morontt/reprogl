@@ -1,8 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -13,13 +15,25 @@ import (
 )
 
 func main() {
-	handleError(config.Load())
-
-	handler := middlewares.AccessLog(getRoutes())
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	handleError(config.Load(), errorLog)
 
 	cfg := config.Get()
+	db, err := openDB(cfg.DatabaseDSN)
+	if err != nil {
+		errorLog.Fatal(err)
+	}
 
-	handleError(views.LoadViewSet())
+	app := &handlers.Application{
+		ErrorLog: errorLog,
+		InfoLog:  infoLog,
+		DB:       db,
+	}
+
+	handler := middlewares.AccessLog(getRoutes(app), app)
+
+	handleError(views.LoadViewSet(), errorLog)
 
 	server := &http.Server{
 		Handler:      handler,
@@ -28,11 +42,13 @@ func main() {
 		ReadTimeout:  10 * time.Second,
 	}
 
-	handleError(server.ListenAndServe())
+	infoLog.Printf("Starting server on %s port", cfg.Port)
+	handleError(server.ListenAndServe(), errorLog)
 }
 
-func getRoutes() http.Handler {
+func getRoutes(app *handlers.Application) http.Handler {
 	siteMux := mux.NewRouter()
+	siteMux.HandleFunc("/article/{slug}", app.PageAction).Name("article")
 	siteMux.HandleFunc("/{page:[0-9]*}", handlers.IndexAction).Name("blog-page")
 	siteMux.HandleFunc("/category/{slug}/{page:[0-9]*}", handlers.CategoryAction).Name("category")
 	siteMux.HandleFunc("/tag/{slug}/{page:[0-9]*}", handlers.TagAction).Name("tag")
@@ -42,9 +58,21 @@ func getRoutes() http.Handler {
 	return siteMux
 }
 
-func handleError(err error) {
+func openDB(dsn string) (*sql.DB, error) {
+	db, err := sql.Open("mysql", dsn)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%+v\n", err)
-		os.Exit(1)
+		return nil, err
+	}
+
+	if err = db.Ping(); err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
+func handleError(err error, logger *log.Logger) {
+	if err != nil {
+		logger.Fatal(err)
 	}
 }
