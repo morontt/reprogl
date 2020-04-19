@@ -19,7 +19,7 @@ func (app *Application) PageAction(w http.ResponseWriter, r *http.Request) {
 		if errors.Is(err, models.RecordNotFound) {
 			app.notFound(w)
 		} else {
-			app.serverError(w, err)
+			app.ServerError(w, err)
 		}
 
 		return

@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
@@ -31,7 +30,8 @@ func main() {
 		DB:       db,
 	}
 
-	handler := middlewares.AccessLog(getRoutes(app), app)
+	handler := middlewares.Recover(getRoutes(app), app)
+	handler = middlewares.AccessLog(handler, app)
 
 	handleError(views.LoadViewSet(), errorLog)
 
@@ -44,18 +44,6 @@ func main() {
 
 	infoLog.Printf("Starting server on %s port", cfg.Port)
 	handleError(server.ListenAndServe(), errorLog)
-}
-
-func getRoutes(app *handlers.Application) http.Handler {
-	siteMux := mux.NewRouter()
-	siteMux.HandleFunc("/article/{slug}", app.PageAction).Name("article")
-	siteMux.HandleFunc("/{page:[0-9]*}", handlers.IndexAction).Name("blog-page")
-	siteMux.HandleFunc("/category/{slug}/{page:[0-9]*}", handlers.CategoryAction).Name("category")
-	siteMux.HandleFunc("/tag/{slug}/{page:[0-9]*}", handlers.TagAction).Name("tag")
-	siteMux.HandleFunc("/info", handlers.InfoAction).Name("info_page")
-	siteMux.HandleFunc("/robots.txt", handlers.RobotsTXTAction)
-
-	return siteMux
 }
 
 func openDB(dsn string) (*sql.DB, error) {
