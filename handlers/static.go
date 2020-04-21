@@ -8,7 +8,7 @@ import (
 )
 
 func InfoAction(w http.ResponseWriter, _ *http.Request) {
-	err := views.RenderTemplate(w, "static/info", nil)
+	err := views.RenderTemplate(w, "info.gohtml", nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%+v\n", err)
 	}

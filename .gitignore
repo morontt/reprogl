@@ -15,3 +15,6 @@
 /docker/nginx/fullchain.pem
 /docker/nginx/privkey.pem
 /app.ini
+/public/assets/css/vendor
+/public/assets/css/*.css
+/public/assets/js/vendor

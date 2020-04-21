@@ -4,28 +4,53 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"xelbot.com/reprogl/config"
 )
 
 var templates map[string]*template.Template
 
-func LoadViewSet() error {
+var customFunctions = template.FuncMap{
+	"raw": rawHTML,
+}
+
+func init() {
 	templates = make(map[string]*template.Template)
+}
 
-	files := []string{
-		"./templates/static/info.gohtml",
-		"./templates/base.gohtml",
+func LoadViewSet() error {
+	templatesMap := map[string][]string{
+		"info.gohtml": {
+			"./templates/info.gohtml",
+			"./templates/partials/menu.gohtml",
+			"./templates/layout/base.gohtml",
+		},
+		"article.gohtml": {
+			"./templates/article.gohtml",
+			"./templates/partials/menu.gohtml",
+			"./templates/layout/base.gohtml",
+		},
 	}
 
-	tmpl, err := template.ParseFiles(files...)
-	if err != nil {
-		return err
+	for key, files := range templatesMap {
+		tmpl, err := template.New(key).Funcs(customFunctions).ParseFiles(files...)
+		if err != nil {
+			return err
+		}
+
+		templates[key] = tmpl
 	}
-	templates["static/info"] = tmpl
 
 	return nil
 }
 
 func RenderTemplate(w http.ResponseWriter, name string, data interface{}) error {
+	if config.IsDevMode() {
+		err := LoadViewSet()
+		if err != nil {
+			return err
+		}
+	}
+
 	tmpl, ok := templates[name]
 	if !ok {
 		return fmt.Errorf("the template %s does not exist", name)

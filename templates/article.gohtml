@@ -1,0 +1,127 @@
+{{template "base" .}}
+
+{{define "title"}}Article Page{{end}}
+
+{{define "body_class"}}post-template{{end}}
+
+{{define "body"}}
+<div class="post-view-menu-bars js-open-main-menu">
+    <i class="fa fa-bars"></i>
+</div>
+
+<div class="post-view">
+    <aside class="post-view-sidebar scene-element fade-in-left"
+           style="background-image: url(https://casper.ghost.org/v1.0.0/images/blog-cover.jpg);">
+        <div class="post-view-elems">
+            <div class="post-view-elems-header">
+                <a class="blog-logo" href="/">
+                    <img src="https://static.ghost.org/v1.0.0/images/ghost-logo.svg" alt="Blog Logo">
+                </a>
+                <div class="post-view-menu-bars-mobile js-open-main-menu">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </div>
+            <div class="post-view-elems-body">
+                <!-- for post view only -->
+                {{/* #is "post" */}}
+                    <div class="post-reading-time js-post-reading-time">
+                        <progress value="0" class="read-progress-indicator single">
+                            <div class="progress-container">
+                                <span class="progress-bar"></span>
+                            </div>
+                        </progress>
+                        <!-- read progress indicator -->
+                        <div class="read-estimation">
+                            <div class="read-estimation-content">
+                                <div class="title">{{.Article.Title}}</div>
+                                <div class="estimated-time">
+                                    <span class="js-word-count"></span> words - <span class="eta"></span> read.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-view-elems-share">
+                        <a class="icon-twitter" href="https://twitter.com/share?text=title&amp;url=/"
+                            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-square fa-stack-2x fa-inverse"></i>
+                                <i class="fa fa-twitter fa-stack-1x"></i>
+                            </span>
+                        </a>
+                        <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/"
+                            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-square fa-stack-2x fa-inverse"></i>
+                                <i class="fa fa-facebook fa-stack-1x"></i>
+                            </span>
+                        </a>
+                    </div>
+                {{/* /is */}}
+                <!-- here will land your recent posts -->
+                <!-- you can change items amout here -->
+                <div class="post-recent-list js-post-view-recent" data-items="6">
+                    <div class="post-recent-list-label">
+                        <span>Recent Posts</span>
+                    </div>
+                    <div class="post-recent-list-separator"></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <main class="post-view-content scene-element fade-in-right" role="main">
+        <div class="post-view-right-container">
+            <article class="post-view-article post">
+                <section class="post-content row">
+                    <div class="small-12 columns">
+                        <div class="post-header-content">
+                            {{/* #is "post" */}}
+                                <section class="post-meta js-bg-check">
+                                    <time class="post-date"
+                                          datetime="{{/* date format='YYYY-MM-DD' */}}">{{.Article.CreatedAt}}</time>
+                                </section>
+                            {{/* /is */}}
+                            <h1 class="post-title">{{.Article.Title}}</h1>
+                            <div class="post-title-separator"></div>
+                        </div>
+                        <div class="post-article-content">
+                            {{raw .Article.Text}}
+                        </div>
+                    </div>
+                </section>
+                {{/* #is "post" */}}
+                    {{/* #if tags */}}
+                        <section class="row">
+                            <div class="small-12 columns">
+                                <div class="post-tags">
+                                    {{/* #foreach tags */}}
+                                        <a href="/tag/1">
+                                            Tag
+                                        </a>
+                                    {{/* /foreach */}}
+                                </div>
+                            </div>
+                        </section>
+                    {{/* /if */}}
+                    {{/* #author */}}
+                        <section class="author-info">
+                            <div class="row">
+                                <section class="post-author small-12 columns">
+                                    <img src="https://www.gravatar.com/avatar/d64ea8a5d2b8aadaa89ebc0da120a6e9?s=250&d=mm&r=x"
+                                         class="post-author-avatar"
+                                         alt="morontt">
+                                    <span class="author-label">Author</span>
+                                    <h1><a href="/" class="author-link-name">morontt</a></h1>
+                                    <p>bio</p>
+                                </section>
+                            </div>
+                        </section>
+                    {{/* end author */}}
+                    {{/* > "prev-next-post" */}}
+                    <div class="cf"></div>
+                    <!-- Comments -->
+                {{/* is post */}}
+            </article>
+        </div>
+    </main>
+</div>
+{{end}}

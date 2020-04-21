@@ -43,3 +43,7 @@ func Load() error {
 func Get() AppConfig {
 	return cnf
 }
+
+func IsDevMode() bool {
+	return cnf.DevMode
+}

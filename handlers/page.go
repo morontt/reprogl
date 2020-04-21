@@ -2,11 +2,11 @@ package handlers
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
+	"xelbot.com/reprogl/views"
 )
 
 func (app *Application) PageAction(w http.ResponseWriter, r *http.Request) {
@@ -25,5 +25,10 @@ func (app *Application) PageAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Article %s", article.Text)
+	templateData := views.ArticlePageData{Article: article}
+
+	err = views.RenderTemplate(w, "article.gohtml", templateData)
+	if err != nil {
+		app.ServerError(w, err)
+	}
 }
