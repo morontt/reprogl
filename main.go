@@ -19,6 +19,7 @@ func main() {
 	handleError(config.Load(), errorLog)
 
 	cfg := config.Get()
+	infoLog.Print("Trying to connect to the database")
 	db, err := openDB(cfg.DatabaseDSN)
 	if err != nil {
 		errorLog.Fatal(err)
