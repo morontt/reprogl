@@ -1,0 +1,71 @@
+{{template "base" . -}}
+
+{{- define "title"}}title{{end -}}
+
+{{- define "body_class"}}home-template{{end -}}
+
+{{- define "body"}}
+<div class="main-content-wrapper">
+    {{template "sticky-header" .}}
+    {{template "big-header" .}}
+    <main id="content" class="content home-template scene-element fade-in-right" role="main">
+        <div class="loop">
+            <div class="post-row">
+                <article class="js-post-block-grid post-block-grid">
+                    {{range .Articles}}
+                        <div class="post js-post-block-grid-item post-block-grid-item"
+                             data-tags=""
+                             data-groups="">
+                            <div class="post-block-wrapper">
+                                {{if .HasImage}}
+                                    <figure class="effect-hera">
+                                        <img src="https://cdn.localhost.tools/uploads/{{.ImagePath.Value}}"
+                                             alt="{{.ImageDescription.Value}}"
+                                             class="index-post-image">
+                                        <figcaption>
+                                            <p>
+                                                <a href="{{path "article" "slug" .Slug}}">
+                                                    <i class="fa fa-fw fa-link"></i>
+                                                </a>
+                                            </p>
+                                        </figcaption>
+                                    </figure>
+                                {{end}}
+                                <div class="post-block-grid-content {{if .HasImage}}with-image{{else}}no-image{{end}}">
+                                    <header class="post-header">
+                                        <time class="post-date"
+                                              datetime="{{.CreatedAt.Format "2006-01-02T15:04:05-07:00"}}">
+                                            {{- .CreatedAt.Format "2 Jan 2006 15:04:05.000" -}}
+                                        </time>
+                                        <h2 class="post-title">
+                                            <a href="{{path "article" "slug" .Slug}}">
+                                                {{- .Title -}}
+                                            </a>
+                                        </h2>
+                                        <div class="post-title-separator"></div>
+                                    </header>
+                                    <section>
+                                        {{.Text}}
+                                    </section>
+                                    <footer class="post-meta">
+                                        <div></div>
+                                    </footer>
+                                    <div>
+                                        <a href="{{path "article" "slug" .Slug}}"
+                                           class="post-read-more-btn">Читать далее</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{end}}
+                </article>
+            </div>
+
+            <div class="row">
+                {{/* pagination */}}
+            </div>
+        </div>
+    </main>
+    {{template "footer" .}}
+</div>
+{{- end -}}

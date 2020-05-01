@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
+	"xelbot.com/reprogl/models/repositories"
+	"xelbot.com/reprogl/views"
 )
 
-func IndexAction(w http.ResponseWriter, r *http.Request) {
+func (app *Application) IndexAction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	page, needsRedirect := pageOrRedirect(vars)
@@ -16,7 +18,20 @@ func IndexAction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "Articles, page %d", page)
+	repo := repositories.ArticleRepository{DB: app.DB}
+	articles, err := repo.GetCollection(page)
+	if err != nil {
+		app.ServerError(w, err)
+
+		return
+	}
+
+	templateData := views.IndexPageData{PageNumber: page, Articles: articles}
+
+	err = views.RenderTemplate(w, "index.gohtml", templateData)
+	if err != nil {
+		app.ServerError(w, err)
+	}
 }
 
 func CategoryAction(w http.ResponseWriter, r *http.Request) {

@@ -50,3 +50,53 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 
 	return article, nil
 }
+
+func (ar *ArticleRepository) GetCollection(page int) (models.ArticleList, error) {
+	query := `
+		SELECT
+			p.id,
+			p.title,
+			p.url,
+			p.text_post,
+			p.time_created,
+			mf.path AS image_path,
+			mf.description AS image_description,
+			c.name AS cat_name,
+			c.url AS cat_url
+		FROM posts AS p
+		INNER JOIN category AS c ON c.id = p.category_id
+		LEFT JOIN media_file mf on p.id = mf.post_id
+		WHERE p.hide = 0
+			AND (mf.id IS NULL OR mf.default_image = 1)
+		ORDER BY time_created DESC
+		LIMIT 10 OFFSET ?
+		`
+
+	offset := 10 * (page - 1)
+	rows, err := ar.DB.Query(query, offset)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	articles := models.ArticleList{}
+
+	for rows.Next() {
+		article := &models.ArticleListItem{}
+		err = rows.Scan(
+			&article.ID,
+			&article.Title,
+			&article.Slug,
+			&article.Text,
+			&article.CreatedAt,
+			&article.ImagePath,
+			&article.ImageDescription,
+			&article.CategoryName,
+			&article.CategorySlug)
+
+		articles = append(articles, article)
+	}
+
+	return articles, nil
+}

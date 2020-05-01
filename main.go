@@ -16,7 +16,6 @@ import (
 func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
-	handleError(config.Load(), errorLog)
 
 	cfg := config.Get()
 	infoLog.Print("Trying to connect to the database")
@@ -31,9 +30,11 @@ func main() {
 		DB:       db,
 	}
 
-	handler := middlewares.Recover(getRoutes(app), app)
+	router := getRoutes(app)
+	handler := middlewares.Recover(router, app)
 	handler = middlewares.AccessLog(handler, app)
 
+	views.SetRouter(router)
 	handleError(views.LoadViewSet(), errorLog)
 
 	server := &http.Server{
