@@ -8,7 +8,6 @@ import (
 	"os"
 	"time"
 	"xelbot.com/reprogl/config"
-	"xelbot.com/reprogl/handlers"
 	"xelbot.com/reprogl/middlewares"
 	"xelbot.com/reprogl/views"
 )
@@ -24,7 +23,7 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
-	app := &handlers.Application{
+	app := &config.Application{
 		ErrorLog: errorLog,
 		InfoLog:  infoLog,
 		DB:       db,

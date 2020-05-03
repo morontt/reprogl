@@ -4,33 +4,36 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
+	"xelbot.com/reprogl/config"
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/views"
 )
 
-func (app *Application) IndexAction(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+func IndexAction(app *config.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
 
-	page, needsRedirect := pageOrRedirect(vars)
-	if needsRedirect {
-		http.Redirect(w, r, "/", 301)
+		page, needsRedirect := pageOrRedirect(vars)
+		if needsRedirect {
+			http.Redirect(w, r, "/", 301)
 
-		return
-	}
+			return
+		}
 
-	repo := repositories.ArticleRepository{DB: app.DB}
-	articles, err := repo.GetCollection(page)
-	if err != nil {
-		app.ServerError(w, err)
+		repo := repositories.ArticleRepository{DB: app.DB}
+		articles, err := repo.GetCollection(page)
+		if err != nil {
+			app.ServerError(w, err)
 
-		return
-	}
+			return
+		}
 
-	templateData := views.IndexPageData{PageNumber: page, Articles: articles}
+		templateData := views.NewIndexPageData(articles, page)
 
-	err = views.RenderTemplate(w, "index.gohtml", templateData)
-	if err != nil {
-		app.ServerError(w, err)
+		err = views.RenderTemplate(w, "index.gohtml", templateData)
+		if err != nil {
+			app.ServerError(w, err)
+		}
 	}
 }
 

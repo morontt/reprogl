@@ -11,7 +11,11 @@
 
 <div class="post-view">
     <aside class="post-view-sidebar scene-element fade-in-left"
-           style="background-image: url(https://casper.ghost.org/v1.0.0/images/blog-cover.jpg);">
+            {{if .Article.HasImage}}
+           style="background-image: url('{{.Article.ImageURL}}');"
+            {{else}}
+           style="background-image: url(https://casper.ghost.org/v1.0.0/images/blog-cover.jpg);"
+            {{end}}>
         <div class="post-view-elems">
             <div class="post-view-elems-header">
                 <a class="blog-logo" href="/">
@@ -82,7 +86,11 @@
                                     </time>
                                 </section>
                             {{/* /is */}}
-                            <h1 class="post-title">{{.Article.Title}}</h1>
+                            <h1 class="post-title">
+                                <a href="{{path "category" "slug" .Article.CategorySlug "page" ""}}">
+                                    {{- .Article.CategoryName -}}
+                                </a> &rarr; {{ .Article.Title -}}
+                            </h1>
                             <div class="post-title-separator"></div>
                         </div>
                         <div class="post-article-content">

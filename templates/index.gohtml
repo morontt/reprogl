@@ -19,7 +19,7 @@
                             <div class="post-block-wrapper">
                                 {{if .HasImage}}
                                     <figure class="effect-hera">
-                                        <img src="https://cdn.localhost.tools/uploads/{{.ImagePath.Value}}"
+                                        <img src="{{.ImageURL}}"
                                              alt="{{.ImageDescription.Value}}"
                                              class="index-post-image">
                                         <figcaption>
@@ -38,6 +38,9 @@
                                             {{- .CreatedAt.Format "2 Jan 2006 15:04:05.000" -}}
                                         </time>
                                         <h2 class="post-title">
+                                            <a href="{{path "category" "slug" .CategorySlug "page" ""}}">
+                                                {{- .CategoryName -}}
+                                            </a> &rarr;
                                             <a href="{{path "article" "slug" .Slug}}">
                                                 {{- .Title -}}
                                             </a>
@@ -52,7 +55,7 @@
                                     </footer>
                                     <div>
                                         <a href="{{path "article" "slug" .Slug}}"
-                                           class="post-read-more-btn">Читать далее</a>
+                                           class="post-read-more-btn">Читать далее &crarr;</a>
                                     </div>
                                 </div>
                             </div>

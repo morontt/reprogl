@@ -20,11 +20,15 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 			p.description,
 			p.time_created,
 			p.comments_count,
+			mf.path AS image_path,
+			mf.description AS image_description,
 			c.name AS cat_name,
 			c.url AS cat_url
 		FROM posts AS p
 		INNER JOIN category AS c ON c.id = p.category_id
+		LEFT JOIN media_file mf on p.id = mf.post_id
 		WHERE (p.url = ?)
+			AND (mf.id IS NULL OR mf.default_image = 1)
 			AND (p.hide = 0)`
 
 	article := &models.Article{}
@@ -37,6 +41,8 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 		&article.Description,
 		&article.CreatedAt,
 		&article.CommentsCount,
+		&article.ImagePath,
+		&article.ImageDescription,
 		&article.CategoryName,
 		&article.CategorySlug)
 

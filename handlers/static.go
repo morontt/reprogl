@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"xelbot.com/reprogl/config"
 	"xelbot.com/reprogl/views"
 )
 
@@ -17,7 +18,11 @@ func InfoAction(w http.ResponseWriter, _ *http.Request) {
 func RobotsTXTAction(w http.ResponseWriter, _ *http.Request) {
 	var body string
 
-	body = "User-agent: *\n\nHost: morontt.info\nSitemap: https://morontt.info/sitemap.xml\n"
+	cfg := config.Get()
+	body = fmt.Sprintf(
+		"User-agent: *\n\nHost: %s\nSitemap: https://%s/sitemap.xml\n",
+		cfg.Host,
+		cfg.Host)
 
 	w.Header().Set("Content-Type", "text/plain")
 	w.Write([]byte(body))
