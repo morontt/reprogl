@@ -29,6 +29,9 @@ func IndexAction(app *config.Application) http.HandlerFunc {
 		}
 
 		templateData := views.NewIndexPageData(articles, page)
+		if page > 1 {
+			templateData.AppendTitle(fmt.Sprintf("Страница %d", page))
+		}
 
 		err = views.RenderTemplate(w, "index.gohtml", templateData)
 		if err != nil {

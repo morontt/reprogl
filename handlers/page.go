@@ -28,6 +28,7 @@ func PageAction(app *config.Application) http.HandlerFunc {
 		}
 
 		templateData := views.NewArticlePageData(article)
+		templateData.AppendTitle(article.Title)
 
 		err = views.RenderTemplate(w, "article.gohtml", templateData)
 		if err != nil {

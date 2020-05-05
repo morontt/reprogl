@@ -9,7 +9,10 @@ import (
 )
 
 func InfoAction(w http.ResponseWriter, _ *http.Request) {
-	err := views.RenderTemplate(w, "info.gohtml", nil)
+	templateData := views.NewInfoPageData()
+	templateData.AppendTitle("Информация")
+
+	err := views.RenderTemplate(w, "info.gohtml", templateData)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%+v\n", err)
 	}
