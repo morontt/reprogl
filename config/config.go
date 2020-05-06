@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gookit/ini/v2"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
@@ -24,6 +25,7 @@ type Application struct {
 	ErrorLog *log.Logger
 	InfoLog  *log.Logger
 	DB       *sql.DB
+	Router   *mux.Router
 }
 
 var cnf AppConfig

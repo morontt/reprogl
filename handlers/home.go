@@ -40,17 +40,24 @@ func IndexAction(app *config.Application) http.HandlerFunc {
 	}
 }
 
-func CategoryAction(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+func CategoryAction(app *config.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		slug := vars["slug"]
 
-	page, needsRedirect := pageOrRedirect(vars)
-	if needsRedirect {
-		http.Redirect(w, r, "/", 301)
+		page, needsRedirect := pageOrRedirect(vars)
+		if needsRedirect {
+			url, err := app.Router.Get("category-first").URL("slug", slug)
+			if err != nil {
+				panic(err)
+			}
+			http.Redirect(w, r, url.String(), 301)
 
-		return
+			return
+		}
+
+		fmt.Fprintf(w, "Articles by category, page %d", page)
 	}
-
-	fmt.Fprintf(w, "Articles by category, page %d", page)
 }
 
 func TagAction(w http.ResponseWriter, r *http.Request) {

@@ -10,10 +10,13 @@ func getRoutes(app *config.Application) *mux.Router {
 	siteMux := mux.NewRouter()
 	siteMux.HandleFunc("/article/{slug}", handlers.PageAction(app)).Name("article")
 	siteMux.HandleFunc("/{page:[0-9]*}", handlers.IndexAction(app)).Name("blog-page")
-	siteMux.HandleFunc("/category/{slug}/{page:[0-9]*}", handlers.CategoryAction).Name("category")
+	siteMux.HandleFunc("/category/{slug}", handlers.CategoryAction(app)).Name("category-first")
+	siteMux.HandleFunc("/category/{slug}/{page:[0-9]+}", handlers.CategoryAction(app)).Name("category")
 	siteMux.HandleFunc("/tag/{slug}/{page:[0-9]*}", handlers.TagAction).Name("tag")
 	siteMux.HandleFunc("/info", handlers.InfoAction).Name("info_page")
 	siteMux.HandleFunc("/robots.txt", handlers.RobotsTXTAction)
+
+	app.Router = siteMux
 
 	return siteMux
 }
