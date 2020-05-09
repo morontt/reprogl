@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/views"
 )
@@ -45,6 +47,18 @@ func CategoryAction(app *config.Application) http.HandlerFunc {
 		vars := mux.Vars(r)
 		slug := vars["slug"]
 
+		categoryRepo := repositories.CategoryRepository{DB: app.DB}
+		category, err := categoryRepo.GetBySlug(slug)
+		if err != nil {
+			if errors.Is(err, models.RecordNotFound) {
+				app.NotFound(w)
+			} else {
+				app.ServerError(w, err)
+			}
+
+			return
+		}
+
 		page, needsRedirect := pageOrRedirect(vars)
 		if needsRedirect {
 			url, err := app.Router.Get("category-first").URL("slug", slug)
@@ -56,7 +70,25 @@ func CategoryAction(app *config.Application) http.HandlerFunc {
 			return
 		}
 
-		fmt.Fprintf(w, "Articles by category, page %d", page)
+		repo := repositories.ArticleRepository{DB: app.DB}
+		articles, err := repo.GetCollectionByCategory(category, page)
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
+		templateData := views.NewCategoryPageData(articles, category, page)
+		browserTitle := fmt.Sprintf("Категория \"%s\"", category.Name)
+		if page > 1 {
+			browserTitle += fmt.Sprintf(". Страница %d", page)
+		}
+		templateData.AppendTitle(browserTitle)
+
+		err = views.RenderTemplate(w, "index.gohtml", templateData)
+		if err != nil {
+			app.ServerError(w, err)
+		}
 	}
 }
 

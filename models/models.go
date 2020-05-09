@@ -45,6 +45,14 @@ type ArticleListItem struct {
 	FeaturedImage
 }
 
+type ArticleList []*ArticleListItem
+
+type Category struct {
+	ID   int
+	Name string
+	Slug string
+}
+
 func (i *FeaturedImage) HasImage() bool {
 	return i.ImagePath.Valid
 }
@@ -60,4 +68,10 @@ func (i *FeaturedImage) ImageURL() string {
 	return url
 }
 
-type ArticleList []*ArticleListItem
+func (cat *Category) HeaderLineDescription() string {
+	return "Записи из категории"
+}
+
+func (cat *Category) HeaderLineText() string {
+	return cat.Name
+}

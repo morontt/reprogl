@@ -8,7 +8,7 @@
         <div class="row main-header-content">
             <div class="small-12 columns">
                     <div class="logo-bg">
-                        <a class="blog-logo" href="https://ghost.localhost.tools">
+                        <a class="blog-logo" href="/">
                             <img src="https://casper.ghost.org/v1.0.0/images/ghost-logo.svg" alt="Blog Logo">
                         </a>
                     </div>
@@ -32,5 +32,20 @@
             </div>
         </div>
     </div>
+    {{with .HeaderInfo}}
+        <div class="tag-view-info">
+            <div class="row">
+                <div class="small-12 columns">
+                    <a href="/" class="back-to-index">
+                        <i class="fa fa-fw fa-chevron-circle-left"></i>
+                    </a>
+                    <span class="tag-view-label">
+                         <span class="tag-view-label-text">{{.HeaderLineDescription}}: </span>
+                         <span class="tag-name">{{.HeaderLineText}}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    {{end}}
 </div>
 {{end}}

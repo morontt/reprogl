@@ -20,6 +20,11 @@ type Meta struct {
 	titleParts []string
 }
 
+type HeaderLineInfo interface {
+	HeaderLineDescription() string
+	HeaderLineText() string
+}
+
 type ArticlePageData struct {
 	Meta
 	Article *models.Article
@@ -27,6 +32,7 @@ type ArticlePageData struct {
 
 type IndexPageData struct {
 	Meta
+	HeaderInfo HeaderLineInfo
 	PageNumber int
 	Articles   models.ArticleList
 }
@@ -57,6 +63,10 @@ func NewArticlePageData(article *models.Article) *ArticlePageData {
 
 func NewIndexPageData(articles models.ArticleList, page int) *IndexPageData {
 	return &IndexPageData{Articles: articles, PageNumber: page, Meta: defaultMeta()}
+}
+
+func NewCategoryPageData(articles models.ArticleList, category *models.Category, page int) *IndexPageData {
+	return &IndexPageData{Articles: articles, PageNumber: page, HeaderInfo: category, Meta: defaultMeta()}
 }
 
 func NewInfoPageData() *Meta {
