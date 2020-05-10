@@ -65,8 +65,8 @@ func NewIndexPageData(articles models.ArticleList, page int) *IndexPageData {
 	return &IndexPageData{Articles: articles, PageNumber: page, Meta: defaultMeta()}
 }
 
-func NewCategoryPageData(articles models.ArticleList, category *models.Category, page int) *IndexPageData {
-	return &IndexPageData{Articles: articles, PageNumber: page, HeaderInfo: category, Meta: defaultMeta()}
+func NewCategoryPageData(articles models.ArticleList, headerInfo HeaderLineInfo, page int) *IndexPageData {
+	return &IndexPageData{Articles: articles, PageNumber: page, HeaderInfo: headerInfo, Meta: defaultMeta()}
 }
 
 func NewInfoPageData() *Meta {

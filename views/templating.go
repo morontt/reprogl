@@ -40,7 +40,8 @@ func LoadViewSet() error {
 
 	customFunctions := template.FuncMap{
 		"raw":  rawHTML,
-		"path": urlGenerator(),
+		"path": urlGenerator,
+		"tags": tags,
 	}
 
 	for key, files := range templatesMap {

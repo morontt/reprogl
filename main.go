@@ -48,6 +48,7 @@ func main() {
 }
 
 func openDB(dsn string) (*sql.DB, error) {
+	time.Sleep(500 * time.Millisecond)
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		return nil, err

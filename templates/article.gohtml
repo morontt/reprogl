@@ -97,19 +97,19 @@
                     </div>
                 </section>
                 {{/* #is "post" */}}
-                    {{/* #if tags */}}
+                    {{if .Article.Tags}}
                         <section class="row">
                             <div class="small-12 columns">
                                 <div class="post-tags">
-                                    {{/* #foreach tags */}}
-                                        <a href="/tag/1">
-                                            Tag
+                                    {{range .Article.Tags}}
+                                        <a href="{{path "tag-first" "slug" .Slug}}">
+                                            {{- .Name -}}
                                         </a>
-                                    {{/* /foreach */}}
+                                    {{end}}
                                 </div>
                             </div>
                         </section>
-                    {{/* /if */}}
+                    {{end}}
                     {{/* #author */}}
                         <section class="author-info">
                             <div class="row">

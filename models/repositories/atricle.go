@@ -124,6 +124,41 @@ func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, 
 	return articles, nil
 }
 
+func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (models.ArticleList, error) {
+	query := `
+		SELECT
+			p.id,
+			p.title,
+			p.url,
+			p.text_post,
+			p.time_created,
+			mf.path AS image_path,
+			mf.description AS image_description,
+			c.name AS cat_name,
+			c.url AS cat_url
+		FROM posts AS p
+		INNER JOIN category AS c ON c.id = p.category_id
+		LEFT JOIN media_file mf ON (p.id = mf.post_id AND mf.default_image = 1)
+		INNER JOIN relation_topictag AS at ON p.id = at.post_id
+		WHERE p.hide = 0
+			AND at.tag_id = ?
+		ORDER BY time_created DESC
+		LIMIT 10 OFFSET ?`
+
+	offset := 10 * (page - 1)
+	rows, err := ar.DB.Query(query, tag.ID, offset)
+	if err != nil {
+		return nil, err
+	}
+
+	articles, err := populateArticles(rows)
+	if err != nil {
+		return nil, err
+	}
+
+	return articles, nil
+}
+
 func populateArticles(rows *sql.Rows) (models.ArticleList, error) {
 	var err error
 	defer rows.Close()

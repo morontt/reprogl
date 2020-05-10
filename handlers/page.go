@@ -27,6 +27,14 @@ func PageAction(app *config.Application) http.HandlerFunc {
 			return
 		}
 
+		tagRepo := repositories.TagRepository{DB: app.DB}
+		article.Tags, err = tagRepo.GetCollectionByArticle(article)
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
 		templateData := views.NewArticlePageData(article)
 		templateData.AppendTitle(article.Title)
 

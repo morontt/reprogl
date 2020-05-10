@@ -32,6 +32,7 @@ type Article struct {
 	CategoryName  string
 	CategorySlug  string
 	FeaturedImage
+	Tags TagList
 }
 
 type ArticleListItem struct {
@@ -43,6 +44,7 @@ type ArticleListItem struct {
 	CategoryName string
 	CategorySlug string
 	FeaturedImage
+	Tags TagList
 }
 
 type ArticleList []*ArticleListItem
@@ -52,6 +54,14 @@ type Category struct {
 	Name string
 	Slug string
 }
+
+type Tag struct {
+	ID   int
+	Name string
+	Slug string
+}
+
+type TagList []*Tag
 
 func (i *FeaturedImage) HasImage() bool {
 	return i.ImagePath.Valid
@@ -74,4 +84,12 @@ func (cat *Category) HeaderLineDescription() string {
 
 func (cat *Category) HeaderLineText() string {
 	return cat.Name
+}
+
+func (tag *Tag) HeaderLineDescription() string {
+	return "Записи с отметкой"
+}
+
+func (tag *Tag) HeaderLineText() string {
+	return tag.Name
 }
