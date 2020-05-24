@@ -159,6 +159,29 @@ func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (mode
 	return articles, nil
 }
 
+func (ar *ArticleRepository) newPaginator(countQuery, query string, page int, params ...interface{}) (*models.ArticlesPaginator, error) {
+	var pageCount int
+
+	err := ar.DB.QueryRow(countQuery, params...).Scan(&pageCount)
+	if err != nil {
+		return nil, err
+	}
+
+	offset := 10 * (page - 1)
+	params = append(params, offset)
+	rows, err := ar.DB.Query(query, params...)
+	if err != nil {
+		return nil, err
+	}
+
+	articles, err := populateArticles(rows)
+	if err != nil {
+		return nil, err
+	}
+
+	return &models.ArticlesPaginator{Items: articles, CurrentPage: page, PageCount: pageCount}, nil
+}
+
 func populateArticles(rows *sql.Rows) (models.ArticleList, error) {
 	var err error
 	defer rows.Close()

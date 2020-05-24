@@ -63,6 +63,12 @@ type Tag struct {
 
 type TagList []*Tag
 
+type ArticlesPaginator struct {
+	Items       ArticleList
+	CurrentPage int
+	PageCount   int
+}
+
 func (i *FeaturedImage) HasImage() bool {
 	return i.ImagePath.Valid
 }
