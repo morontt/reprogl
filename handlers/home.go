@@ -23,22 +23,26 @@ func IndexAction(app *config.Application) http.HandlerFunc {
 		}
 
 		repo := repositories.ArticleRepository{DB: app.DB}
-		articles, err := repo.GetCollection(page)
+		articlesPaginator, err := repo.GetCollection(page)
 		if err != nil {
-			app.ServerError(w, err)
+			if errors.Is(err, models.RecordNotFound) {
+				app.NotFound(w)
+			} else {
+				app.ServerError(w, err)
+			}
 
 			return
 		}
 
 		tagRepo := repositories.TagRepository{DB: app.DB}
-		err = tagRepo.PopulateTagsToArticles(articles)
+		err = tagRepo.PopulateTagsToArticles(articlesPaginator.Items)
 		if err != nil {
 			app.ServerError(w, err)
 
 			return
 		}
 
-		templateData := views.NewIndexPageData(articles, page)
+		templateData := views.NewIndexPageData(articlesPaginator)
 		if page > 1 {
 			templateData.AppendTitle(fmt.Sprintf("Страница %d", page))
 		}
@@ -94,7 +98,7 @@ func CategoryAction(app *config.Application) http.HandlerFunc {
 			return
 		}
 
-		templateData := views.NewCategoryPageData(articles, category, page)
+		templateData := views.NewCategoryPageData(articles, category)
 		browserTitle := fmt.Sprintf("Категория \"%s\"", category.Name)
 		if page > 1 {
 			browserTitle += fmt.Sprintf(". Страница %d", page)
@@ -151,7 +155,7 @@ func TagAction(app *config.Application) http.HandlerFunc {
 			return
 		}
 
-		templateData := views.NewCategoryPageData(articles, tag, page)
+		templateData := views.NewCategoryPageData(articles, tag)
 		browserTitle := fmt.Sprintf("Тег \"%s\"", tag.Name)
 		if page > 1 {
 			browserTitle += fmt.Sprintf(". Страница %d", page)

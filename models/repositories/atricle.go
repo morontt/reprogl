@@ -57,7 +57,13 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 	return article, nil
 }
 
-func (ar *ArticleRepository) GetCollection(page int) (models.ArticleList, error) {
+func (ar *ArticleRepository) GetCollection(page int) (*models.ArticlesPaginator, error) {
+	countQuery := `
+		SELECT
+			COUNT(p.id) AS cnt
+		FROM posts AS p
+		WHERE p.hide = 0`
+
 	query := `
 		SELECT
 			p.id,
@@ -76,18 +82,9 @@ func (ar *ArticleRepository) GetCollection(page int) (models.ArticleList, error)
 		ORDER BY time_created DESC
 		LIMIT 10 OFFSET ?`
 
-	offset := 10 * (page - 1)
-	rows, err := ar.DB.Query(query, offset)
-	if err != nil {
-		return nil, err
-	}
+	params := make([]interface{}, 0)
 
-	articles, err := populateArticles(rows)
-	if err != nil {
-		return nil, err
-	}
-
-	return articles, nil
+	return ar.newPaginator(countQuery, query, page, params...)
 }
 
 func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, page int) (models.ArticleList, error) {
@@ -160,11 +157,16 @@ func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (mode
 }
 
 func (ar *ArticleRepository) newPaginator(countQuery, query string, page int, params ...interface{}) (*models.ArticlesPaginator, error) {
-	var pageCount int
+	var articleCount int
 
-	err := ar.DB.QueryRow(countQuery, params...).Scan(&pageCount)
+	err := ar.DB.QueryRow(countQuery, params...).Scan(&articleCount)
 	if err != nil {
 		return nil, err
+	}
+
+	pageCount := 1 + (articleCount / 10)
+	if page > pageCount {
+		return nil, models.RecordNotFound
 	}
 
 	offset := 10 * (page - 1)

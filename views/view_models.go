@@ -33,8 +33,7 @@ type ArticlePageData struct {
 type IndexPageData struct {
 	Meta
 	HeaderInfo HeaderLineInfo
-	PageNumber int
-	Articles   models.ArticleList
+	Paginator  *models.ArticlesPaginator
 }
 
 func defaultMeta() Meta {
@@ -61,12 +60,12 @@ func NewArticlePageData(article *models.Article) *ArticlePageData {
 	return &ArticlePageData{Article: article, Meta: defaultMeta()}
 }
 
-func NewIndexPageData(articles models.ArticleList, page int) *IndexPageData {
-	return &IndexPageData{Articles: articles, PageNumber: page, Meta: defaultMeta()}
+func NewIndexPageData(paginator *models.ArticlesPaginator) *IndexPageData {
+	return &IndexPageData{Paginator: paginator, Meta: defaultMeta()}
 }
 
-func NewCategoryPageData(articles models.ArticleList, headerInfo HeaderLineInfo, page int) *IndexPageData {
-	return &IndexPageData{Articles: articles, PageNumber: page, HeaderInfo: headerInfo, Meta: defaultMeta()}
+func NewCategoryPageData(paginator *models.ArticlesPaginator, headerInfo HeaderLineInfo) *IndexPageData {
+	return &IndexPageData{Paginator: paginator, HeaderInfo: headerInfo, Meta: defaultMeta()}
 }
 
 func NewInfoPageData() *Meta {
