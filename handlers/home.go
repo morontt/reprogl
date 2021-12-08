@@ -83,22 +83,26 @@ func CategoryAction(app *config.Application) http.HandlerFunc {
 		}
 
 		repo := repositories.ArticleRepository{DB: app.DB}
-		articles, err := repo.GetCollectionByCategory(category, page)
+		articlesPaginator, err := repo.GetCollectionByCategory(category, page)
 		if err != nil {
-			app.ServerError(w, err)
+			if errors.Is(err, models.RecordNotFound) {
+				app.NotFound(w)
+			} else {
+				app.ServerError(w, err)
+			}
 
 			return
 		}
 
 		tagRepo := repositories.TagRepository{DB: app.DB}
-		err = tagRepo.PopulateTagsToArticles(articles)
+		err = tagRepo.PopulateTagsToArticles(articlesPaginator.Items)
 		if err != nil {
 			app.ServerError(w, err)
 
 			return
 		}
 
-		templateData := views.NewCategoryPageData(articles, category)
+		templateData := views.NewCategoryPageData(articlesPaginator, category)
 		browserTitle := fmt.Sprintf("Категория \"%s\"", category.Name)
 		if page > 1 {
 			browserTitle += fmt.Sprintf(". Страница %d", page)
@@ -141,21 +145,21 @@ func TagAction(app *config.Application) http.HandlerFunc {
 		}
 
 		repo := repositories.ArticleRepository{DB: app.DB}
-		articles, err := repo.GetCollectionByTag(tag, page)
+		articlesPaginator, err := repo.GetCollectionByTag(tag, page)
 		if err != nil {
 			app.ServerError(w, err)
 
 			return
 		}
 
-		err = tagRepo.PopulateTagsToArticles(articles)
+		err = tagRepo.PopulateTagsToArticles(articlesPaginator.Items)
 		if err != nil {
 			app.ServerError(w, err)
 
 			return
 		}
 
-		templateData := views.NewCategoryPageData(articles, tag)
+		templateData := views.NewCategoryPageData(articlesPaginator, tag)
 		browserTitle := fmt.Sprintf("Тег \"%s\"", tag.Name)
 		if page > 1 {
 			browserTitle += fmt.Sprintf(". Страница %d", page)

@@ -87,7 +87,14 @@ func (ar *ArticleRepository) GetCollection(page int) (*models.ArticlesPaginator,
 	return ar.newPaginator(countQuery, query, page, params...)
 }
 
-func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, page int) (models.ArticleList, error) {
+func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, page int) (*models.ArticlesPaginator, error) {
+	countQuery := `
+		SELECT
+			COUNT(p.id) AS cnt
+		FROM posts AS p
+		WHERE p.hide = 0
+			AND p.category_id = ?`
+
 	query := `
 		SELECT
 			p.id,
@@ -107,21 +114,21 @@ func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, 
 		ORDER BY time_created DESC
 		LIMIT 10 OFFSET ?`
 
-	offset := 10 * (page - 1)
-	rows, err := ar.DB.Query(query, category.ID, offset)
-	if err != nil {
-		return nil, err
-	}
+	params := make([]interface{}, 0)
+	params = append(params, category.ID)
 
-	articles, err := populateArticles(rows)
-	if err != nil {
-		return nil, err
-	}
-
-	return articles, nil
+	return ar.newPaginator(countQuery, query, page, params...)
 }
 
-func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (models.ArticleList, error) {
+func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (*models.ArticlesPaginator, error) {
+	countQuery := `
+		SELECT
+			COUNT(p.id) AS cnt
+		FROM posts AS p
+		INNER JOIN relation_topictag AS at ON p.id = at.post_id
+		WHERE p.hide = 0
+			AND at.tag_id = ?`
+
 	query := `
 		SELECT
 			p.id,
@@ -142,18 +149,10 @@ func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (mode
 		ORDER BY time_created DESC
 		LIMIT 10 OFFSET ?`
 
-	offset := 10 * (page - 1)
-	rows, err := ar.DB.Query(query, tag.ID, offset)
-	if err != nil {
-		return nil, err
-	}
+	params := make([]interface{}, 0)
+	params = append(params, tag.ID)
 
-	articles, err := populateArticles(rows)
-	if err != nil {
-		return nil, err
-	}
-
-	return articles, nil
+	return ar.newPaginator(countQuery, query, page, params...)
 }
 
 func (ar *ArticleRepository) newPaginator(countQuery, query string, page int, params ...interface{}) (*models.ArticlesPaginator, error) {
