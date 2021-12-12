@@ -17,8 +17,7 @@ func main() {
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	cfg := config.Get()
-	infoLog.Print("Trying to connect to the database")
-	db, err := openDB(cfg.DatabaseDSN)
+	db, err := getDBConnection(cfg.DatabaseDSN, infoLog)
 	if err != nil {
 		errorLog.Fatal(err)
 	}
@@ -45,6 +44,24 @@ func main() {
 
 	infoLog.Printf("Starting server on %s port", cfg.Port)
 	handleError(server.ListenAndServe(), errorLog)
+}
+
+func getDBConnection(dsn string, logger *log.Logger) (db *sql.DB, err error) {
+	var i int
+
+	for i < 5 {
+		logger.Print("Trying to connect to the database")
+		db, err = openDB(dsn)
+		if err == nil {
+			return
+		} else {
+			logger.Print(err)
+		}
+
+		i++
+	}
+
+	return nil, err
 }
 
 func openDB(dsn string) (*sql.DB, error) {
