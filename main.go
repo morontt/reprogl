@@ -59,13 +59,13 @@ func getDBConnection(dsn string, logger *log.Logger) (db *sql.DB, err error) {
 		}
 
 		i++
+		time.Sleep(1000 * time.Millisecond)
 	}
 
 	return nil, err
 }
 
 func openDB(dsn string) (*sql.DB, error) {
-	time.Sleep(500 * time.Millisecond)
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		return nil, err

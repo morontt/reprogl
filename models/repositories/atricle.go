@@ -163,7 +163,11 @@ func (ar *ArticleRepository) newPaginator(countQuery, query string, page int, pa
 		return nil, err
 	}
 
-	pageCount := 1 + (articleCount / 10)
+	pageCount := articleCount / 10
+	if articleCount%10 != 0 {
+		pageCount += 1
+	}
+
 	if page > pageCount {
 		return nil, models.RecordNotFound
 	}
