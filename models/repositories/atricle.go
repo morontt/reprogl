@@ -92,8 +92,10 @@ func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, 
 		SELECT
 			COUNT(p.id) AS cnt
 		FROM posts AS p
+		INNER JOIN category AS c ON c.id = p.category_id
 		WHERE p.hide = 0
-			AND p.category_id = ?`
+			AND c.tree_left_key >= ?
+			AND c.tree_right_key <= ?`
 
 	query := `
 		SELECT
@@ -110,12 +112,13 @@ func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, 
 		INNER JOIN category AS c ON c.id = p.category_id
 		LEFT JOIN media_file mf ON (p.id = mf.post_id AND mf.default_image = 1)
 		WHERE p.hide = 0
-			AND c.id = ?
+			AND c.tree_left_key >= ?
+			AND c.tree_right_key <= ?
 		ORDER BY time_created DESC
 		LIMIT 10 OFFSET ?`
 
 	params := make([]interface{}, 0)
-	params = append(params, category.ID)
+	params = append(params, category.LeftKey, category.RightKey)
 
 	return ar.newPaginator(countQuery, query, page, params...)
 }

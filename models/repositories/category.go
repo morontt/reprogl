@@ -15,7 +15,10 @@ func (cr *CategoryRepository) GetBySlug(slug string) (*models.Category, error) {
 		SELECT
 			c.id,
 			c.name,
-			c.url
+			c.url,
+			c.tree_left_key,
+			c.tree_right_key,
+			c.tree_depth
 		FROM category AS c
 		WHERE (c.url = ?)`
 
@@ -24,7 +27,10 @@ func (cr *CategoryRepository) GetBySlug(slug string) (*models.Category, error) {
 	err := cr.DB.QueryRow(query, slug).Scan(
 		&category.ID,
 		&category.Name,
-		&category.Slug)
+		&category.Slug,
+		&category.LeftKey,
+		&category.RightKey,
+		&category.Depth)
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {

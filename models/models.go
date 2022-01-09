@@ -50,9 +50,12 @@ type ArticleListItem struct {
 type ArticleList []*ArticleListItem
 
 type Category struct {
-	ID   int
-	Name string
-	Slug string
+	ID       int
+	Name     string
+	Slug     string
+	LeftKey  sql.NullInt64
+	RightKey sql.NullInt64
+	Depth    int
 }
 
 type Tag struct {
