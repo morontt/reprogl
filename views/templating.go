@@ -39,9 +39,10 @@ func LoadViewSet() error {
 	}
 
 	customFunctions := template.FuncMap{
-		"raw":  rawHTML,
-		"path": urlGenerator,
-		"tags": tags,
+		"raw":          rawHTML,
+		"path":         urlGenerator,
+		"tags":         tags,
+		"topicPreview": topicPreview,
 	}
 
 	for key, files := range templatesMap {

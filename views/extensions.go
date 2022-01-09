@@ -45,3 +45,12 @@ func tags(tl models.TagList) template.HTML {
 
 	return template.HTML(s)
 }
+
+func topicPreview(s string) template.HTML {
+	arr := strings.Split(s, "<!-- cut -->")
+	if len(arr) > 1 {
+		s = arr[0]
+	}
+
+	return template.HTML(s)
+}

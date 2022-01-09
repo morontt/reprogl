@@ -46,15 +46,17 @@
                                         <div class="post-title-separator"></div>
                                     </header>
                                     <section>
-                                        {{.Text}}
+                                        {{topicPreview .Text}}
                                     </section>
+                                    {{if .HasPreview}}
+                                        <div>
+                                            <a href="{{path "article" "slug" .Slug}}"
+                                               class="post-read-more-btn">Читать далее &crarr;</a>
+                                        </div>
+                                    {{end}}
                                     <footer class="post-meta">
                                         <div>{{tags .Tags }}</div>
                                     </footer>
-                                    <div>
-                                        <a href="{{path "article" "slug" .Slug}}"
-                                           class="post-read-more-btn">Читать далее &crarr;</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>

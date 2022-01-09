@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"errors"
+	"strings"
 	"time"
 	"xelbot.com/reprogl/config"
 )
@@ -95,4 +96,8 @@ func (tag *Tag) HeaderLineDescription() string {
 
 func (tag *Tag) HeaderLineText() string {
 	return tag.Name
+}
+
+func (a *ArticleListItem) HasPreview() bool {
+	return strings.Contains(a.Text, "<!-- cut -->")
 }
