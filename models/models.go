@@ -22,21 +22,7 @@ type FeaturedImage struct {
 	ImageDescription sql.NullString
 }
 
-type Article struct {
-	ID            int
-	Title         string
-	Slug          string
-	Text          string
-	Description   sql.NullString
-	CreatedAt     time.Time
-	CommentsCount int
-	CategoryName  string
-	CategorySlug  string
-	FeaturedImage
-	Tags TagList
-}
-
-type ArticleListItem struct {
+type ArticleBasePart struct {
 	ID           int
 	Title        string
 	Slug         string
@@ -44,6 +30,18 @@ type ArticleListItem struct {
 	CreatedAt    time.Time
 	CategoryName string
 	CategorySlug string
+}
+
+type Article struct {
+	ArticleBasePart
+	Description   sql.NullString
+	CommentsCount int
+	FeaturedImage
+	Tags TagList
+}
+
+type ArticleListItem struct {
+	ArticleBasePart
 	FeaturedImage
 	Tags TagList
 }
@@ -98,6 +96,6 @@ func (tag *Tag) HeaderLineText() string {
 	return tag.Name
 }
 
-func (a *ArticleListItem) HasPreview() bool {
+func (a *ArticleBasePart) HasPreview() bool {
 	return strings.Contains(a.Text, "<!-- cut -->")
 }
