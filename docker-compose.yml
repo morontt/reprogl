@@ -1,19 +1,17 @@
-version: "2"
+version: "3.5"
 services:
     source:
         build:
             context: .
             dockerfile: "docker/app/Dockerfile"
+        container_name: "gopher"
         volumes:
             - ./:/var/www/app
-    nginx:
-        build: ./docker/nginx
         ports:
-            - "80:80"
-            - "443:443"
-        depends_on:
-            - source
-        volumes_from:
-            - source
-        links:
-            - source
+            - "8044:8080"
+        networks:
+            - blognet
+
+networks:
+    blognet:
+        external: true
