@@ -12,6 +12,22 @@ services:
         networks:
             - blognet
 
+    varnish:
+        image: varnish:7.0-alpine
+        container_name: "reprogl_varnish"
+        volumes:
+            - ./docker/varnish/default.vcl:/etc/varnish/default.vcl:ro
+        tmpfs:
+            - /var/lib/varnish:exec
+        ports:
+            - "8086:80"
+        links:
+            - source
+        depends_on:
+            - source
+        networks:
+            - blognet
+
 networks:
     blognet:
         external: true
