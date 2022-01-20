@@ -36,6 +36,9 @@ func LoadViewSet() error {
 			"./templates/partials/footer.gohtml",
 			"./templates/layout/base.gohtml",
 		},
+		"categories.gohtml": {
+			"./templates/fragments/categories.gohtml",
+		},
 	}
 
 	customFunctions := template.FuncMap{
@@ -43,6 +46,7 @@ func LoadViewSet() error {
 		"path":         urlGenerator,
 		"tags":         tags,
 		"topicPreview": topicPreview,
+		"cdn":          cdnBase,
 	}
 
 	for key, files := range templatesMap {

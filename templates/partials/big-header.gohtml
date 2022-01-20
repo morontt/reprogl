@@ -1,7 +1,7 @@
 {{define "big-header"}}
 <div class="big-header-container scene-element fade-in-down">
     <header class="main-header"
-            style="background-image: url('/assets/images/1500x500.jpg')">
+            style="background-image: url('{{ cdn }}/assets/images/1500x500.jpg')">
         <div class="main-header-bars">
             <i class="fa fa-fw fa-bars js-open-main-menu"></i>
         </div>
@@ -20,7 +20,9 @@
     <div class="index-filters">
         <div class="row">
             <div class="small-6 medium-3 columns">
-                <div class="js-filter-tags"></div>
+                <div class="js-filter-tags">
+                    <esi:include src="{{path "fragment-categories"}}" onerror="continue"/>
+                </div>
             </div>
             <div class="small-6 medium-9 columns text-right">
                 <a href="#" class="js-grid-filter-button">

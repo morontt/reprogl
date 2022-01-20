@@ -338,7 +338,7 @@ var anima = (function ($) {
         niceSroll();
         niceScrollShowEvent();
         shuffle();
-        prepareFilters();
+        // prepareFilters();
         filterTagsSelector();
         recentPostsParseFeed();
         imageCarousel();

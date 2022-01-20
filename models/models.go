@@ -57,6 +57,8 @@ type Category struct {
 	Depth    int
 }
 
+type CategoryList []*Category
+
 type Tag struct {
 	ID   int
 	Name string

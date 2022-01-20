@@ -5,10 +5,17 @@ import (
 	"github.com/gorilla/mux"
 	"html/template"
 	"strings"
+	"xelbot.com/reprogl/config"
 	"xelbot.com/reprogl/models"
 )
 
 var router *mux.Router
+var cdnBaseURL string
+
+func init() {
+	cfg := config.Get()
+	cdnBaseURL = cfg.CDNBaseURL
+}
 
 func SetRouter(r *mux.Router) {
 	router = r
@@ -53,4 +60,8 @@ func topicPreview(s string) template.HTML {
 	}
 
 	return template.HTML(s)
+}
+
+func cdnBase() string {
+	return cdnBaseURL
 }

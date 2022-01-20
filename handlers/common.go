@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"net/http"
 	"strconv"
 )
 
@@ -17,4 +18,8 @@ func pageOrRedirect(params map[string]string) (int, bool) {
 	}
 
 	return page, false
+}
+
+func doESI(w http.ResponseWriter) {
+	w.Header().Set("Surrogate-Control", "content=\"ESI/1.0\"")
 }

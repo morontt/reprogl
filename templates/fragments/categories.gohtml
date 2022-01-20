@@ -1,0 +1,10 @@
+{{template "categories" . -}}
+
+{{define "categories" -}}
+<select class="cs-select cs-skin-slide">
+    <option value="ALL">ALL</option>
+    {{range .Categories}}
+        <option value="{{.Slug}}">{{.Name}}</option>
+    {{end}}
+</select>
+{{- end -}}

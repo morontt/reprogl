@@ -50,6 +50,7 @@ func IndexAction(app *config.Application) http.HandlerFunc {
 			templateData.AppendTitle(fmt.Sprintf("Страница %d", page))
 		}
 
+		doESI(w)
 		err = views.RenderTemplate(w, "index.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
@@ -114,6 +115,7 @@ func CategoryAction(app *config.Application) http.HandlerFunc {
 		}
 		templateData.AppendTitle(browserTitle)
 
+		doESI(w)
 		err = views.RenderTemplate(w, "index.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
@@ -177,6 +179,7 @@ func TagAction(app *config.Application) http.HandlerFunc {
 		}
 		templateData.AppendTitle(browserTitle)
 
+		doESI(w)
 		err = views.RenderTemplate(w, "index.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)

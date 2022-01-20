@@ -36,6 +36,10 @@ type IndexPageData struct {
 	Paginator  *models.ArticlesPaginator
 }
 
+type FragmentCategoriesData struct {
+	Categories *models.CategoryList
+}
+
 func defaultMeta() Meta {
 	return Meta{Host: host, HeaderText: headerText}
 }
