@@ -13,7 +13,7 @@ var RecordNotFound = errors.New("models: no matching record found")
 var cdnBaseURL string
 
 func init() {
-	cfg := container.Get()
+	cfg := container.GetConfig()
 	cdnBaseURL = cfg.CDNBaseURL
 }
 

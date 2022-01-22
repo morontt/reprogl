@@ -21,7 +21,7 @@ func InfoAction(w http.ResponseWriter, _ *http.Request) {
 func RobotsTXTAction(w http.ResponseWriter, _ *http.Request) {
 	var body string
 
-	cfg := container.Get()
+	cfg := container.GetConfig()
 	body = fmt.Sprintf(
 		"User-agent: *\n\nHost: %s\nSitemap: https://%s/sitemap.xml\n",
 		cfg.Host,

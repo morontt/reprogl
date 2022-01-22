@@ -13,7 +13,7 @@ var router *mux.Router
 var cdnBaseURL string
 
 func init() {
-	cfg := container.Get()
+	cfg := container.GetConfig()
 	cdnBaseURL = cfg.CDNBaseURL
 }
 

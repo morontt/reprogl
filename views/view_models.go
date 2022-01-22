@@ -9,7 +9,7 @@ var headerText string
 var host string
 
 func init() {
-	cfg := container.Get()
+	cfg := container.GetConfig()
 	headerText = cfg.HeaderText
 	host = cfg.Host
 }
