@@ -6,13 +6,13 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
-	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/views"
 )
 
-func IndexAction(app *config.Application) http.HandlerFunc {
+func IndexAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 
@@ -58,7 +58,7 @@ func IndexAction(app *config.Application) http.HandlerFunc {
 	}
 }
 
-func CategoryAction(app *config.Application) http.HandlerFunc {
+func CategoryAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		slug := vars["slug"]
@@ -123,7 +123,7 @@ func CategoryAction(app *config.Application) http.HandlerFunc {
 	}
 }
 
-func TagAction(app *config.Application) http.HandlerFunc {
+func TagAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		slug := vars["slug"]

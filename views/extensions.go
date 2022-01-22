@@ -5,7 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"html/template"
 	"strings"
-	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 )
 
@@ -13,7 +13,7 @@ var router *mux.Router
 var cdnBaseURL string
 
 func init() {
-	cfg := config.Get()
+	cfg := container.Get()
 	cdnBaseURL = cfg.CDNBaseURL
 }
 

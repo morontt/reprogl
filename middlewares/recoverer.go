@@ -4,10 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/container"
 )
 
-func Recover(next http.Handler, app *config.Application) http.Handler {
+func Recover(next http.Handler, app *container.Application) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if rvr := recover(); rvr != nil && rvr != http.ErrAbortHandler {

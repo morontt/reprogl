@@ -1,4 +1,4 @@
-package config
+package container
 
 import (
 	"database/sql"

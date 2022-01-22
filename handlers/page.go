@@ -4,13 +4,13 @@ import (
 	"errors"
 	"github.com/gorilla/mux"
 	"net/http"
-	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/views"
 )
 
-func PageAction(app *config.Application) http.HandlerFunc {
+func PageAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		slug := vars["slug"]

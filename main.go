@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 	"time"
-	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/middlewares"
 	"xelbot.com/reprogl/views"
 )
@@ -16,13 +16,13 @@ func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	cfg := config.Get()
+	cfg := container.Get()
 	db, err := getDBConnection(cfg.DatabaseDSN, infoLog)
 	if err != nil {
 		errorLog.Fatal(err)
 	}
 
-	app := &config.Application{
+	app := &container.Application{
 		ErrorLog: errorLog,
 		InfoLog:  infoLog,
 		DB:       db,

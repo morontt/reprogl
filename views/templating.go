@@ -5,7 +5,7 @@ import (
 	"html/template"
 	"net/http"
 	"strings"
-	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/container"
 )
 
 const defaultPageSize = 64 * 1024
@@ -62,7 +62,7 @@ func LoadViewSet() error {
 }
 
 func RenderTemplate(w http.ResponseWriter, name string, data interface{}) error {
-	if config.IsDevMode() {
+	if container.IsDevMode() {
 		err := LoadViewSet()
 		if err != nil {
 			return err

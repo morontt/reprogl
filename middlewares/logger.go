@@ -3,10 +3,10 @@ package middlewares
 import (
 	"net/http"
 	"time"
-	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/container"
 )
 
-func AccessLog(next http.Handler, app *config.Application) http.Handler {
+func AccessLog(next http.Handler, app *container.Application) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		addr := r.Header.Get("X-Real-IP")

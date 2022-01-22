@@ -2,11 +2,11 @@ package main
 
 import (
 	"github.com/gorilla/mux"
-	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/handlers"
 )
 
-func getRoutes(app *config.Application) *mux.Router {
+func getRoutes(app *container.Application) *mux.Router {
 	siteMux := mux.NewRouter()
 	siteMux.HandleFunc("/article/{slug}", handlers.PageAction(app)).Name("article")
 	siteMux.HandleFunc("/{page:[0-9]*}", handlers.IndexAction(app)).Name("blog-page")

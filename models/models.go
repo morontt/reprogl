@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 	"time"
-	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/container"
 )
 
 var RecordNotFound = errors.New("models: no matching record found")
@@ -13,7 +13,7 @@ var RecordNotFound = errors.New("models: no matching record found")
 var cdnBaseURL string
 
 func init() {
-	cfg := config.Get()
+	cfg := container.Get()
 	cdnBaseURL = cfg.CDNBaseURL
 }
 

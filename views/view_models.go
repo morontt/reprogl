@@ -1,7 +1,7 @@
 package views
 
 import (
-	"xelbot.com/reprogl/config"
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 )
 
@@ -9,7 +9,7 @@ var headerText string
 var host string
 
 func init() {
-	cfg := config.Get()
+	cfg := container.Get()
 	headerText = cfg.HeaderText
 	host = cfg.Host
 }
