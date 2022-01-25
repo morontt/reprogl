@@ -1,8 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 docker-compose stop source
 
-go fmt ./...
-go build
+. ./build.sh
 
 docker-compose up -d source

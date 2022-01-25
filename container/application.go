@@ -9,6 +9,9 @@ import (
 	"runtime/debug"
 )
 
+var Version string
+var BuildTime string
+
 type Application struct {
 	ErrorLog *log.Logger
 	InfoLog  *log.Logger

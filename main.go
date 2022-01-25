@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"runtime"
 	"time"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/middlewares"
@@ -15,6 +16,10 @@ import (
 func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
+	infoLog.Printf("Version: %s", container.Version)
+	infoLog.Printf("Build time: %s", container.BuildTime)
+	infoLog.Printf("Go version: %s", runtime.Version())
 
 	cfg := container.GetConfig()
 	db, err := getDBConnection(cfg.DatabaseDSN, infoLog)
