@@ -30,7 +30,7 @@ func AccessLog(next http.Handler, app *container.Application) http.Handler {
 func addXPoweredBy(w http.ResponseWriter) {
 	w.Header().Set("X-Powered-By", fmt.Sprintf(
 		"Reprogl/%s (%s)",
-		container.Version,
+		container.GitRevision,
 		runtime.Version()))
 }
 

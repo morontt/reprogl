@@ -10,6 +10,7 @@ import (
 )
 
 var Version string
+var GitRevision string
 var BuildTime string
 
 type Application struct {
