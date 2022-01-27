@@ -23,3 +23,8 @@ func CategoriesFragment(app *container.Application) http.HandlerFunc {
 		}
 	}
 }
+
+func CommentsFragment(_ *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, _ *http.Request) {
+	}
+}
