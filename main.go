@@ -17,7 +17,7 @@ func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	infoLog.Printf("Version: %s", container.Version)
+	infoLog.Printf("Version: %s (tag: %s)", container.Version, container.GetBuildTag())
 	infoLog.Printf("Build time: %s", container.BuildTime)
 	infoLog.Printf("Go version: %s", runtime.Version())
 
