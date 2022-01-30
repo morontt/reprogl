@@ -17,6 +17,7 @@ func CategoriesFragment(app *container.Application) http.HandlerFunc {
 
 		templateData := &views.FragmentCategoriesData{Categories: categories}
 
+		cacheControl(w, 30)
 		err = views.RenderTemplate(w, "categories.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)

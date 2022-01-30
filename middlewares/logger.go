@@ -1,11 +1,10 @@
 package middlewares
 
 import (
-	"fmt"
 	"net/http"
-	"runtime"
 	"time"
 	"xelbot.com/reprogl/container"
+	pkghttp "xelbot.com/reprogl/http"
 )
 
 func AccessLog(next http.Handler, app *container.Application) http.Handler {
@@ -19,35 +18,12 @@ func AccessLog(next http.Handler, app *container.Application) http.Handler {
 			}
 		}
 
-		addXPoweredBy(w)
-
-		lrw := &logResponseWriter{w, 0}
-		next.ServeHTTP(lrw, r)
-		app.InfoLog.Printf("[%s] %s, %s %d %s\n", r.Method, addr, r.URL.Path, lrw.Status(), time.Since(start))
+		next.ServeHTTP(w, r)
+		lrw, ok := w.(pkghttp.LogResponseWriter)
+		if ok {
+			app.InfoLog.Printf("[%s] %s, %s %d %s\n", r.Method, addr, r.URL.Path, lrw.Status(), time.Since(start))
+		} else {
+			app.InfoLog.Printf("[%s] %s, %s %s\n", r.Method, addr, r.URL.Path, time.Since(start))
+		}
 	})
-}
-
-func addXPoweredBy(w http.ResponseWriter) {
-	w.Header().Set("X-Powered-By", fmt.Sprintf(
-		"Reprogl/%s (%s)",
-		container.GitRevision,
-		runtime.Version()))
-}
-
-type logResponseWriter struct {
-	http.ResponseWriter
-	status int
-}
-
-func (lrw *logResponseWriter) WriteHeader(statusCode int) {
-	lrw.status = statusCode
-	lrw.ResponseWriter.WriteHeader(statusCode)
-}
-
-func (lrw *logResponseWriter) Status() int {
-	if lrw.status == 0 {
-		return http.StatusOK
-	}
-
-	return lrw.status
 }

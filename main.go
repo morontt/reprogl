@@ -36,6 +36,7 @@ func main() {
 	router := getRoutes(app)
 	handler := middlewares.Recover(router, app)
 	handler = middlewares.AccessLog(handler, app)
+	handler = middlewares.ResponseWrapper(handler)
 
 	views.SetRouter(router)
 	handleError(views.LoadViewSet(), errorLog)

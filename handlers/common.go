@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -22,4 +23,8 @@ func pageOrRedirect(params map[string]string) (int, bool) {
 
 func doESI(w http.ResponseWriter) {
 	w.Header().Set("Surrogate-Control", "content=\"ESI/1.0\"")
+}
+
+func cacheControl(w http.ResponseWriter, age int) {
+	w.Header().Set("Cache-Control", fmt.Sprintf("max-age=%d", age))
 }
