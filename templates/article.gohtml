@@ -127,6 +127,8 @@
                     {{/* > "prev-next-post" */}}
                     <div class="cf"></div>
                     <!-- Comments -->
+                    <esi:include src="{{path "fragment-comments" "article_id" .Article.IdString "last_time" .Article.IdString}}"
+                                 onerror="continue"/>
                 {{/* is post */}}
             </article>
         </div>

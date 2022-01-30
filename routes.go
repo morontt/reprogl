@@ -18,7 +18,7 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/robots.txt", handlers.RobotsTXTAction)
 	siteMux.HandleFunc("/favicon.ico", handlers.FavIconAction)
 
-	fragmentsMux := siteMux.PathPrefix("/_frag").Subrouter()
+	fragmentsMux := siteMux.PathPrefix("/_fragment").Subrouter()
 	fragmentsMux.HandleFunc("/categories", handlers.CategoriesFragment(app)).Name("fragment-categories")
 	fragmentsMux.HandleFunc(
 		"/comments/{article_id:[0-9]+}/{last_time:[0-9]+}",

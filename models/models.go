@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"errors"
+	"strconv"
 	"strings"
 	"time"
 	"xelbot.com/reprogl/container"
@@ -100,4 +101,8 @@ func (tag *Tag) HeaderLineText() string {
 
 func (a *ArticleBasePart) HasPreview() bool {
 	return strings.Contains(a.Text, "<!-- cut -->")
+}
+
+func (a *ArticleBasePart) IdString() string {
+	return strconv.Itoa(a.ID)
 }
