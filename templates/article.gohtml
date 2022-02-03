@@ -80,7 +80,7 @@
                                 <section class="post-meta js-bg-check">
                                     <time class="post-date"
                                           datetime="{{.Article.CreatedAt.Format "2006-01-02T15:04:05-07:00"}}">
-                                        {{- .Article.CreatedAt.Format "2 Jan 2006 15:04:05.000" -}}
+                                        {{- .Article.CreatedAt.Format "2 Jan 2006, 15:04:05.000" -}}
                                     </time>
                                 </section>
                             {{/* /is */}}
@@ -110,25 +110,24 @@
                             </div>
                         </section>
                     {{end}}
-                    {{/* #author */}}
-                        <section class="author-info">
-                            <div class="row">
-                                <section class="post-author small-12 columns">
-                                    <img src="https://www.gravatar.com/avatar/d64ea8a5d2b8aadaa89ebc0da120a6e9?s=250&d=mm&r=x"
-                                         class="post-author-avatar"
-                                         alt="morontt">
-                                    <span class="author-label">Author</span>
-                                    <h1><a href="/" class="author-link-name">morontt</a></h1>
-                                    <p>bio</p>
-                                </section>
-                            </div>
-                        </section>
-                    {{/* end author */}}
+
+                    {{template "author-info" .}}
+
                     {{/* > "prev-next-post" */}}
                     <div class="cf"></div>
                     <!-- Comments -->
-                    <esi:include src="{{path "fragment-comments" "article_id" .Article.IdString "last_time" .Article.IdString}}"
-                                 onerror="continue"/>
+                    <section class="comments">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <h1 class="comments-header">Комментарии</h1>
+                                <div id="comments_thread">
+                                    <esi:include src="{{path "fragment-comments" "article_id" .Article.IdString "last_time" .CommentKey}}"
+                                        onerror="continue"/>
+                                </div>
+                                <noscript>Please enable JavaScript to send the comments.</noscript>
+                            </div>
+                        </div>
+                    </section>
                 {{/* is post */}}
             </article>
         </div>

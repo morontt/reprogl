@@ -35,7 +35,15 @@ func PageAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		templateData := views.NewArticlePageData(article)
+		commentRepo := repositories.CommentRepository{DB: app.DB}
+		lastUpdate, err := commentRepo.GetLastUpdate(article.ID)
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
+		templateData := views.NewArticlePageData(article, lastUpdate)
 		templateData.AppendTitle(article.Title)
 
 		doESI(w)

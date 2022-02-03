@@ -25,6 +25,7 @@ func LoadViewSet() error {
 		},
 		"article.gohtml": {
 			"./templates/article.gohtml",
+			"./templates/partials/author-info.gohtml",
 			"./templates/partials/menu.gohtml",
 			"./templates/layout/base.gohtml",
 		},
@@ -38,6 +39,9 @@ func LoadViewSet() error {
 		},
 		"categories.gohtml": {
 			"./templates/fragments/categories.gohtml",
+		},
+		"comments.gohtml": {
+			"./templates/fragments/comments.gohtml",
 		},
 	}
 

@@ -27,7 +27,8 @@ type HeaderLineInfo interface {
 
 type ArticlePageData struct {
 	Meta
-	Article *models.Article
+	Article    *models.Article
+	CommentKey string
 }
 
 type IndexPageData struct {
@@ -38,6 +39,10 @@ type IndexPageData struct {
 
 type FragmentCategoriesData struct {
 	Categories *models.CategoryList
+}
+
+type FragmentCommentsData struct {
+	Comments *models.CommentList
 }
 
 func defaultMeta() Meta {
@@ -60,8 +65,8 @@ func (m *Meta) BrowserTitle() string {
 	return title
 }
 
-func NewArticlePageData(article *models.Article) *ArticlePageData {
-	return &ArticlePageData{Article: article, Meta: defaultMeta()}
+func NewArticlePageData(article *models.Article, commentKey string) *ArticlePageData {
+	return &ArticlePageData{Article: article, Meta: defaultMeta(), CommentKey: commentKey}
 }
 
 func NewIndexPageData(paginator *models.ArticlesPaginator) *IndexPageData {
