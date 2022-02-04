@@ -13,7 +13,7 @@ func (cr *CommentRepository) GetLastUpdate(articleId int) (string, error) {
 	var last string
 	query := `
 		SELECT
-			DATE_FORMAT(src.last_update, '%y%u%H%i%s') AS last
+			DATE_FORMAT(src.last_update, '%y%j%H%i%s') AS last
 		FROM (
 			SELECT
 				COALESCE(MAX(last_update), '1981-07-18 00:00:00') AS last_update
