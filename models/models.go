@@ -68,23 +68,6 @@ type Tag struct {
 
 type TagList []*Tag
 
-type Commentator struct {
-	Name    string
-	Website sql.NullString
-	Email   sql.NullString
-}
-
-type Comment struct {
-	ID        int
-	Text      string
-	Depth     int
-	CreatedAt time.Time
-	Deleted   bool
-	Commentator
-}
-
-type CommentList []*Comment
-
 func (i *FeaturedImage) HasImage() bool {
 	return i.ImagePath.Valid
 }

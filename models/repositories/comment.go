@@ -16,7 +16,7 @@ func (cr *CommentRepository) GetLastUpdate(articleId int) (string, error) {
 			DATE_FORMAT(src.last_update, '%y%u%H%i%s') AS last
 		FROM (
 			SELECT
-				MAX(last_update) AS last_update
+				COALESCE(MAX(last_update), '1981-07-18 00:00:00') AS last_update
 			FROM comments
 			WHERE (post_id = ?)) AS src`
 
