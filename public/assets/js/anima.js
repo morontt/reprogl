@@ -60,13 +60,6 @@ var anima = (function ($) {
         });
     },
 
-    // https://highlightjs.org/
-    syntaxHighlighter = function () {
-        $('pre code').each(function(i, block) {
-            hljs.highlightBlock(block);
-        });
-    },
-
     // sticky header
     headroom = function () {
         $('.headroom').headroom({
@@ -328,7 +321,6 @@ var anima = (function ($) {
     init = function () {
         $(document).foundation();
         userAgentInit();
-        syntaxHighlighter();
         mainMenu();
         indexGridFilter();
         goToTopBtn();

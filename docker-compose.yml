@@ -28,6 +28,11 @@ services:
         networks:
             - blognet
 
+    nodejs:
+        build: ./docker/nodejs
+        volumes:
+            - ./:/var/www/app
+
 networks:
     blognet:
         external: true

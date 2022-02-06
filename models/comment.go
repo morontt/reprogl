@@ -10,9 +10,10 @@ import (
 )
 
 type Commentator struct {
-	Name    string
-	Website sql.NullString
-	Email   sql.NullString
+	Name          string
+	Website       sql.NullString
+	Email         sql.NullString
+	CommentatorID sql.NullInt32
 }
 
 type Comment struct {
@@ -27,7 +28,16 @@ type Comment struct {
 type CommentList []*Comment
 
 func (c *Comment) Avatar() string {
-	return fmt.Sprintf("//www.gravatar.com/avatar/%s?s=80&d=monsterid", c.GravatarHash())
+	defaults := make(map[int32]string)
+	defaults[0] = "wavatar"
+	defaults[1] = "monsterid"
+
+	var idx int32
+	if c.CommentatorID.Valid {
+		idx = c.CommentatorID.Int32 % 2
+	}
+
+	return fmt.Sprintf("//www.gravatar.com/avatar/%s?s=80&d=%s", c.GravatarHash(), defaults[idx])
 }
 
 func (ctt *Commentator) GravatarHash() string {
