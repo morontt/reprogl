@@ -1,5 +1,5 @@
 {{range .Comments}}
-<div class="comment-item">
+<div class="comment-item depth-{{.Depth}}">
     <div class="comment-header">
         <time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05-07:00"}}">
             {{- .CreatedAt.Format "2 Jan 2006, 15:04:05.000" -}}
@@ -17,11 +17,10 @@
                  height="80"
                  alt="avatar"/>
         </div>
-        <div class="comment-text">{{.Text}}</div>
+        <div class="comment-text">{{raw (nl2br .Text)}}</div>
         <div class="comment-reply">
-            <span data-comment_id="{{.ID}}">Ответить</span>
+            <span data-comment_id="{{.ID}}">ответить</span>
         </div>
-        <div class="clear-left"></div>
     </div>
 </div>
 <div id="form_bottom_{{.ID}}" class="form-bottom-comment"></div>

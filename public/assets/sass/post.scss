@@ -340,22 +340,7 @@
     padding-top: rem-calc(30);
     border-top: rem-calc(1) solid lighten($color-main-dark, 75%);
     a {
-        display: inline-block;
-        padding: rem-calc(5) rem-calc(15);
-        background: $color-main-contrast;
-        color: $color-main-light;
-        font-weight: 400;
-        -webkit-transition: background-color .3s;
-        transition: background-color .3s;
-        border-radius: rem-calc(3);
-        margin-bottom: rem-calc(3);
-        &:hover {
-            color: $color-main-light;
-            background: lighten($color-main-contrast, 5%);
-        }
-        &:focus, &:active {
-            color: $color-main-light;
-        }
+        @include green-button;
     }
 }
 

@@ -19,7 +19,8 @@ $headers-transform: none;
 
 $color-main-dark: #23222D;
 $color-main-light: #ffffff;
-$color-main-contrast: #FF4D4D;
+//$color-main-contrast: #FF4D4D;
+$color-main-contrast: #90A54A;
 $color-headers: $color-main-dark;
 
 // custom theme mixins
@@ -36,5 +37,26 @@ $color-headers: $color-main-dark;
         content: "";
         display: table;
         clear: both;
+    }
+}
+
+@mixin green-button {
+    display: inline-block;
+    padding: rem-calc(5) rem-calc(15);
+    background: $color-main-contrast;
+    color: $color-main-light;
+    font-weight: 400;
+    -webkit-transition: background-color .3s;
+    transition: background-color .3s;
+    border-radius: rem-calc(3);
+    margin-bottom: rem-calc(3);
+
+    &:hover {
+        color: $color-main-light;
+        background: lighten($color-main-contrast, 5%);
+    }
+
+    &:focus, &:active {
+        color: $color-main-light;
     }
 }

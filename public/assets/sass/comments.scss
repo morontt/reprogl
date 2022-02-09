@@ -2,29 +2,31 @@
 
 section.comments {
     background: darken($color-main-light, 3%);
-    padding: 0.6em 1em;
-    -webkit-border-radius: 0.2em;
-    -moz-border-radius: 0.2em;
-    border-radius: 0.2em;
+    padding: 0;
+    margin: 0 rem-calc(15) 0;
+    border-radius: rem-calc(5);
 
     .comment-item {
         .comment-body {
-            background: #F5F8E9;
-            background: rgba(255, 255, 255, 0.7);
-            margin-bottom: 0.6em;
+            background: $color-main-light;
+            margin-bottom: 1em;
             padding: 9px 0.6em 0.6em 9px;
-            -webkit-border-radius: 0 0 0.2em 0.2em;
-            -moz-border-radius: 0 0 0.2em 0.2em;
-            border-radius: 0 0 0.2em 0.2em;
+            border-radius: 0 0 rem-calc(5) rem-calc(5);
 
             .avatar {
-                border: #90A54A 3px solid;
-                background: #F5F8E9;
-                padding: 1px;
+                box-sizing: content-box;
+                border: $color-main-light 3px solid;
+                background: $color-main-light;
+                padding: 0;
                 height: 80px;
                 width: 80px;
                 margin-top: -34px;
                 float: left;
+                border-radius: rem-calc(7);
+
+                img {
+                    border-radius: rem-calc(6);
+                }
             }
 
             .comment-text {
@@ -32,51 +34,31 @@ section.comments {
             }
 
             .comment-reply {
-                border-top: 1px solid #DCE7B4;
                 margin: 0.5em 0 0;
                 padding: 0.3em 0 0;
                 text-align: right;
 
                 span {
-                    color: #FFF;
-                    text-decoration: none;
-                    padding: 0 0.3em;
-                    cursor: pointer;
-                    background: #C7D2A2;
-                    background: rgba(141, 162, 70, 0.4);
-                    background: -moz-linear-gradient(left, rgba(141, 162, 70, 0.8) 0%, rgba(141, 162, 70, 0.4) 100%);
-                    background: -webkit-linear-gradient(left, rgba(141, 162, 70, 0.8) 0%, rgba(141, 162, 70, 0.4) 100%);
-                    background: -o-linear-gradient(left, rgba(141, 162, 70, 0.8) 0%, rgba(141, 162, 70, 0.4) 100%);
-                    background: -ms-linear-gradient(left, rgba(141, 162, 70, 0.8) 0%, rgba(141, 162, 70, 0.4) 100%);
-                    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(141, 162, 70, 0.8)), color-stop(100%, rgba(141, 162, 70, 0.4)));
-                    background: linear-gradient(left, rgba(141, 162, 70, 0.8) 0%, rgba(141, 162, 70, 0.4) 100%);
-                    -webkit-border-radius: 0.2em;
-                    -moz-border-radius: 0.2em;
-                    border-radius: 0.2em;
+                    @include green-button;
+                }
+
+                &:after {
+                    clear: left;
                 }
             }
         }
 
         .comment-header {
-            background: #90A54A;
-            background: rgba(141, 162, 70, 0.9);
-            background: -moz-linear-gradient(left, rgba(141, 162, 70, 1.0) 0%, rgba(141, 162, 70, 0.43) 100%);
-            background: -webkit-linear-gradient(left, rgba(141, 162, 70, 1.0) 0%, rgba(141, 162, 70, 0.43) 100%);
-            background: -o-linear-gradient(left, rgba(141, 162, 70, 1.0) 0%, rgba(141, 162, 70, 0.43) 100%);
-            background: -ms-linear-gradient(left, rgba(141, 162, 70, 1.0) 0%, rgba(141, 162, 70, 0.43) 100%);
-            background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(141, 162, 70, 1.0)), color-stop(100%, rgba(141, 162, 70, 0.43)));
-            background: linear-gradient(left, rgba(141, 162, 70, 1.0) 0%, rgba(141, 162, 70, 0.43) 100%);
+            background: $color-main-contrast;
             padding: 4px 1em 4px 108px;
-            color: #FFF;
-            border-radius: 0.3em 0.3em 0 0;
-            -webkit-border-radius: 0.3em 0.3em 0 0;
-            -moz-border-radius: 0.3em 0.3em 0 0;
+            color: $color-main-light;
+            border-radius: rem-calc(5) rem-calc(5) 0 0;
+            font-weight: 400;
 
             time {
                 float: right;
                 display: inline;
-                font-size: 10pt;
-                color: #FFF;
+                color: $color-main-light;
             }
 
             a {
@@ -86,6 +68,12 @@ section.comments {
                 &:after {
                     content: "↵";
                 }
+            }
+        }
+
+        @for $idx from 1 through 20 {
+            &.depth-#{$idx} {
+                margin-left: ($idx - 1) * 1.5rem;
             }
         }
     }

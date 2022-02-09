@@ -51,6 +51,7 @@ func LoadViewSet() error {
 		"tags":         tags,
 		"topicPreview": topicPreview,
 		"cdn":          cdnBase,
+		"nl2br":        nl2br,
 	}
 
 	for key, files := range templatesMap {

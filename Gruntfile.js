@@ -47,7 +47,7 @@ module.exports = function (grunt) {
                     'public/assets/css/post.css',
                     'public/assets/css/comments.css',
                 ],
-                dest: 'public/assets/css/<%= pkg.name %>_main.css'
+                dest: 'public/assets/css/<%= pkg.name %>.css'
             },
             js: {
                 options: {

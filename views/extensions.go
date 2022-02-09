@@ -65,3 +65,7 @@ func topicPreview(s string) template.HTML {
 func cdnBase() string {
 	return cdnBaseURL
 }
+
+func nl2br(s string) string {
+	return strings.Replace(s, "\n", "<br/>", -1)
+}
