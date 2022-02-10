@@ -344,5 +344,6 @@ var anima = (function ($) {
 })(jQuery);
 
 (function () {
+    SyntaxHighlighter.all();
     anima.init();
 })();
