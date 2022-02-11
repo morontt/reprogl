@@ -14,6 +14,7 @@ type Commentator struct {
 	Website       sql.NullString
 	Email         sql.NullString
 	CommentatorID sql.NullInt32
+	AuthorID      sql.NullInt32
 }
 
 type Comment struct {
@@ -27,7 +28,21 @@ type Comment struct {
 
 type CommentList []*Comment
 
-func (c *Comment) Avatar() string {
+func (c *Comment) Avatar() (src string) {
+	if c.AuthorID.Valid {
+		hash := md5.New()
+		_, _ = io.WriteString(hash, fmt.Sprintf("avatar%d", c.AuthorID.Int32))
+		hashString := fmt.Sprintf("%X", hash.Sum(nil))
+
+		src = cdnBaseURL + "/img/avatar/" + hashString[2:8] + ".png"
+	} else {
+		src = c.gravatar()
+	}
+
+	return
+}
+
+func (c *Comment) gravatar() string {
 	defaults := make(map[int32]string)
 	defaults[0] = "wavatar"
 	defaults[1] = "monsterid"
@@ -37,10 +52,10 @@ func (c *Comment) Avatar() string {
 		idx = c.CommentatorID.Int32 % 2
 	}
 
-	return fmt.Sprintf("//www.gravatar.com/avatar/%s?s=80&d=%s", c.GravatarHash(), defaults[idx])
+	return fmt.Sprintf("//www.gravatar.com/avatar/%s?s=80&d=%s", c.gravatarHash(), defaults[idx])
 }
 
-func (ctt *Commentator) GravatarHash() string {
+func (ctt *Commentator) gravatarHash() string {
 	var bytes []byte
 
 	if ctt.Email.Valid {
