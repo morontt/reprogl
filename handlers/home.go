@@ -51,7 +51,7 @@ func IndexAction(app *container.Application) http.HandlerFunc {
 		}
 
 		doESI(w)
-		err = views.RenderTemplate(w, "index.gohtml", templateData)
+		err = views.WriteTemplate(w, "index.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 		}
@@ -116,7 +116,7 @@ func CategoryAction(app *container.Application) http.HandlerFunc {
 		templateData.AppendTitle(browserTitle)
 
 		doESI(w)
-		err = views.RenderTemplate(w, "index.gohtml", templateData)
+		err = views.WriteTemplate(w, "index.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 		}
@@ -180,7 +180,7 @@ func TagAction(app *container.Application) http.HandlerFunc {
 		templateData.AppendTitle(browserTitle)
 
 		doESI(w)
-		err = views.RenderTemplate(w, "index.gohtml", templateData)
+		err = views.WriteTemplate(w, "index.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 		}

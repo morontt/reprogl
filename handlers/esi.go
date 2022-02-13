@@ -22,7 +22,7 @@ func CategoriesFragment(app *container.Application) http.HandlerFunc {
 		templateData := &views.FragmentCategoriesData{Categories: categories}
 
 		cacheControl(w, container.DefaultEsiTTL)
-		err = views.RenderTemplate(w, "categories.gohtml", templateData)
+		err = views.WriteTemplate(w, "categories.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 		}
@@ -50,7 +50,7 @@ func CommentsFragment(app *container.Application) http.HandlerFunc {
 		templateData := &views.FragmentCommentsData{Comments: comments}
 
 		cacheControl(w, container.DefaultEsiTTL)
-		err = views.RenderTemplate(w, "comments.gohtml", templateData)
+		err = views.WriteTemplate(w, "comments.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 		}

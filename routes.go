@@ -17,6 +17,7 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/info", handlers.InfoAction).Name("info-page")
 	siteMux.HandleFunc("/robots.txt", handlers.RobotsTXTAction)
 	siteMux.HandleFunc("/favicon.ico", handlers.FavIconAction)
+	siteMux.HandleFunc("/sitemap.xml", handlers.SitemapAction(app))
 
 	fragmentsMux := siteMux.PathPrefix("/_fragment").Subrouter()
 	fragmentsMux.HandleFunc("/categories", handlers.CategoriesFragment(app)).Name("fragment-categories")

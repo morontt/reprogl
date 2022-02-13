@@ -47,7 +47,7 @@ func PageAction(app *container.Application) http.HandlerFunc {
 		templateData.AppendTitle(article.Title)
 
 		doESI(w)
-		err = views.RenderTemplate(w, "article.gohtml", templateData)
+		err = views.WriteTemplate(w, "article.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 		}

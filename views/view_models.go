@@ -45,6 +45,10 @@ type FragmentCommentsData struct {
 	Comments *models.CommentList
 }
 
+type SitemapData struct {
+	Articles *models.SitemapItemList
+}
+
 func defaultMeta() Meta {
 	return Meta{Host: host, HeaderText: headerText}
 }

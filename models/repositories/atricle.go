@@ -158,6 +158,42 @@ func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (*mod
 	return ar.newPaginator(countQuery, query, page, params...)
 }
 
+func (ar *ArticleRepository) GetSitemapCollection() (*models.SitemapItemList, error) {
+	query := `
+		SELECT
+			url,
+			last_update
+		FROM posts
+		WHERE
+			hide = 0
+		ORDER BY time_created DESC
+`
+
+	rows, err := ar.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	articles := models.SitemapItemList{}
+
+	for rows.Next() {
+		item := &models.SitemapItem{}
+		err = rows.Scan(
+			&item.Slug,
+			&item.UpdatedAt)
+
+		if err != nil {
+			return nil, err
+		}
+
+		articles = append(articles, item)
+	}
+
+	return &articles, nil
+}
+
 func (ar *ArticleRepository) newPaginator(countQuery, query string, page int, params ...interface{}) (*models.ArticlesPaginator, error) {
 	var articleCount int
 

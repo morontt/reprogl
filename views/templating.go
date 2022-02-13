@@ -43,6 +43,9 @@ func LoadViewSet() error {
 		"comments.gohtml": {
 			"./templates/fragments/comments.gohtml",
 		},
+		"sitemap.gohtml": {
+			"./templates/feed/sitemap.gohtml",
+		},
 	}
 
 	customFunctions := template.FuncMap{
@@ -66,17 +69,17 @@ func LoadViewSet() error {
 	return nil
 }
 
-func RenderTemplate(w http.ResponseWriter, name string, data interface{}) error {
+func RenderTemplate(name string, data interface{}) (string, error) {
 	if container.IsDevMode() {
 		err := LoadViewSet()
 		if err != nil {
-			return err
+			return "", err
 		}
 	}
 
 	tmpl, ok := templates[name]
 	if !ok {
-		return fmt.Errorf("the template %s does not exist", name)
+		return "", fmt.Errorf("the template %s does not exist", name)
 	}
 
 	var buf strings.Builder
@@ -84,11 +87,20 @@ func RenderTemplate(w http.ResponseWriter, name string, data interface{}) error 
 
 	err := tmpl.Execute(&buf, data)
 	if err != nil {
+		return "", err
+	}
+
+	return buf.String(), nil
+}
+
+func WriteTemplate(w http.ResponseWriter, name string, data interface{}) error {
+	content, err := RenderTemplate(name, data)
+	if err != nil {
 		return err
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, err = w.Write([]byte(buf.String()))
+	_, err = w.Write([]byte(content))
 	if err != nil {
 		return err
 	}
