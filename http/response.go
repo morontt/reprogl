@@ -1,7 +1,10 @@
 package http
 
 import (
+	"fmt"
 	base "net/http"
+	"runtime"
+	"xelbot.com/reprogl/container"
 )
 
 type LogResponseWriter interface {
@@ -23,6 +26,11 @@ func (lrw *Response) Write(body []byte) (int, error) {
 	if _, ok := lrw.ResponseWriter.Header()["Cache-Control"]; !ok {
 		lrw.ResponseWriter.Header().Set("Cache-Control", "private, no-cache")
 	}
+
+	lrw.Header().Set("X-Powered-By", fmt.Sprintf(
+		"Reprogl/%s (%s)",
+		container.GitRevision,
+		runtime.Version()))
 
 	return lrw.ResponseWriter.Write(body)
 }
