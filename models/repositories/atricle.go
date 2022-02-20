@@ -179,7 +179,7 @@ func (ar *ArticleRepository) GetSitemapCollection() (*models.SitemapItemList, er
 	articles := models.SitemapItemList{}
 
 	for rows.Next() {
-		item := &models.SitemapItem{}
+		item := models.SitemapItem{}
 		err = rows.Scan(
 			&item.Slug,
 			&item.UpdatedAt)
@@ -188,7 +188,7 @@ func (ar *ArticleRepository) GetSitemapCollection() (*models.SitemapItemList, er
 			return nil, err
 		}
 
-		articles = append(articles, item)
+		articles = append(articles, &item)
 	}
 
 	return &articles, nil

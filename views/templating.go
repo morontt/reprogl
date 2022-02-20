@@ -43,9 +43,6 @@ func LoadViewSet() error {
 		"comments.gohtml": {
 			"./templates/fragments/comments.gohtml",
 		},
-		"sitemap.gohtml": {
-			"./templates/feed/sitemap.gohtml",
-		},
 	}
 
 	customFunctions := template.FuncMap{
