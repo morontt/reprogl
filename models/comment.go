@@ -29,6 +29,12 @@ type Comment struct {
 type CommentList []*Comment
 
 func (c *Comment) Avatar() (src string) {
+	if c.Deleted {
+		src = cdnBaseURL + "/img/avatar/clown.png"
+
+		return
+	}
+
 	if c.AuthorID.Valid {
 		hash := md5.New()
 		_, _ = io.WriteString(hash, fmt.Sprintf("avatar%d", c.AuthorID.Int32))

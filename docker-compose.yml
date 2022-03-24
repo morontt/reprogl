@@ -9,6 +9,8 @@ services:
             - ./:/var/www/app
         ports:
             - "8044:8080"
+        extra_hosts:
+            - "database.lan:${DATABASE_IP}"
         networks:
             - blognet
 

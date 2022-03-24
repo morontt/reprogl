@@ -41,7 +41,9 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 		FROM comments AS c
 		LEFT JOIN commentators AS t ON c.commentator_id = t.id
 		LEFT JOIN users AS u ON c.user_id = u.id
-		WHERE (c.post_id = ?)
+		WHERE
+			c.post_id = ?
+			AND NOT (c.deleted = 1 AND c.tree_right_key - c.tree_left_key = 1)
 		ORDER BY c.tree_left_key`
 
 	rows, err := cr.DB.Query(query, articleId)
