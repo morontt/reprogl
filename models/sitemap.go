@@ -17,9 +17,8 @@ type SitemapItem struct {
 type SitemapItemList []*SitemapItem
 
 type SitemapURLSet struct {
-	XMLName   xml.Name         `xml:"urlset"`
-	Namespace string           `xml:"xmlns,attr"`
-	Items     *SitemapItemList `xml:"loc"`
+	XMLName xml.Name         `xml:"http://www.sitemaps.org/schemas/sitemap/0.9 urlset"`
+	Items   *SitemapItemList `xml:"loc"`
 }
 
 func (ct SitemapTime) MarshalText() ([]byte, error) {

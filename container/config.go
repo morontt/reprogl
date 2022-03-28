@@ -7,6 +7,8 @@ import (
 	"os"
 )
 
+// TODO Auto read config by parameter type and name
+
 type AppConfig struct {
 	CDNBaseURL  string
 	DevMode     bool
@@ -14,6 +16,8 @@ type AppConfig struct {
 	HeaderText  string
 	Host        string
 	Port        string
+	Author      string
+	AdminEmail  string
 }
 
 var cnf AppConfig
@@ -58,6 +62,18 @@ func init() {
 		cnf.CDNBaseURL = ini.String("CDN_BASE_URL")
 	} else {
 		handleError(errors.New("app.ini: Undefined parameter \"CDN_BASE_URL\""))
+	}
+
+	if _, ok := ini.GetValue("AUTHOR"); ok {
+		cnf.Author = ini.String("AUTHOR")
+	} else {
+		handleError(errors.New("app.ini: Undefined parameter \"AUTHOR\""))
+	}
+
+	if _, ok := ini.GetValue("ADMIN_EMAIL"); ok {
+		cnf.AdminEmail = ini.String("ADMIN_EMAIL")
+	} else {
+		handleError(errors.New("app.ini: Undefined parameter \"ADMIN_EMAIL\""))
 	}
 }
 

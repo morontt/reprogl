@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/handlers"
+	"xelbot.com/reprogl/models"
 )
 
 func getRoutes(app *container.Application) *mux.Router {
@@ -18,6 +19,8 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/robots.txt", handlers.RobotsTXTAction)
 	siteMux.HandleFunc("/favicon.ico", handlers.FavIconAction)
 	siteMux.HandleFunc("/sitemap.xml", handlers.SitemapAction(app))
+	siteMux.HandleFunc("/feed/atom", handlers.FeedAction(app, models.AtomFeedType))
+	siteMux.HandleFunc("/feed/rss", handlers.FeedAction(app, models.RssFeedType))
 
 	fragmentsMux := siteMux.PathPrefix("/_fragment").Subrouter()
 	fragmentsMux.HandleFunc("/categories", handlers.CategoriesFragment(app)).Name("fragment-categories")

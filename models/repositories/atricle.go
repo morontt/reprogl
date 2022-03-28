@@ -194,6 +194,49 @@ func (ar *ArticleRepository) GetSitemapCollection() (*models.SitemapItemList, er
 	return &articles, nil
 }
 
+func (ar *ArticleRepository) GetFeedCollection() (*models.FeedItemList, error) {
+	query := `
+		SELECT
+			id,
+			title,
+			url,
+			text_post,
+			time_created
+		FROM posts
+		WHERE
+			hide = 0
+		ORDER BY time_created DESC
+		LIMIT 25
+`
+
+	rows, err := ar.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	articles := models.FeedItemList{}
+
+	for rows.Next() {
+		item := models.FeedItem{}
+		err = rows.Scan(
+			&item.ID,
+			&item.Title,
+			&item.Slug,
+			&item.Text,
+			&item.CreatedAt)
+
+		if err != nil {
+			return nil, err
+		}
+
+		articles = append(articles, &item)
+	}
+
+	return &articles, nil
+}
+
 func (ar *ArticleRepository) newPaginator(countQuery, query string, page int, params ...interface{}) (*models.ArticlesPaginator, error) {
 	var articleCount int
 
