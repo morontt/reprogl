@@ -13,9 +13,12 @@ const (
 	AtomFeedType
 )
 
+type SitemapTime time.Time
+
+type RssTime time.Time
+
 type FeedInterface interface {
 	setChannelData(FeedChannelData)
-	setUpdated(time.Time)
 	ContentType() string
 	addFeedItem(*FeedItem)
 }
@@ -50,6 +53,18 @@ type FeedChannelData struct {
 
 type Feed[F FeedInterface] struct {
 	value F
+}
+
+func (ct SitemapTime) MarshalText() ([]byte, error) {
+	t := time.Time(ct)
+
+	return []byte(t.Format(time.RFC3339)), nil
+}
+
+func (ct RssTime) MarshalText() ([]byte, error) {
+	t := time.Time(ct)
+
+	return []byte(t.Format(time.RFC1123Z)), nil
 }
 
 func (d FeedChannelData) GIUD() string {

@@ -48,6 +48,7 @@ func LoadViewSet() error {
 	customFunctions := template.FuncMap{
 		"raw":          rawHTML,
 		"path":         urlGenerator,
+		"abs_path":     absUrlGenerator,
 		"tags":         tags,
 		"topicPreview": topicPreview,
 		"cdn":          cdnBase,

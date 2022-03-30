@@ -34,6 +34,10 @@ func urlGenerator(routeName string, pairs ...string) string {
 	return url.String()
 }
 
+func absUrlGenerator(routeName string, pairs ...string) string {
+	return "https://" + host + urlGenerator(routeName, pairs...)
+}
+
 func tags(tl models.TagList) template.HTML {
 	var s string
 	if len(tl) > 0 {

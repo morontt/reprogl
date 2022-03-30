@@ -54,10 +54,6 @@ func (a *Atom) setChannelData(data FeedChannelData) {
 	}
 }
 
-func (a *Atom) setUpdated(t time.Time) {
-	a.Updated = SitemapTime(t)
-}
-
 func (a *Atom) ContentType() string {
 	return "application/atom+xml; charset=utf-8"
 }

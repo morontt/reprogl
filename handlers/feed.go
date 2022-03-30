@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"net/http"
 	"runtime"
@@ -69,7 +70,17 @@ func FeedAction(app *container.Application, feedType int) http.HandlerFunc {
 			location.URL = f(location.Slug)
 		}
 
-		feed = models.CreateFeed[*models.Atom](new(models.Atom), channelData(articles))
+		switch feedType {
+		case models.AtomFeedType:
+			feed = models.CreateFeed[*models.Atom](new(models.Atom), channelData(articles))
+		case models.RssFeedType:
+			feed = models.CreateFeed[*models.Rss](new(models.Rss), channelData(articles))
+		default:
+			app.ServerError(w, errors.New("undefined feed type"))
+
+			return
+		}
+
 		bytes, err := feed.AsXML()
 		if err != nil {
 			app.ServerError(w, err)
