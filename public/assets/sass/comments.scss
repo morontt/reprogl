@@ -6,6 +6,11 @@ section.comments {
     margin: 0 rem-calc(15) 0;
     border-radius: rem-calc(5);
 
+    h3 {
+        text-transform: uppercase;
+        font-size: rem-calc(30);
+    }
+
     .comment-item {
         .comment-body {
             background: $color-main-light;

@@ -1,7 +1,7 @@
 {{define "big-header"}}
 <div class="big-header-container scene-element fade-in-down">
     <header class="main-header"
-            style="background-image: url('{{ cdn }}/assets/images/1500x500.jpg')">
+            style="background-image: url('{{ cdn }}/images/1500x500.jpg')">
         <div class="main-header-bars">
             <i class="fa fa-fw fa-bars js-open-main-menu"></i>
         </div>
@@ -17,34 +17,62 @@
             </div>
         </div>
     </header>
-    <div class="index-filters">
-        <div class="row">
-            <div class="small-6 medium-3 columns">
-                <div class="js-filter-tags">
-                    <esi:include src="{{path "fragment-categories"}}" onerror="continue"/>
+    {{if .IsIndexPage}}
+        <div class="index-filters">
+            <div class="row">
+                <div class="small-6 medium-3 columns">
+                    <div class="js-filter-tags">
+                        <esi:include src="{{path "fragment-categories"}}" onerror="continue"/>
+                    </div>
+                </div>
+                <div class="small-6 medium-9 columns text-right">
+                    <a href="#" class="js-grid-filter-button">
+                        <i class="fa fa-fw fa-th"></i>
+                    </a>
+                    <a href="#" class="js-list-filter-button">
+                        <i class="fa fa-fw fa-list"></i>
+                    </a>
                 </div>
             </div>
-            <div class="small-6 medium-9 columns text-right">
-                <a href="#" class="js-grid-filter-button">
-                    <i class="fa fa-fw fa-th"></i>
-                </a>
-                <a href="#" class="js-list-filter-button">
-                    <i class="fa fa-fw fa-list"></i>
-                </a>
-            </div>
         </div>
-    </div>
-    {{with .HeaderInfo}}
-        <div class="tag-view-info">
+        {{with .HeaderInfo}}
+            <div class="tag-view-info">
+                <div class="row">
+                    <div class="small-12 columns">
+                        <a href="/" class="back-to-index">
+                            <i class="fa fa-fw fa-chevron-circle-left"></i>
+                        </a>
+                        <span class="tag-view-label">
+                             <span class="tag-view-label-text">{{.HeaderLineDescription}}: </span>
+                             <span class="tag-name">{{.HeaderLineText}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        {{end}}
+    {{end}}
+    {{if .IsAuthorPage}}
+        <div class="author-view-info">
             <div class="row">
                 <div class="small-12 columns">
-                    <a href="/" class="back-to-index">
-                        <i class="fa fa-fw fa-chevron-circle-left"></i>
-                    </a>
-                    <span class="tag-view-label">
-                         <span class="tag-view-label-text">{{.HeaderLineDescription}}: </span>
-                         <span class="tag-name">{{.HeaderLineText}}</span>
-                    </span>
+                    <div class="author-avatar">
+                        <a href="{{path "feed-rss"}}" class="no-smoothstate right author-rss">
+                            <i class="fa fa-rss"></i>
+                        </a>
+                        <img class="author-avatar-img"
+                             src="{{ cdn }}/images/space_200.png"
+                             alt="{{author_name}}">
+                    </div>
+                    <div class="author-name">
+                        {{author_name}}
+                        <span class="author-name-social-icons">
+                            <a href="{{author_instagram}}"><i class="fa fa-instagram"></i></a>
+                            <a href="{{author_github}}"><i class="fa fa-github"></i></a>
+                        </span>
+                    </div>
+                    <div class="author-bio">
+                        {{author_bio}}
+                    </div>
                 </div>
             </div>
         </div>

@@ -12,7 +12,7 @@
             {{if .Article.HasImage}}
            style="background-image: url('{{.Article.ImageURL}}');"
             {{else}}
-           style="background-image: url('{{ cdn }}/img/mantis.jpg');"
+           style="background-image: url('{{ cdn }}/images/mantis.jpg');"
             {{end}}>
         <div class="post-view-elems">
             <div class="post-view-elems-header">
@@ -43,18 +43,18 @@
                         </div>
                     </div>
                     <div class="post-view-elems-share">
-                        <a class="icon-twitter" href="https://twitter.com/share?text=title&amp;url=/"
-                            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                        <a class="icon-github"
+                           href="{{author_github}}">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-square fa-stack-2x fa-inverse"></i>
-                                <i class="fa fa-twitter fa-stack-1x"></i>
+                                <i class="fa fa-github fa-stack-1x"></i>
                             </span>
                         </a>
-                        <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=/"
-                            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                        <a class="icon-instagram"
+                           href="{{author_instagram}}">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-square fa-stack-2x fa-inverse"></i>
-                                <i class="fa fa-facebook fa-stack-1x"></i>
+                                <i class="fa fa-instagram fa-stack-1x"></i>
                             </span>
                         </a>
                     </div>
@@ -119,7 +119,7 @@
                     <section class="comments">
                         <div class="row">
                             <div class="small-12 columns">
-                                <h1 class="comments-header">Комментарии</h1>
+                                <h3 class="comments-header">Комментарии</h3>
                                 <div id="comments_thread">
                                     <esi:include src="{{path "fragment-comments" "article_id" .Article.IdString "last_time" .CommentKey}}"
                                         onerror="continue"/>

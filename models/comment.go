@@ -30,7 +30,7 @@ type CommentList []*Comment
 
 func (c *Comment) Avatar() (src string) {
 	if c.Deleted {
-		src = cdnBaseURL + "/img/avatar/clown.png"
+		src = cdnBaseURL + "/images/avatar/clown.png"
 
 		return
 	}
@@ -40,7 +40,7 @@ func (c *Comment) Avatar() (src string) {
 		_, _ = io.WriteString(hash, fmt.Sprintf("avatar%d", c.AuthorID.Int32))
 		hashString := fmt.Sprintf("%X", hash.Sum(nil))
 
-		src = cdnBaseURL + "/img/avatar/" + hashString[2:8] + ".png"
+		src = cdnBaseURL + "/images/avatar/" + hashString[2:8] + ".png"
 	} else {
 		src = c.gravatar()
 	}

@@ -15,7 +15,7 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/category/{slug}/{page:[0-9]+}", handlers.CategoryAction(app)).Name("category")
 	siteMux.HandleFunc("/tag/{slug}", handlers.TagAction(app)).Name("tag-first")
 	siteMux.HandleFunc("/tag/{slug}/{page:[0-9]+}", handlers.TagAction(app)).Name("tag")
-	siteMux.HandleFunc("/info", handlers.InfoAction).Name("info-page")
+	siteMux.HandleFunc("/info", handlers.InfoAction(app)).Name("info-page")
 	siteMux.HandleFunc("/robots.txt", handlers.RobotsTXTAction)
 	siteMux.HandleFunc("/favicon.ico", handlers.FavIconAction)
 	siteMux.HandleFunc("/sitemap.xml", handlers.SitemapAction(app))

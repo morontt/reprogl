@@ -4,18 +4,21 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
-	"os"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/views"
 )
 
-func InfoAction(w http.ResponseWriter, _ *http.Request) {
-	templateData := views.NewInfoPageData()
-	templateData.AppendTitle("Информация")
+func InfoAction(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		templateData := views.NewInfoPageData()
+		templateData.AppendTitle("Информация")
 
-	err := views.WriteTemplate(w, "info.gohtml", templateData)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%+v\n", err)
+		err := views.WriteTemplate(w, "info.gohtml", templateData)
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
 	}
 }
 
@@ -29,6 +32,7 @@ func RobotsTXTAction(w http.ResponseWriter, _ *http.Request) {
 		cfg.Host)
 
 	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Cache-Control", "max-age=2592000")
 	w.Write([]byte(body))
 }
 

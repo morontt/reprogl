@@ -21,6 +21,10 @@ func LoadViewSet() error {
 		"info.gohtml": {
 			"./templates/info.gohtml",
 			"./templates/partials/menu.gohtml",
+			"./templates/partials/sticky-header.gohtml",
+			"./templates/partials/big-header.gohtml",
+			"./templates/partials/footer.gohtml",
+			"./templates/partials/info-static.gohtml",
 			"./templates/layout/base.gohtml",
 		},
 		"article.gohtml": {
@@ -46,13 +50,17 @@ func LoadViewSet() error {
 	}
 
 	customFunctions := template.FuncMap{
-		"raw":          rawHTML,
-		"path":         urlGenerator,
-		"abs_path":     absUrlGenerator,
-		"tags":         tags,
-		"topicPreview": topicPreview,
-		"cdn":          cdnBase,
-		"nl2br":        nl2br,
+		"raw":              rawHTML,
+		"path":             urlGenerator,
+		"abs_path":         absUrlGenerator,
+		"tags":             tags,
+		"topicPreview":     topicPreview,
+		"cdn":              cdnBase,
+		"nl2br":            nl2br,
+		"author_name":      authorName,
+		"author_bio":       authorBio,
+		"author_github":    authorGithub,
+		"author_instagram": authorInstagram,
 	}
 
 	for key, files := range templatesMap {

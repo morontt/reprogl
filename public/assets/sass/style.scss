@@ -18,6 +18,14 @@ body {
     }
 }
 
+a {
+    color: $color-main-contrast;
+
+    &.ext:after {
+        content: "↵";
+    }
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-weight: $headers-weight;
     font-family: $headers-font;
@@ -713,6 +721,10 @@ html.no-csstransforms3d {
     }
 }
 
+.author-template .loop .post-row .post-block-grid figure {
+    cursor: default;
+}
+
 .tag-view-info {
     height: rem-calc(100);
     line-height: rem-calc(100);
@@ -769,21 +781,26 @@ html.no-csstransforms3d {
     .author-name {
         margin-top: rem-calc(25);
         font-weight: 900;
-        font-size: rem-calc(32);
+        font-size: rem-calc(30);
         font-family: $headers-font;
+        text-transform: uppercase;
         .author-name-social-icons {
-            font-size: rem-calc(20);
+            font-size: rem-calc(24);
             a {
                 display: inline-block;
-                margin-left: rem-calc(3);
+                margin-left: rem-calc(6);
                 margin-right: rem-calc(3);
                 color: $color-main-contrast;
                 vertical-align: text-bottom;
+
+                &:first-child {
+                    margin-left: rem-calc(16);
+                }
             }
         }
     }
     .author-bio {
-        font-size: rem-calc(13);
+        font-size: rem-calc(18);
         text-transform: none;
         margin-bottom: rem-calc(25);
     }

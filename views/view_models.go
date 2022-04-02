@@ -5,19 +5,19 @@ import (
 	"xelbot.com/reprogl/models"
 )
 
-var headerText string
-var host string
+var cfg container.AppConfig
 
 func init() {
-	cfg := container.GetConfig()
-	headerText = cfg.HeaderText
-	host = cfg.Host
+	cfg = container.GetConfig()
 }
 
 type Meta struct {
-	Host       string
-	HeaderText string
-	titleParts []string
+	Host            string
+	HeaderText      string
+	MetaDescription string
+	IsIndexPage     bool
+	IsAuthorPage    bool
+	titleParts      []string
 }
 
 type HeaderLineInfo interface {
@@ -37,6 +37,11 @@ type IndexPageData struct {
 	Paginator  *models.ArticlesPaginator
 }
 
+type InfoPageData struct {
+	Meta
+	HeaderInfo HeaderLineInfo
+}
+
 type FragmentCategoriesData struct {
 	Categories *models.CategoryList
 }
@@ -46,7 +51,7 @@ type FragmentCommentsData struct {
 }
 
 func defaultMeta() Meta {
-	return Meta{Host: host, HeaderText: headerText}
+	return Meta{Host: cfg.Host, HeaderText: cfg.HeaderText}
 }
 
 func (m *Meta) AppendTitle(str string) {
@@ -70,15 +75,23 @@ func NewArticlePageData(article *models.Article, commentKey string) *ArticlePage
 }
 
 func NewIndexPageData(paginator *models.ArticlesPaginator) *IndexPageData {
-	return &IndexPageData{Paginator: paginator, Meta: defaultMeta()}
+	meta := defaultMeta()
+	meta.IsIndexPage = true
+
+	return &IndexPageData{Paginator: paginator, Meta: meta}
 }
 
 func NewCategoryPageData(paginator *models.ArticlesPaginator, headerInfo HeaderLineInfo) *IndexPageData {
-	return &IndexPageData{Paginator: paginator, HeaderInfo: headerInfo, Meta: defaultMeta()}
+	meta := defaultMeta()
+	meta.IsIndexPage = true
+
+	return &IndexPageData{Paginator: paginator, HeaderInfo: headerInfo, Meta: meta}
 }
 
-func NewInfoPageData() *Meta {
+func NewInfoPageData() *InfoPageData {
 	meta := defaultMeta()
+	meta.IsAuthorPage = true
+	meta.MetaDescription = "Персональный блог Харченко Александра. Общая информация."
 
-	return &meta
+	return &InfoPageData{Meta: meta}
 }

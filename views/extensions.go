@@ -5,17 +5,10 @@ import (
 	"github.com/gorilla/mux"
 	"html/template"
 	"strings"
-	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 )
 
 var router *mux.Router
-var cdnBaseURL string
-
-func init() {
-	cfg := container.GetConfig()
-	cdnBaseURL = cfg.CDNBaseURL
-}
 
 func SetRouter(r *mux.Router) {
 	router = r
@@ -35,7 +28,7 @@ func urlGenerator(routeName string, pairs ...string) string {
 }
 
 func absUrlGenerator(routeName string, pairs ...string) string {
-	return "https://" + host + urlGenerator(routeName, pairs...)
+	return "https://" + cfg.Host + urlGenerator(routeName, pairs...)
 }
 
 func tags(tl models.TagList) template.HTML {
@@ -67,9 +60,25 @@ func topicPreview(s string) template.HTML {
 }
 
 func cdnBase() string {
-	return cdnBaseURL
+	return cfg.CDNBaseURL
 }
 
 func nl2br(s string) string {
 	return strings.Replace(s, "\n", "<br/>", -1)
+}
+
+func authorName() string {
+	return cfg.Author
+}
+
+func authorBio() string {
+	return cfg.AuthorBio
+}
+
+func authorGithub() string {
+	return fmt.Sprintf("https://github.com/%s", cfg.AuthorGithub)
+}
+
+func authorInstagram() string {
+	return fmt.Sprintf("https://www.instagram.com/%s/", cfg.AuthorInsta)
 }

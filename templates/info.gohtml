@@ -3,7 +3,34 @@
 {{- define "body_class"}}author-template{{end -}}
 
 {{- define "body"}}
-    <main>
-        Info Page.
+<div class="main-content-wrapper">
+    {{template "sticky-header" .}}
+    {{template "big-header" .}}
+    <main class="content author-template scene-element fade-in-right" role="main">
+        <div class="loop">
+            <div class="post-row">
+                <article class="js-post-block-grid post-block-grid">
+                    <div class="post js-post-block-grid-item post-block-grid-item"
+                         data-tags=""
+                         data-groups="">
+                        <div class="post-block-wrapper">
+                            <figure class="effect-hera">
+                                <img src="{{ cdn }}/images/face_352.jpg"
+                                     alt=""
+                                     class="index-post-image">
+                            </figure>
+                            <div class="post-block-grid-content with-image">
+                                <section>
+                                    {{template "info-static" .}}
+                                </section>
+                                <footer class="post-meta"></footer>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
     </main>
+    {{template "footer" .}}
+</div>
 {{- end -}}
