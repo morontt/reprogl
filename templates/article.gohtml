@@ -59,14 +59,7 @@
                         </a>
                     </div>
                 {{/* /is */}}
-                <!-- here will land your recent posts -->
-                <!-- you can change items amout here -->
-                <div class="post-recent-list js-post-view-recent" data-items="6">
-                    <div class="post-recent-list-label">
-                        <span>Recent Posts</span>
-                    </div>
-                    <div class="post-recent-list-separator"></div>
-                </div>
+                {{render_esi "fragment-recent-posts" "article_id" .Article.IdString}}
             </div>
         </div>
     </aside>
@@ -121,8 +114,7 @@
                             <div class="small-12 columns">
                                 <h3 class="comments-header">Комментарии</h3>
                                 <div id="comments_thread">
-                                    <esi:include src="{{path "fragment-comments" "article_id" .Article.IdString "last_time" .CommentKey}}"
-                                        onerror="continue"/>
+                                    {{render_esi "fragment-comments" "article_id" .Article.IdString "last_time" .CommentKey}}
                                 </div>
                                 <noscript>Please enable JavaScript to send the comments.</noscript>
                             </div>

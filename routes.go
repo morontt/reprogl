@@ -28,6 +28,10 @@ func getRoutes(app *container.Application) *mux.Router {
 		"/comments/{article_id:[0-9]+}/{last_time:[0-9]+}",
 		handlers.CommentsFragment(app),
 	).Name("fragment-comments")
+	fragmentsMux.HandleFunc(
+		"/recent-posts/{article_id:[0-9]+}",
+		handlers.RecentPostsFragment(app),
+	).Name("fragment-recent-posts")
 
 	app.Router = siteMux
 

@@ -237,6 +237,44 @@ func (ar *ArticleRepository) GetFeedCollection() (*models.FeedItemList, error) {
 	return &articles, nil
 }
 
+func (ar *ArticleRepository) GetRecentPostsCollection(articleId int) (*models.RecentPostList, error) {
+	query := `
+		SELECT
+			title,
+			url
+		FROM posts
+		WHERE
+			hide = 0
+			AND id != ?
+		ORDER BY time_created DESC
+		LIMIT 6
+`
+
+	rows, err := ar.DB.Query(query, articleId)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	articles := models.RecentPostList{}
+
+	for rows.Next() {
+		item := models.RecentPost{}
+		err = rows.Scan(
+			&item.Title,
+			&item.Slug)
+
+		if err != nil {
+			return nil, err
+		}
+
+		articles = append(articles, &item)
+	}
+
+	return &articles, nil
+}
+
 func (ar *ArticleRepository) newPaginator(countQuery, query string, page int, params ...interface{}) (*models.ArticlesPaginator, error) {
 	var articleCount int
 

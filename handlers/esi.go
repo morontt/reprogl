@@ -56,3 +56,31 @@ func CommentsFragment(app *container.Application) http.HandlerFunc {
 		}
 	}
 }
+
+func RecentPostsFragment(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		articleId, err := strconv.Atoi(vars["article_id"])
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
+		repo := repositories.ArticleRepository{DB: app.DB}
+		articles, err := repo.GetRecentPostsCollection(articleId)
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
+		templateData := &views.FragmentRecentPostsData{RecentPosts: articles}
+
+		cacheControl(w, container.DefaultEsiTTL)
+		err = views.WriteTemplate(w, "recent-posts.gohtml", templateData)
+		if err != nil {
+			app.ServerError(w, err)
+		}
+	}
+}

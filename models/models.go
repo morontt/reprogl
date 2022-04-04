@@ -68,6 +68,13 @@ type Tag struct {
 
 type TagList []*Tag
 
+type RecentPost struct {
+	Title string
+	Slug  string
+}
+
+type RecentPostList []*RecentPost
+
 func (i *FeaturedImage) HasImage() bool {
 	return i.ImagePath.Valid
 }

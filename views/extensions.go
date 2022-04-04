@@ -82,3 +82,24 @@ func authorGithub() string {
 func authorInstagram() string {
 	return fmt.Sprintf("https://www.instagram.com/%s/", cfg.AuthorInsta)
 }
+
+func renderESI(routeName string, pairs ...string) template.HTML {
+	s := fmt.Sprintf(
+		"<esi:include src=\"%s\" onerror=\"continue\"/>",
+		urlGenerator(routeName, pairs...),
+	)
+
+	return template.HTML(s)
+}
+
+func subString(input string, length int) (str string) {
+	symbols := []rune(input)
+
+	if len(symbols) >= length {
+		str = string(symbols[:length-3]) + "..."
+	} else {
+		str = input
+	}
+
+	return
+}

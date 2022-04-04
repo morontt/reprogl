@@ -237,40 +237,6 @@ var anima = (function ($) {
         });
     },
 
-    // parse feed - for recent posts
-    recentPostsParseFeed = function () {
-        var $recentPostsContainer = $('.js-post-view-recent');
-        if ($recentPostsContainer.length && $recentPostsContainer.is(':visible')) {
-            var itemsAmount = $recentPostsContainer.data('items');
-            var $items;
-            var prepareList = function ($items) {
-                var itemCount = $items.length;
-                var iterator, $singleItem;
-                var $container = $('<ul/>');
-                if (itemCount > itemsAmount) {
-                    iterator = itemsAmount;
-                } else {
-                    iterator = itemCount;
-                }
-                for (var i = 0; i < iterator; i++) {
-                    $singleItem = '<li><a href="' + $items.eq(i).find('link').text() + '">' +
-                                    $items.eq(i).find('title').text() + '</a></li>';
-                    $container.append($singleItem);
-                }
-                $recentPostsContainer.append($container);
-            };
-            if (window.globalRSSDataJQObj && window.globalRSSDataJQObj.length) {
-                $items = window.globalRSSDataJQObj;
-                prepareList($items);
-            } else {
-                // $.get(blogURL + '/rss/',function (data) {
-                //     $items = $(data).find('item');
-                //     prepareList($items);
-                // });
-            }
-        }
-    },
-
     // prepare all existing filters in visible posts on index page
     prepareFilters = function () {
         var $filterTagsContainer = $('.js-filter-tags');
@@ -332,7 +298,6 @@ var anima = (function ($) {
         shuffle();
         // prepareFilters();
         filterTagsSelector();
-        recentPostsParseFeed();
         imageCarousel();
         imageLightbox();
     };

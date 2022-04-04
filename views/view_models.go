@@ -50,6 +50,10 @@ type FragmentCommentsData struct {
 	Comments *models.CommentList
 }
 
+type FragmentRecentPostsData struct {
+	RecentPosts *models.RecentPostList
+}
+
 func defaultMeta() Meta {
 	return Meta{Host: cfg.Host, HeaderText: cfg.HeaderText}
 }

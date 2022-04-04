@@ -47,12 +47,16 @@ func LoadViewSet() error {
 		"comments.gohtml": {
 			"./templates/fragments/comments.gohtml",
 		},
+		"recent-posts.gohtml": {
+			"./templates/fragments/recent-posts.gohtml",
+		},
 	}
 
 	customFunctions := template.FuncMap{
 		"raw":              rawHTML,
 		"path":             urlGenerator,
 		"abs_path":         absUrlGenerator,
+		"render_esi":       renderESI,
 		"tags":             tags,
 		"topicPreview":     topicPreview,
 		"cdn":              cdnBase,
@@ -61,6 +65,7 @@ func LoadViewSet() error {
 		"author_bio":       authorBio,
 		"author_github":    authorGithub,
 		"author_instagram": authorInstagram,
+		"substr":           subString,
 	}
 
 	for key, files := range templatesMap {

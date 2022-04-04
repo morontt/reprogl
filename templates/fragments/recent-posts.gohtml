@@ -1,0 +1,13 @@
+<div class="post-recent-list">
+    <div class="post-recent-list-label">
+        <span>Недавнее</span>
+    </div>
+    <div class="post-recent-list-separator"></div>
+    <ul>
+    {{range .RecentPosts}}
+        <li>
+            <a href="{{path "article" "slug" .Slug}}">{{substr .Title 32}}</a>
+        </li>
+    {{end}}
+    </ul>
+</div>
