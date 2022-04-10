@@ -286,6 +286,9 @@
                             }
                         }
                     }
+                    p {
+                        hyphens: auto;
+                    }
                 }
                 .post-header-content {
                     margin-bottom: rem-calc(60);

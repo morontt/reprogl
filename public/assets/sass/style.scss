@@ -465,6 +465,9 @@ html.no-csstransforms3d {
                 .index-post-image {
                     display: block;
                 }
+                section p {
+                    hyphens: auto;
+                }
                 @media only screen and (min-width: 40.063em) {
                     padding: rem-calc(50);
                 }
