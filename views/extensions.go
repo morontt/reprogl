@@ -5,6 +5,8 @@ import (
 	"github.com/gorilla/mux"
 	"html/template"
 	"strings"
+	"time"
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 )
 
@@ -102,4 +104,25 @@ func subString(input string, length int) (str string) {
 	}
 
 	return
+}
+
+func timeTag(t time.Time) template.HTML {
+	var s string = "<time class=\"post-date\" datetime=\"" +
+		t.Format(time.RFC3339) + "\">" + t.Format("2 Jan 2006, 15:04:05.000") +
+		"</time>"
+
+	return template.HTML(s)
+}
+
+func subresourceIntegrity(file string) string {
+	hash := "sha256-"
+
+	switch file {
+	case "reprogl.min.css":
+		hash += container.SubresourceIntegrityCSS
+	case "reprogl.min.js":
+		hash += container.SubresourceIntegrityJS
+	}
+
+	return hash
 }

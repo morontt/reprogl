@@ -31,10 +31,7 @@
                                 {{end}}
                                 <div class="post-block-grid-content {{if .HasImage}}with-image{{else}}no-image{{end}}">
                                     <header class="post-header">
-                                        <time class="post-date"
-                                              datetime="{{.CreatedAt.Format "2006-01-02T15:04:05-07:00"}}">
-                                            {{- .CreatedAt.Format "2 Jan 2006 15:04:05.000" -}}
-                                        </time>
+                                        {{time_tag .CreatedAt}}
                                         <h2 class="post-title">
                                             <a href="{{path "category-first" "slug" .CategorySlug}}">
                                                 {{- .CategoryName -}}

@@ -12,6 +12,8 @@ import (
 var Version string
 var GitRevision string
 var BuildTime string
+var SubresourceIntegrityJS string
+var SubresourceIntegrityCSS string
 
 type Application struct {
 	ErrorLog *log.Logger

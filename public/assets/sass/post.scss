@@ -47,6 +47,7 @@
         background-position: 50% 50%;
         background-repeat: no-repeat;
         background-color: $color-main-dark;
+        background-image: url('/images/mantis.jpg');
         position: relative;
         @media only screen and (min-width: 64em) {
             width: rem-calc(280);

@@ -1,7 +1,6 @@
 {{define "big-header"}}
 <div class="big-header-container scene-element fade-in-down">
-    <header class="main-header"
-            style="background-image: url('{{ cdn }}/images/1500x500.jpg')">
+    <header class="main-header">
         <div class="main-header-bars">
             <i class="fa fa-fw fa-bars js-open-main-menu"></i>
         </div>
@@ -9,7 +8,7 @@
             <div class="small-12 columns">
                     <div class="logo-bg">
                         <a class="blog-logo" href="/">
-                            <img src="https://casper.ghost.org/v1.0.0/images/ghost-logo.svg" alt="Blog Logo">
+                            <img src="{{ cdn }}/images/logo.svg" alt="Blog Logo">
                         </a>
                     </div>
                 <h1 class="page-title"><span>{{.Meta.Host}}</span></h1>

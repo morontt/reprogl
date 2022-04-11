@@ -66,6 +66,8 @@ func LoadViewSet() error {
 		"author_github":    authorGithub,
 		"author_instagram": authorInstagram,
 		"substr":           subString,
+		"time_tag":         timeTag,
+		"sri":              subresourceIntegrity,
 	}
 
 	for key, files := range templatesMap {

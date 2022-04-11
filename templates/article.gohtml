@@ -9,15 +9,13 @@
 
 <div class="post-view">
     <aside class="post-view-sidebar scene-element fade-in-left"
-            {{if .Article.HasImage}}
+            {{if .Article.HasImage -}}
            style="background-image: url('{{.Article.ImageURL}}');"
-            {{else}}
-           style="background-image: url('{{ cdn }}/images/mantis.jpg');"
-            {{end}}>
+            {{- end}}>
         <div class="post-view-elems">
             <div class="post-view-elems-header">
                 <a class="blog-logo" href="/">
-                    <img src="https://static.ghost.org/v1.0.0/images/ghost-logo.svg" alt="Blog Logo">
+                    <img src="{{ cdn }}/images/logo.svg" alt="Blog Logo">
                 </a>
                 <div class="post-view-menu-bars-mobile js-open-main-menu">
                     <i class="fa fa-bars"></i>
@@ -69,14 +67,9 @@
                 <section class="post-content row">
                     <div class="small-12 columns">
                         <div class="post-header-content">
-                            {{/* #is "post" */}}
-                                <section class="post-meta js-bg-check">
-                                    <time class="post-date"
-                                          datetime="{{.Article.CreatedAt.Format "2006-01-02T15:04:05-07:00"}}">
-                                        {{- .Article.CreatedAt.Format "2 Jan 2006, 15:04:05.000" -}}
-                                    </time>
-                                </section>
-                            {{/* /is */}}
+                            <section class="post-meta js-bg-check">
+                                {{time_tag .Article.CreatedAt}}
+                            </section>
                             <h1 class="post-title">
                                 <a href="{{path "category-first" "slug" .Article.CategorySlug}}">
                                     {{- .Article.CategoryName -}}
