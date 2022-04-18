@@ -183,9 +183,7 @@ var anima = (function ($) {
     filterTagsSelector = function () {
         [].slice.call(document.querySelectorAll('select.cs-select')).forEach(function(el) {
             new SelectFx(el, {
-                onChange: function (val) {
-                    // $('.js-post-block-grid').shuffle('shuffle', val);
-                }
+                newTab: false,
             });
         });
     },

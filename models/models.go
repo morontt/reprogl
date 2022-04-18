@@ -98,6 +98,15 @@ func (cat *Category) HeaderLineText() string {
 	return cat.Name
 }
 
+func (cat *Category) NameWithTreePrefix() string {
+	var prefix string
+	if cat.Depth > 1 {
+		prefix = strings.Repeat("..", cat.Depth-1)
+	}
+
+	return prefix + cat.Name
+}
+
 func (tag *Tag) HeaderLineDescription() string {
 	return "Записи с отметкой"
 }
