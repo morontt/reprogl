@@ -6,6 +6,8 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"regexp"
+	"runtime"
 	"runtime/debug"
 )
 
@@ -14,12 +16,18 @@ var GitRevision string
 var BuildTime string
 var SubresourceIntegrityJS string
 var SubresourceIntegrityCSS string
+var GoVersionNumbers string
 
 type Application struct {
 	ErrorLog *log.Logger
 	InfoLog  *log.Logger
 	DB       *sql.DB
 	Router   *mux.Router
+}
+
+func init() {
+	re := regexp.MustCompile(`^\D*(\d+\.\d+(?:\.\d+)?)`)
+	GoVersionNumbers = re.FindStringSubmatch(runtime.Version())[1]
 }
 
 func (app *Application) NotFound(w http.ResponseWriter) {

@@ -68,6 +68,7 @@ func LoadViewSet() error {
 		"substr":           subString,
 		"time_tag":         timeTag,
 		"sri":              subresourceIntegrity,
+		"go_version":       goVersion,
 	}
 
 	for key, files := range templatesMap {

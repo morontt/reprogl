@@ -126,3 +126,7 @@ func subresourceIntegrity(file string) string {
 
 	return hash
 }
+
+func goVersion() string {
+	return container.GoVersionNumbers
+}
