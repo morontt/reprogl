@@ -4,7 +4,6 @@ import (
 	"crypto/md5"
 	"database/sql"
 	"fmt"
-	"io"
 	"strings"
 	"time"
 )
@@ -37,7 +36,7 @@ func (c *Comment) Avatar() (src string) {
 
 	if c.AuthorID.Valid {
 		hash := md5.New()
-		_, _ = io.WriteString(hash, fmt.Sprintf("avatar%d", c.AuthorID.Int32))
+		hash.Write([]byte(fmt.Sprintf("avatar%d", c.AuthorID.Int32)))
 		hashString := fmt.Sprintf("%X", hash.Sum(nil))
 
 		src = cdnBaseURL + "/images/avatar/" + hashString[2:8] + ".png"
@@ -80,7 +79,7 @@ func (ctt *Commentator) gravatarHash() string {
 
 func md5sum(s string) []byte {
 	hash := md5.New()
-	_, _ = io.WriteString(hash, strings.ToLower(strings.TrimSpace(s)))
+	hash.Write([]byte(strings.ToLower(strings.TrimSpace(s))))
 
 	return hash.Sum(nil)
 }

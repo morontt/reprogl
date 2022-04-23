@@ -14,8 +14,6 @@ import (
 var Version string
 var GitRevision string
 var BuildTime string
-var SubresourceIntegrityJS string
-var SubresourceIntegrityCSS string
 var GoVersionNumbers string
 
 type Application struct {

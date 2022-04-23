@@ -4,7 +4,6 @@ import (
 	"crypto/sha1"
 	"encoding/xml"
 	"fmt"
-	"io"
 	"time"
 )
 
@@ -92,7 +91,7 @@ func (f Feed[T]) AsXML() ([]byte, error) {
 
 func byStringGIUD(s string) string {
 	hash := sha1.New()
-	_, _ = io.WriteString(hash, s)
+	hash.Write([]byte(s))
 	sum := hash.Sum(nil)
 
 	return fmt.Sprintf("%x-%x-%x-%x-%x", sum[0:4], sum[4:6], sum[6:8], sum[8:10], sum[10:16])

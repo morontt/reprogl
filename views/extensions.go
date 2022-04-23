@@ -61,10 +61,6 @@ func topicPreview(s string) template.HTML {
 	return template.HTML(s)
 }
 
-func cdnBase() string {
-	return cfg.CDNBaseURL
-}
-
 func nl2br(s string) string {
 	return strings.Replace(s, "\n", "<br/>", -1)
 }
@@ -112,19 +108,6 @@ func timeTag(t time.Time) template.HTML {
 		"</time>"
 
 	return template.HTML(s)
-}
-
-func subresourceIntegrity(file string) string {
-	hash := "sha256-"
-
-	switch file {
-	case "reprogl.min.css":
-		hash += container.SubresourceIntegrityCSS
-	case "reprogl.min.js":
-		hash += container.SubresourceIntegrityJS
-	}
-
-	return hash
 }
 
 func goVersion() string {
