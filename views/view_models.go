@@ -1,6 +1,7 @@
 package views
 
 import (
+	"time"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 )
@@ -40,6 +41,12 @@ type IndexPageData struct {
 type InfoPageData struct {
 	Meta
 	HeaderInfo HeaderLineInfo
+}
+
+type StatisticsPageData struct {
+	Meta
+	Now          time.Time
+	Commentators *models.CommentatorList
 }
 
 type FragmentCategoriesData struct {
@@ -96,6 +103,15 @@ func NewInfoPageData() *InfoPageData {
 	meta := defaultMeta()
 	meta.IsAuthorPage = true
 	meta.MetaDescription = "Персональный блог Харченко Александра. Общая информация."
+	meta.AppendTitle("Информация")
 
 	return &InfoPageData{Meta: meta}
+}
+
+func NewStatisticsPageData() *StatisticsPageData {
+	meta := defaultMeta()
+	meta.MetaDescription = "Статистика посещений и комментариев."
+	meta.AppendTitle("Статистика")
+
+	return &StatisticsPageData{Meta: meta, Now: time.Now()}
 }

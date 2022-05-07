@@ -113,3 +113,25 @@ func timeTag(t time.Time) template.HTML {
 func goVersion() string {
 	return container.GoVersionNumbers
 }
+
+func commentsCountString(cnt int) (str string) {
+	modulo := cnt % 10
+	if modulo == 1 {
+		str = fmt.Sprintf("%d комментарий", cnt)
+	}
+
+	if modulo > 1 && modulo < 5 {
+		str = fmt.Sprintf("%d комментария", cnt)
+	}
+
+	if modulo > 4 || modulo == 0 {
+		str = fmt.Sprintf("%d комментариев", cnt)
+	}
+
+	modulo100 := cnt % 100
+	if modulo100 >= 11 && modulo100 <= 14 {
+		str = fmt.Sprintf("%d комментариев", cnt)
+	}
+
+	return
+}

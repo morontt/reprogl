@@ -78,3 +78,56 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 
 	return &comments, nil
 }
+
+func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorList, error) {
+	query := `
+		SELECT
+			src.cnt,
+			COALESCE(t.name, u.username) AS username,
+			COALESCE(t.mail, u.mail) AS email,
+			t.website,
+			src.commentator_id,
+			src.user_id
+		FROM (
+			SELECT commentator_id,
+				c.user_id,
+				COUNT(c.id)         AS cnt,
+				MAX(c.time_created) AS last_time
+			FROM comments AS c
+			WHERE
+				NOT (c.deleted = 1 AND c.tree_right_key - c.tree_left_key = 1)
+				AND (c.user_id IS NULL OR c.user_id <> 1)
+			GROUP BY commentator_id, user_id) AS src
+		LEFT JOIN commentators AS t ON src.commentator_id = t.id
+		LEFT JOIN users AS u ON src.user_id = u.id
+		ORDER BY src.cnt DESC, src.last_time DESC
+		LIMIT 8`
+
+	rows, err := cr.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	commentators := models.CommentatorList{}
+
+	for rows.Next() {
+		commentator := &models.Commentator{}
+		err = rows.Scan(
+			&commentator.CommentsCount,
+			&commentator.Name,
+			&commentator.Email,
+			&commentator.Website,
+			&commentator.CommentatorID,
+			&commentator.AuthorID)
+
+		if err != nil {
+			return nil, err
+		}
+
+		commentators = append(commentators, commentator)
+	}
+
+	return &commentators, nil
+}

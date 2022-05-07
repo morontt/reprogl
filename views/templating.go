@@ -33,6 +33,12 @@ func LoadViewSet() error {
 			"./templates/partials/menu.gohtml",
 			"./templates/layout/base.gohtml",
 		},
+		"statistics.gohtml": {
+			"./templates/statistics.gohtml",
+			"./templates/partials/author-info.gohtml",
+			"./templates/partials/menu.gohtml",
+			"./templates/layout/base.gohtml",
+		},
 		"index.gohtml": {
 			"./templates/index.gohtml",
 			"./templates/partials/menu.gohtml",
@@ -69,6 +75,7 @@ func LoadViewSet() error {
 		"time_tag":         timeTag,
 		"sri":              subresourceIntegrity,
 		"go_version":       goVersion,
+		"cnt_comments":     commentsCountString,
 	}
 
 	for key, files := range templatesMap {

@@ -6,6 +6,11 @@ section.comments {
     margin: 0 rem-calc(15) 0;
     border-radius: rem-calc(5);
 
+    &.statistic {
+        margin: 0;
+        padding-top: rem-calc(20);
+    }
+
     h3 {
         text-transform: uppercase;
         font-size: rem-calc(30);

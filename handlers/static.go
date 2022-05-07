@@ -5,15 +5,39 @@ import (
 	"fmt"
 	"net/http"
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/views"
 )
 
+const staticsTTL = 3600 * 8
+
 func InfoAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		templateData := views.NewInfoPageData()
-		templateData.AppendTitle("Информация")
+		err := views.WriteTemplate(w, "info.gohtml", views.NewInfoPageData())
+		if err != nil {
+			app.ServerError(w, err)
 
-		err := views.WriteTemplate(w, "info.gohtml", templateData)
+			return
+		}
+	}
+}
+
+func StatisticsAction(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		repo := repositories.CommentRepository{DB: app.DB}
+		commentators, err := repo.GetMostActiveCommentators()
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
+		templateData := views.NewStatisticsPageData()
+		templateData.Commentators = commentators
+
+		doESI(w)
+		cacheControl(w, staticsTTL)
+		err = views.WriteTemplate(w, "statistics.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 
