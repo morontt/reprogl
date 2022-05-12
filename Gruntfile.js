@@ -67,6 +67,7 @@ module.exports = function (grunt) {
                     'public/assets/js/vendor/reading-time.js',
                     'public/assets/js/vendor/imagesloaded.js',
                     'public/assets/js/vendor/nice-scroll.js',
+                    'public/assets/js/vendor/shuffle.js',
                     'public/assets/js/vendor/magnific-popup.js',
                     'public/assets/js/vendor/select-fx.js',
                     'public/assets/js/vendor/owl.carousel.js',
