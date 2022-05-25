@@ -109,11 +109,6 @@ func CategoryAction(app *container.Application) http.HandlerFunc {
 		}
 
 		templateData := views.NewCategoryPageData(articlesPaginator, category)
-		browserTitle := fmt.Sprintf("Категория \"%s\"", category.Name)
-		if page > 1 {
-			browserTitle += fmt.Sprintf(". Страница %d", page)
-		}
-		templateData.AppendTitle(browserTitle)
 
 		doESI(w)
 		err = views.WriteTemplate(w, "index.gohtml", templateData)
@@ -173,11 +168,6 @@ func TagAction(app *container.Application) http.HandlerFunc {
 		}
 
 		templateData := views.NewCategoryPageData(articlesPaginator, tag)
-		browserTitle := fmt.Sprintf("Тег \"%s\"", tag.Name)
-		if page > 1 {
-			browserTitle += fmt.Sprintf(". Страница %d", page)
-		}
-		templateData.AppendTitle(browserTitle)
 
 		doESI(w)
 		err = views.WriteTemplate(w, "index.gohtml", templateData)
