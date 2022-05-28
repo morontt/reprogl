@@ -15,12 +15,17 @@ func init() {
 }
 
 type Meta struct {
-	Host            string
-	HeaderText      string
-	MetaDescription string
-	IsIndexPage     bool
-	IsAuthorPage    bool
-	titleParts      []string
+	Host         string
+	HeaderText   string
+	MetaParts    []MetaName
+	IsIndexPage  bool
+	IsAuthorPage bool
+	titleParts   []string
+}
+
+type MetaName struct {
+	Name    string
+	Content string
 }
 
 type HeaderLineInfo interface {
@@ -71,6 +76,10 @@ func (m *Meta) AppendTitle(str string) {
 	m.titleParts = append(m.titleParts, str)
 }
 
+func (m *Meta) AppendName(name, content string) {
+	m.MetaParts = append(m.MetaParts, MetaName{Name: name, Content: content})
+}
+
 func (m *Meta) BrowserTitle() string {
 	var title string
 	if len(m.titleParts) > 0 {
@@ -86,7 +95,7 @@ func (m *Meta) BrowserTitle() string {
 func NewArticlePageData(article *models.Article, commentKey string) *ArticlePageData {
 	meta := defaultMeta()
 	if article.Description.Valid {
-		meta.MetaDescription = article.Description.String
+		meta.AppendName("description", article.Description.String)
 	}
 
 	return &ArticlePageData{Article: article, Meta: meta, CommentKey: commentKey}
@@ -100,24 +109,26 @@ func NewIndexPageData(paginator *models.ArticlesPaginator) *IndexPageData {
 }
 
 func NewCategoryPageData(paginator *models.ArticlesPaginator, headerInfo HeaderLineInfo) *IndexPageData {
-	var browserTitle string
+	var browserTitle, metaDescription string
 	meta := defaultMeta()
 	meta.IsIndexPage = true
 
 	switch reflect.TypeOf(headerInfo).String() {
 	case "*models.Category":
 		browserTitle = fmt.Sprintf("Категория \"%s\"", headerInfo.HeaderLineText())
-		meta.MetaDescription = fmt.Sprintf("Записи из категории \"%s\"", headerInfo.HeaderLineText())
+		metaDescription = fmt.Sprintf("Записи из категории \"%s\"", headerInfo.HeaderLineText())
 	case "*models.Tag":
 		browserTitle = fmt.Sprintf("Тег \"%s\"", headerInfo.HeaderLineText())
-		meta.MetaDescription = fmt.Sprintf("Записи по тегу \"%s\"", headerInfo.HeaderLineText())
+		metaDescription = fmt.Sprintf("Записи по тегу \"%s\"", headerInfo.HeaderLineText())
 	}
 
 	if paginator.CurrentPage > 1 {
 		browserTitle += fmt.Sprintf(". Страница %d", paginator.CurrentPage)
-		meta.MetaDescription += fmt.Sprintf(". Страница %d", paginator.CurrentPage)
+		metaDescription += fmt.Sprintf(". Страница %d", paginator.CurrentPage)
 	}
 	meta.AppendTitle(browserTitle)
+	meta.AppendName("description", metaDescription)
+	meta.AppendName("robots", "noindex, follow")
 
 	return &IndexPageData{Paginator: paginator, HeaderInfo: headerInfo, Meta: meta}
 }
@@ -125,7 +136,7 @@ func NewCategoryPageData(paginator *models.ArticlesPaginator, headerInfo HeaderL
 func NewInfoPageData() *InfoPageData {
 	meta := defaultMeta()
 	meta.IsAuthorPage = true
-	meta.MetaDescription = "Персональный блог Харченко Александра. Общая информация."
+	meta.AppendName("description", "Персональный блог Харченко Александра. Общая информация.")
 	meta.AppendTitle("Информация")
 
 	return &InfoPageData{Meta: meta}
@@ -133,7 +144,7 @@ func NewInfoPageData() *InfoPageData {
 
 func NewStatisticsPageData() *StatisticsPageData {
 	meta := defaultMeta()
-	meta.MetaDescription = "Статистика посещений и комментариев."
+	meta.AppendName("description", "Статистика посещений и комментариев.")
 	meta.AppendTitle("Статистика")
 
 	return &StatisticsPageData{Meta: meta, Now: time.Now()}
