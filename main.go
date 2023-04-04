@@ -27,6 +27,8 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
+	defer db.Close()
+
 	app := &container.Application{
 		ErrorLog: errorLog,
 		InfoLog:  infoLog,

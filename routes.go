@@ -22,6 +22,8 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/sitemap.xml", handlers.SitemapAction(app))
 	siteMux.HandleFunc("/feed/atom", handlers.FeedAction(app, models.AtomFeedType)).Name("feed-atom")
 	siteMux.HandleFunc("/feed/rss", handlers.FeedAction(app, models.RssFeedType)).Name("feed-rss")
+	siteMux.HandleFunc("/add-comment", handlers.AddCommentDummy).Methods("POST").Name("add-comment-dummy")
+	siteMux.HandleFunc("/add-ajax-comment", handlers.AddComment(app)).Methods("POST").Name("add-comment")
 
 	fragmentsMux := siteMux.PathPrefix("/_fragment").Subrouter()
 	fragmentsMux.HandleFunc("/categories", handlers.CategoriesFragment(app)).Name("fragment-categories")

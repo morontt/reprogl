@@ -53,3 +53,13 @@ func PageAction(app *container.Application) http.HandlerFunc {
 		}
 	}
 }
+
+func AddCommentDummy(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
+func AddComment(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+	}
+}
