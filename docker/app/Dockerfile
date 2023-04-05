@@ -1,10 +1,10 @@
-FROM alpine:3.9
+FROM debian:bookworm-slim
+
+ENV TZ "Europe/Moscow"
 
 VOLUME ["/var/www/app"]
 
-RUN apk add --no-cache libc6-compat tzdata \
-    && cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime \
-    && echo "Europe/Moscow" >  /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR "/var/www/app"
 

@@ -8,4 +8,4 @@ LDFLAGS="$LDFLAGS -X 'xelbot.com/reprogl/container.Version=$BUILD_VERSION'"
 LDFLAGS="$LDFLAGS -X 'xelbot.com/reprogl/container.GitRevision=$BUILD_COMMIT'"
 
 go fmt ./...
-go build -v -ldflags "$LDFLAGS -linkmode 'external' -extldflags '-static'" -tags dev
+go build -v -ldflags "$LDFLAGS" -tags dev
