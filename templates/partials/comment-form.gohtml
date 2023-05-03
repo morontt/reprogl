@@ -1,0 +1,63 @@
+{{define "comment-form"}}
+    <div id="comment_add">
+        <form id="comment_form" class="ym-form ym-columnar" method="POST" action="/add-comment">
+            <div class="ym-fbox-text">
+                <div class="row"><label for="name" class="required">Имя:</label>
+                    <div class="element">
+                        <input type="text"
+                               name="name"
+                               id="name"
+                               value=""
+                               placeholder="nickname"
+                               required="required">
+                    </div>
+                </div>
+            </div>
+            <div class="ym-fbox-text">
+                <div class="row"><label for="mail" class="optional">E-mail:</label>
+                    <div class="element">
+                        <input type="email"
+                               name="mail"
+                               id="mail"
+                               value=""
+                               placeholder="mail@example.org">
+                    </div>
+                </div>
+            </div>
+            <div class="ym-fbox-text">
+                <div class="row"><label for="website" class="optional">Website:</label>
+                    <div class="element">
+                        <input type="url"
+                               name="website"
+                               id="website"
+                               value=""
+                               placeholder="http://example.org">
+                    </div>
+                </div>
+            </div>
+            <div class="ym-fbox-text">
+                <div class="row"><label for="comment_text" class="required">Текст комментария:</label>
+                    <div class="element">
+                        <textarea name="comment_text"
+                                  id="comment_text"
+                                  rows="10"
+                                  required="required"></textarea></div>
+                </div>
+            </div>
+            <div style="display: none;">
+                <input type="hidden" name="topicId" value="131" id="topicId">
+                <input type="hidden" name="parentId" value="0" id="parentId">
+            </div>
+            <div class="ym-fbox-button">
+                <button type="submit"
+                        class="ym-button ym-add"
+                        id="submit"
+                        name="submit">Добавить комментарий</button>
+            </div>
+        </form>
+        <div class="form_note">
+            Адрес электронной почты нигде не отображается, необходим только для обратной связи.
+        </div>
+        <div class="ajax-loader"></div>
+    </div>
+{{end}}

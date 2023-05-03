@@ -109,6 +109,7 @@
                                 <div id="comments_thread">
                                     {{render_esi "fragment-comments" "article_id" .Article.IdString "last_time" .CommentKey}}
                                 </div>
+                                {{template "comment-form" .}}
                                 <noscript>Please enable JavaScript to send the comments.</noscript>
                             </div>
                         </div>
