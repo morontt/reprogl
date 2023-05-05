@@ -29,7 +29,7 @@ func init() {
 }
 
 func (app *Application) NotFound(w http.ResponseWriter) {
-	app.clientError(w, http.StatusNotFound)
+	app.ClientError(w, http.StatusNotFound)
 }
 
 func (app *Application) ServerError(w http.ResponseWriter, err error) {
@@ -39,6 +39,6 @@ func (app *Application) ServerError(w http.ResponseWriter, err error) {
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 }
 
-func (app *Application) clientError(w http.ResponseWriter, status int) {
+func (app *Application) ClientError(w http.ResponseWriter, status int) {
 	http.Error(w, http.StatusText(status), status)
 }

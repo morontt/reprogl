@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"errors"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
@@ -51,15 +52,5 @@ func PageAction(app *container.Application) http.HandlerFunc {
 		if err != nil {
 			app.ServerError(w, err)
 		}
-	}
-}
-
-func AddCommentDummy(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "/", http.StatusFound)
-}
-
-func AddComment(app *container.Application) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-
 	}
 }

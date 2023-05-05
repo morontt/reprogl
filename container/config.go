@@ -10,17 +10,20 @@ import (
 // TODO Auto read config by parameter type and name
 
 type AppConfig struct {
-	CDNBaseURL   string
-	DevMode      bool
-	DatabaseDSN  string
-	HeaderText   string
-	Host         string
-	Port         string
-	Author       string
-	AuthorBio    string
-	AuthorGithub string
-	AuthorInsta  string
-	AdminEmail   string
+	CDNBaseURL        string
+	DevMode           bool
+	DatabaseDSN       string
+	HeaderText        string
+	Host              string
+	Port              string
+	Author            string
+	AuthorBio         string
+	AuthorGithub      string
+	AuthorInsta       string
+	AdminEmail        string
+	BackendApiUrl     string
+	BackendApiUser    string
+	BackendApiWsseKey string
 }
 
 var cnf AppConfig
@@ -31,71 +34,25 @@ func init() {
 		handleError(err)
 	}
 
-	if _, ok := ini.GetValue("PORT"); ok {
-		cnf.Port = ini.String("PORT")
-	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"PORT\""))
-	}
-
 	if _, ok := ini.GetValue("DEV_MODE"); ok {
 		cnf.DevMode = ini.Bool("DEV_MODE")
 	} else {
 		cnf.DevMode = false
 	}
 
-	if _, ok := ini.GetValue("DB"); ok {
-		cnf.DatabaseDSN = ini.String("DB")
-	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"DB\""))
-	}
-
-	if _, ok := ini.GetValue("HOST"); ok {
-		cnf.Host = ini.String("HOST")
-	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"HOST\""))
-	}
-
-	if _, ok := ini.GetValue("HEADER_TEXT"); ok {
-		cnf.HeaderText = ini.String("HEADER_TEXT")
-	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"HEADER_TEXT\""))
-	}
-
-	if _, ok := ini.GetValue("CDN_BASE_URL"); ok {
-		cnf.CDNBaseURL = ini.String("CDN_BASE_URL")
-	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"CDN_BASE_URL\""))
-	}
-
-	if _, ok := ini.GetValue("AUTHOR"); ok {
-		cnf.Author = ini.String("AUTHOR")
-	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"AUTHOR\""))
-	}
-
-	if _, ok := ini.GetValue("ADMIN_EMAIL"); ok {
-		cnf.AdminEmail = ini.String("ADMIN_EMAIL")
-	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"ADMIN_EMAIL\""))
-	}
-
-	if _, ok := ini.GetValue("AUTHOR_BIO"); ok {
-		cnf.AuthorBio = ini.String("AUTHOR_BIO")
-	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"AUTHOR_BIO\""))
-	}
-
-	if _, ok := ini.GetValue("AUTHOR_GITHUB"); ok {
-		cnf.AuthorGithub = ini.String("AUTHOR_GITHUB")
-	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"AUTHOR_GITHUB\""))
-	}
-
-	if _, ok := ini.GetValue("AUTHOR_INSTAGRAM"); ok {
-		cnf.AuthorInsta = ini.String("AUTHOR_INSTAGRAM")
-	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"AUTHOR_INSTAGRAM\""))
-	}
+	cnf.Port = configStringValue("PORT")
+	cnf.DatabaseDSN = configStringValue("DB")
+	cnf.Host = configStringValue("HOST")
+	cnf.HeaderText = configStringValue("HEADER_TEXT")
+	cnf.CDNBaseURL = configStringValue("CDN_BASE_URL")
+	cnf.Author = configStringValue("AUTHOR")
+	cnf.AdminEmail = configStringValue("ADMIN_EMAIL")
+	cnf.AuthorBio = configStringValue("AUTHOR_BIO")
+	cnf.AuthorGithub = configStringValue("AUTHOR_GITHUB")
+	cnf.AuthorInsta = configStringValue("AUTHOR_INSTAGRAM")
+	cnf.BackendApiUrl = configStringValue("BACKEND_API_URL")
+	cnf.BackendApiUser = configStringValue("BACKEND_API_USER")
+	cnf.BackendApiWsseKey = configStringValue("BACKEND_API_WSSE_KEY")
 }
 
 func GetConfig() AppConfig {
@@ -109,4 +66,14 @@ func IsDevMode() bool {
 func handleError(err error) {
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 	errorLog.Fatal(err)
+}
+
+func configStringValue(paramName string) (value string) {
+	if _, ok := ini.GetValue(paramName); ok {
+		value = ini.String(paramName)
+	} else {
+		handleError(errors.New("app.ini: Undefined parameter \"" + paramName + "\""))
+	}
+
+	return
 }
