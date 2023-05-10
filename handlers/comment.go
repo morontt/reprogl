@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 	"strconv"
+	"xelbot.com/reprogl/backend"
 	"xelbot.com/reprogl/container"
-	"xelbot.com/reprogl/security"
 )
 
 func AddCommentDummy(w http.ResponseWriter, r *http.Request) {
@@ -26,19 +26,27 @@ func AddComment(app *container.Application) http.HandlerFunc {
 		email := r.PostForm.Get("mail")
 		website := r.PostForm.Get("website")
 
-		_, err = strconv.Atoi(r.PostForm.Get("topicId"))
+		topicId, err := strconv.Atoi(r.PostForm.Get("topicId"))
 		if err != nil {
 			app.ClientError(w, http.StatusBadRequest)
 			return
 		}
 
-		_, err = strconv.Atoi(r.PostForm.Get("parentId"))
+		parentId, err := strconv.Atoi(r.PostForm.Get("parentId"))
 		if err != nil {
 			app.ClientError(w, http.StatusBadRequest)
 			return
 		}
 
-		_, wsse := security.GetWSSEHeader()
+		commentData := backend.CommentDTO{
+			Name:     nickname,
+			Email:    email,
+			Website:  website,
+			Text:     commentText,
+			TopicID:  topicId,
+			ParentID: parentId,
+		}
+		err = backend.SendComment(commentData)
 
 		w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
 		w.WriteHeader(http.StatusCreated)
@@ -46,6 +54,9 @@ func AddComment(app *container.Application) http.HandlerFunc {
 		w.Write([]byte("Name: " + nickname + "\n"))
 		w.Write([]byte("Email: " + email + "\n"))
 		w.Write([]byte("Website: " + website + "\n"))
-		w.Write([]byte(wsse + "\n"))
+
+		if err != nil {
+			w.Write([]byte("Error: " + err.Error() + "\n"))
+		}
 	}
 }
