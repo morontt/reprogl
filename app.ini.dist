@@ -1,5 +1,4 @@
 PORT=8080
-DEV_MODE=true
 DB=mttblog:docker@tcp(hedgehog)/mttblog?parseTime=true&loc=Europe%2FMoscow
 HOST=morontt.info
 HEADER_TEXT=Всякие разности

@@ -11,7 +11,6 @@ import (
 
 type AppConfig struct {
 	CDNBaseURL   string
-	DevMode      bool
 	DatabaseDSN  string
 	HeaderText   string
 	Host         string
@@ -35,12 +34,6 @@ func init() {
 		cnf.Port = ini.String("PORT")
 	} else {
 		handleError(errors.New("app.ini: Undefined parameter \"PORT\""))
-	}
-
-	if _, ok := ini.GetValue("DEV_MODE"); ok {
-		cnf.DevMode = ini.Bool("DEV_MODE")
-	} else {
-		cnf.DevMode = false
 	}
 
 	if _, ok := ini.GetValue("DB"); ok {
@@ -103,7 +96,17 @@ func GetConfig() AppConfig {
 }
 
 func IsDevMode() bool {
-	return cnf.DevMode
+	return devMode
+}
+
+func GetBuildTag() (tag string) {
+	if devMode {
+		tag = "dev"
+	} else {
+		tag = "prod"
+	}
+
+	return
 }
 
 func handleError(err error) {

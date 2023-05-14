@@ -4,8 +4,5 @@ package container
 
 const (
 	DefaultEsiTTL = 30
+	devMode       = true
 )
-
-func GetBuildTag() string {
-	return "dev"
-}
