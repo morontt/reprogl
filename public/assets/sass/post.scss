@@ -187,6 +187,10 @@
                             color: darken($color-main-dark, 100%);
                             text-decoration: none;
                         }
+                        &.icon-telegram svg {
+                            width: 1em;
+                            padding-top: 0.45em;
+                        }
                     }
                     display: none;
                     @media only screen and (min-width: 64em) {

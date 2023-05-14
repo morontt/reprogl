@@ -854,6 +854,10 @@ html.no-csstransforms3d {
             &:hover, &:focus, &:active {
                 color: $color-main-dark;
             }
+            &.icon-telegram svg {
+                width: 1em;
+                padding-top: 0.5em;
+            }
         }
     }
     .footer-poweredby {

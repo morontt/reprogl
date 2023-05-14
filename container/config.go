@@ -10,16 +10,16 @@ import (
 // TODO Auto read config by parameter type and name
 
 type AppConfig struct {
-	CDNBaseURL   string
-	DatabaseDSN  string
-	HeaderText   string
-	Host         string
-	Port         string
-	Author       string
-	AuthorBio    string
-	AuthorGithub string
-	AuthorInsta  string
-	AdminEmail   string
+	CDNBaseURL     string
+	DatabaseDSN    string
+	HeaderText     string
+	Host           string
+	Port           string
+	Author         string
+	AuthorBio      string
+	AuthorGithub   string
+	AuthorTelegram string
+	AdminEmail     string
 }
 
 var cnf AppConfig
@@ -84,10 +84,10 @@ func init() {
 		handleError(errors.New("app.ini: Undefined parameter \"AUTHOR_GITHUB\""))
 	}
 
-	if _, ok := ini.GetValue("AUTHOR_INSTAGRAM"); ok {
-		cnf.AuthorInsta = ini.String("AUTHOR_INSTAGRAM")
+	if _, ok := ini.GetValue("AUTHOR_TELEGRAM"); ok {
+		cnf.AuthorTelegram = ini.String("AUTHOR_TELEGRAM")
 	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"AUTHOR_INSTAGRAM\""))
+		handleError(errors.New("app.ini: Undefined parameter \"AUTHOR_TELEGRAM\""))
 	}
 }
 

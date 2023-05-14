@@ -77,8 +77,8 @@ func authorGithub() string {
 	return fmt.Sprintf("https://github.com/%s", cfg.AuthorGithub)
 }
 
-func authorInstagram() string {
-	return fmt.Sprintf("https://www.instagram.com/%s/", cfg.AuthorInsta)
+func authorTelegram() string {
+	return fmt.Sprintf("https://t.me/%s/", cfg.AuthorTelegram)
 }
 
 func renderESI(routeName string, pairs ...string) template.HTML {
