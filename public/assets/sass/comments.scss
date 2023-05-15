@@ -103,6 +103,35 @@ section.comments {
 
     #comment_add {
         position: relative;
+        border: 2px $color-main-light solid;
+        border-radius: rem-calc(5);
+        background: darken($color-main-light, 8%);
+        padding: 1em 0 0.5em;
+        margin-bottom: 1em;
+
+        form {
+            .row:last-child {
+                border-bottom: 2px $color-main-light dashed;
+            }
+
+            button {
+                background: $color-main-contrast;
+                font-weight: 400;
+                border-radius: rem-calc(3);
+
+                &:hover {
+                    color: $color-main-light;
+                    background: lighten($color-main-contrast, 5%);
+                }
+            }
+        }
+
+        .form_note {
+            color: lighten($color-main-dark, 35%);
+            font-size: 75%;
+            text-align: center;
+            padding-top: 0.5em;
+        }
     }
 }
 

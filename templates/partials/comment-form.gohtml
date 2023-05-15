@@ -3,62 +3,69 @@
         <form id="comment_form" class="ym-form ym-columnar" method="POST"
               data-url="{{path "add-comment"}}"
               action="{{path "add-comment-dummy"}}">
-            <div class="ym-fbox-text">
-                <div class="row"><label for="name" class="required">Имя:</label>
-                    <div class="element">
-                        <input type="text"
-                               name="name"
-                               id="name"
-                               value=""
-                               placeholder="nickname"
-                               required="required">
-                    </div>
+            <input type="hidden" name="topicId" value="{{.Article.ID}}" id="topicId">
+            <input type="hidden" name="parentId" value="0" id="parentId">
+            <div class="row">
+                <div class="large-3 columns">
+                    <label for="name" class="right inline">Имя:</label>
+                </div>
+                <div class="large-9 columns">
+                    <input type="text"
+                           name="name"
+                           id="name"
+                           value=""
+                           placeholder="nickname"
+                           required="required">
                 </div>
             </div>
-            <div class="ym-fbox-text">
-                <div class="row"><label for="mail" class="optional">E-mail:</label>
-                    <div class="element">
-                        <input type="email"
-                               name="mail"
-                               id="mail"
-                               value=""
-                               placeholder="mail@example.org">
-                    </div>
+            <div class="row">
+                <div class="large-3 columns">
+                    <label for="mail" class="right inline">E-mail:</label>
+                </div>
+                <div class="large-9 columns">
+                    <input type="email"
+                           name="mail"
+                           id="mail"
+                           value=""
+                           placeholder="mail@example.org">
                 </div>
             </div>
-            <div class="ym-fbox-text">
-                <div class="row"><label for="website" class="optional">Website:</label>
-                    <div class="element">
-                        <input type="url"
-                               name="website"
-                               id="website"
-                               value=""
-                               placeholder="http://example.org">
-                    </div>
+            <div class="row">
+                <div class="large-3 columns">
+                    <label for="website" class="right inline">Website:</label>
+                </div>
+                <div class="large-9 columns">
+                    <input type="url"
+                           name="website"
+                           id="website"
+                           value=""
+                           placeholder="http://example.org">
                 </div>
             </div>
-            <div class="ym-fbox-text">
-                <div class="row"><label for="comment_text" class="required">Текст комментария:</label>
-                    <div class="element">
-                        <textarea name="comment_text"
-                                  id="comment_text"
-                                  rows="10"
-                                  required="required"></textarea></div>
+            <div class="row">
+                <div class="large-3 columns">
+                    <label for="comment_text" class="right inline">Текст комментария:</label>
+                </div>
+                <div class="large-9 columns">
+                    <textarea name="comment_text"
+                              id="comment_text"
+                              rows="10"
+                              required="required"></textarea>
                 </div>
             </div>
-            <div style="display: none;">
-                <input type="hidden" name="topicId" value="{{.Article.ID}}" id="topicId">
-                <input type="hidden" name="parentId" value="0" id="parentId">
-            </div>
-            <div class="ym-fbox-button">
-                <button type="submit"
-                        class="ym-button ym-add"
-                        id="submit"
-                        name="submit">Добавить комментарий</button>
+            <div class="row">
+                <div class="large-offset-3 large-9 columns">
+                    <button type="submit"
+                            class="ym-button ym-add"
+                            id="submit"
+                            name="submit">Добавить комментарий</button>
+                </div>
             </div>
         </form>
-        <div class="form_note">
-            Адрес электронной почты нигде не отображается, необходим только для обратной связи.
+        <div class="form_note row">
+            <div class="columns">
+                Адрес электронной почты нигде не отображается, необходим только для обратной связи.
+            </div>
         </div>
         <div class="ajax-loader"></div>
     </div>
