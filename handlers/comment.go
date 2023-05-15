@@ -14,8 +14,8 @@ func AddCommentDummy(w http.ResponseWriter, r *http.Request) {
 
 func AddComment(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		//err := r.ParseForm()
-		err := r.ParseMultipartForm(512 * 1024)
+		err := r.ParseForm()
+		//err := r.ParseMultipartForm(512 * 1024)
 		if err != nil {
 			app.ClientError(w, http.StatusBadRequest)
 			return
@@ -39,12 +39,16 @@ func AddComment(app *container.Application) http.HandlerFunc {
 		}
 
 		commentData := backend.CommentDTO{
-			Name:     nickname,
-			Email:    email,
-			Website:  website,
-			Text:     commentText,
-			TopicID:  topicId,
-			ParentID: parentId,
+			Commentator: backend.CommentatorDTO{
+				Name:    nickname,
+				Email:   email,
+				Website: website,
+			},
+			Text:      commentText,
+			TopicID:   topicId,
+			ParentID:  parentId,
+			UserAgent: r.UserAgent(),
+			IP:        container.RealRemoteAddress(r),
 		}
 		err = backend.SendComment(commentData)
 

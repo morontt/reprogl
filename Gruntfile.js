@@ -80,6 +80,7 @@ module.exports = function (grunt) {
                     'public/assets/js/vendor/syntaxhighlighter/shBrushBash.js',
                     'public/assets/js/vendor/syntaxhighlighter/shBrushPlain.js',
                     'public/assets/js/anima.js',
+                    'public/assets/js/comments.js',
                 ],
                 dest: 'public/assets/js/<%= pkg.name %>.js'
             }

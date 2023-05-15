@@ -1,6 +1,8 @@
 {{define "comment-form"}}
     <div id="comment_add">
-        <form id="comment_form" class="ym-form ym-columnar" method="POST" action="/add-comment">
+        <form id="comment_form" class="ym-form ym-columnar" method="POST"
+              data-url="{{path "add-comment"}}"
+              action="{{path "add-comment-dummy"}}">
             <div class="ym-fbox-text">
                 <div class="row"><label for="name" class="required">Имя:</label>
                     <div class="element">
@@ -45,7 +47,7 @@
                 </div>
             </div>
             <div style="display: none;">
-                <input type="hidden" name="topicId" value="131" id="topicId">
+                <input type="hidden" name="topicId" value="{{.Article.ID}}" id="topicId">
                 <input type="hidden" name="parentId" value="0" id="parentId">
             </div>
             <div class="ym-fbox-button">

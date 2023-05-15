@@ -101,16 +101,19 @@
 
                     {{/* > "prev-next-post" */}}
                     <div class="cf"></div>
-                    <!-- Comments -->
                     <section class="comments">
                         <div class="row">
-                            <div class="small-12 columns">
+                            <div class="small-12 columns" id="comments-wrapper">
                                 <h3 class="comments-header">Комментарии</h3>
+                                <noscript>Please enable JavaScript to send the comments.</noscript>
                                 <div id="comments_thread">
                                     {{render_esi "fragment-comments" "article_id" .Article.IdString "last_time" .CommentKey}}
+                                    <div id="topic-reply">
+                                        {{cnt_comments .Article.CommentsCount}}
+                                        <span>Написать что-нибудь</span>
+                                    </div>
                                 </div>
                                 {{template "comment-form" .}}
-                                <noscript>Please enable JavaScript to send the comments.</noscript>
                             </div>
                         </div>
                     </section>

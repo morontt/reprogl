@@ -42,3 +42,15 @@ func (app *Application) ServerError(w http.ResponseWriter, err error) {
 func (app *Application) ClientError(w http.ResponseWriter, status int) {
 	http.Error(w, http.StatusText(status), status)
 }
+
+func RealRemoteAddress(r *http.Request) string {
+	addr := r.Header.Get("X-Real-IP")
+	if addr == "" {
+		addr = r.Header.Get("X-Forwarded-For")
+		if addr == "" {
+			addr = r.RemoteAddr
+		}
+	}
+
+	return addr
+}

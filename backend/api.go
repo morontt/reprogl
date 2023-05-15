@@ -9,13 +9,19 @@ import (
 	"xelbot.com/reprogl/security"
 )
 
+type CommentatorDTO struct {
+	Name    string `json:"name"`
+	Email   string `json:"email"`
+	Website string `json:"website"`
+}
+
 type CommentDTO struct {
-	Name     string
-	Email    string
-	Website  string
-	Text     string
-	TopicID  int
-	ParentID int
+	Commentator CommentatorDTO `json:"commentator"`
+	Text        string         `json:"text"`
+	TopicID     int            `json:"topicId"`
+	ParentID    int            `json:"parentId"`
+	UserAgent   string         `json:"userAgent"`
+	IP          string         `json:"ipAddress"`
 }
 
 var apiURL string
