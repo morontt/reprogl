@@ -24,7 +24,7 @@ func (lrw *Response) WriteHeader(statusCode int) {
 
 func (lrw *Response) Write(body []byte) (int, error) {
 	if _, ok := lrw.ResponseWriter.Header()["Cache-Control"]; !ok {
-		lrw.ResponseWriter.Header().Set("Cache-Control", "private, no-cache")
+		lrw.ResponseWriter.Header().Set("Cache-Control", "private, no-cache, max-age=0")
 	}
 
 	lrw.Header().Set("X-Powered-By", fmt.Sprintf(

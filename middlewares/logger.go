@@ -10,13 +10,7 @@ import (
 func AccessLog(next http.Handler, app *container.Application) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-		addr := r.Header.Get("X-Real-IP")
-		if addr == "" {
-			addr = r.Header.Get("X-Forwarded-For")
-			if addr == "" {
-				addr = r.RemoteAddr
-			}
-		}
+		addr := container.RealRemoteAddress(r)
 
 		next.ServeHTTP(w, r)
 		lrw, ok := w.(pkghttp.LogResponseWriter)

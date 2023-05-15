@@ -87,4 +87,65 @@ section.comments {
             }
         }
     }
+
+    #topic-reply {
+        background: $color-main-light;
+        margin-bottom: 1em;
+        padding: 9px 0.6em 0.6em 9px;
+        border-radius: 0 0 rem-calc(5) rem-calc(5);
+        text-align: center;
+
+        span {
+            margin-left: rem-calc(16);
+            @include green-button;
+        }
+    }
+
+    #comment_add {
+        position: relative;
+    }
+}
+
+.ajax-loader {
+    position: absolute;
+    background-color: #FFF;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.5;
+    display: none;
+    // display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*
+ * Based on https://loading.io/css/
+ * https://github.com/loadingio/css-spinner/
+ */
+.ajax-loader:after {
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    width: 0;
+    height: 0;
+    box-sizing: border-box;
+    border: 128px solid $color-main-contrast;
+    border-color: $color-main-contrast transparent $color-main-contrast transparent;
+    animation: lds-hourglass 1.2s infinite;
+}
+
+@keyframes lds-hourglass {
+    0% {
+        transform: rotate(0);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    50% {
+        transform: rotate(900deg);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    100% {
+        transform: rotate(1800deg);
+    }
 }

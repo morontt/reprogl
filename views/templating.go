@@ -30,6 +30,7 @@ func LoadViewSet() error {
 		"article.gohtml": {
 			"./templates/article.gohtml",
 			"./templates/partials/author-info.gohtml",
+			"./templates/partials/comment-form.gohtml",
 			"./templates/partials/menu.gohtml",
 			"./templates/layout/base.gohtml",
 		},

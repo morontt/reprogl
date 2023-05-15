@@ -1,0 +1,47 @@
+# @no-redirect
+POST https://reprogl.xelbot.com/add-comment
+Accept: application/json
+
+###
+POST https://reprogl.xelbot.com/add-ajax-comment
+Accept: application/json
+Content-Type: multipart/form-data; boundary=formdata
+
+--formdata
+Content-Disposition: form-data; name="name"
+Content-Type: text/plain
+
+Tester
+--formdata
+Content-Disposition: form-data; name="mail"
+Content-Type: text/plain
+
+test@example.org
+--formdata
+Content-Disposition: form-data; name="website"
+Content-Type: text/plain
+
+
+--formdata
+Content-Disposition: form-data; name="comment_text"
+Content-Type: text/plain
+
+Превед, МИР! :)
+--formdata
+Content-Disposition: form-data; name="topicId"
+Content-Type: text/plain
+
+131
+--formdata
+Content-Disposition: form-data; name="parentId"
+Content-Type: text/plain
+
+0
+--formdata
+
+###
+POST https://reprogl.xelbot.com/add-ajax-comment
+Accept: application/json
+Content-Type: application/x-www-form-urlencoded
+
+name=Zero&mail=mail%40example.org&website=&comment_text=%D0%9F%D1%80%D0%BE%D0%B2%D0%B5%D1%80%D0%BA%D0%B0+%D1%81%D0%B2%D1%8F%D0%B7%D0%B8&topicId=131&parentId=0&submit=

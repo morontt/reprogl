@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"os"
+	"xelbot.com/reprogl/container"
 )
 
 var fileHashes map[string]string
@@ -43,7 +44,9 @@ func subresourceIntegrity(file string) string {
 	}
 
 	h1 := base64.StdEncoding.EncodeToString(hash.Sum(nil))
-	fileHashes[file] = h1
+	if !container.IsDevMode() {
+		fileHashes[file] = h1
+	}
 
 	return "sha256-" + h1
 }
