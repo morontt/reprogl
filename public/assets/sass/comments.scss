@@ -76,7 +76,8 @@ section.comments {
                 text-decoration: none;
 
                 &:after {
-                    content: "↵";
+                    // https://www.w3schools.com/charsets/ref_utf_arrows.asp
+                    content: '\21B5';
                 }
             }
         }
@@ -131,6 +132,10 @@ section.comments {
             font-size: 75%;
             text-align: center;
             padding-top: 0.5em;
+        }
+
+        small.error {
+            font-style: normal;
         }
     }
 }

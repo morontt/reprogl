@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -38,4 +39,14 @@ func urlBySlugGenerator(router *mux.Router) func(string) string {
 
 		return "https://" + cfg.Host + url.String()
 	}
+}
+
+func jsonResponse(w http.ResponseWriter, statusCode int, data any) {
+	w.Header().Set("Content-Type", "application/json")
+	if statusCode != http.StatusOK {
+		w.WriteHeader(statusCode)
+	}
+
+	jsonResult, _ := json.Marshal(data)
+	w.Write(jsonResult)
 }

@@ -7,6 +7,11 @@ import (
 	"xelbot.com/reprogl/container"
 )
 
+type addCommentResponse struct {
+	Valid  bool                `json:"valid"`
+	Errors []backend.FormError `json:"errors,omitempty"`
+}
+
 func AddCommentDummy(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
 	w.Write([]byte("Silence is gold"))
@@ -15,7 +20,6 @@ func AddCommentDummy(w http.ResponseWriter, r *http.Request) {
 func AddComment(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := r.ParseForm()
-		//err := r.ParseMultipartForm(512 * 1024)
 		if err != nil {
 			app.ClientError(w, http.StatusBadRequest)
 			return
@@ -50,17 +54,23 @@ func AddComment(app *container.Application) http.HandlerFunc {
 			UserAgent: r.UserAgent(),
 			IP:        container.RealRemoteAddress(r),
 		}
-		err = backend.SendComment(commentData)
 
-		w.Header().Set("Content-Type", "text/plain; charset=UTF-8")
-		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte("Comment created: " + commentText + "\n"))
-		w.Write([]byte("Name: " + nickname + "\n"))
-		w.Write([]byte("Email: " + email + "\n"))
-		w.Write([]byte("Website: " + website + "\n"))
+		statusCode := http.StatusCreated
 
+		violations, err := backend.SendComment(commentData)
 		if err != nil {
-			w.Write([]byte("Error: " + err.Error() + "\n"))
+			statusCode = http.StatusBadRequest
 		}
+
+		result := addCommentResponse{
+			Valid:  true,
+			Errors: violations,
+		}
+
+		if len(violations) > 0 {
+			result.Valid = false
+		}
+
+		jsonResponse(w, statusCode, result)
 	}
 }
