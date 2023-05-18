@@ -28,6 +28,7 @@ type ArticleBasePart struct {
 	Title        string
 	Slug         string
 	Text         string
+	Preview      string
 	CreatedAt    time.Time
 	CategoryName string
 	CategorySlug string

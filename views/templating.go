@@ -65,7 +65,6 @@ func LoadViewSet() error {
 		"abs_path":        absUrlGenerator,
 		"render_esi":      renderESI,
 		"tags":            tags,
-		"topicPreview":    topicPreview,
 		"cdn":             cdnBase,
 		"nl2br":           nl2br,
 		"author_name":     authorName,
