@@ -20,10 +20,6 @@ body {
 
 a {
     color: $color-main-contrast;
-
-    &.ext:after {
-        content: "↵";
-    }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -471,6 +467,13 @@ html.no-csstransforms3d {
                 }
                 @media only screen and (min-width: 40.063em) {
                     padding: rem-calc(50);
+                }
+                .post-preview a {
+                    @include corner-link;
+
+                    &[href^="mailto:"]:after {
+                        content: "";
+                    }
                 }
             }
             // image hover effects based on great article

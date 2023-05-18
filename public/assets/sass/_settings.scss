@@ -60,3 +60,13 @@ $color-headers: $color-main-dark;
         color: $color-main-light;
     }
 }
+
+@mixin corner-link {
+    &:after {
+        // https://www.w3schools.com/charsets/ref_utf_arrows.asp
+        content: '\21B5';
+    }
+    &:hover, &:focus, &:active {
+        color: darken($color-main-contrast, 10%);
+    }
+}

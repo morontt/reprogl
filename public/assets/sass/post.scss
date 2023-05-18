@@ -268,31 +268,12 @@
                                 display: none;
                             }
                         }
-                        &:after {
-                            position: absolute;
-                            content: " ";
-                            display: block;
-                            width: 0;
-                            height: rem-calc(1);
-                            background-color: $color-main-contrast;
-                            bottom: 0;
-                            left: 50%;
-                            -webkit-transform: translateX(-50%);
-                            -ms-transform: translateX(-50%);
-                            transform: translateX(-50%);
-                            -webkit-transition: width .2s;
-                            transition: width .2s;
-                        }
-                        &:hover, &:focus, &:active {
-                            text-decoration: none;
-                            color: $color-main-contrast;
-                            &:after {
-                                width: 100%;
-                            }
-                        }
                     }
                     p {
                         hyphens: auto;
+                    }
+                    a {
+                        @include corner-link;
                     }
                 }
                 .post-header-content {
