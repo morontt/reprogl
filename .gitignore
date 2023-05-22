@@ -16,6 +16,7 @@
 /public/assets/css/*.css
 /public/assets/css/*.map
 !/public/assets/css/vendors
+/public/assets/css/vendors/pygments
 /public/assets/js/reprogl.js
 /public/assets/js/reprogl.min.js
 node_modules/

@@ -24,6 +24,7 @@ module.exports = function (grunt) {
                     'public/assets/css/post.css': 'public/assets/sass/post.scss',
                     'public/assets/css/select.css': 'public/assets/sass/select.scss',
                     'public/assets/css/comments.css': 'public/assets/sass/comments.scss',
+                    'public/assets/css/pygments.css': 'public/assets/sass/pygments.scss',
                 }
             }
         },
@@ -43,6 +44,7 @@ module.exports = function (grunt) {
                     'public/assets/css/vendors/owl.theme.default.css',
                     'public/assets/js/vendors/syntaxhighlighter/style/shCore.css',
                     'public/assets/js/vendors/syntaxhighlighter/style/shThemeEclipse.css',
+                    'public/assets/css/pygments.css',
                     'public/assets/css/menu.css',
                     'public/assets/css/select.css',
                     'public/assets/css/style.css',
