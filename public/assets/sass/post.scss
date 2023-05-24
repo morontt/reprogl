@@ -238,6 +238,14 @@
                 }
             }
         }
+
+        .flagcounter {
+            margin-top: rem-calc(30);
+            display: none;
+            @media only screen and (min-width: 64em) {
+                display: block;
+            }
+        }
     }
     .post-view-content {
         min-height: 100%;

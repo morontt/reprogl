@@ -126,3 +126,23 @@ func commentsCountString(cnt int) (str string) {
 
 	return
 }
+
+func flagCounterImage(fullSize bool) func() template.HTML {
+	var url string
+
+	if container.IsDevMode() {
+		url = "/images/flagcounter.png"
+		if !fullSize {
+			url = "/images/flagcounter_mini.png"
+		}
+	} else {
+		url = "//s05.flagcounter.com/count2/D9g3/bg_23222D/txt_FFFFFF/border_FFFFFF/columns_2/maxflags_4/viewers_3/labels_0/pageviews_1/flags_0/percent_1/"
+		if !fullSize {
+			url = "//s05.flagcounter.com/mini/D9g3/bg_23222D/txt_FFFFFF/border_23222D/flags_0/"
+		}
+	}
+
+	return func() template.HTML {
+		return template.HTML("<img src=\"" + url + "\" alt=\"Free counters!\">")
+	}
+}

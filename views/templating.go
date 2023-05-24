@@ -76,6 +76,8 @@ func LoadViewSet() error {
 		"sri":             subresourceIntegrity,
 		"go_version":      goVersion,
 		"cnt_comments":    commentsCountString,
+		"flag_cnt":        flagCounterImage(true),
+		"flag_cnt_mini":   flagCounterImage(false),
 	}
 
 	for key, files := range templatesMap {
