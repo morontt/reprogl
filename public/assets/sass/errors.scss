@@ -1,19 +1,20 @@
 $color-404: #FFAB00;
 
 * {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
 }
 
 body {
     padding: 0;
-    margin: 0
+    margin: 0;
+    background-image: url('/errors/FVS.jpg');
 }
 
 .error-div {
     position: relative;
     height: 100vh;
-    background-color: #222;
+    background-color: rgba(34, 34, 34, 0.95);
 
     .error {
         position: absolute;
@@ -21,7 +22,10 @@ body {
         top: 50%;
         -webkit-transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%)
+        transform: translate(-50%, -50%);
+        background-color: #222;
+        padding: 20px 10px;
+        border-radius: 32px;
     }
 }
 
