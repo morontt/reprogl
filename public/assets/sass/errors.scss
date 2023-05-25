@@ -1,0 +1,92 @@
+$color-404: #FFAB00;
+
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+body {
+    padding: 0;
+    margin: 0
+}
+
+.error-div {
+    position: relative;
+    height: 100vh;
+    background-color: #222;
+
+    .error {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%)
+    }
+}
+
+.error {
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+    line-height: 1.4;
+
+    .error-header {
+        height: 158px;
+        line-height: 153px;
+
+        h1 {
+            font-family: Consolas, "Lucida Console", monospace;
+            color: #222;
+            font-size: 130px;
+            letter-spacing: 10px;
+            margin: 0;
+            font-weight: 700;
+            text-shadow: 0 0 4px #AAA;
+
+            span {
+                text-shadow: 2px 2px 0 $color-404, -2px -2px 0 $color-404, 0 0 32px $color-404;
+            }
+        }
+    }
+
+    p {
+        font-family: Consolas, "Lucida Console", monospace;
+        color: #c9c9c9;
+        font-size: 16px;
+        font-weight: 400;
+        margin-top: 0;
+        margin-bottom: 15px
+    }
+
+    a {
+        font-family: Consolas, "Lucida Console", monospace;
+        font-size: 14px;
+        text-decoration: none;
+        text-transform: uppercase;
+        background: 0 0;
+        color: #c9c9c9;
+        border: 2px solid #c9c9c9;
+        display: inline-block;
+        padding: 10px 25px;
+        font-weight: 700;
+        -webkit-transition: .3s all;
+        transition: .3s all;
+
+        &:hover {
+            color: $color-404;
+            border-color: $color-404;
+        }
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .error .error-header {
+        height: 122px;
+        line-height: 122px;
+
+        h1 {
+            font-size: 100px;
+        }
+    }
+}

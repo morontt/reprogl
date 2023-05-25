@@ -25,6 +25,7 @@ module.exports = function (grunt) {
                     'public/assets/css/select.css': 'public/assets/sass/select.scss',
                     'public/assets/css/comments.css': 'public/assets/sass/comments.scss',
                     'public/assets/css/pygments.css': 'public/assets/sass/pygments.scss',
+                    'public/assets/css/errors.css': 'public/assets/sass/errors.scss',
                 }
             }
         },
