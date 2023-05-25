@@ -165,7 +165,7 @@ func (ar *ArticleRepository) GetSitemapCollection() (*models.SitemapItemList, er
 	query := `
 		SELECT
 			url,
-			last_update
+			updated_at
 		FROM posts
 		WHERE
 			hide = 0
