@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
-	"time"
+	"xelbot.com/reprogl/api"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/security"
 )
@@ -27,11 +27,21 @@ type CommentDTO struct {
 	IP          string         `json:"ipAddress"`
 }
 
+type CreatedCommentDTO struct {
+	ID   int    `json:"id"`
+	Text string `json:"text"`
+}
+
 type ViolationPath string
 
 type FormError struct {
 	Message string        `json:"message"`
 	Path    ViolationPath `json:"path"`
+}
+
+type CreateCommentResponse struct {
+	Violations []FormError        `json:"errors,omitempty"`
+	Comment    *CreatedCommentDTO `json:"comment,omitempty"`
 }
 
 var apiURL string
@@ -58,16 +68,16 @@ func (vp *ViolationPath) UnmarshalText(jsonText []byte) error {
 	return nil
 }
 
-func SendComment(comment CommentDTO) ([]FormError, error) {
-	var violations []FormError
+func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
+	var result CreateCommentResponse
 	jsonBody, err := json.Marshal(comment)
 	if err != nil {
-		return violations, err
+		return nil, err
 	}
 
 	request, err := http.NewRequest(http.MethodPost, apiURL+"/api/comments/external", bytes.NewReader(jsonBody))
 	if err != nil {
-		return violations, err
+		return nil, err
 	}
 
 	wsseHeader, wsseToken := security.GetWSSEHeader()
@@ -75,30 +85,24 @@ func SendComment(comment CommentDTO) ([]FormError, error) {
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set(wsseHeader, wsseToken)
 
-	client := http.Client{
-		Timeout: 15 * time.Second,
-	}
-
-	response, err := client.Do(request)
+	response, err := api.Send(request)
 	if err != nil {
-		return violations, err
+		return nil, err
 	}
 
-	if response.StatusCode == http.StatusUnprocessableEntity {
-		buf, err := io.ReadAll(response.Body)
-		if err != nil {
-			return violations, err
-		}
-
-		if !json.Valid(buf) {
-			return violations, errors.New("invalid JSON string")
-		}
-
-		err = json.Unmarshal(buf, &violations)
-		if err != nil {
-			return violations, err
-		}
+	buf, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
 	}
 
-	return violations, nil
+	if !json.Valid(buf) {
+		return nil, errors.New("invalid JSON string")
+	}
+
+	err = json.Unmarshal(buf, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
 }

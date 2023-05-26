@@ -23,6 +23,8 @@ type AppConfig struct {
 	BackendApiUrl     string
 	BackendApiUser    string
 	BackendApiWsseKey string
+	TelegramToken     string
+	TelegramAdminID   int
 }
 
 var cnf AppConfig
@@ -46,6 +48,8 @@ func init() {
 	cnf.BackendApiUrl = configStringValue("BACKEND_API_URL")
 	cnf.BackendApiUser = configStringValue("BACKEND_API_USER")
 	cnf.BackendApiWsseKey = configStringValue("BACKEND_API_WSSE_KEY")
+	cnf.TelegramToken = configStringValue("TELEGRAM_TOKEN")
+	cnf.TelegramAdminID = configIntValue("TELEGRAM_ADMIN_ID")
 }
 
 func GetConfig() AppConfig {
@@ -74,6 +78,16 @@ func handleError(err error) {
 func configStringValue(paramName string) (value string) {
 	if _, ok := ini.GetValue(paramName); ok {
 		value = ini.String(paramName)
+	} else {
+		handleError(errors.New("app.ini: Undefined parameter \"" + paramName + "\""))
+	}
+
+	return
+}
+
+func configIntValue(paramName string) (value int) {
+	if _, ok := ini.GetValue(paramName); ok {
+		value = ini.Int(paramName)
 	} else {
 		handleError(errors.New("app.ini: Undefined parameter \"" + paramName + "\""))
 	}

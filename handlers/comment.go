@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
-	"xelbot.com/reprogl/backend"
+	"xelbot.com/reprogl/api/backend"
+	"xelbot.com/reprogl/api/telegram"
 	"xelbot.com/reprogl/container"
 )
 
@@ -57,18 +59,22 @@ func AddComment(app *container.Application) http.HandlerFunc {
 
 		statusCode := http.StatusCreated
 
-		violations, err := backend.SendComment(commentData)
+		apiResponse, err := backend.SendComment(commentData)
 		if err != nil {
 			statusCode = http.StatusBadRequest
 		}
 
 		result := addCommentResponse{
 			Valid:  true,
-			Errors: violations,
+			Errors: apiResponse.Violations,
 		}
 
-		if len(violations) > 0 {
+		if apiResponse.Violations != nil && len(apiResponse.Violations) > 0 {
 			result.Valid = false
+		} else {
+			if apiResponse.Comment != nil {
+				go telegram.SendNotification(app, fmt.Sprintf("*Hello* World, ID: %d", apiResponse.Comment.ID))
+			}
 		}
 
 		jsonResponse(w, statusCode, result)
