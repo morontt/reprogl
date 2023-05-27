@@ -28,8 +28,12 @@ type CommentDTO struct {
 }
 
 type CreatedCommentDTO struct {
-	ID   int    `json:"id"`
-	Text string `json:"text"`
+	ID      int    `json:"id"`
+	Text    string `json:"text"`
+	Name    string `json:"username"`
+	Email   string `json:"email"`
+	Website string `json:"website"`
+	Country string `json:"countryCode"`
 }
 
 type ViolationPath string

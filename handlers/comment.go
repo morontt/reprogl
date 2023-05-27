@@ -1,12 +1,14 @@
 package handlers
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
 	"strconv"
 	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/api/telegram"
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/models/repositories"
 )
 
 type addCommentResponse struct {
@@ -44,6 +46,18 @@ func AddComment(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		repo := repositories.ArticleRepository{DB: app.DB}
+		article, err := repo.GetByIdForComment(topicId)
+		if err != nil {
+			if errors.Is(err, models.RecordNotFound) {
+				app.NotFound(w)
+			} else {
+				app.ServerError(w, err)
+			}
+
+			return
+		}
+
 		commentData := backend.CommentDTO{
 			Commentator: backend.CommentatorDTO{
 				Name:    nickname,
@@ -73,10 +87,18 @@ func AddComment(app *container.Application) http.HandlerFunc {
 			result.Valid = false
 		} else {
 			if apiResponse.Comment != nil {
-				go telegram.SendNotification(app, fmt.Sprintf("*Hello* World, ID: %d", apiResponse.Comment.ID))
+				go afterCommentHook(app, apiResponse.Comment, article)
 			}
 		}
 
 		jsonResponse(w, statusCode, result)
 	}
+}
+
+func afterCommentHook(
+	app *container.Application,
+	comment *backend.CreatedCommentDTO,
+	article *models.ArticleForComment,
+) {
+	telegram.SendNotification(app, comment, article)
 }

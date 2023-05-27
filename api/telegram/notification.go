@@ -3,9 +3,15 @@ package telegram
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
+	"regexp"
+	"unicode/utf8"
 	"xelbot.com/reprogl/api"
+	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/models"
 )
 
 type message struct {
@@ -24,7 +30,14 @@ func init() {
 	telegramToken = cnf.TelegramToken
 }
 
-func SendNotification(app *container.Application, text string) {
+func SendNotification(
+	app *container.Application,
+	comment *backend.CreatedCommentDTO,
+	article *models.ArticleForComment,
+) {
+	text := generateText(comment, article, app.URLGenerator())
+	app.InfoLog.Printf("Telegram notification text:\n%s", text)
+
 	jsonBody, err := json.Marshal(createMessage(text))
 	if err != nil {
 		app.ErrorLog.Printf("telegram notification: %s\n", err.Error())
@@ -42,11 +55,19 @@ func SendNotification(app *container.Application, text string) {
 
 	request.Header.Set("Content-Type", "application/json")
 
-	_, err = api.Send(request)
+	resp, err := api.Send(request)
 	if err != nil {
 		app.ErrorLog.Printf("telegram notification: %s\n", err.Error())
 		return
 	}
+
+	buf, err := io.ReadAll(resp.Body)
+	if err != nil {
+		app.ErrorLog.Printf("telegram notification: %s\n", err.Error())
+		return
+	}
+
+	app.InfoLog.Printf("Telegram answer:\nStatus: %s\n\n%s", resp.Status, string(buf))
 }
 
 func createMessage(text string) message {
@@ -56,4 +77,49 @@ func createMessage(text string) message {
 		ParseMode:      "MarkdownV2",
 		DisablePreview: true,
 	}
+}
+
+func generateText(
+	comment *backend.CreatedCommentDTO,
+	article *models.ArticleForComment,
+	router container.URLGenerator,
+) (msg string) {
+	msg = fmt.Sprintf(
+		"Кто\\-то оставил [комментарий](%s)\n\n*ID*: %d\n",
+		router("article", true, "slug", article.Slug),
+		comment.ID,
+	)
+	if len(comment.Name) > 0 {
+		msg += "*Name*: " + escapeMarkdownCharacters(comment.Name) + "\n"
+	}
+	if len(comment.Email) > 0 {
+		msg += "*Email*: " + escapeMarkdownCharacters(comment.Email) + "\n"
+	}
+	if len(comment.Website) > 0 {
+		msg += "*Website*: " + escapeMarkdownCharacters(comment.Website) + "\n"
+	}
+
+	msg += "\n" + escapeMarkdownCharacters(stripTags(comment.Text))
+
+	return
+}
+
+func stripTags(content string) string {
+	re := regexp.MustCompile(`<(.|\n)*?>`)
+
+	return re.ReplaceAllString(content, "")
+}
+
+func escapeMarkdownCharacters(content string) string {
+	buffer := make([]rune, 0, 2*utf8.RuneCountInString(content))
+	for _, e := range []rune(content) {
+		switch e {
+		case '_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!':
+			buffer = append(buffer, '\\', e)
+		default:
+			buffer = append(buffer, e)
+		}
+	}
+
+	return string(buffer)
 }
