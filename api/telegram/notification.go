@@ -90,7 +90,12 @@ func generateText(
 		comment.ID,
 	)
 	if len(comment.Name) > 0 {
-		msg += "*Name*: " + escapeMarkdownCharacters(comment.Name) + "\n"
+		msg += "*Name*: " + escapeMarkdownCharacters(comment.Name)
+	}
+	if len(comment.Country) > 0 {
+		msg += " " + comment.Country + "\n"
+	} else {
+		msg += "\n"
 	}
 	if len(comment.Email) > 0 {
 		msg += "*Email*: " + escapeMarkdownCharacters(comment.Email) + "\n"
