@@ -76,6 +76,12 @@ type RecentPost struct {
 
 type RecentPostList []*RecentPost
 
+type ArticleForComment struct {
+	ID     int
+	Slug   string
+	Hidden bool
+}
+
 func (i *FeaturedImage) HasImage() bool {
 	return i.ImagePath.Valid
 }

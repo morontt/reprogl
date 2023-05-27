@@ -1,10 +1,14 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
-	"xelbot.com/reprogl/backend"
+	"xelbot.com/reprogl/api/backend"
+	"xelbot.com/reprogl/api/telegram"
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/models/repositories"
 )
 
 type addCommentResponse struct {
@@ -42,6 +46,18 @@ func AddComment(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		repo := repositories.ArticleRepository{DB: app.DB}
+		article, err := repo.GetByIdForComment(topicId)
+		if err != nil {
+			if errors.Is(err, models.RecordNotFound) {
+				app.NotFound(w)
+			} else {
+				app.ServerError(w, err)
+			}
+
+			return
+		}
+
 		commentData := backend.CommentDTO{
 			Commentator: backend.CommentatorDTO{
 				Name:    nickname,
@@ -57,20 +73,32 @@ func AddComment(app *container.Application) http.HandlerFunc {
 
 		statusCode := http.StatusCreated
 
-		violations, err := backend.SendComment(commentData)
+		apiResponse, err := backend.SendComment(commentData)
 		if err != nil {
 			statusCode = http.StatusBadRequest
 		}
 
 		result := addCommentResponse{
 			Valid:  true,
-			Errors: violations,
+			Errors: apiResponse.Violations,
 		}
 
-		if len(violations) > 0 {
+		if apiResponse.Violations != nil && len(apiResponse.Violations) > 0 {
 			result.Valid = false
+		} else {
+			if apiResponse.Comment != nil {
+				go afterCommentHook(app, apiResponse.Comment, article)
+			}
 		}
 
 		jsonResponse(w, statusCode, result)
 	}
+}
+
+func afterCommentHook(
+	app *container.Application,
+	comment *backend.CreatedCommentDTO,
+	article *models.ArticleForComment,
+) {
+	telegram.SendNotification(app, comment, article)
 }

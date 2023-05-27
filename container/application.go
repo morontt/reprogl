@@ -16,6 +16,8 @@ var GitRevision string
 var BuildTime string
 var GoVersionNumbers string
 
+type URLGenerator func(string, bool, ...string) string
+
 type Application struct {
 	ErrorLog *log.Logger
 	InfoLog  *log.Logger
@@ -53,4 +55,20 @@ func RealRemoteAddress(r *http.Request) string {
 	}
 
 	return addr
+}
+
+func (app *Application) URLGenerator() URLGenerator {
+	return func(routeName string, absoluteURL bool, pairs ...string) string {
+		url, err := app.Router.Get(routeName).URL(pairs...)
+		if err != nil {
+			panic(err)
+		}
+
+		var prefix string
+		if absoluteURL {
+			prefix = "https://" + cnf.Host
+		}
+
+		return prefix + url.String()
+	}
 }

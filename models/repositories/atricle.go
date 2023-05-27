@@ -278,6 +278,33 @@ func (ar *ArticleRepository) GetRecentPostsCollection(articleId int) (*models.Re
 	return &articles, nil
 }
 
+func (ar *ArticleRepository) GetByIdForComment(id int) (*models.ArticleForComment, error) {
+	query := `
+		SELECT
+			p.id,
+			p.url,
+			p.hide
+		FROM posts AS p
+		WHERE (p.id = ?)`
+
+	article := &models.ArticleForComment{}
+
+	err := ar.DB.QueryRow(query, id).Scan(
+		&article.ID,
+		&article.Slug,
+		&article.Hidden)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, models.RecordNotFound
+		} else {
+			return nil, err
+		}
+	}
+
+	return article, nil
+}
+
 func (ar *ArticleRepository) newPaginator(countQuery, query string, page int, params ...interface{}) (*models.ArticlesPaginator, error) {
 	var articleCount int
 
