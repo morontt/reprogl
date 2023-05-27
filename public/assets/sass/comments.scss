@@ -30,17 +30,27 @@ section.comments {
                 padding: 0;
                 height: 80px;
                 width: 80px;
-                margin-top: -34px;
+                margin-top: -58px;
+                margin-right: 0.6em;
                 float: left;
                 border-radius: rem-calc(7);
 
                 img {
                     border-radius: rem-calc(6);
                 }
+
+                @media only screen and (min-width: 48em) {
+                    margin-top: -34px;
+                    margin-right: 0;
+                }
             }
 
             .comment-text {
-                margin-left: 99px;
+                margin-left: 0.6em;
+
+                @media only screen and (min-width: 48em) {
+                    margin-left: 99px;
+                }
             }
 
             .comment-reply {
@@ -69,6 +79,11 @@ section.comments {
                 float: right;
                 display: inline;
                 color: $color-main-light;
+                max-width: 8em;
+
+                @media only screen and (min-width: 48em) {
+                    max-width: 100%;
+                }
             }
 
             a {
@@ -78,6 +93,13 @@ section.comments {
                 &:after {
                     content: '\21B5';
                 }
+            }
+
+            &:after {
+                visibility: hidden;
+                display: block;
+                content: '';
+                clear: both;
             }
         }
 
@@ -136,6 +158,17 @@ section.comments {
         small.error {
             font-style: normal;
         }
+    }
+}
+
+section.comments.statistic .comment-item .comment-body .avatar {
+    margin-top: -34px;
+    margin-right: 0;
+}
+
+@media only screen and (min-width: 40.0625em) {
+    section.comments.statistic .comment-item {
+        min-height: 128px;
     }
 }
 

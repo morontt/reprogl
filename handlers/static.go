@@ -9,8 +9,6 @@ import (
 	"xelbot.com/reprogl/views"
 )
 
-const staticsTTL = 3600 * 8
-
 func InfoAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := views.WriteTemplate(w, "info.gohtml", views.NewInfoPageData())
@@ -36,7 +34,7 @@ func StatisticsAction(app *container.Application) http.HandlerFunc {
 		templateData.Commentators = commentators
 
 		doESI(w)
-		cacheControl(w, staticsTTL)
+		cacheControl(w, container.StatisticsTTL)
 		err = views.WriteTemplate(w, "statistics.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
@@ -55,8 +53,8 @@ func RobotsTXTAction(w http.ResponseWriter, _ *http.Request) {
 		cfg.Host,
 		cfg.Host)
 
+	cacheControl(w, container.RobotsTxtTTL)
 	w.Header().Set("Content-Type", "text/plain")
-	w.Header().Set("Cache-Control", "max-age=2592000")
 	w.Write([]byte(body))
 }
 
@@ -72,7 +70,7 @@ func FavIconAction(w http.ResponseWriter, _ *http.Request) {
 
 	body, _ := base64.StdEncoding.DecodeString(icon)
 
+	cacheControl(w, container.RobotsTxtTTL)
 	w.Header().Set("Content-Type", "image/x-icon")
-	w.Header().Set("Cache-Control", "max-age=2592000")
 	w.Write(body)
 }
