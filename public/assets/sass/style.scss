@@ -300,6 +300,12 @@ html.no-csstransforms3d {
                     max-width: rem-calc(120);
                 }
             }
+            .page-description span {
+                padding: 0 rem-calc(6);
+                border-radius: rem-calc(6);
+                margin-left: rem-calc(-6);
+                background-color: rgba(35, 35, 35, 0.5);
+            }
         }
         .page-title {
             color: $color-main-light;
