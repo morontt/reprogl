@@ -72,3 +72,7 @@ func (app *Application) URLGenerator() URLGenerator {
 		return prefix + url.String()
 	}
 }
+
+func IsCDN(r *http.Request) bool {
+	return r.Header.Get("Via") == "BunnyCDN"
+}

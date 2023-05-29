@@ -13,6 +13,14 @@ import (
 
 func SitemapAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if container.IsCDN(r) {
+			w.Header().Set("Content-Type", "application/xml")
+			w.Header().Set("Cache-Control", "max-age=7200")
+			w.Write([]byte(xml.Header + "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"></urlset>\n"))
+
+			return
+		}
+
 		repo := repositories.ArticleRepository{DB: app.DB}
 		articles, err := repo.GetSitemapCollection()
 		if err != nil {

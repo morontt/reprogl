@@ -15,9 +15,9 @@ func AccessLog(next http.Handler, app *container.Application) http.Handler {
 		next.ServeHTTP(w, r)
 		lrw, ok := w.(pkghttp.LogResponseWriter)
 		if ok {
-			app.InfoLog.Printf("[%s] %s, %s %d %s\n", r.Method, addr, r.URL.Path, lrw.Status(), time.Since(start))
+			app.InfoLog.Printf("[%s] %s, %s %d %s\n", r.Method, addr, r.URL.RequestURI(), lrw.Status(), time.Since(start))
 		} else {
-			app.InfoLog.Printf("[%s] %s, %s %s\n", r.Method, addr, r.URL.Path, time.Since(start))
+			app.InfoLog.Printf("[%s] %s, %s %s\n", r.Method, addr, r.URL.RequestURI(), time.Since(start))
 		}
 	})
 }

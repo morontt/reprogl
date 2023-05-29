@@ -36,7 +36,8 @@ func main() {
 	}
 
 	router := getRoutes(app)
-	handler := middlewares.Recover(router, app)
+	handler := middlewares.CDN(router)
+	handler = middlewares.Recover(handler, app)
 	handler = middlewares.AccessLog(handler, app)
 	handler = middlewares.ResponseWrapper(handler)
 
