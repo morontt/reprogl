@@ -44,14 +44,18 @@ func StatisticsAction(app *container.Application) http.HandlerFunc {
 	}
 }
 
-func RobotsTXTAction(w http.ResponseWriter, _ *http.Request) {
+func RobotsTXTAction(w http.ResponseWriter, r *http.Request) {
 	var body string
 
-	cfg := container.GetConfig()
-	body = fmt.Sprintf(
-		"User-agent: *\n\nHost: %s\nSitemap: https://%s/sitemap.xml\n",
-		cfg.Host,
-		cfg.Host)
+	if container.IsCDN(r) {
+		body = "User-agent: *\n\nDisallow: /\n"
+	} else {
+		cfg := container.GetConfig()
+		body = fmt.Sprintf(
+			"User-agent: *\n\nHost: %s\nSitemap: https://%s/sitemap.xml\n",
+			cfg.Host,
+			cfg.Host)
+	}
 
 	cacheControl(w, container.RobotsTxtTTL)
 	w.Header().Set("Content-Type", "text/plain")

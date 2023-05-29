@@ -54,3 +54,7 @@ func RealRemoteAddress(r *http.Request) string {
 
 	return addr
 }
+
+func IsCDN(r *http.Request) bool {
+	return r.Header.Get("Via") == "BunnyCDN"
+}
