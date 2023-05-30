@@ -2,6 +2,8 @@ package main
 
 import (
 	"database/sql"
+	"github.com/doug-martin/goqu/v9"
+	_ "github.com/doug-martin/goqu/v9/dialect/mysql"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
@@ -26,6 +28,8 @@ func main() {
 	if err != nil {
 		errorLog.Fatal(err)
 	}
+
+	goqu.SetTimeLocation(time.Local)
 
 	defer db.Close()
 

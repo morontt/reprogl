@@ -6,12 +6,18 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
 	trackmodels "xelbot.com/reprogl/utils/tracking/models"
+)
+
+var (
+	regexpArticle = regexp.MustCompile(`^\/article\/(?P<slug>[^/?#]+)`)
+	slugIndex     = regexpArticle.SubexpIndex("slug")
 )
 
 func CreateActivity(req *http.Request) *trackmodels.Activity {
@@ -30,7 +36,10 @@ func CreateActivity(req *http.Request) *trackmodels.Activity {
 }
 
 func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
-	var userAgentId int
+	var (
+		userAgentId, articleId int
+	)
+
 	if strings.HasPrefix(activity.RequestedURI, "/_fragment/") {
 		return
 	}
@@ -54,7 +63,13 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		userAgentId = agent.ID
 	}
 
-	err = repo.SaveTracking(activity, userAgentId)
+	matches := regexpArticle.FindStringSubmatch(activity.RequestedURI)
+	if matches != nil {
+		articleRepo := repositories.ArticleRepository{DB: app.DB}
+		articleId = articleRepo.GetIdBySlug(matches[slugIndex])
+	}
+
+	err = repo.SaveTracking(activity, userAgentId, articleId)
 	if err != nil {
 		app.LogError(err)
 		return

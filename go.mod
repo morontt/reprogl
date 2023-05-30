@@ -3,6 +3,7 @@ module xelbot.com/reprogl
 go 1.18
 
 require (
+	github.com/doug-martin/goqu/v9 v9.18.0
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/gookit/ini/v2 v2.2.2
 	github.com/gorilla/mux v1.8.0

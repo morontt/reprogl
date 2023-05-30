@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 	"errors"
+	"github.com/doug-martin/goqu/v9"
 	"xelbot.com/reprogl/models"
 	trackmodels "xelbot.com/reprogl/utils/tracking/models"
 )
@@ -66,21 +67,33 @@ func (tr *TrackingRepository) SaveTrackingAgent(activity *trackmodels.Activity) 
 	return int(id), nil
 }
 
-func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agentId int) error {
-	query := `INSERT INTO tracking
-        (user_agent_id, ip_addr, time_created, timestamp_created, is_cdn, request_uri, status_code)
-        VALUES(?, ?, ?, ?, ?, ?, ?)`
+func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agentId, articleId int) error {
+	data := goqu.Record{
+		"ip_addr":     activity.Addr.String(),
+		"is_cdn":      activity.IsCDN,
+		"status_code": activity.Status,
 
-	_, err := tr.DB.Exec(
-		query,
-		agentId,
-		activity.Addr.String(),
-		activity.Time,
-		int(activity.Time.Unix()),
-		activity.IsCDN,
-		activity.RequestedURI,
-		activity.Status,
-	)
+		"time_created":      activity.Time.Format("2006-01-02 15:04:05.000"),
+		"timestamp_created": int(activity.Time.Unix()),
+	}
+
+	if agentId > 0 {
+		data["user_agent_id"] = agentId
+	}
+	if articleId > 0 {
+		data["post_id"] = articleId
+	} else {
+		data["request_uri"] = activity.RequestedURI
+	}
+
+	ds := goqu.Dialect("mysql").Insert("tracking").Rows(data)
+
+	query, _, err := ds.ToSQL()
+	if err != nil {
+		return err
+	}
+
+	_, err = tr.DB.Exec(query)
 	if err != nil {
 		return err
 	}

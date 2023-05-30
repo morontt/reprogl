@@ -57,6 +57,21 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 	return article, nil
 }
 
+func (ar *ArticleRepository) GetIdBySlug(slug string) int {
+	var id int
+
+	err := ar.DB.QueryRow(
+		`SELECT id FROM posts WHERE url = ?`,
+		slug,
+	).Scan(&id)
+
+	if err != nil {
+		return 0
+	}
+
+	return id
+}
+
 func (ar *ArticleRepository) GetCollection(page int) (*models.ArticlesPaginator, error) {
 	countQuery := `
 		SELECT
