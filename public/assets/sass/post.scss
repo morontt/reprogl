@@ -74,6 +74,7 @@
                 .blog-logo {
                     img {
                         width: rem-calc(80);
+                        border-radius: rem-calc(6);
                     }
                 }
                 @media only screen and (min-width: 64em) {
@@ -84,6 +85,7 @@
                         img {
                             width: rem-calc(150);
                             margin-left: rem-calc(35);
+                            border-radius: rem-calc(10);
                         }
                     }
                 }

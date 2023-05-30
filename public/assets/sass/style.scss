@@ -148,6 +148,7 @@ a.button {
     .headroom-logo {
         img {
             max-height: rem-calc(50);
+            border-radius: rem-calc(6);
         }
     }
     .headeroom-icons {
@@ -293,11 +294,12 @@ html.no-csstransforms3d {
         background-color: $color-main-dark;
         background-image: url('/images/1500x500.jpg');
         .main-header-content {
-            padding-top: rem-calc(150);
+            padding-top: rem-calc(37);
             padding-bottom: rem-calc(60);
             .blog-logo {
                 img {
                     max-width: rem-calc(120);
+                    border-radius: rem-calc(6);
                 }
             }
             .page-description span {
@@ -305,6 +307,12 @@ html.no-csstransforms3d {
                 border-radius: rem-calc(6);
                 margin-left: rem-calc(-6);
                 background-color: rgba(35, 35, 35, 0.5);
+            }
+            @media only screen and (min-width: 48em) {
+                padding-top: rem-calc(70);
+            }
+            @media only screen and (min-width: 64em) {
+                padding-top: rem-calc(100);
             }
         }
         .page-title {
