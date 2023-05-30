@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-docker compose stop source
+docker compose stop gopher
 
 . ./build.sh
 
-docker compose up -d source
+docker compose up -d gopher

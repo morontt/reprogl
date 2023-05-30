@@ -40,7 +40,7 @@ func SendNotification(
 
 	jsonBody, err := json.Marshal(createMessage(text))
 	if err != nil {
-		app.ErrorLog.Printf("telegram notification: %s\n", err.Error())
+		app.LogError(err)
 		return
 	}
 
@@ -49,7 +49,7 @@ func SendNotification(
 		"https://api.telegram.org/bot"+telegramToken+"/sendMessage",
 		bytes.NewReader(jsonBody))
 	if err != nil {
-		app.ErrorLog.Printf("telegram notification: %s\n", err.Error())
+		app.LogError(err)
 		return
 	}
 
@@ -57,13 +57,13 @@ func SendNotification(
 
 	resp, err := api.Send(request)
 	if err != nil {
-		app.ErrorLog.Printf("telegram notification: %s\n", err.Error())
+		app.LogError(err)
 		return
 	}
 
 	buf, err := io.ReadAll(resp.Body)
 	if err != nil {
-		app.ErrorLog.Printf("telegram notification: %s\n", err.Error())
+		app.LogError(err)
 		return
 	}
 

@@ -45,6 +45,11 @@ func (app *Application) ClientError(w http.ResponseWriter, status int) {
 	http.Error(w, http.StatusText(status), status)
 }
 
+func (app *Application) LogError(err error) {
+	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
+	app.ErrorLog.Println(trace)
+}
+
 func RealRemoteAddress(r *http.Request) string {
 	addr := r.Header.Get("X-Real-IP")
 	if addr == "" {
