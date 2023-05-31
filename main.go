@@ -2,6 +2,8 @@ package main
 
 import (
 	"database/sql"
+	"github.com/doug-martin/goqu/v9"
+	_ "github.com/doug-martin/goqu/v9/dialect/mysql"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
@@ -27,6 +29,8 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
+	goqu.SetTimeLocation(time.Local)
+
 	defer db.Close()
 
 	app := &container.Application{
@@ -37,6 +41,7 @@ func main() {
 
 	router := getRoutes(app)
 	handler := middlewares.CDN(router)
+	handler = middlewares.Track(handler, app)
 	handler = middlewares.Recover(handler, app)
 	handler = middlewares.AccessLog(handler, app)
 	handler = middlewares.ResponseWrapper(handler)
