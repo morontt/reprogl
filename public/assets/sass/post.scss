@@ -78,13 +78,17 @@
                     }
                 }
                 @media only screen and (min-width: 64em) {
-                    padding-top: rem-calc(40);
+                    padding-top: rem-calc(15);
                     line-height: 1.1;
                     height: auto;
+                }
+                @media only screen and (min-width: 64em) and (min-height: rem-calc(720)) {
+                    padding-top: rem-calc(40);
                     .blog-logo {
+                        display: block;
+                        text-align: center;
                         img {
                             width: rem-calc(150);
-                            margin-left: rem-calc(35);
                             border-radius: rem-calc(10);
                         }
                     }
@@ -246,6 +250,12 @@
             display: none;
             @media only screen and (min-width: 64em) {
                 display: block;
+            }
+            @media only screen and (min-width: 64em) and (min-height: rem-calc(720)) {
+                a {
+                    display: block;
+                    text-align: center;
+                }
             }
         }
     }
