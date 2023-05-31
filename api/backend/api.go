@@ -7,6 +7,8 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"sync"
+
 	"xelbot.com/reprogl/api"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/security"
@@ -49,6 +51,7 @@ type CreateCommentResponse struct {
 }
 
 var apiURL string
+var backendLocker sync.Mutex
 
 func init() {
 	cnf := container.GetConfig()
@@ -89,7 +92,7 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set(wsseHeader, wsseToken)
 
-	response, err := api.Send(request)
+	response, err := send(request)
 	if err != nil {
 		return nil, err
 	}
@@ -109,4 +112,11 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 	}
 
 	return &result, nil
+}
+
+func send(req *http.Request) (*http.Response, error) {
+	backendLocker.Lock()
+	defer backendLocker.Unlock()
+
+	return api.Send(req)
 }

@@ -7,7 +7,9 @@ import (
 	"io"
 	"net/http"
 	"regexp"
+	"sync"
 	"unicode/utf8"
+
 	"xelbot.com/reprogl/api"
 	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/container"
@@ -23,6 +25,8 @@ type message struct {
 
 var telegramAdminId int
 var telegramToken string
+
+var telegramLocker sync.Mutex
 
 func init() {
 	cnf := container.GetConfig()
@@ -55,7 +59,7 @@ func SendNotification(
 
 	request.Header.Set("Content-Type", "application/json")
 
-	resp, err := api.Send(request)
+	resp, err := send(request)
 	if err != nil {
 		app.ErrorLog.Printf("telegram notification: %s\n", err.Error())
 		return
@@ -127,4 +131,11 @@ func escapeMarkdownCharacters(content string) string {
 	}
 
 	return string(buffer)
+}
+
+func send(req *http.Request) (*http.Response, error) {
+	telegramLocker.Lock()
+	defer telegramLocker.Unlock()
+
+	return api.Send(req)
 }
