@@ -71,10 +71,14 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		articleId = articleRepo.GetIdBySlug(matches[slugIndex])
 	}
 
-	err = repo.SaveTracking(activity, userAgentId, articleId)
-	if err != nil {
-		app.LogError(err)
-		return
+	if !testItem(activity.FingerPrint) {
+		err = repo.SaveTracking(activity, userAgentId, articleId)
+		if err != nil {
+			app.LogError(err)
+			return
+		}
+
+		setItem(activity.FingerPrint)
 	}
 }
 
