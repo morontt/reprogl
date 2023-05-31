@@ -3,12 +3,13 @@ package container
 import (
 	"database/sql"
 	"fmt"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"regexp"
 	"runtime"
 	"runtime/debug"
+
+	"github.com/gorilla/mux"
 )
 
 var Version string
@@ -50,18 +51,6 @@ func (app *Application) LogError(err error) {
 	app.ErrorLog.Println(trace)
 }
 
-func RealRemoteAddress(r *http.Request) string {
-	addr := r.Header.Get("X-Real-IP")
-	if addr == "" {
-		addr = r.Header.Get("X-Forwarded-For")
-		if addr == "" {
-			addr = r.RemoteAddr
-		}
-	}
-
-	return addr
-}
-
 func (app *Application) URLGenerator() URLGenerator {
 	return func(routeName string, absoluteURL bool, pairs ...string) string {
 		url, err := app.Router.Get(routeName).URL(pairs...)
@@ -76,8 +65,4 @@ func (app *Application) URLGenerator() URLGenerator {
 
 		return prefix + url.String()
 	}
-}
-
-func IsCDN(r *http.Request) bool {
-	return r.Header.Get("Via") == "BunnyCDN"
 }

@@ -1,7 +1,6 @@
 package tracking
 
 import (
-	"crypto/md5"
 	"errors"
 	"fmt"
 	"net"
@@ -9,6 +8,7 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
@@ -26,13 +26,17 @@ func CreateActivity(req *http.Request) *trackmodels.Activity {
 		return nil
 	}
 
-	return &trackmodels.Activity{
+	activity := &trackmodels.Activity{
 		Time:         time.Now(),
 		IsCDN:        container.IsCDN(req),
 		Addr:         ip,
 		UserAgent:    req.UserAgent(),
 		RequestedURI: req.URL.RequestURI(),
 	}
+
+	setupBrowserPassiveFingerprint(req, activity)
+
+	return activity
 }
 
 func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
@@ -44,10 +48,8 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		return
 	}
 
-	agentHash := userAgentHash(activity.UserAgent)
-
 	repo := repositories.TrackingRepository{DB: app.DB}
-	agent, err := repo.GetAgentByHash(agentHash)
+	agent, err := repo.GetAgentByHash(container.MD5(activity.UserAgent))
 	if err != nil {
 		if errors.Is(err, models.RecordNotFound) {
 			userAgentId, err = repo.SaveTrackingAgent(activity)
@@ -76,9 +78,13 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 	}
 }
 
-func userAgentHash(s string) string {
-	hash := md5.New()
-	hash.Write([]byte(s))
-
-	return fmt.Sprintf("%x", hash.Sum(nil))
+func setupBrowserPassiveFingerprint(req *http.Request, a *trackmodels.Activity) {
+	a.FingerPrint = container.MD5(
+		fmt.Sprintf(
+			"%s:%s:%s",
+			a.UserAgent,
+			a.Addr.String(),
+			req.URL.RequestURI(),
+		),
+	)
 }

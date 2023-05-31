@@ -3,7 +3,9 @@ package repositories
 import (
 	"database/sql"
 	"errors"
+
 	"github.com/doug-martin/goqu/v9"
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	trackmodels "xelbot.com/reprogl/utils/tracking/models"
 )
@@ -51,7 +53,7 @@ func (tr *TrackingRepository) SaveTrackingAgent(activity *trackmodels.Activity) 
 	result, err := tr.DB.Exec(
 		query,
 		activity.UserAgent,
-		activity.AgentHash(),
+		container.MD5(activity.UserAgent),
 		1,
 		activity.Time,
 	)
