@@ -18,7 +18,7 @@ func Track(next http.Handler, app *container.Application) http.Handler {
 				activity.Status = lrw.Status()
 			}
 
-			tracking.SaveActivity(activity, app)
+			go tracking.SaveActivity(activity, app)
 		}
 	})
 }
