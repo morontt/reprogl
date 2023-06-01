@@ -311,6 +311,10 @@
                     a {
                         @include corner-link;
                     }
+                    table {
+                        display: block;
+                        overflow: auto;
+                    }
                 }
                 .post-header-content {
                     margin-bottom: rem-calc(60);

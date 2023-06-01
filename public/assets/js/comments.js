@@ -1,6 +1,10 @@
 $(function () {
     var form = $('#comment_form');
     if (form.length) {
+        var storageLocal = window.localStorage;
+
+        initCommentator();
+
         var comment_url = form.attr('data-url');
         var comments_section = $('section.comments');
 
@@ -32,6 +36,7 @@ $(function () {
                 data: formData,
                 type: 'POST',
                 success: function(data) {
+                    saveCommentator();
                     clearErrors();
                     if (data.valid) {
                         $('#comments-wrapper').append($('#comment_add'));
@@ -65,5 +70,27 @@ $(function () {
             $('#comments-wrapper').append($('#comment_add'));
             $('#parentId').val(0);
         });
+
+        function initCommentator() {
+            if (storageLocal) {
+                if (storageLocal.getItem('nickname')) {
+                    $('#name').val(storageLocal.getItem('nickname'));
+                }
+                if (storageLocal.getItem('email')) {
+                    $('#mail').val(storageLocal.getItem('email'));
+                }
+                if (storageLocal.getItem('website')) {
+                    $('#website').val(storageLocal.getItem('website'));
+                }
+            }
+        }
+
+        function saveCommentator() {
+            if (storageLocal) {
+                storageLocal.setItem('nickname', $('#name').val());
+                storageLocal.setItem('email', $('#mail').val());
+                storageLocal.setItem('website', $('#website').val());
+            }
+        }
     }
 });
