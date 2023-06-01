@@ -345,6 +345,7 @@ html.no-csstransforms3d {
             height: rem-calc(100);
             font-size: rem-calc(36);
             text-align: center;
+            z-index: 2;
             .fa {
                 cursor: pointer;
                 line-height: rem-calc(100);
