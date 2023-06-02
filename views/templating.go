@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"net/http"
 	"strings"
+
 	"xelbot.com/reprogl/container"
 )
 
@@ -73,7 +74,7 @@ func LoadViewSet() error {
 		"author_telegram": authorTelegram,
 		"substr":          subString,
 		"time_tag":        timeTag,
-		"sri":             subresourceIntegrity,
+		"asset":           assetTag,
 		"go_version":      goVersion,
 		"cnt_comments":    commentsCountString,
 		"flag_cnt":        flagCounterImage(true),

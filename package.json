@@ -1,6 +1,6 @@
 {
     "name": "reprogl",
-    "version": "0.0.1",
+    "version": "0.3.0",
     "private": true,
     "author": {
         "name": "Alexander Harchenko",
@@ -10,13 +10,13 @@
     "license": "MIT",
     "dependencies": {
         "foundation-sites": "5.5.3",
-        "grunt": "1.4.1",
-        "grunt-contrib-concat": "2.0.0",
-        "grunt-contrib-cssmin": "4.0.0",
-        "grunt-contrib-uglify": "5.0.1",
+        "grunt": "1.6.1",
+        "grunt-contrib-concat": "2.1.0",
+        "grunt-contrib-cssmin": "5.0.0",
+        "grunt-contrib-uglify": "5.2.2",
         "grunt-sass": "3.1.0",
         "jquery": "^1.12.4",
-        "node-sass": "^7.0.1",
+        "node-sass": "9.0.0",
         "normalize.css": "3.0.3"
     }
 }
