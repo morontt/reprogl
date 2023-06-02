@@ -11,6 +11,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-sass');
 
     grunt.initConfig({
+        banner_format: '/* <%= pkg.name %> v<%= pkg.version %> --- <%= grunt.template.today("dd mmm yyyy HH:MM:ss o") %> */\n',
         pkg: grunt.file.readJSON('package.json'),
         sass: {
             options: {
@@ -35,7 +36,7 @@ module.exports = function (grunt) {
                     stripBanners: {
                         block: true
                     },
-                    banner: '/*! <%= pkg.name %> --- <%= grunt.template.today("dd mmm yyyy HH:MM:ss") %> */\n'
+                    banner: '<%= banner_format %>'
                 },
                 src: [
                     'node_modules/normalize.css/normalize.css',
@@ -59,7 +60,7 @@ module.exports = function (grunt) {
                     stripBanners: {
                         block: true
                     },
-                    banner: '/*! <%= pkg.name %> --- <%= grunt.template.today("dd mmm yyyy HH:MM:ss") %> */\n'
+                    banner: '<%= banner_format %>'
                 },
                 src: [
                     'node_modules/foundation-sites/js/vendor/modernizr.js',
@@ -92,22 +93,25 @@ module.exports = function (grunt) {
             options: {
                 shorthandCompacting: false,
                 roundingPrecision: -1,
+                format: 'keep-breaks',
                 sourceMap: false
             },
             target: {
                 files: {
-                    'public/assets/css/<%= pkg.name %>.min.css': ['<%= concat.css_main.dest %>']
+                    'public/assets/css/<%= pkg.name %>_temp.min.css': ['<%= concat.css_main.dest %>']
                 }
             }
         },
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> v<%= pkg.version %> ' +
-                    '--- <%= grunt.template.today("dd mmm yyyy HH:MM:ss") %> */\n'
+                output: {
+                    ascii_only: true,
+                    max_line_len: 160
+                }
             },
             dist: {
                 files: {
-                    'public/assets/js/<%= pkg.name %>.min.js': ['<%= concat.js.dest %>']
+                    'public/assets/js/<%= pkg.name %>_temp.min.js': ['<%= concat.js.dest %>']
                 }
             }
         }
