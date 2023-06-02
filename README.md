@@ -1,6 +1,6 @@
 # Reprogl
 
-Source code of new version my blog (coming soon)
+Source code of new version my [blog](https://morontt.info/)
 
 This project is part of my personal blog system. Admin panel and information about the database (container, migrations,
 etc.) are located [here](https://github.com/morontt/zend-blog-3-backend).
@@ -13,11 +13,15 @@ Copy config file from dist and build application
   cp .env{.dist,} # edit the settings if necessary
   cp app.ini{.dist,}
 
+  docker compose build
+  docker compose run --rm nodejs bash -c "yarn install"
+
+  ./assets.sh
   ./build.sh
 ```
 
 Start docker-compose and application
 
 ```bash
-  docker-compose up --build
+  docker compose up
 ```
