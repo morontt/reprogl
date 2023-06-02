@@ -283,6 +283,7 @@
             min-height: 100%;
             .post-view-article {
                 .post-article-content {
+                    text-align: justify;
                     p a,
                     ul a {
                         color: $color-main-contrast;
@@ -301,6 +302,9 @@
                         }
                     }
                     p {
+                        -webkit-hyphens: auto;
+                        -moz-hyphens: auto;
+                        -ms-hyphens: auto;
                         hyphens: auto;
                         &.notice {
                             background: darken($color-main-light, 3%);
