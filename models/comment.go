@@ -1,11 +1,12 @@
 package models
 
 import (
-	"crypto/md5"
 	"database/sql"
 	"fmt"
 	"strings"
 	"time"
+
+	"xelbot.com/reprogl/container"
 )
 
 type Commentator struct {
@@ -15,6 +16,7 @@ type Commentator struct {
 	CommentatorID sql.NullInt32
 	AuthorID      sql.NullInt32
 	CommentsCount int
+	ForceImage    bool
 }
 
 type Comment struct {
@@ -41,17 +43,19 @@ func (c *Comment) Avatar() (src string) {
 }
 
 func (ctt *Commentator) Avatar() (src string) {
-	if ctt.AuthorID.Valid {
-		hash := md5.New()
-		hash.Write([]byte(fmt.Sprintf("avatar%d", ctt.AuthorID.Int32)))
-		hashString := fmt.Sprintf("%X", hash.Sum(nil))
-
-		src = cdnBaseURL + "/images/avatar/" + hashString[2:8] + ".png"
-	} else {
-		src = ctt.gravatar()
+	var str string
+	switch {
+	case ctt.CommentatorID.Valid && !ctt.ForceImage:
+		return ctt.gravatar()
+	case ctt.CommentatorID.Valid && ctt.ForceImage:
+		str = fmt.Sprintf("ratava%d", ctt.CommentatorID.Int32)
+	case ctt.AuthorID.Valid:
+		str = fmt.Sprintf("avatar%d", ctt.AuthorID.Int32)
 	}
 
-	return
+	hashString := strings.ToUpper(container.MD5(str))
+
+	return cdnBaseURL + "/images/avatar/" + hashString[2:8] + ".png"
 }
 
 func (ctt *Commentator) gravatar() string {
@@ -67,26 +71,21 @@ func (ctt *Commentator) gravatar() string {
 	return fmt.Sprintf("//www.gravatar.com/avatar/%s?s=80&d=%s", ctt.gravatarHash(), defaults[idx])
 }
 
-func (ctt *Commentator) gravatarHash() string {
-	var bytes []byte
-
+func (ctt *Commentator) gravatarHash() (hash string) {
 	if ctt.Email.Valid {
-		bytes = md5sum(ctt.Email.String)
+		hash = md5sum(ctt.Email.String)
 	} else {
-		bytes = md5sum(ctt.Name)
+		hash = md5sum(ctt.Name)
 		if ctt.Website.Valid {
-			bytes = md5sum(
-				fmt.Sprintf("%x%s", bytes, ctt.Website.String),
+			hash = md5sum(
+				fmt.Sprintf("%s%s", hash, ctt.Website.String),
 			)
 		}
 	}
 
-	return fmt.Sprintf("%x", bytes)
+	return
 }
 
-func md5sum(s string) []byte {
-	hash := md5.New()
-	hash.Write([]byte(strings.ToLower(strings.TrimSpace(s))))
-
-	return hash.Sum(nil)
+func md5sum(s string) string {
+	return container.MD5(strings.ToLower(strings.TrimSpace(s)))
 }

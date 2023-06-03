@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+
 	"xelbot.com/reprogl/models"
 )
 
@@ -32,6 +33,7 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 			COALESCE(t.name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
+			COALESCE(t.force_image, 1) AS force_image,
 			c.commentator_id,
 			c.user_id,
 			c.text,
@@ -73,6 +75,7 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 			&comment.Name,
 			&comment.Email,
 			&comment.Website,
+			&comment.ForceImage,
 			&comment.CommentatorID,
 			&comment.AuthorID,
 			&comment.Text,
@@ -97,6 +100,7 @@ func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorLis
 			COALESCE(t.name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
+			COALESCE(t.force_image, 1) AS force_image,
 			src.commentator_id,
 			src.user_id
 		FROM (
@@ -130,6 +134,7 @@ func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorLis
 			&commentator.Name,
 			&commentator.Email,
 			&commentator.Website,
+			&commentator.ForceImage,
 			&commentator.CommentatorID,
 			&commentator.AuthorID)
 

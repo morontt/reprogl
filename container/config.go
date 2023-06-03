@@ -2,9 +2,10 @@ package container
 
 import (
 	"errors"
-	"github.com/gookit/ini/v2"
 	"log"
 	"os"
+
+	"github.com/gookit/ini/v2"
 )
 
 // TODO Auto read config by parameter type and name
