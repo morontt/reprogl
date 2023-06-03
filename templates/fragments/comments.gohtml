@@ -1,6 +1,12 @@
 {{range .Comments}}
 <div class="comment-item depth-{{.Depth}}">
     <div class="comment-header">
+        <div class="avatar">
+            <img src="{{.Avatar}}"
+                 width="80"
+                 height="80"
+                 alt="avatar"/>
+        </div>
         {{time_tag .CreatedAt}}
         {{if .Deleted}}
             (⊙_⊙)

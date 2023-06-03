@@ -24,24 +24,16 @@ section.comments {
             border-radius: 0 0 rem-calc(5) rem-calc(5);
 
             .avatar {
-                box-sizing: content-box;
-                border: $color-main-light 3px solid;
-                background: $color-main-light;
-                padding: 0;
-                height: 80px;
-                width: 80px;
+                @include avatar-style;
                 margin-top: -58px;
-                margin-right: 0.6em;
-                float: left;
-                border-radius: rem-calc(7);
-
-                img {
-                    border-radius: rem-calc(6);
-                }
 
                 @media only screen and (min-width: 48em) {
                     margin-top: -34px;
                     margin-right: 0;
+                }
+
+                @media only screen and (max-width: 40.0625em) {
+                    display: none;
                 }
             }
 
@@ -100,6 +92,21 @@ section.comments {
                 display: block;
                 content: '';
                 clear: both;
+            }
+
+            .avatar {
+                @include avatar-style;
+                display: none;
+            }
+
+            @media only screen and (max-width: 40.0625em) {
+                padding-left: 9px;
+                padding-bottom: 8px;
+                .avatar {
+                    display: block;
+                    margin-top: 3px;
+                    margin-right: 13px;
+                }
             }
         }
 
@@ -194,9 +201,17 @@ section.comments {
     }
 }
 
-section.comments.statistic .comment-item .comment-body .avatar {
-    margin-top: -34px;
-    margin-right: 0;
+section.comments.statistic .comment-item {
+    .comment-body .avatar {
+        margin-top: -34px;
+        display: block;
+    }
+    .comment-body .comment-text {
+        margin-left: 99px;
+    }
+    .comment-header {
+        padding-left: 108px;
+    }
 }
 
 @media only screen and (min-width: 40.0625em) {
