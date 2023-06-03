@@ -70,3 +70,19 @@ $color-headers: $color-main-dark;
         color: darken($color-main-contrast, 10%);
     }
 }
+
+@mixin avatar-style {
+    box-sizing: content-box;
+    border: $color-main-light 3px solid;
+    background: $color-main-light;
+    padding: 0;
+    height: 80px;
+    width: 80px;
+    margin-right: 0.6em;
+    float: left;
+    border-radius: rem-calc(7);
+
+    img {
+        border-radius: rem-calc(6);
+    }
+}
