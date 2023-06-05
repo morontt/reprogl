@@ -15,26 +15,24 @@ done
 
 docker compose run --rm nodejs bash -c "$GRUNTCMD"
 
-CSSMIN=$(md5sum public/assets/css/reprogl.min.css | awk '{print $1}')
-CSSMIN_NEW=$(md5sum public/assets/css/reprogl_temp.min.css | awk '{print $1}')
+function replace_old_asset() {
+  NEW_FILE=$1
+  TARGET=$2
 
-echo "reprogl.min.css      md5: $CSSMIN"
-echo "reprogl_temp.min.css md5: $CSSMIN_NEW"
+  MD5_NEW=$(md5sum $NEW_FILE | awk '{print $1}')
+  MD5_OLD=$(md5sum $TARGET | awk '{print $1}')
 
-if [[ "$CSSMIN" != "$CSSMIN_NEW" ]]; then
-  cat public/assets/css/reprogl_temp.min.css > public/assets/css/reprogl.min.css
-  echo "Replace CSS file"
-fi
+  echo -e "\nmd5: $MD5_NEW  \033[33m$NEW_FILE\033[0m"
+  echo -e "md5: $MD5_OLD  \033[33m$TARGET\033[0m"
+
+  if [[ "$MD5_NEW" != "$MD5_OLD" ]]; then
+    cat $NEW_FILE > $TARGET
+    echo -e "Replace \033[33m$TARGET\033[0m"
+  fi
+}
+
+replace_old_asset public/assets/css/reprogl_temp.min.css public/assets/css/reprogl.min.css
 
 if [[ "$GRUNTCMD" == "grunt" ]]; then
-  JSMIN=$(md5sum public/assets/js/reprogl.min.js | awk '{print $1}')
-  JSMIN_NEW=$(md5sum public/assets/js/reprogl_temp.min.js | awk '{print $1}')
-
-  echo -e "\nreprogl.min.js       md5: $JSMIN"
-  echo "reprogl_temp.min.js  md5: $JSMIN_NEW"
-
-  if [[ "$JSMIN" != "$JSMIN_NEW" ]]; then
-    cat public/assets/js/reprogl_temp.min.js > public/assets/js/reprogl.min.js
-    echo "Replace JS file"
-  fi
+  replace_old_asset public/assets/js/reprogl_temp.min.js public/assets/js/reprogl.min.js
 fi
