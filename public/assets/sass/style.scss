@@ -58,6 +58,10 @@ pre {
     }
 }
 
+.button, button {
+    font-family: $main-font;
+}
+
 a.button {
     text-decoration: none;
     color: $color-main-light;

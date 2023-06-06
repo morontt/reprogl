@@ -8,10 +8,10 @@ $rem-base: 16 !default;
 $row-max-width: rem-calc(1200);
 
 // font family
-$main-font: Consolas, "Lucida Console", monospace;
+$main-font: 'DejaVu Sans Mono', monospace;
 $main-font-weight: 200;
 
-$headers-font: 'Raleway', sans-serif;
+$headers-font: 'DejaVu Sans', sans-serif;
 $headers-weight: 900;
 $headers-transform: none;
 

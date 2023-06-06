@@ -25,7 +25,7 @@ table.highlighttable {
         pre {
             line-height: 125%;
             padding: 0.75em;
-            font-family: 'Roboto Mono', monospace;
+            font-family: $main-font;
             font-size: rem-calc(14);
             margin-bottom: 0;
         }
