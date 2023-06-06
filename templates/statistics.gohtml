@@ -8,49 +8,7 @@
 </div>
 
 <div class="post-view">
-    <aside class="post-view-sidebar scene-element fade-in-left">
-        <div class="post-view-elems">
-            <div class="post-view-elems-header">
-                <a class="blog-logo" href="/">
-                    <img src="{{ cdn }}/images/logo-310.png" alt="Blog Logo">
-                </a>
-                <div class="post-view-menu-bars-mobile js-open-main-menu">
-                    <i class="fa fa-bars"></i>
-                </div>
-            </div>
-            <div class="post-view-elems-body">
-                <!-- for post view only -->
-                {{/* #is "post" */}}
-                    <div class="post-view-elems-share">
-                        <a class="icon-github"
-                           href="{{author_github}}">
-                            <span class="fa-stack fa-lg">
-                                <i class="fa fa-square fa-stack-2x fa-inverse"></i>
-                                <i class="fa fa-github fa-stack-1x"></i>
-                            </span>
-                        </a>
-                        <a class="icon-telegram"
-                           href="{{author_telegram}}">
-                            <span class="fa-stack fa-lg">
-                                <i class="fa fa-square fa-stack-2x fa-inverse"></i>
-                                <i class="fa fa-stack-1x">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
-                                        <use xlink:href="/images/sprites.svg#icon-telegram"></use>
-                                    </svg>
-                                </i>
-                            </span>
-                        </a>
-                    </div>
-                {{/* /is */}}
-                {{render_esi "fragment-recent-posts" "article_id" "0"}}
-            </div>
-            <div class="flagcounter">
-                <a href="//s05.flagcounter.com/more/D9g3">
-                    {{flag_cnt}}
-                </a>
-            </div>
-        </div>
-    </aside>
+    {{template "sidebar" .DummyArticle}}
     <main class="post-view-content scene-element fade-in-right" role="main">
         <div class="post-view-right-container">
             <article class="post-view-article post">
@@ -66,9 +24,9 @@
                             <div class="post-title-separator"></div>
                         </div>
                         <div class="post-article-content">
-                            <quote>
+                            <p class="notice">
                                 &ldquo;Существуют три вида лжи: ложь, наглая ложь и статистика.&rdquo;<br/>Марк Твен
-                            </quote>
+                            </p>
                             <p>Ниже представлены самые активные комментаторы за всё время существования блога.</p>
                             <section class="comments statistic">
                                 <div class="row">

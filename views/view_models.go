@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"time"
+
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 )
@@ -50,10 +51,17 @@ type InfoPageData struct {
 	HeaderInfo HeaderLineInfo
 }
 
+type SidebarDummyArticle struct {
+	HasImage  bool
+	IsArticle bool
+	IdString  string
+}
+
 type StatisticsPageData struct {
 	Meta
 	Now          time.Time
 	Commentators *models.CommentatorList
+	DummyArticle SidebarDummyArticle
 }
 
 type FragmentCategoriesData struct {
@@ -147,5 +155,9 @@ func NewStatisticsPageData() *StatisticsPageData {
 	meta.AppendName("description", "Статистика посещений и комментариев.")
 	meta.AppendTitle("Статистика")
 
-	return &StatisticsPageData{Meta: meta, Now: time.Now()}
+	return &StatisticsPageData{
+		Meta:         meta,
+		Now:          time.Now(),
+		DummyArticle: SidebarDummyArticle{IdString: "0"},
+	}
 }

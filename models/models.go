@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
 	"xelbot.com/reprogl/container"
 )
 
@@ -128,4 +129,8 @@ func (a *ArticleBasePart) HasPreview() bool {
 
 func (a *ArticleBasePart) IdString() string {
 	return strconv.Itoa(a.ID)
+}
+
+func (a *ArticleBasePart) IsArticle() bool {
+	return true
 }

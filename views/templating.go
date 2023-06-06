@@ -33,12 +33,14 @@ func LoadViewSet() error {
 			"./templates/partials/author-info.gohtml",
 			"./templates/partials/comment-form.gohtml",
 			"./templates/partials/menu.gohtml",
+			"./templates/partials/sidebar.gohtml",
 			"./templates/layout/base.gohtml",
 		},
 		"statistics.gohtml": {
 			"./templates/statistics.gohtml",
 			"./templates/partials/author-info.gohtml",
 			"./templates/partials/menu.gohtml",
+			"./templates/partials/sidebar.gohtml",
 			"./templates/layout/base.gohtml",
 		},
 		"index.gohtml": {

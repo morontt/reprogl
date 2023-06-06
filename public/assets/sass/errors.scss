@@ -1,3 +1,5 @@
+@import 'settings';
+
 $color-404: #FFAB00;
 
 * {
@@ -9,12 +11,13 @@ body {
     padding: 0;
     margin: 0;
     background-image: url('/errors/FVS.jpg');
+    font-family: $main-font;
 }
 
 .error-div {
     position: relative;
     height: 100vh;
-    background-color: rgba(34, 34, 34, 0.95);
+    background-color: rgba(34, 34, 34, 0.85);
 
     .error {
         position: absolute;
@@ -40,7 +43,6 @@ body {
         line-height: 153px;
 
         h1 {
-            font-family: Consolas, "Lucida Console", monospace;
             color: #222;
             font-size: 130px;
             letter-spacing: 10px;
@@ -55,7 +57,6 @@ body {
     }
 
     p {
-        font-family: Consolas, "Lucida Console", monospace;
         color: #c9c9c9;
         font-size: 16px;
         font-weight: 400;
@@ -64,7 +65,6 @@ body {
     }
 
     a {
-        font-family: Consolas, "Lucida Console", monospace;
         font-size: 14px;
         text-decoration: none;
         text-transform: uppercase;
