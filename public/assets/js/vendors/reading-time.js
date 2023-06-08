@@ -28,6 +28,7 @@ Licensed under the MIT license
             round: true,
             lang: 'en',
             lessThanAMinuteString: '',
+            minShortFormString: '',
             prependTimeString: '',
             prependWordString: '',
             remotePath: null,
@@ -52,6 +53,7 @@ Licensed under the MIT license
         var lessThanAMinuteString = plugin.settings.lessThanAMinuteString;
         var prependTimeString = plugin.settings.prependTimeString;
         var prependWordString = plugin.settings.prependWordString;
+        var minShortFormString = plugin.settings.minShortFormString
         var remotePath = plugin.settings.remotePath;
         var remoteTarget = plugin.settings.remoteTarget;
 
@@ -61,42 +63,42 @@ Licensed under the MIT license
 
             var lessThanAMinute = lessThanAMinuteString || "Meno di un minuto";
 
-            var minShortForm = 'min';
+            var minShortForm = minShortFormString || 'min';
 
         //if lang is set to french
         } else if(lang == 'fr') {
 
             var lessThanAMinute = lessThanAMinuteString || "Moins d'une minute";
 
-            var minShortForm = 'min';
+            var minShortForm = minShortFormString || 'min';
 
         //if lang is set to german
         } else if(lang == 'de') {
 
             var lessThanAMinute = lessThanAMinuteString || "Weniger als eine Minute";
 
-            var minShortForm = 'min';
+            var minShortForm = minShortFormString || 'min';
 
         //if lang is set to spanish
         } else if(lang == 'es') {
 
             var lessThanAMinute = lessThanAMinuteString || "Menos de un minuto";
 
-            var minShortForm = 'min';
+            var minShortForm = minShortFormString || 'min';
 
         //if lang is set to dutch
         } else if(lang == 'nl') {
 
             var lessThanAMinute = lessThanAMinuteString || "Minder dan een minuut";
 
-            var minShortForm = 'min';
+            var minShortForm = minShortFormString || 'min';
 
         //default lang is english
         } else {
 
             var lessThanAMinute = lessThanAMinuteString || 'Less than a minute';
 
-            var minShortForm = 'min';
+            var minShortForm = minShortFormString || 'min';
 
         }
 

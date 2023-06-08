@@ -164,7 +164,9 @@ var anima = (function ($) {
         var $postArticleContent = $('.post-article-content');
         if ($postArticleContent.length) {
             $postArticleContent.readingTime({
-                wordCountTarget: $('.js-post-reading-time').find('.js-word-count')
+                wordCountTarget: $('.js-post-reading-time').find('.js-word-count'),
+                lessThanAMinuteString: 'меньше минуты',
+                minShortFormString: 'мин'
             });
         }
     },
