@@ -8,8 +8,6 @@ import (
 	"regexp"
 	"runtime"
 	"runtime/debug"
-
-	"github.com/gorilla/mux"
 )
 
 var Version string
@@ -23,12 +21,25 @@ type Application struct {
 	ErrorLog *log.Logger
 	InfoLog  *log.Logger
 	DB       *sql.DB
-	Router   *mux.Router
 }
+
+var urlGen URLGenerator
 
 func init() {
 	re := regexp.MustCompile(`^\D*(\d+\.\d+(?:\.\d+)?)`)
 	GoVersionNumbers = re.FindStringSubmatch(runtime.Version())[1]
+}
+
+func SetURLGenerator(u URLGenerator) {
+	urlGen = u
+}
+
+func GenerateURL(routeName string, pairs ...string) string {
+	return urlGen(routeName, false, pairs...)
+}
+
+func GenerateAbsoluteURL(routeName string, pairs ...string) string {
+	return urlGen(routeName, true, pairs...)
 }
 
 func (app *Application) NotFound(w http.ResponseWriter) {
@@ -49,20 +60,4 @@ func (app *Application) ClientError(w http.ResponseWriter, status int) {
 func (app *Application) LogError(err error) {
 	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
 	app.ErrorLog.Println(trace)
-}
-
-func (app *Application) URLGenerator() URLGenerator {
-	return func(routeName string, absoluteURL bool, pairs ...string) string {
-		url, err := app.Router.Get(routeName).URL(pairs...)
-		if err != nil {
-			panic(err)
-		}
-
-		var prefix string
-		if absoluteURL {
-			prefix = "https://" + cnf.Host
-		}
-
-		return prefix + url.String()
-	}
 }

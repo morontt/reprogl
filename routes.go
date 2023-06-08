@@ -36,7 +36,5 @@ func getRoutes(app *container.Application) *mux.Router {
 		handlers.RecentPostsFragment(app),
 	).Name("fragment-recent-posts")
 
-	app.Router = siteMux
-
 	return siteMux
 }

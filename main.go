@@ -2,14 +2,15 @@ package main
 
 import (
 	"database/sql"
-	"github.com/doug-martin/goqu/v9"
-	_ "github.com/doug-martin/goqu/v9/dialect/mysql"
-	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
 	"os"
 	"runtime"
 	"time"
+
+	"github.com/doug-martin/goqu/v9"
+	_ "github.com/doug-martin/goqu/v9/dialect/mysql"
+	_ "github.com/go-sql-driver/mysql"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/middlewares"
 	"xelbot.com/reprogl/views"
@@ -46,7 +47,21 @@ func main() {
 	handler = middlewares.AccessLog(handler, app)
 	handler = middlewares.ResponseWrapper(handler)
 
-	views.SetRouter(router)
+	urlGenerator := func(routeName string, absoluteURL bool, pairs ...string) string {
+		url, err := router.Get(routeName).URL(pairs...)
+		if err != nil {
+			panic(err)
+		}
+
+		var prefix string
+		if absoluteURL {
+			prefix = "https://" + cfg.Host
+		}
+
+		return prefix + url.String()
+	}
+
+	container.SetURLGenerator(urlGenerator)
 	handleError(views.LoadViewSet(), errorLog)
 
 	server := &http.Server{

@@ -2,35 +2,24 @@ package views
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"html/template"
 	"strings"
 	"time"
+
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 )
-
-var router *mux.Router
-
-func SetRouter(r *mux.Router) {
-	router = r
-}
 
 func rawHTML(s string) template.HTML {
 	return template.HTML(s)
 }
 
 func urlGenerator(routeName string, pairs ...string) string {
-	url, err := router.Get(routeName).URL(pairs...)
-	if err != nil {
-		panic(err)
-	}
-
-	return url.String()
+	return container.GenerateURL(routeName, pairs...)
 }
 
 func absUrlGenerator(routeName string, pairs ...string) string {
-	return "https://" + cfg.Host + urlGenerator(routeName, pairs...)
+	return container.GenerateAbsoluteURL(routeName, pairs...)
 }
 
 func tags(tl models.TagList) template.HTML {

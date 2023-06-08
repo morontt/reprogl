@@ -3,10 +3,8 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
-	"xelbot.com/reprogl/container"
 )
 
 func pageOrRedirect(params map[string]string) (int, bool) {
@@ -30,15 +28,6 @@ func doESI(w http.ResponseWriter) {
 
 func cacheControl(w http.ResponseWriter, age int) {
 	w.Header().Set("Cache-Control", fmt.Sprintf("max-age=%d", age))
-}
-
-func urlBySlugGenerator(router *mux.Router) func(string) string {
-	cfg := container.GetConfig()
-	return func(slug string) string {
-		url, _ := router.Get("article").URL("slug", slug)
-
-		return "https://" + cfg.Host + url.String()
-	}
 }
 
 func jsonResponse(w http.ResponseWriter, statusCode int, data any) {

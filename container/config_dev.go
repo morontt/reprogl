@@ -8,6 +8,7 @@ const (
 	DefaultEsiTTL = 30
 	StatisticsTTL
 	RobotsTxtTTL
+	FeedTTL
 	devMode = true
 
 	TrackExpiration time.Duration = time.Minute

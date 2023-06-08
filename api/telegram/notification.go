@@ -39,7 +39,7 @@ func SendNotification(
 	comment *backend.CreatedCommentDTO,
 	article *models.ArticleForComment,
 ) {
-	text := generateText(comment, article, app.URLGenerator())
+	text := generateText(comment, article)
 	app.InfoLog.Printf("Telegram notification text:\n%s", text)
 
 	jsonBody, err := json.Marshal(createMessage(text))
@@ -86,11 +86,10 @@ func createMessage(text string) message {
 func generateText(
 	comment *backend.CreatedCommentDTO,
 	article *models.ArticleForComment,
-	router container.URLGenerator,
 ) (msg string) {
 	msg = fmt.Sprintf(
 		"Кто\\-то оставил [комментарий](%s)\n\n*ID*: %d\n",
-		router("article", true, "slug", article.Slug),
+		container.GenerateAbsoluteURL("article", "slug", article.Slug),
 		comment.ID,
 	)
 	if len(comment.Name) > 0 {

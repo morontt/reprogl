@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime"
+
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
@@ -15,7 +16,7 @@ func SitemapAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if container.IsCDN(r) {
 			w.Header().Set("Content-Type", "application/xml")
-			w.Header().Set("Cache-Control", "max-age=7200")
+			cacheControl(w, container.FeedTTL)
 			w.Write([]byte(xml.Header + "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"></urlset>\n"))
 
 			return
@@ -29,10 +30,8 @@ func SitemapAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		f := urlBySlugGenerator(app.Router)
-
 		for _, location := range *articles {
-			location.URL = f(location.Slug)
+			location.URL = container.GenerateAbsoluteURL("article", "slug", location.Slug)
 		}
 
 		urlSet := models.SitemapURLSet{Items: articles}
@@ -45,7 +44,7 @@ func SitemapAction(app *container.Application) http.HandlerFunc {
 		}
 
 		w.Header().Set("Content-Type", "application/xml")
-		w.Header().Set("Cache-Control", "max-age=7200")
+		cacheControl(w, container.FeedTTL)
 		_, err = w.Write([]byte(xml.Header + `<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>` + "\n"))
 		if err != nil {
 			app.ServerError(w, err)
@@ -72,10 +71,8 @@ func FeedAction(app *container.Application, feedType int) http.HandlerFunc {
 			return
 		}
 
-		f := urlBySlugGenerator(app.Router)
-
 		for _, location := range *articles {
-			location.URL = f(location.Slug)
+			location.URL = container.GenerateAbsoluteURL("article", "slug", location.Slug)
 		}
 
 		switch feedType {
@@ -97,7 +94,7 @@ func FeedAction(app *container.Application, feedType int) http.HandlerFunc {
 		}
 
 		w.Header().Set("Content-Type", feed.ContentType())
-		w.Header().Set("Cache-Control", "max-age=5")
+		cacheControl(w, container.FeedTTL)
 		_, err = w.Write([]byte(xml.Header))
 		if err != nil {
 			app.ServerError(w, err)

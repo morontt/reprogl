@@ -3,9 +3,10 @@ package handlers
 import (
 	"errors"
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
@@ -35,7 +36,7 @@ func IndexAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		articlesPaginator.URLGenerator = indexPaginationURLs(app.Router)
+		articlesPaginator.URLGenerator = indexPaginationURLs()
 
 		tagRepo := repositories.TagRepository{DB: app.DB}
 		err = tagRepo.PopulateTagsToArticles(articlesPaginator.Items)
@@ -77,11 +78,7 @@ func CategoryAction(app *container.Application) http.HandlerFunc {
 
 		page, needsRedirect := pageOrRedirect(vars)
 		if needsRedirect {
-			url, err := app.Router.Get("category-first").URL("slug", slug)
-			if err != nil {
-				panic(err)
-			}
-			http.Redirect(w, r, url.String(), 301)
+			http.Redirect(w, r, container.GenerateURL("category-first", "slug", slug), http.StatusMovedPermanently)
 
 			return
 		}
@@ -98,7 +95,7 @@ func CategoryAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		articlesPaginator.URLGenerator = categoryPaginationURLs(app.Router, slug)
+		articlesPaginator.URLGenerator = categoryPaginationURLs(slug)
 
 		tagRepo := repositories.TagRepository{DB: app.DB}
 		err = tagRepo.PopulateTagsToArticles(articlesPaginator.Items)
@@ -137,11 +134,7 @@ func TagAction(app *container.Application) http.HandlerFunc {
 
 		page, needsRedirect := pageOrRedirect(vars)
 		if needsRedirect {
-			url, err := app.Router.Get("tag-first").URL("slug", slug)
-			if err != nil {
-				panic(err)
-			}
-			http.Redirect(w, r, url.String(), 301)
+			http.Redirect(w, r, container.GenerateURL("tag-first", "slug", slug), http.StatusMovedPermanently)
 
 			return
 		}
@@ -158,7 +151,7 @@ func TagAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		articlesPaginator.URLGenerator = tagPaginationURLs(app.Router, slug)
+		articlesPaginator.URLGenerator = tagPaginationURLs(slug)
 
 		err = tagRepo.PopulateTagsToArticles(articlesPaginator.Items)
 		if err != nil {
@@ -177,7 +170,7 @@ func TagAction(app *container.Application) http.HandlerFunc {
 	}
 }
 
-func indexPaginationURLs(router *mux.Router) models.URLGenerator {
+func indexPaginationURLs() models.URLGenerator {
 	return func(page int, dir models.PaginationDirection) string {
 		switch dir {
 		case models.PaginationNext:
@@ -190,24 +183,19 @@ func indexPaginationURLs(router *mux.Router) models.URLGenerator {
 			return "/"
 		}
 
-		url, err := router.Get("blog-page").URL("page", strconv.Itoa(page))
-		if err != nil {
-			panic(err)
-		}
-
-		return url.String()
+		return container.GenerateURL("blog-page", "page", strconv.Itoa(page))
 	}
 }
 
-func categoryPaginationURLs(router *mux.Router, slug string) models.URLGenerator {
-	return paginationURLsWithSlug(router, slug, "category-first", "category")
+func categoryPaginationURLs(slug string) models.URLGenerator {
+	return paginationURLsWithSlug(slug, "category-first", "category")
 }
 
-func tagPaginationURLs(router *mux.Router, slug string) models.URLGenerator {
-	return paginationURLsWithSlug(router, slug, "tag-first", "tag")
+func tagPaginationURLs(slug string) models.URLGenerator {
+	return paginationURLsWithSlug(slug, "tag-first", "tag")
 }
 
-func paginationURLsWithSlug(router *mux.Router, slug, firstRouteName, othersRouteName string) models.URLGenerator {
+func paginationURLsWithSlug(slug, firstRouteName, othersRouteName string) models.URLGenerator {
 	return func(page int, dir models.PaginationDirection) string {
 		var (
 			routeName string
@@ -232,11 +220,6 @@ func paginationURLsWithSlug(router *mux.Router, slug, firstRouteName, othersRout
 			pairs = append(pairs, strconv.Itoa(page))
 		}
 
-		url, err := router.Get(routeName).URL(pairs...)
-		if err != nil {
-			panic(err)
-		}
-
-		return url.String()
+		return container.GenerateURL(routeName, pairs...)
 	}
 }
