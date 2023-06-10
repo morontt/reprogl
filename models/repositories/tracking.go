@@ -20,7 +20,7 @@ func (tr *TrackingRepository) GetAgentByHash(hash string) (*models.TrackingAgent
 			ta.id,
 			ta.user_agent,
 			ta.hash,
-			ta.bot_filter,
+			ta.is_bot,
 			ta.created_at
 		FROM tracking_agent AS ta
 		WHERE (ta.hash = ?)`
@@ -31,7 +31,7 @@ func (tr *TrackingRepository) GetAgentByHash(hash string) (*models.TrackingAgent
 		&agent.ID,
 		&agent.UserAgent,
 		&agent.Hash,
-		&agent.IsHuman,
+		&agent.IsBot,
 		&agent.CreatedAt)
 
 	if err != nil {
@@ -47,14 +47,14 @@ func (tr *TrackingRepository) GetAgentByHash(hash string) (*models.TrackingAgent
 
 func (tr *TrackingRepository) SaveTrackingAgent(activity *trackmodels.Activity) (int, error) {
 	query := `INSERT INTO tracking_agent
-        (user_agent, hash, bot_filter, created_at)
+        (user_agent, hash, is_bot, created_at)
         VALUES(?, ?, ?, ?)`
 
 	result, err := tr.DB.Exec(
 		query,
 		activity.UserAgent,
 		container.MD5(activity.UserAgent),
-		1,
+		0,
 		activity.Time,
 	)
 	if err != nil {

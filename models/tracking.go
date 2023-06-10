@@ -8,6 +8,6 @@ type TrackingAgent struct {
 	ID        int
 	UserAgent string
 	Hash      string
-	IsHuman   bool
+	IsBot     bool
 	CreatedAt sql.NullTime
 }
