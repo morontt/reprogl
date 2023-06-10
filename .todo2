@@ -5,6 +5,160 @@
       "text": "Remove fonts awesome",
       "priority": "medium",
       "creation": 1686423384
+    },
+    {
+      "text": "Avatar generator #31",
+      "priority": "medium",
+      "creation": 1686423877,
+      "tasks": [
+        {
+          "text": "Use gravatar if picture exist",
+          "priority": "medium",
+          "creation": 1686423927
+        }
+      ]
+    },
+    {
+      "text": "Images gallery in article #30",
+      "priority": "medium",
+      "creation": 1686424057
+    },
+    {
+      "text": "Comments count in article list #29",
+      "priority": "medium",
+      "creation": 1686424087
+    },
+    {
+      "text": "GTmetrix optimization #27",
+      "priority": "medium",
+      "creation": 1686424120
+    },
+    {
+      "text": "External library for cache #25",
+      "priority": "medium",
+      "creation": 1686424143
+    },
+    {
+      "text": "Use SVG images #24",
+      "priority": "medium",
+      "creation": 1686424190,
+      "tasks": [
+        {
+          "text": "use SVG symbols from sprites.svg",
+          "priority": "medium",
+          "creation": 1686424214
+        },
+        {
+          "text": "replace logo to SVG",
+          "priority": "medium",
+          "creation": 1686424232
+        },
+        {
+          "text": "remove fontsawesome",
+          "priority": "medium",
+          "creation": 1686424267
+        }
+      ]
+    },
+    {
+      "text": "ZIP bomb #22",
+      "priority": "medium",
+      "creation": 1686424298
+    },
+    {
+      "text": "Log to file (access, errors) #18",
+      "priority": "medium",
+      "creation": 1686424324,
+      "tasks": [
+        {
+          "text": "maybe use logrotate on production",
+          "priority": "medium",
+          "creation": 1686424345
+        }
+      ]
+    },
+    {
+      "text": "Tracking #17",
+      "priority": "medium",
+      "creation": 1686424373,
+      "tasks": [
+        {
+          "text": "first step - implement tracking like the tracking system in the old blog",
+          "priority": "medium",
+          "creation": 1686424389,
+          "completion": 1686424783
+        },
+        {
+          "text": "after this - add geolocation",
+          "priority": "medium",
+          "creation": 1686424403
+        },
+        {
+          "text": "page view counter by cron-task",
+          "priority": "medium",
+          "creation": 1686424416
+        },
+        {
+          "text": "admin dashboard list for tracking",
+          "priority": "medium",
+          "creation": 1686424430
+        }
+      ]
+    },
+    {
+      "text": "IE and SVG use external source #16",
+      "priority": "medium",
+      "creation": 1686424529,
+      "tasks": [
+        {
+          "text": "https://css-tricks.com/svg-use-external-source/",
+          "priority": "medium",
+          "creation": 1686424547
+        },
+        {
+          "text": "https://css-tricks.com/svg-use-with-external-reference-take-2/",
+          "priority": "medium",
+          "creation": 1686424562
+        },
+        {
+          "text": "https://github.com/jonathantneal/svg4everybody",
+          "priority": "medium",
+          "creation": 1686424574
+        }
+      ]
+    },
+    {
+      "text": "Using embedded templates #14",
+      "priority": "medium",
+      "creation": 1686424604
+    },
+    {
+      "text": "Config refactoring #13",
+      "priority": "medium",
+      "creation": 1686424646
+    },
+    {
+      "text": "After new comment #12",
+      "priority": "medium",
+      "creation": 1686424677,
+      "tasks": [
+        {
+          "text": "geolocation",
+          "priority": "medium",
+          "creation": 1686424694
+        },
+        {
+          "text": "email",
+          "priority": "medium",
+          "creation": 1686424698
+        },
+        {
+          "text": "telegram notification",
+          "priority": "medium",
+          "creation": 1686424710,
+          "completion": 1686424726
+        }
+      ]
     }
   ]
 }
