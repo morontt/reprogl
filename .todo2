@@ -4,11 +4,18 @@
     {
       "text": "Remove fonts awesome",
       "priority": "medium",
-      "creation": 1686423384
+      "creation": 1686423384,
+      "tasks": [
+        {
+          "text": "Glyphicons instead of FontsAwesome",
+          "priority": "medium",
+          "creation": 1686433321
+        }
+      ]
     },
     {
       "text": "Avatar generator #31",
-      "priority": "medium",
+      "priority": "low",
       "creation": 1686423877,
       "tasks": [
         {
@@ -30,7 +37,7 @@
     },
     {
       "text": "GTmetrix optimization #27",
-      "priority": "medium",
+      "priority": "low",
       "creation": 1686424120
     },
     {
@@ -62,12 +69,12 @@
     },
     {
       "text": "ZIP bomb #22",
-      "priority": "medium",
+      "priority": "low",
       "creation": 1686424298
     },
     {
       "text": "Log to file (access, errors) #18",
-      "priority": "medium",
+      "priority": "low",
       "creation": 1686424324,
       "tasks": [
         {
@@ -107,7 +114,7 @@
     },
     {
       "text": "IE and SVG use external source #16",
-      "priority": "medium",
+      "priority": "verylow",
       "creation": 1686424529,
       "tasks": [
         {
@@ -134,7 +141,7 @@
     },
     {
       "text": "Config refactoring #13",
-      "priority": "medium",
+      "priority": "low",
       "creation": 1686424646
     },
     {
