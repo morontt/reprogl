@@ -75,8 +75,7 @@ func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agent
 		"is_cdn":      activity.IsCDN,
 		"status_code": activity.Status,
 
-		"time_created":      activity.Time.Format("2006-01-02 15:04:05.000"),
-		"timestamp_created": int(activity.Time.Unix()),
+		"time_created": activity.Time.Format("2006-01-02 15:04:05.000"),
 	}
 
 	if agentId > 0 {
