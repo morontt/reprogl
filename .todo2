@@ -109,6 +109,11 @@
           "text": "admin dashboard list for tracking",
           "priority": "medium",
           "creation": 1686424430
+        },
+        {
+          "text": "bot detection",
+          "priority": "medium",
+          "creation": 1686466747
         }
       ]
     },
@@ -166,6 +171,21 @@
           "completion": 1686424726
         }
       ]
+    },
+    {
+      "text": "Add telegram instant view",
+      "priority": "verylow",
+      "creation": 1686463040
+    },
+    {
+      "text": "Remove old SyntaxHighlighter",
+      "priority": "low",
+      "creation": 1686463740
+    },
+    {
+      "text": "Lists of most viewed articles on the statistics page",
+      "priority": "medium",
+      "creation": 1686466487
     }
   ]
 }
