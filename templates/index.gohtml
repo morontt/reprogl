@@ -51,8 +51,11 @@
                                                class="post-read-more-btn">Читать далее &crarr;</a>
                                         </div>
                                     {{end}}
-                                    <footer class="post-meta">
-                                        <div>{{tags .Tags }}</div>
+                                    <footer class="post-meta clearfix">
+                                        <div class="left">{{tags .Tags }}</div>
+                                        {{if gt .CommentsCount 0}}
+                                            <div class="right">{{cnt_comments .CommentsCount}}</div>
+                                        {{end}}
                                     </footer>
                                 </div>
                             </div>

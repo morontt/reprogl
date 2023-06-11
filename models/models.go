@@ -33,12 +33,13 @@ type ArticleBasePart struct {
 	CreatedAt    time.Time
 	CategoryName string
 	CategorySlug string
+
+	CommentsCount int
 }
 
 type Article struct {
 	ArticleBasePart
-	Description   sql.NullString
-	CommentsCount int
+	Description sql.NullString
 	FeaturedImage
 	Tags TagList
 }
