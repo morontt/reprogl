@@ -87,7 +87,7 @@
     },
     {
       "text": "Tracking #17",
-      "priority": "medium",
+      "priority": "high",
       "creation": 1686424373,
       "tasks": [
         {
@@ -109,7 +109,8 @@
         {
           "text": "admin dashboard list for tracking",
           "priority": "medium",
-          "creation": 1686424430
+          "creation": 1686424430,
+          "completion": 1686601822
         },
         {
           "text": "bot detection",

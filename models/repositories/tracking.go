@@ -54,7 +54,7 @@ func (tr *TrackingRepository) SaveTrackingAgent(activity *trackmodels.Activity) 
 		query,
 		activity.UserAgent,
 		container.MD5(activity.UserAgent),
-		0,
+		activity.IsBot(),
 		activity.Time,
 	)
 	if err != nil {

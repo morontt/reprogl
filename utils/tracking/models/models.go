@@ -14,3 +14,7 @@ type Activity struct {
 	Status       int
 	FingerPrint  string
 }
+
+func (a *Activity) IsBot() bool {
+	return isBot(a.UserAgent)
+}
