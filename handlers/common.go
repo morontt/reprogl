@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func pageOrRedirect(params map[string]string) (int, bool) {
@@ -28,6 +29,11 @@ func doESI(w http.ResponseWriter) {
 
 func cacheControl(w http.ResponseWriter, age int) {
 	w.Header().Set("Cache-Control", fmt.Sprintf("max-age=%d", age))
+}
+
+func setExpires(w http.ResponseWriter, t time.Time) {
+	t = t.In(time.UTC)
+	w.Header().Set("Expires", fmt.Sprintf("%s GMT", t.Format("Mon, 02 Jan 2006 15:04:05")))
 }
 
 func jsonResponse(w http.ResponseWriter, statusCode int, data any) {

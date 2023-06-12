@@ -51,7 +51,6 @@ func IndexAction(app *container.Application) http.HandlerFunc {
 			templateData.AppendTitle(fmt.Sprintf("Страница %d", page))
 		}
 
-		doESI(w)
 		err = views.WriteTemplate(w, "index.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
@@ -107,7 +106,6 @@ func CategoryAction(app *container.Application) http.HandlerFunc {
 
 		templateData := views.NewCategoryPageData(articlesPaginator, category)
 
-		doESI(w)
 		err = views.WriteTemplate(w, "index.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
@@ -162,7 +160,6 @@ func TagAction(app *container.Application) http.HandlerFunc {
 
 		templateData := views.NewCategoryPageData(articlesPaginator, tag)
 
-		doESI(w)
 		err = views.WriteTemplate(w, "index.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)

@@ -126,6 +126,7 @@ func WriteTemplate(w http.ResponseWriter, name string, data interface{}) error {
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Surrogate-Control", "content=\"ESI/1.0\"")
 	_, err = w.Write([]byte(content))
 	if err != nil {
 		return err

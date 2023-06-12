@@ -33,7 +33,6 @@ func StatisticsAction(app *container.Application) http.HandlerFunc {
 		templateData := views.NewStatisticsPageData()
 		templateData.Commentators = commentators
 
-		doESI(w)
 		cacheControl(w, container.StatisticsTTL)
 		err = views.WriteTemplate(w, "statistics.gohtml", templateData)
 		if err != nil {
