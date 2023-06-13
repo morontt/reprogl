@@ -115,7 +115,8 @@
         {
           "text": "bot detection",
           "priority": "medium",
-          "creation": 1686466747
+          "creation": 1686466747,
+          "completion": 1686666040
         }
       ]
     },
