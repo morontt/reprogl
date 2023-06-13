@@ -1,6 +1,9 @@
 package models
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+)
 
 var engines []string = []string{
 	"googlebot",
@@ -62,13 +65,45 @@ var engines []string = []string{
 	"spider",
 	"crawler",
 	"seokicks",
+	"yacybot",
+	"apache-httpclient",
+	"femtosearchbot",
+	"fetch",
+	"curl/",
+	"wget/",
+	"parser",
+	"ruby/",
+	"go-http-client",
 }
 
+var (
+	regexpJava    = regexp.MustCompile(`^java/\d+\.[\d\._]+$`)
+	regexpHotJava = regexp.MustCompile(`^hotjava/\d+\.[\d\._]+/jre[\d\._x]+$`)
+)
+
 func isBot(agent string) bool {
+	agent = strings.ToLower(agent)
 	for _, substring := range engines {
-		if strings.Contains(strings.ToLower(agent), substring) {
+		if strings.Contains(agent, substring) {
 			return true
 		}
+	}
+
+	if strings.Contains(agent, "java") {
+		switch {
+		case regexpJava.MatchString(agent):
+			return true
+		case regexpHotJava.MatchString(agent):
+			return true
+		}
+	}
+
+	if strings.Contains(agent, "python") &&
+		(strings.Contains(agent, "aiohttp") ||
+			strings.Contains(agent, "requests") ||
+			strings.Contains(agent, "urllib")) {
+
+		return true
 	}
 
 	return false
