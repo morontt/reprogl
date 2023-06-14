@@ -219,6 +219,35 @@
       "priority": "medium",
       "creation": 1686581926,
       "completion": 1686730632
+    },
+    {
+      "text": "microformats",
+      "priority": "low",
+      "creation": 1686771422,
+      "tasks": [
+        {
+          "text": "https://microformats.org/",
+          "priority": "medium",
+          "creation": 1686771515
+        },
+        {
+          "text": "http://pin13.net/",
+          "priority": "medium",
+          "creation": 1686771529
+        }
+      ]
+    },
+    {
+      "text": "Регистрация пользователей для комментариев",
+      "priority": "medium",
+      "creation": 1686772368,
+      "tasks": [
+        {
+          "text": "Через соц-сети и т.п.",
+          "priority": "medium",
+          "creation": 1686772409
+        }
+      ]
     }
   ]
 }
