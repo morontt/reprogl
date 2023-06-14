@@ -8,15 +8,15 @@
                  alt="avatar"/>
         </div>
         {{time_tag .CreatedAt}}
-        {{if .Deleted}}
+        {{if .Deleted -}}
             (⊙_⊙)
-        {{else}}
-            {{if .Website.Valid}}
+        {{- else -}}
+            {{- if .Website.Valid -}}
                 <a href="{{.Website.String}}">{{.Name}}</a>
-            {{else}}
+            {{- else -}}
                 {{.Name}}
-            {{end}}
-        {{end}}
+            {{- end -}}
+        {{- end}}
     </div>
     <div class="comment-body">
         <div class="avatar">
@@ -32,9 +32,11 @@
                 {{- raw (nl2br .Text) -}}
             {{- end -}}
         </div>
+        {{if $.EnabledComments -}}
         <div class="comment-reply">
             <span data-comment-id="{{.ID}}">ответить</span>
         </div>
+        {{- end}}
     </div>
 </div>
 <div id="form_bottom_{{.ID}}" class="form-bottom-comment"></div>

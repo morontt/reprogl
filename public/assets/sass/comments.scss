@@ -53,10 +53,12 @@ section.comments {
                 span {
                     @include green-button;
                 }
+            }
 
-                &:after {
-                    clear: left;
-                }
+            &:after {
+                clear: both;
+                display: block;
+                content: '';
             }
         }
 

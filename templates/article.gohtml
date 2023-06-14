@@ -55,13 +55,20 @@
                                 <h3 class="comments-header">Комментарии</h3>
                                 <noscript>Please enable JavaScript to send the comments.</noscript>
                                 <div id="comments_thread">
-                                    {{render_esi "fragment-comments" "article_id" .Article.IdString "last_time" .CommentKey}}
+                                    {{render_esi "fragment-comments"
+                                        "article_id" .Article.IdString
+                                        "disabled_flag" .Article.DisabledCommentsFlag
+                                        "last_time" .CommentKey}}
                                     <div id="topic-reply">
                                         {{cnt_comments .Article.CommentsCount}}
-                                        <span>Написать что-нибудь</span>
+                                        {{if not .Article.DisabledComments -}}
+                                            <span>Написать что-нибудь</span>
+                                        {{- end}}
                                     </div>
                                 </div>
-                                {{template "comment-form" .}}
+                                {{if not .Article.DisabledComments -}}
+                                    {{template "comment-form" .}}
+                                {{- end}}
                             </div>
                         </div>
                     </section>

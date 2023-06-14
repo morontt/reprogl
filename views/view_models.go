@@ -69,7 +69,8 @@ type FragmentCategoriesData struct {
 }
 
 type FragmentCommentsData struct {
-	Comments *models.CommentList
+	Comments        *models.CommentList
+	EnabledComments bool
 }
 
 type FragmentRecentPostsData struct {

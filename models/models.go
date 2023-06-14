@@ -14,6 +14,11 @@ var RecordNotFound = errors.New("models: no matching record found")
 
 var cdnBaseURL string
 
+const (
+	DisabledComments = "d"
+	EnabledComments  = "e"
+)
+
 func init() {
 	cfg := container.GetConfig()
 	cdnBaseURL = cfg.CDNBaseURL
@@ -42,6 +47,8 @@ type Article struct {
 	Description sql.NullString
 	FeaturedImage
 	Tags TagList
+
+	DisabledComments bool
 }
 
 type ArticleListItem struct {
@@ -134,4 +141,14 @@ func (a *ArticleBasePart) IdString() string {
 
 func (a *ArticleBasePart) IsArticle() bool {
 	return true
+}
+
+func (a *Article) DisabledCommentsFlag() (flag string) {
+	if a.DisabledComments {
+		flag = DisabledComments
+	} else {
+		flag = EnabledComments
+	}
+
+	return
 }

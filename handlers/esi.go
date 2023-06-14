@@ -8,6 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/views"
 )
@@ -50,7 +51,10 @@ func CommentsFragment(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		templateData := &views.FragmentCommentsData{Comments: comments}
+		templateData := &views.FragmentCommentsData{
+			Comments:        comments,
+			EnabledComments: vars["disabled_flag"] == models.EnabledComments,
+		}
 
 		cacheControl(w, container.DefaultEsiTTL)
 		err = views.WriteTemplate(w, "comments.gohtml", templateData)
