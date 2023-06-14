@@ -925,3 +925,27 @@ html.no-csstransforms3d {
         }
     }
 }
+
+$placeholder-font-color: #bbb;
+form {
+    ::placeholder {
+        color: $placeholder-font-color;
+    }
+    ::-webkit-input-placeholder {
+        color: $placeholder-font-color;
+    }
+    :-moz-placeholder { /* Firefox 18- */
+        color: $placeholder-font-color;
+        opacity: 1;
+    }
+    ::-moz-placeholder { /* Firefox 19+ */
+        color: $placeholder-font-color;
+        opacity: 1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: $placeholder-font-color;
+    }
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: $placeholder-font-color;
+    }
+}
