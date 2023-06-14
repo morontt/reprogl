@@ -53,6 +53,8 @@ type CreateCommentResponse struct {
 var apiURL string
 var backendLocker sync.Mutex
 
+var NotAllowedComment = errors.New("backend: not allowed comment")
+
 func init() {
 	cnf := container.GetConfig()
 	apiURL = cnf.BackendApiUrl
@@ -95,6 +97,10 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 	response, err := send(request)
 	if err != nil {
 		return nil, err
+	}
+
+	if response.StatusCode == http.StatusForbidden {
+		return nil, NotAllowedComment
 	}
 
 	buf, err := io.ReadAll(response.Body)

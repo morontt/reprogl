@@ -104,7 +104,8 @@
         {
           "text": "page view counter by cron-task",
           "priority": "medium",
-          "creation": 1686424416
+          "creation": 1686424416,
+          "completion": 1686744221
         },
         {
           "text": "admin dashboard list for tracking",

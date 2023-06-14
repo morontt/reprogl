@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+
 	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/api/telegram"
 	"xelbot.com/reprogl/container"
@@ -71,27 +72,46 @@ func AddComment(app *container.Application) http.HandlerFunc {
 			IP:        container.RealRemoteAddress(r),
 		}
 
+		var responseData any
 		statusCode := http.StatusCreated
 
 		apiResponse, err := backend.SendComment(commentData)
 		if err != nil {
-			statusCode = http.StatusBadRequest
-		}
-
-		result := addCommentResponse{
-			Valid:  true,
-			Errors: apiResponse.Violations,
-		}
-
-		if apiResponse.Violations != nil && len(apiResponse.Violations) > 0 {
-			result.Valid = false
-		} else {
-			if apiResponse.Comment != nil {
-				go afterCommentHook(app, apiResponse.Comment, article)
+			if errors.Is(err, backend.NotAllowedComment) {
+				statusCode = http.StatusOK
+				responseData = addCommentResponse{
+					Valid: false,
+					Errors: []backend.FormError{
+						{
+							Path:    "comment_text",
+							Message: "Добавление комментариев тут отключено 😐",
+						},
+					},
+				}
+			} else {
+				app.LogError(err)
+				statusCode = http.StatusBadRequest
 			}
 		}
 
-		jsonResponse(w, statusCode, result)
+		if apiResponse != nil {
+			result := addCommentResponse{
+				Valid:  true,
+				Errors: apiResponse.Violations,
+			}
+
+			if apiResponse.Violations != nil && len(apiResponse.Violations) > 0 {
+				result.Valid = false
+			} else {
+				if apiResponse.Comment != nil {
+					go afterCommentHook(app, apiResponse.Comment, article)
+				}
+			}
+
+			responseData = result
+		}
+
+		jsonResponse(w, statusCode, responseData)
 	}
 }
 
