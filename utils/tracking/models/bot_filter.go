@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-var engines []string = []string{
+var engines = []string{
 	"googlebot",
 	"aport",
 	"msnbot",
@@ -112,6 +112,7 @@ var engines []string = []string{
 	"duckduckgo-favicons-bot",
 	"bsbot",
 	"twitterbot",
+	"telegrambot",
 	"pandalytics",
 	"2ip bot",
 	"qwantify",
