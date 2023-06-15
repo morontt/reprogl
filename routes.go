@@ -18,6 +18,7 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/info", handlers.InfoAction(app)).Name("info-page")
 	siteMux.HandleFunc("/statistika", handlers.StatisticsAction(app)).Name("statistics")
 	siteMux.HandleFunc("/robots.txt", handlers.RobotsTXTAction)
+	siteMux.HandleFunc("/humans.txt", handlers.HumansTXTAction)
 	siteMux.HandleFunc("/favicon.ico", handlers.FavIconAction)
 	siteMux.HandleFunc("/sitemap.xml", handlers.SitemapAction(app))
 	siteMux.HandleFunc("/feed/atom", handlers.FeedAction(app, models.AtomFeedType)).Name("feed-atom")

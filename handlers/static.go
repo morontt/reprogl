@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"time"
 
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models/repositories"
@@ -60,6 +61,48 @@ func RobotsTXTAction(w http.ResponseWriter, r *http.Request) {
 	cacheControl(w, container.RobotsTxtTTL)
 	w.Header().Set("Content-Type", "text/plain")
 	w.Write([]byte(body))
+}
+
+func HumansTXTAction(w http.ResponseWriter, r *http.Request) {
+	var lastUpdateStr string
+	lastUpdate, err := time.Parse(time.RFC1123, container.BuildTime)
+	if err != nil {
+		lastUpdateStr = container.BuildTime
+	} else {
+		lastUpdateStr = lastUpdate.Format("2006/01/02")
+	}
+
+	body := fmt.Sprintf(
+		`/* TEAM */
+	Developer: Alexander Harchenko
+	Contact: morontt [at] gmail [dot] com
+	Twitter: @morontt
+	Telegram: @morontt
+	From: Kharkov, Ukraine
+
+/* THANKS */
+	pxThemes: Anima Multipurpose Ghost Theme
+	Site: https://themeforest.net/user/pxthemes
+	Location: Poland
+
+	Colorlib: Free 404 Error Page Templates
+	Site: https://colorlib.com/wp/free-404-error-page-templates/
+	Location: Latvia
+
+/* SITE */
+	Last update: %s
+	Language: Russian
+	Doctype: HTML5
+	IDE: GoLand, VS Code, nano
+	Server: NGINX + Varnish + Golang http.Server
+	Powered by: Go %s`,
+		lastUpdateStr,
+		container.GoVersionNumbers,
+	)
+
+	cacheControl(w, container.StatisticsTTL)
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte(body + "\n"))
 }
 
 func FavIconAction(w http.ResponseWriter, _ *http.Request) {
