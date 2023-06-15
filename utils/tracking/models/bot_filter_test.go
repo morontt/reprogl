@@ -74,6 +74,10 @@ func TestBotFilter(t *testing.T) {
 			name: "Mechanize/2.7.5 Ruby/2.3.3p222 (http://github.com/sparklemotion/mechanize/)",
 			want: true,
 		},
+		{
+			name: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36 AppEngine-Google; (+http://code.google.com/appengine; appid: s~feedly-nikon3)",
+			want: true,
+		},
 	}
 
 	for idx, item := range tests {

@@ -118,6 +118,7 @@ var engines = []string{
 	"qwantify",
 	"bot@linkfluence.com",
 	"bubing",
+	"appengine-google",
 }
 
 var (
