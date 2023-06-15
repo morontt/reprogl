@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"runtime"
 	"runtime/debug"
+	"time"
 )
 
 var Version string
@@ -28,6 +29,22 @@ var urlGen URLGenerator
 func init() {
 	re := regexp.MustCompile(`^\D*(\d+\.\d+(?:\.\d+)?)`)
 	GoVersionNumbers = re.FindStringSubmatch(runtime.Version())[1]
+
+	checkBuildFlags()
+}
+
+func checkBuildFlags() {
+	if len(Version) == 0 {
+		panic("ldflags: xelbot.com/reprogl/container.Version is empty")
+	}
+	if len(GitRevision) == 0 {
+		panic("ldflags: xelbot.com/reprogl/container.GitRevision is empty")
+	}
+
+	_, err := time.Parse(time.RFC1123, BuildTime)
+	if err != nil {
+		panic("ldflags: xelbot.com/reprogl/container.BuildTime wrong format")
+	}
 }
 
 func SetURLGenerator(u URLGenerator) {
