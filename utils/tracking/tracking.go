@@ -44,7 +44,7 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		userAgentId, articleId int
 	)
 
-	if strings.HasPrefix(activity.RequestedURI, "/_fragment/") {
+	if strings.HasPrefix(activity.RequestedURI, "/_fragment/") && activity.Status == http.StatusOK {
 		return
 	}
 
@@ -85,10 +85,11 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 func setupBrowserPassiveFingerprint(req *http.Request, a *trackmodels.Activity) {
 	a.FingerPrint = container.MD5(
 		fmt.Sprintf(
-			"%s:%s:%s",
+			"%s:%s:%s:%d",
 			a.UserAgent,
 			a.Addr.String(),
 			req.URL.RequestURI(),
+			a.Status,
 		),
 	)
 }

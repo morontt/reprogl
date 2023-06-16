@@ -120,5 +120,6 @@ func afterCommentHook(
 	comment *backend.CreatedCommentDTO,
 	article *models.ArticleForComment,
 ) {
+	backend.PingGeolocation()
 	telegram.SendNotification(app, comment, article)
 }

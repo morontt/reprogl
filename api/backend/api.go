@@ -120,6 +120,18 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 	return &result, nil
 }
 
+func PingGeolocation() {
+	request, err := http.NewRequest(http.MethodPost, apiURL+"/api/comments/geo-location", bytes.NewReader(nil))
+	if err != nil {
+		return
+	}
+
+	wsseHeader, wsseToken := security.GetWSSEHeader()
+	request.Header.Set(wsseHeader, wsseToken)
+
+	_, _ = send(request)
+}
+
 func send(req *http.Request) (*http.Response, error) {
 	backendLocker.Lock()
 	defer backendLocker.Unlock()

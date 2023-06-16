@@ -99,7 +99,8 @@
         {
           "text": "after this - add geolocation",
           "priority": "medium",
-          "creation": 1686424403
+          "creation": 1686424403,
+          "completion": 1686954107
         },
         {
           "text": "page view counter by cron-task",
@@ -118,6 +119,11 @@
           "priority": "medium",
           "creation": 1686466747,
           "completion": 1686666040
+        },
+        {
+          "text": "Save method, caching only GET",
+          "priority": "medium",
+          "creation": 1686954076
         }
       ]
     },
