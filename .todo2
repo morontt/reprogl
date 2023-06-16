@@ -248,6 +248,11 @@
           "creation": 1686772409
         }
       ]
+    },
+    {
+      "text": "Default image for feeds (for example https://feedly.com)",
+      "priority": "medium",
+      "creation": 1686847532
     }
   ]
 }
