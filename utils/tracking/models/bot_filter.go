@@ -122,6 +122,8 @@ var engines = []string{
 	"bot@linkfluence.com",
 	"bubing",
 	"appengine-google",
+	"censysinspect",
+	"cpp-httplib",
 }
 
 var (
