@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -89,10 +90,7 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 		return nil, err
 	}
 
-	wsseHeader, wsseToken := security.GetWSSEHeader()
-
 	request.Header.Set("Content-Type", "application/json")
-	request.Header.Set(wsseHeader, wsseToken)
 
 	response, err := send(request)
 	if err != nil {
@@ -126,15 +124,50 @@ func PingGeolocation() {
 		return
 	}
 
-	wsseHeader, wsseToken := security.GetWSSEHeader()
-	request.Header.Set(wsseHeader, wsseToken)
-
 	_, _ = send(request)
+}
+
+func RefreshComment(id int) (*CreatedCommentDTO, error) {
+	request, err := http.NewRequest(http.MethodGet, apiURL+"/api/comments/"+strconv.Itoa(id), bytes.NewReader(nil))
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := send(request)
+	if err != nil {
+		return nil, err
+	}
+
+	if response.StatusCode != http.StatusOK {
+		return nil, errors.New("status not OK")
+	}
+
+	buf, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if !json.Valid(buf) {
+		return nil, errors.New("invalid JSON string")
+	}
+
+	var result = struct {
+		Comment *CreatedCommentDTO `json:"comment,omitempty"`
+	}{}
+	err = json.Unmarshal(buf, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return result.Comment, nil
 }
 
 func send(req *http.Request) (*http.Response, error) {
 	backendLocker.Lock()
 	defer backendLocker.Unlock()
+
+	wsseHeader, wsseToken := security.GetWSSEHeader()
+	req.Header.Set(wsseHeader, wsseToken)
 
 	return api.Send(req)
 }

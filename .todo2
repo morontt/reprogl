@@ -87,7 +87,7 @@
     },
     {
       "text": "Tracking #17",
-      "priority": "high",
+      "priority": "low",
       "creation": 1686424373,
       "tasks": [
         {
@@ -167,7 +167,8 @@
         {
           "text": "geolocation",
           "priority": "medium",
-          "creation": 1686424694
+          "creation": 1686424694,
+          "completion": 1687021550
         },
         {
           "text": "email",

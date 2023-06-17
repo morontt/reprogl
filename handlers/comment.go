@@ -120,6 +120,15 @@ func afterCommentHook(
 	comment *backend.CreatedCommentDTO,
 	article *models.ArticleForComment,
 ) {
+	var updatedComment *backend.CreatedCommentDTO
+
 	backend.PingGeolocation()
-	telegram.SendNotification(app, comment, article)
+	refreshedComment, err := backend.RefreshComment(comment.ID)
+	if err != nil {
+		updatedComment = comment
+	} else {
+		updatedComment = refreshedComment
+	}
+
+	telegram.SendNotification(app, updatedComment, article)
 }
