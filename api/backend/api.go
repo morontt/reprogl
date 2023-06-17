@@ -35,7 +35,7 @@ type CreatedCommentDTO struct {
 	Name    string `json:"username"`
 	Email   string `json:"email"`
 	Website string `json:"website"`
-	Country string `json:"countryCode"`
+	Country string `json:"countryFlag"`
 }
 
 type ViolationPath string
