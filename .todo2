@@ -198,7 +198,8 @@
     {
       "text": "Remove old SyntaxHighlighter",
       "priority": "low",
-      "creation": 1686463740
+      "creation": 1686463740,
+      "completion": 1687097463
     },
     {
       "text": "Lists of most viewed articles on the statistics page",
