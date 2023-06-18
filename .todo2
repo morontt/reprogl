@@ -260,6 +260,11 @@
       "text": "Default image for feeds (for example https://feedly.com)",
       "priority": "medium",
       "creation": 1686847532
+    },
+    {
+      "text": "Использовать один docker-контейнер для приложения и nodejs",
+      "priority": "medium",
+      "creation": 1687069175
     }
   ]
 }

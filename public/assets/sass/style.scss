@@ -119,6 +119,9 @@ a.button {
         color: $color-main-light;
         background-color: lighten($color-main-dark, 5%)
     }
+    .glyphicon {
+        vertical-align: middle;
+    }
     @media only screen and (min-width: 40.063em) {
         display: block;
     }
@@ -372,15 +375,6 @@ html.no-csstransforms3d {
         display: inline-block;
         color: $color-main-dark;
         outline: none;
-        .fa {
-            line-height: rem-calc(60);
-            font-size: rem-calc(26);
-        }
-        &.active {
-            .fa {
-                color: $color-main-contrast;
-            }
-        }
         &:focus, &:active {
             color: inherit;
         }
@@ -734,6 +728,7 @@ html.no-csstransforms3d {
         line-height: rem-calc(100);
         float: left;
         margin-top: rem-calc(2);
+        padding-left: 0.3em;
         .tag-view-label-text {
             display: none;
             @media only screen and (min-width: 48em) {
@@ -746,22 +741,22 @@ html.no-csstransforms3d {
         height: rem-calc(100);
         line-height: rem-calc(100);
         float: left;
-        .fa {
+        .glyphicon {
             -webkit-transition: -webkit-transform .2s;
             -ms-transition: -ms-transform .2s;
             transition: transform .2s;
         }
         &:hover {
             color: $color-main-dark;
-            .fa {
+            .glyphicon {
                 -webkit-transform: translateX(-15%);
                 -ms-transform: translateX(-15%);
                 transform: translateX(-15%);
             }
         }
     }
-    .fa {
-        font-size: rem-calc(40);
+    .glyphicon {
+        top: 0;
         vertical-align: middle;
     }
     .tag-name {
@@ -889,9 +884,9 @@ html.no-csstransforms3d {
             color: $color-main-light;
             background-color: $color-main-dark;
         }
-        .fa {
+        .glyphicon {
             font-size: rem-calc(12);
-            margin-right: rem-calc(5);
+            margin: 0 rem-calc(5) 0;
         }
     }
 }
