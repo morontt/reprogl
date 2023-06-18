@@ -26,6 +26,7 @@ func LoadViewSet() error {
 			"./templates/partials/big-header.gohtml",
 			"./templates/partials/footer.gohtml",
 			"./templates/partials/info-static.gohtml",
+			"./templates/layout/svg-sprites.gohtml",
 			"./templates/layout/base.gohtml",
 		},
 		"article.gohtml": {
@@ -34,6 +35,7 @@ func LoadViewSet() error {
 			"./templates/partials/comment-form.gohtml",
 			"./templates/partials/menu.gohtml",
 			"./templates/partials/sidebar.gohtml",
+			"./templates/layout/svg-sprites.gohtml",
 			"./templates/layout/base.gohtml",
 		},
 		"statistics.gohtml": {
@@ -41,6 +43,7 @@ func LoadViewSet() error {
 			"./templates/partials/author-info.gohtml",
 			"./templates/partials/menu.gohtml",
 			"./templates/partials/sidebar.gohtml",
+			"./templates/layout/svg-sprites.gohtml",
 			"./templates/layout/base.gohtml",
 		},
 		"index.gohtml": {
@@ -49,6 +52,7 @@ func LoadViewSet() error {
 			"./templates/partials/sticky-header.gohtml",
 			"./templates/partials/big-header.gohtml",
 			"./templates/partials/footer.gohtml",
+			"./templates/layout/svg-sprites.gohtml",
 			"./templates/layout/base.gohtml",
 		},
 		"categories.gohtml": {

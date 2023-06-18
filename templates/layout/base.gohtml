@@ -31,7 +31,8 @@
     <link href="{{abs_path "feed-atom"}}" rel="alternate" type="application/atom+xml" title="Atom">
     <link href="/humans.txt" rel="author" type="text/plain" >
 </head>
-<body class="{{template "body_class" .}}">
+<body class="{{template "body_class"}}">
+    {{- template "svg-sprites" -}}
     <div id="main" class="main-scene">
         {{template "body" .}}
         {{template "menu" .}}
