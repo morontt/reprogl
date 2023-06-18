@@ -13,45 +13,27 @@
             </div>
         </div>
         <div class="post-view-elems-body">
-            <!-- for post view only -->
-                {{if .IsArticle -}}
-                <div class="post-reading-time js-post-reading-time">
-                    <progress value="0" class="read-progress-indicator single">
-                        <div class="progress-container">
-                            <span class="progress-bar"></span>
-                        </div>
-                    </progress>
-                    <!-- read progress indicator -->
-                    <div class="read-estimation">
-                        <div class="read-estimation-content">
-                            <div class="title">{{substr .Title 22}}</div>
-                            <div class="estimated-time">
-                                <span class="js-word-count"></span> слов - читать <span class="eta"></span>.
-                            </div>
+            {{if .IsArticle -}}
+            <div class="post-reading-time js-post-reading-time">
+                <progress value="0" class="read-progress-indicator single">
+                    <div class="progress-container">
+                        <span class="progress-bar"></span>
+                    </div>
+                </progress>
+                <!-- read progress indicator -->
+                <div class="read-estimation">
+                    <div class="read-estimation-content">
+                        <div class="title">{{substr .Title 22}}</div>
+                        <div class="estimated-time">
+                            <span class="js-word-count"></span> слов - читать <span class="eta"></span>.
                         </div>
                     </div>
                 </div>
-                {{- end}}
-                <div class="post-view-elems-share">
-                    <a class="icon-github"
-                        href="{{author_github}}">
-                        <span class="fa-stack fa-lg">
-                            <i class="fa fa-square fa-stack-2x fa-inverse"></i>
-                            <i class="fa fa-github fa-stack-1x"></i>
-                        </span>
-                    </a>
-                    <a class="icon-telegram"
-                        href="{{author_telegram}}">
-                        <span class="fa-stack fa-lg">
-                            <i class="fa fa-square fa-stack-2x fa-inverse"></i>
-                            <i class="fa fa-stack-1x">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
-                                    <use xlink:href="#icon-telegram"></use>
-                                </svg>
-                            </i>
-                        </span>
-                    </a>
-                </div>
+            </div>
+            {{- end}}
+            <div class="post-view-elems-share">
+                {{template "social-icons"}}
+            </div>
             {{render_esi "fragment-recent-posts" "article_id" .IdString}}
         </div>
         <div class="flagcounter">

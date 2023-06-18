@@ -188,19 +188,8 @@
                     a {
                         color: $color-main-dark;
                         font-size: rem-calc(16);
-                        .fa-stack {
-                            display: inline-block;
-                            -webkit-transition: color .3s;
-                            transition: color .3s;
-                        }
-                        &:hover {
-                            color: darken($color-main-dark, 100%);
-                            text-decoration: none;
-                        }
-                        &.icon-telegram svg {
-                            width: 1em;
-                            padding-top: 0.45em;
-                        }
+                        margin-right: rem-calc(4);
+                        @include social-icons;
                     }
                     display: none;
                     @media only screen and (min-width: 64em) {

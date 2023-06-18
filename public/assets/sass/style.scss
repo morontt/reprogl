@@ -690,23 +690,7 @@ html.no-csstransforms3d {
             }
         }
         .post-read-more-btn {
-            margin-top: rem-calc(10);
-            margin-bottom: rem-calc(10);
-            display: inline-block;
-            padding: rem-calc(10) rem-calc(30);
-            border: rem-calc(3) solid $color-main-dark;
-            font-weight: 900;
-            text-transform: uppercase;
-            text-align: center;
-            color: $color-main-dark;
-            font-size: rem-calc(12);
-            -webkit-transition: background-color .3s;
-            transition: background-color .3s;
-            &:hover {
-                color: $color-main-light;
-                background-color: $color-main-dark;
-                text-decoration: none;
-            }
+            @include read-more-button;
         }
     }
 }
@@ -837,22 +821,25 @@ html.no-csstransforms3d {
     padding-bottom: rem-calc(80);
     .footer-social-icons {
         a {
+            margin-right: rem-calc(4);
+            &:last-child {
+                margin-right: 0;
+            }
             color: $color-main-dark;
             &:hover, &:focus, &:active {
                 color: $color-main-dark;
             }
-            &.icon-telegram svg {
-                width: 1em;
-                padding-top: 0.5em;
-            }
+            @include social-icons;
         }
     }
     .footer-poweredby {
         margin-top: rem-calc(10);
         a {
             color: darken($color-main-light, 30%);
+            -webkit-transition: color 0.5s;
+            transition: color 0.5s;
             &:hover, &:focus, &:active {
-                color: darken($color-main-light, 30%);
+                color: $color-main-contrast;
             }
         }
     }
@@ -863,27 +850,7 @@ html.no-csstransforms3d {
     margin-top: rem-calc(55);
     text-align: center;
     a {
-        margin-top: rem-calc(10);
-        margin-bottom: rem-calc(10);
-        display: inline-block;
-        padding: rem-calc(10) rem-calc(30);
-        border: rem-calc(3) solid $color-main-dark;
-        font-weight: 900;
-        text-transform: uppercase;
-        text-align: center;
-        color: $color-main-dark;
-        font-size: rem-calc(12);
-        -webkit-transition: background-color .3s;
-        transition: background-color .3s;
-        &:hover {
-            color: $color-main-light;
-            background-color: $color-main-dark;
-            text-decoration: none;
-        }
-        &:active, &:focus {
-            color: $color-main-light;
-            background-color: $color-main-dark;
-        }
+        @include read-more-button;
         .glyphicon {
             font-size: rem-calc(12);
             margin: 0 rem-calc(5) 0;

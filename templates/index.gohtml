@@ -48,7 +48,9 @@
                                     {{if .HasPreview}}
                                         <div>
                                             <a href="{{path "article" "slug" .Slug}}"
-                                               class="post-read-more-btn">Читать далее &crarr;</a>
+                                               class="post-read-more-btn">Читать далее
+                                                <span class="glyphicon glyphicon-chevron-right"></span>
+                                            </a>
                                         </div>
                                     {{end}}
                                     <footer class="post-meta clearfix">
