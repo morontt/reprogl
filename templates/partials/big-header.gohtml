@@ -48,7 +48,11 @@
                 <div class="small-12 columns">
                     <div class="author-avatar">
                         <a href="{{path "feed-rss"}}" class="right author-rss">
-                            <i class="fa fa-rss"></i>
+                            <i class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792" role="img">
+                                    <use xlink:href="#icon-rss"></use>
+                                </svg>
+                            </i>
                         </a>
                         <img class="author-avatar-img"
                              src="{{ cdn }}/images/space_200.png"
@@ -57,7 +61,13 @@
                     <div class="author-name">
                         {{author_name}}
                         <span class="author-name-social-icons">
-                            <a href="{{author_github}}"><i class="fa fa-github"></i></a>
+                            <a href="{{author_github}}">
+                                <i class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img">
+                                        <use xlink:href="#icon-github"></use>
+                                    </svg>
+                                </i>
+                            </a>
                         </span>
                     </div>
                     <div class="author-bio">

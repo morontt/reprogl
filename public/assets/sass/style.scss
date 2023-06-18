@@ -771,6 +771,18 @@ html.no-csstransforms3d {
                 &:first-child {
                     margin-left: rem-calc(16);
                 }
+                .icon svg {
+                    height: 1em;
+                    width: auto;
+                    top: rem-calc(5);
+                    position: relative;
+                    fill: $color-main-contrast;
+                    -webkit-transition: fill 0.5s;
+                    transition: fill 0.5s;
+                    &:hover {
+                        fill: $color-main-dark;
+                    }
+                }
             }
         }
     }
@@ -785,17 +797,21 @@ html.no-csstransforms3d {
             bottom: rem-calc(5);
             right: 0;
             z-index: 99;
-            padding: rem-calc(5) rem-calc(15) rem-calc(10);
+            padding: rem-calc(10) rem-calc(15) rem-calc(5);
             background-color: $color-main-light;
             line-height: 1.1;
             height: auto;
-            border-radius: rem-calc(10);
+            border-radius: rem-calc(15);
             color: $color-main-dark;
-            &:hover {
-                color: darken($color-main-dark, 20%);
-            }
-            .fa {
-                font-size: rem-calc(20);
+            .icon svg {
+                height: rem-calc(20);
+                width: auto;
+                fill: $color-main-dark;
+                -webkit-transition: fill 0.5s;
+                transition: fill 0.5s;
+                &:hover {
+                    fill: #EE802F;
+                }
             }
         }
         .author-avatar-img {
