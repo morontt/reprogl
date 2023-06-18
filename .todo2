@@ -2,8 +2,8 @@
   "title": "Reprogl tasks",
   "tasks": [
     {
-      "text": "Remove fonts awesome",
-      "priority": "medium",
+      "text": "Remove fonts awesome #24",
+      "priority": "high",
       "creation": 1686423384,
       "tasks": [
         {
