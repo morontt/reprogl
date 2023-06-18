@@ -87,6 +87,10 @@ func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agent
 		data["request_uri"] = activity.RequestedURI
 	}
 
+	if activity.LocationID > 0 {
+		data["ip_long"] = activity.LocationID
+	}
+
 	ds := goqu.Dialect("mysql").Insert("tracking").Rows(data)
 
 	query, _, err := ds.ToSQL()

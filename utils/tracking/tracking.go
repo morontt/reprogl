@@ -65,6 +65,12 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		userAgentId = agent.ID
 	}
 
+	geolocationRepo := repositories.GeolocationRepository{DB: app.DB}
+	location, err := geolocationRepo.FindByIP(activity.Addr)
+	if err == nil && location != nil {
+		activity.LocationID = location.ID
+	}
+
 	matches := regexpArticle.FindStringSubmatch(activity.RequestedURI)
 	if matches != nil {
 		articleRepo := repositories.ArticleRepository{DB: app.DB}

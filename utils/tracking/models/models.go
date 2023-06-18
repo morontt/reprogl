@@ -13,6 +13,7 @@ type Activity struct {
 	IsCDN        bool
 	Status       int
 	FingerPrint  string
+	LocationID   int
 }
 
 func (a *Activity) IsBot() bool {
