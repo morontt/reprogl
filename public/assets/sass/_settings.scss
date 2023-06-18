@@ -50,12 +50,10 @@ $color-headers: $color-main-dark;
     transition: background-color .3s;
     border-radius: rem-calc(3);
     margin-bottom: rem-calc(3);
-
     &:hover {
         color: $color-main-light;
         background: lighten($color-main-contrast, 5%);
     }
-
     &:focus, &:active {
         color: $color-main-light;
     }
@@ -81,8 +79,50 @@ $color-headers: $color-main-dark;
     margin-right: 0.6em;
     float: left;
     border-radius: rem-calc(7);
-
     img {
         border-radius: rem-calc(6);
+    }
+}
+
+@mixin read-more-button {
+    margin-top: rem-calc(10);
+    margin-bottom: rem-calc(10);
+    display: inline-block;
+    padding: rem-calc(10) rem-calc(30);
+    border: rem-calc(3) solid $color-main-dark;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-align: center;
+    color: $color-main-dark;
+    font-size: rem-calc(12);
+    -webkit-transition: background-color .3s;
+    transition: background-color .3s;
+    &:hover {
+        color: $color-main-light;
+        background-color: $color-main-dark;
+        text-decoration: none;
+    }
+    &:active, &:focus {
+        color: $color-main-light;
+        background-color: $color-main-dark;
+    }
+}
+
+@mixin social-icons {
+    .icon svg {
+        height: 2em;
+        width: auto;
+        fill: #FFF;
+        -webkit-transition: fill 0.5s;
+        transition: fill 0.5s;
+        &:hover {
+            fill: $color-main-contrast;
+        }
+    }
+    .icon.icon-telegram svg:hover {
+        fill: #2AABEE;
+    }
+    .icon.icon-rss svg:hover {
+        fill: #EE802F;
     }
 }

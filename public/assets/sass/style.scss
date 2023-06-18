@@ -119,6 +119,9 @@ a.button {
         color: $color-main-light;
         background-color: lighten($color-main-dark, 5%)
     }
+    .glyphicon {
+        vertical-align: middle;
+    }
     @media only screen and (min-width: 40.063em) {
         display: block;
     }
@@ -158,14 +161,11 @@ a.button {
     .headeroom-icons {
         line-height: rem-calc(50);
         font-size: rem-calc(36);
-        .fa {
+        .glyphicon {
             cursor: pointer;
             height: rem-calc(50);
             line-height: rem-calc(50);
             vertical-align: middle;
-            &.fa-search {
-                font-size: 60%;
-            }
         }
     }
 }
@@ -350,14 +350,11 @@ html.no-csstransforms3d {
             font-size: rem-calc(36);
             text-align: center;
             z-index: 2;
-            .fa {
+            .glyphicon {
                 cursor: pointer;
                 line-height: rem-calc(100);
                 height: rem-calc(100);
                 vertical-align: middle;
-                &.fa-search {
-                    font-size: 60%;
-                }
             }
             @media only screen and (min-width: 48em) {
                 right: rem-calc(30);
@@ -378,15 +375,6 @@ html.no-csstransforms3d {
         display: inline-block;
         color: $color-main-dark;
         outline: none;
-        .fa {
-            line-height: rem-calc(60);
-            font-size: rem-calc(26);
-        }
-        &.active {
-            .fa {
-                color: $color-main-contrast;
-            }
-        }
         &:focus, &:active {
             color: inherit;
         }
@@ -447,34 +435,6 @@ html.no-csstransforms3d {
                                 width: 100%;
                             }
                         }
-                    }
-                }
-                &.featured {
-                    &:before {
-                        position: absolute;
-                        bottom: rem-calc(20);
-                        right: rem-calc(24);
-                        content: "\f005";
-                        color: $color-main-light;
-                        font-family: "FontAwesome";
-                        font-size: rem-calc(16);
-                        display: block;
-                        z-index: 2;
-                    }
-                    &:after {
-                        content: " ";
-                        position: absolute;
-                        display: block;
-                        bottom: rem-calc(-11);
-                        right: rem-calc(9);
-                        width: 0;
-                        height: 0;
-                        border-top: rem-calc(40) solid transparent;
-                        border-bottom: rem-calc(40) solid transparent;
-                        border-right:rem-calc(40) solid $color-main-dark;
-                        -webkit-transform: rotate(225deg);
-                        -ms-transform: rotate(225deg);
-                        transform: rotate(225deg);
                     }
                 }
             }
@@ -572,7 +532,7 @@ html.no-csstransforms3d {
                         a {
                             color: $color-main-light;
                             outline: none;
-                            i {
+                            i, span {
                                 outline: none;
                                 opacity: 0;
                                 font-size: rem-calc(32);
@@ -581,14 +541,14 @@ html.no-csstransforms3d {
                                 transition: opacity 0.35s, transform 0.35s;
                             }
                             &:first-child {
-                                i {
+                                i, span {
                                     -webkit-transform: translate3d(rem-calc(-60), rem-calc(-60), 0);
                                     -ms-transform: translate(rem-calc(-60), rem-calc(-60));
                                     transform: translate3d(rem-calc(-60), rem-calc(-60), 0);
                                 }
                             }
                             &:nth-child(2) {
-                                i {
+                                i, span {
                                     -webkit-transform: translate3d(rem-calc(60), rem-calc(-60), 0);
                                     -ms-transform: translate(rem-calc(60), rem-calc(-60));
                                     transform: translate3d(rem-calc(60), rem-calc(-60), 0);
@@ -631,7 +591,7 @@ html.no-csstransforms3d {
                             }
                         }
                         p {
-                            i {
+                            i, span {
                                 &:empty {
                                     -webkit-transform: translate3d(0, 0, 0);
                                     -ms-transform: translate(0, 0);
@@ -730,23 +690,7 @@ html.no-csstransforms3d {
             }
         }
         .post-read-more-btn {
-            margin-top: rem-calc(10);
-            margin-bottom: rem-calc(10);
-            display: inline-block;
-            padding: rem-calc(10) rem-calc(30);
-            border: rem-calc(3) solid $color-main-dark;
-            font-weight: 900;
-            text-transform: uppercase;
-            text-align: center;
-            color: $color-main-dark;
-            font-size: rem-calc(12);
-            -webkit-transition: background-color .3s;
-            transition: background-color .3s;
-            &:hover {
-                color: $color-main-light;
-                background-color: $color-main-dark;
-                text-decoration: none;
-            }
+            @include read-more-button;
         }
     }
 }
@@ -768,6 +712,7 @@ html.no-csstransforms3d {
         line-height: rem-calc(100);
         float: left;
         margin-top: rem-calc(2);
+        padding-left: 0.3em;
         .tag-view-label-text {
             display: none;
             @media only screen and (min-width: 48em) {
@@ -780,22 +725,22 @@ html.no-csstransforms3d {
         height: rem-calc(100);
         line-height: rem-calc(100);
         float: left;
-        .fa {
+        .glyphicon {
             -webkit-transition: -webkit-transform .2s;
             -ms-transition: -ms-transform .2s;
             transition: transform .2s;
         }
         &:hover {
             color: $color-main-dark;
-            .fa {
+            .glyphicon {
                 -webkit-transform: translateX(-15%);
                 -ms-transform: translateX(-15%);
                 transform: translateX(-15%);
             }
         }
     }
-    .fa {
-        font-size: rem-calc(40);
+    .glyphicon {
+        top: 0;
         vertical-align: middle;
     }
     .tag-name {
@@ -826,6 +771,18 @@ html.no-csstransforms3d {
                 &:first-child {
                     margin-left: rem-calc(16);
                 }
+                .icon svg {
+                    height: 1em;
+                    width: auto;
+                    top: rem-calc(5);
+                    position: relative;
+                    fill: $color-main-contrast;
+                    -webkit-transition: fill 0.5s;
+                    transition: fill 0.5s;
+                    &:hover {
+                        fill: $color-main-dark;
+                    }
+                }
             }
         }
     }
@@ -840,17 +797,21 @@ html.no-csstransforms3d {
             bottom: rem-calc(5);
             right: 0;
             z-index: 99;
-            padding: rem-calc(5) rem-calc(15) rem-calc(10);
+            padding: rem-calc(10) rem-calc(15) rem-calc(5);
             background-color: $color-main-light;
             line-height: 1.1;
             height: auto;
-            border-radius: rem-calc(10);
+            border-radius: rem-calc(15);
             color: $color-main-dark;
-            &:hover {
-                color: darken($color-main-dark, 20%);
-            }
-            .fa {
-                font-size: rem-calc(20);
+            .icon svg {
+                height: rem-calc(20);
+                width: auto;
+                fill: $color-main-dark;
+                -webkit-transition: fill 0.5s;
+                transition: fill 0.5s;
+                &:hover {
+                    fill: #EE802F;
+                }
             }
         }
         .author-avatar-img {
@@ -876,22 +837,25 @@ html.no-csstransforms3d {
     padding-bottom: rem-calc(80);
     .footer-social-icons {
         a {
+            margin-right: rem-calc(4);
+            &:last-child {
+                margin-right: 0;
+            }
             color: $color-main-dark;
             &:hover, &:focus, &:active {
                 color: $color-main-dark;
             }
-            &.icon-telegram svg {
-                width: 1em;
-                padding-top: 0.5em;
-            }
+            @include social-icons;
         }
     }
     .footer-poweredby {
         margin-top: rem-calc(10);
         a {
             color: darken($color-main-light, 30%);
+            -webkit-transition: color 0.5s;
+            transition: color 0.5s;
             &:hover, &:focus, &:active {
-                color: darken($color-main-light, 30%);
+                color: $color-main-contrast;
             }
         }
     }
@@ -902,30 +866,10 @@ html.no-csstransforms3d {
     margin-top: rem-calc(55);
     text-align: center;
     a {
-        margin-top: rem-calc(10);
-        margin-bottom: rem-calc(10);
-        display: inline-block;
-        padding: rem-calc(10) rem-calc(30);
-        border: rem-calc(3) solid $color-main-dark;
-        font-weight: 900;
-        text-transform: uppercase;
-        text-align: center;
-        color: $color-main-dark;
-        font-size: rem-calc(12);
-        -webkit-transition: background-color .3s;
-        transition: background-color .3s;
-        &:hover {
-            color: $color-main-light;
-            background-color: $color-main-dark;
-            text-decoration: none;
-        }
-        &:active, &:focus {
-            color: $color-main-light;
-            background-color: $color-main-dark;
-        }
-        .fa {
+        @include read-more-button;
+        .glyphicon {
             font-size: rem-calc(12);
-            margin-right: rem-calc(5);
+            margin: 0 rem-calc(5) 0;
         }
     }
 }

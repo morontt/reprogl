@@ -14,7 +14,6 @@
     <meta name="theme-color" content="#23222D">
     <link rel="preconnect" href="{{ cdn }}" crossorigin>
     <link href="//s05.flagcounter.com" rel="dns-prefetch">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     {{asset "assets/css/reprogl.min.css"}}
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
@@ -27,18 +26,19 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
     <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-config" content="/browserconfig.xml"/>
-    <link href="{{abs_path "feed-atom"}}" rel="alternate" type="application/rss+xml" title="RSS">
-    <link href="{{abs_path "feed-rss"}}" rel="alternate" type="application/atom+xml" title="Atom">
+    <link href="{{abs_path "feed-rss"}}" rel="alternate" type="application/rss+xml" title="RSS">
+    <link href="{{abs_path "feed-atom"}}" rel="alternate" type="application/atom+xml" title="Atom">
     <link href="/humans.txt" rel="author" type="text/plain" >
 </head>
-<body class="{{template "body_class" .}}">
+<body class="{{template "body_class"}}">
+    {{- template "svg-sprites" -}}
     <div id="main" class="main-scene">
         {{template "body" .}}
         {{template "menu" .}}
     </div>
 
     <a href="#" class="back-to-top-btn js-back-to-top-btn hidden">
-        <i class="fa fa-chevron-up"></i>
+        <span class="glyphicon glyphicon-chevron-up"></span>
     </a>
 
     {{asset "assets/js/reprogl.min.js"}}

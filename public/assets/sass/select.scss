@@ -124,8 +124,8 @@
             text-indent: rem-calc(-290);
             opacity: 0;
             &::after {
-                font-family: 'FontAwesome';
-                content: '\f0c9';
+                font-family: 'Glyphicons Halflings';
+                content: '\e236';
                 color: $color-main-contrast;
                 -webkit-backface-visibility: hidden;
                 backface-visibility: hidden;
@@ -149,8 +149,8 @@
         font-weight: 400;
         text-transform: uppercase;
         &::after {
-            font-family: 'FontAwesome';
-            content: '\f0c9';
+            font-family: 'Glyphicons Halflings';
+            content: '\e236';
             color: $color-main-contrast;
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
