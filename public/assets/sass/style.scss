@@ -158,14 +158,11 @@ a.button {
     .headeroom-icons {
         line-height: rem-calc(50);
         font-size: rem-calc(36);
-        .fa {
+        .glyphicon {
             cursor: pointer;
             height: rem-calc(50);
             line-height: rem-calc(50);
             vertical-align: middle;
-            &.fa-search {
-                font-size: 60%;
-            }
         }
     }
 }
@@ -350,14 +347,11 @@ html.no-csstransforms3d {
             font-size: rem-calc(36);
             text-align: center;
             z-index: 2;
-            .fa {
+            .glyphicon {
                 cursor: pointer;
                 line-height: rem-calc(100);
                 height: rem-calc(100);
                 vertical-align: middle;
-                &.fa-search {
-                    font-size: 60%;
-                }
             }
             @media only screen and (min-width: 48em) {
                 right: rem-calc(30);
@@ -447,34 +441,6 @@ html.no-csstransforms3d {
                                 width: 100%;
                             }
                         }
-                    }
-                }
-                &.featured {
-                    &:before {
-                        position: absolute;
-                        bottom: rem-calc(20);
-                        right: rem-calc(24);
-                        content: "\f005";
-                        color: $color-main-light;
-                        font-family: "FontAwesome";
-                        font-size: rem-calc(16);
-                        display: block;
-                        z-index: 2;
-                    }
-                    &:after {
-                        content: " ";
-                        position: absolute;
-                        display: block;
-                        bottom: rem-calc(-11);
-                        right: rem-calc(9);
-                        width: 0;
-                        height: 0;
-                        border-top: rem-calc(40) solid transparent;
-                        border-bottom: rem-calc(40) solid transparent;
-                        border-right:rem-calc(40) solid $color-main-dark;
-                        -webkit-transform: rotate(225deg);
-                        -ms-transform: rotate(225deg);
-                        transform: rotate(225deg);
                     }
                 }
             }
