@@ -44,7 +44,14 @@
     {
       "text": "External library for cache #25",
       "priority": "medium",
-      "creation": 1686424143
+      "creation": 1686424143,
+      "tasks": [
+        {
+          "text": "Сохранять Geolocation ID в трекинге",
+          "priority": "medium",
+          "creation": 1687082513
+        }
+      ]
     },
     {
       "text": "Use SVG images #24",
