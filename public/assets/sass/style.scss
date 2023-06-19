@@ -861,6 +861,10 @@ html.no-csstransforms3d {
     }
 }
 
+html[data-useragent*='MSIE 9.0'] .footer .footer-social-icons a .icon svg {
+    width: 2em;
+}
+
 // loop pagination
 .pagination {
     margin-top: rem-calc(55);
