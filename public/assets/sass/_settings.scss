@@ -125,4 +125,10 @@ $color-headers: $color-main-dark;
     .icon.icon-rss svg:hover {
         fill: #EE802F;
     }
+
+    @media screen and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+        .icon svg {
+            width: 2em;
+        }
+    }
 }

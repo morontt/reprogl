@@ -773,7 +773,7 @@ html.no-csstransforms3d {
                 }
                 .icon svg {
                     height: 1em;
-                    width: auto;
+                    width: 1em;
                     top: rem-calc(5);
                     position: relative;
                     fill: $color-main-contrast;
@@ -805,7 +805,7 @@ html.no-csstransforms3d {
             color: $color-main-dark;
             .icon svg {
                 height: rem-calc(20);
-                width: auto;
+                width: rem-calc(20);
                 fill: $color-main-dark;
                 -webkit-transition: fill 0.5s;
                 transition: fill 0.5s;
