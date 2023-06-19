@@ -5,6 +5,7 @@
       "text": "Remove fonts awesome #24",
       "priority": "high",
       "creation": 1686423384,
+      "completion": 1687124096,
       "tasks": [
         {
           "text": "Glyphicons instead of FontsAwesome",
@@ -55,13 +56,14 @@
     },
     {
       "text": "Use SVG images #24",
-      "priority": "medium",
+      "priority": "verylow",
       "creation": 1686424190,
       "tasks": [
         {
           "text": "use SVG symbols from sprites.svg",
           "priority": "medium",
-          "creation": 1686424214
+          "creation": 1686424214,
+          "completion": 1687124118
         },
         {
           "text": "replace logo to SVG",
@@ -71,7 +73,8 @@
         {
           "text": "remove fontsawesome",
           "priority": "medium",
-          "creation": 1686424267
+          "creation": 1686424267,
+          "completion": 1687124126
         }
       ]
     },
@@ -271,8 +274,9 @@
     },
     {
       "text": "Использовать один docker-контейнер для приложения и nodejs",
-      "priority": "medium",
-      "creation": 1687069175
+      "priority": "high",
+      "creation": 1687069175,
+      "completion": 1687169518
     }
   ]
 }

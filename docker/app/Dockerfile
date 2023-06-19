@@ -1,16 +1,10 @@
-FROM debian:bookworm-slim
+FROM xelbot/docker-reprogl
 
-ENV TZ "Europe/Moscow"
+ARG HOST_UID=1000
 
 VOLUME ["/var/www/app"]
 
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-RUN apt-get update; \
-    apt-get install -y --no-install-recommends \
-    ca-certificates \
-    ; \
-    rm -rf /var/lib/apt/lists/*
+RUN usermod -u ${HOST_UID} www-data && groupmod -g ${HOST_UID} www-data
 
 WORKDIR "/var/www/app"
 
