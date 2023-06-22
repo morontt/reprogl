@@ -16,6 +16,10 @@ sub vcl_recv {
             return (synth(403, "Forbidden"));
         }
     }
+
+    if (req.http.Cookie) {
+        unset req.http.Cookie;
+    }
 }
 
 sub vcl_backend_response {
