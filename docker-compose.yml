@@ -20,6 +20,8 @@ services:
     varnish:
         image: varnish:7.0-alpine
         container_name: "reprogl_varnish"
+        environment:
+            BAN_TOKEN: ${BAN_TOKEN}
         volumes:
             - ./docker/varnish/default.vcl:/etc/varnish/default.vcl:ro
         tmpfs:
