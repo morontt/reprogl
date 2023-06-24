@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/xelbot/yetacache"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
@@ -18,7 +19,12 @@ import (
 var (
 	regexpArticle = regexp.MustCompile(`^\/article\/(?P<slug>[^/?#]+)`)
 	slugIndex     = regexpArticle.SubexpIndex("slug")
+	cache         *yetacache.Cache
 )
+
+func init() {
+	cache = yetacache.New(container.TrackExpiration, container.CleanUpInterval)
+}
 
 func CreateActivity(req *http.Request) *trackmodels.Activity {
 	ip := net.ParseIP(container.RealRemoteAddress(req))
@@ -77,14 +83,14 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		articleId = articleRepo.GetIdBySlug(matches[slugIndex])
 	}
 
-	if !testItem(activity.FingerPrint) {
+	if !cache.TestItem(activity.FingerPrint) {
 		err = repo.SaveTracking(activity, userAgentId, articleId)
 		if err != nil {
 			app.LogError(err)
 			return
 		}
 
-		setItem(activity.FingerPrint)
+		cache.SetItem(activity.FingerPrint)
 	}
 }
 
