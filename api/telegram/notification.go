@@ -23,16 +23,7 @@ type message struct {
 	DisablePreview bool   `json:"disable_web_page_preview"`
 }
 
-var telegramAdminId int
-var telegramToken string
-
 var telegramLocker sync.Mutex
-
-func init() {
-	cnf := container.GetConfig()
-	telegramAdminId = cnf.TelegramAdminID
-	telegramToken = cnf.TelegramToken
-}
 
 func SendNotification(
 	app *container.Application,
@@ -50,7 +41,7 @@ func SendNotification(
 
 	request, err := http.NewRequest(
 		http.MethodPost,
-		"https://api.telegram.org/bot"+telegramToken+"/sendMessage",
+		"https://api.telegram.org/bot"+container.GetConfig().TelegramToken+"/sendMessage",
 		bytes.NewReader(jsonBody))
 	if err != nil {
 		app.LogError(err)
@@ -76,7 +67,7 @@ func SendNotification(
 
 func createMessage(text string) message {
 	return message{
-		Chat:           telegramAdminId,
+		Chat:           container.GetConfig().TelegramAdminID,
 		Text:           text,
 		ParseMode:      "MarkdownV2",
 		DisablePreview: true,

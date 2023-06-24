@@ -9,12 +9,6 @@ import (
 	"xelbot.com/reprogl/models"
 )
 
-var cfg container.AppConfig
-
-func init() {
-	cfg = container.GetConfig()
-}
-
 type Meta struct {
 	Host         string
 	HeaderText   string
@@ -78,6 +72,8 @@ type FragmentRecentPostsData struct {
 }
 
 func defaultMeta() Meta {
+	cfg := container.GetConfig()
+
 	return Meta{Host: cfg.Host, HeaderText: cfg.HeaderText}
 }
 

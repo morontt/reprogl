@@ -12,17 +12,10 @@ import (
 
 var RecordNotFound = errors.New("models: no matching record found")
 
-var cdnBaseURL string
-
 const (
 	DisabledComments = "d"
 	EnabledComments  = "e"
 )
-
-func init() {
-	cfg := container.GetConfig()
-	cdnBaseURL = cfg.CDNBaseURL
-}
 
 type FeaturedImage struct {
 	ImagePath        sql.NullString
@@ -98,7 +91,7 @@ func (i *FeaturedImage) HasImage() bool {
 func (i *FeaturedImage) ImageURL() string {
 	var url string
 	if i.ImagePath.Valid {
-		url = cdnBaseURL + "/uploads/" + i.ImagePath.String
+		url = container.GetConfig().CDNBaseURL + "/uploads/" + i.ImagePath.String
 	} else {
 		url = ""
 	}

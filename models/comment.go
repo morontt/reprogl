@@ -34,7 +34,7 @@ type CommentatorList []*Commentator
 
 func (c *Comment) Avatar() (src string) {
 	if c.Deleted {
-		src = cdnBaseURL + "/images/avatar/clown.png"
+		src = container.GetConfig().CDNBaseURL + "/images/avatar/clown.png"
 
 		return
 	}
@@ -55,7 +55,7 @@ func (ctt *Commentator) Avatar() (src string) {
 
 	hashString := strings.ToUpper(container.MD5(str))
 
-	return cdnBaseURL + "/images/avatar/" + hashString[2:8] + ".png"
+	return container.GetConfig().CDNBaseURL + "/images/avatar/" + hashString[2:8] + ".png"
 }
 
 func (ctt *Commentator) gravatar() string {

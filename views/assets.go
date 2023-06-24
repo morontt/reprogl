@@ -19,7 +19,7 @@ func init() {
 }
 
 func cdnBase() string {
-	return cfg.CDNBaseURL
+	return container.GetConfig().CDNBaseURL
 }
 
 func assetTag(file string) template.HTML {
@@ -52,7 +52,7 @@ func assetTag(file string) template.HTML {
 	hash := subresourceIntegrity(file)
 	timeBasedPart := timeBased(file)
 
-	result = fmt.Sprintf(tmpl, cfg.CDNBaseURL+"/"+subPath+timeBasedPart+ext, hash)
+	result = fmt.Sprintf(tmpl, cdnBase()+"/"+subPath+timeBasedPart+ext, hash)
 	if !container.IsDevMode() {
 		fileHashes[file] = result
 	}

@@ -51,15 +51,9 @@ type CreateCommentResponse struct {
 	Comment    *CreatedCommentDTO `json:"comment,omitempty"`
 }
 
-var apiURL string
 var backendLocker sync.Mutex
 
 var NotAllowedComment = errors.New("backend: not allowed comment")
-
-func init() {
-	cnf := container.GetConfig()
-	apiURL = cnf.BackendApiUrl
-}
 
 func (vp *ViolationPath) UnmarshalText(jsonText []byte) error {
 	text := string(jsonText)
@@ -85,7 +79,7 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 		return nil, err
 	}
 
-	request, err := http.NewRequest(http.MethodPost, apiURL+"/api/comments/external", bytes.NewReader(jsonBody))
+	request, err := http.NewRequest(http.MethodPost, apiURL()+"/api/comments/external", bytes.NewReader(jsonBody))
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +113,7 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 }
 
 func PingGeolocation() {
-	request, err := http.NewRequest(http.MethodPost, apiURL+"/api/comments/geo-location", bytes.NewReader(nil))
+	request, err := http.NewRequest(http.MethodPost, apiURL()+"/api/comments/geo-location", bytes.NewReader(nil))
 	if err != nil {
 		return
 	}
@@ -128,7 +122,7 @@ func PingGeolocation() {
 }
 
 func RefreshComment(id int) (*CreatedCommentDTO, error) {
-	request, err := http.NewRequest(http.MethodGet, apiURL+"/api/comments/"+strconv.Itoa(id), bytes.NewReader(nil))
+	request, err := http.NewRequest(http.MethodGet, apiURL()+"/api/comments/"+strconv.Itoa(id), bytes.NewReader(nil))
 	if err != nil {
 		return nil, err
 	}
@@ -170,4 +164,8 @@ func send(req *http.Request) (*http.Response, error) {
 	req.Header.Set(wsseHeader, wsseToken)
 
 	return api.Send(req)
+}
+
+func apiURL() string {
+	return container.GetConfig().BackendApiUrl
 }

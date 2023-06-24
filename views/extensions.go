@@ -46,19 +46,19 @@ func nl2br(s string) string {
 }
 
 func authorName() string {
-	return cfg.Author
+	return container.GetConfig().Author
 }
 
 func authorBio() string {
-	return cfg.AuthorBio
+	return container.GetConfig().AuthorBio
 }
 
 func authorGithub() string {
-	return fmt.Sprintf("https://github.com/%s", cfg.AuthorGithub)
+	return fmt.Sprintf("https://github.com/%s", container.GetConfig().AuthorGithub)
 }
 
 func authorTelegram() string {
-	return fmt.Sprintf("https://t.me/%s/", cfg.AuthorTelegram)
+	return fmt.Sprintf("https://t.me/%s/", container.GetConfig().AuthorTelegram)
 }
 
 func renderESI(routeName string, pairs ...string) template.HTML {
