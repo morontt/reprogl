@@ -2,10 +2,12 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"runtime"
+	"runtime/debug"
 	"time"
 
 	"github.com/doug-martin/goqu/v9"
@@ -23,6 +25,8 @@ func main() {
 	infoLog.Printf("Version: %s (tag: %s)", container.Version, container.GetBuildTag())
 	infoLog.Printf("Build time: %s", container.BuildTime)
 	infoLog.Printf("Go version: %s", runtime.Version())
+
+	handleError(container.Load("app.ini"), errorLog)
 
 	cfg := container.GetConfig()
 	db, err := getDBConnection(cfg.DatabaseDSN, infoLog)
@@ -109,6 +113,7 @@ func openDB(dsn string) (*sql.DB, error) {
 
 func handleError(err error, logger *log.Logger) {
 	if err != nil {
+		logger.Println(fmt.Sprintf("%s", debug.Stack()))
 		logger.Fatal(err)
 	}
 }

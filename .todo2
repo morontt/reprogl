@@ -244,8 +244,13 @@
         },
         {
           "text": "example: https://xeiaso.net/blog/site-update-v3",
-          "priority": "medium",
+          "priority": "low",
           "creation": 1687503586
+        },
+        {
+          "text": "example: https://clivern.com/how-to-connect-arduino-with-a-raspberry-pi-over-a-serial-port/",
+          "priority": "low",
+          "creation": 1687622203
         },
         {
           "text": "Подготовка изображений из оригинального",

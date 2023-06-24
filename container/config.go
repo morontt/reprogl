@@ -3,8 +3,6 @@ package container
 import (
 	"errors"
 	"fmt"
-	"log"
-	"os"
 	"reflect"
 
 	"github.com/gookit/ini/v2"
@@ -30,11 +28,8 @@ type AppConfig struct {
 
 var cnf AppConfig
 
-func init() {
-	err := cnf.load("app.ini")
-	if err != nil {
-		handleError(err)
-	}
+func Load(file string) error {
+	return cnf.load(file)
 }
 
 func GetConfig() AppConfig {
@@ -55,29 +50,26 @@ func GetBuildTag() (tag string) {
 	return
 }
 
-func handleError(err error) {
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
-	errorLog.Fatal(err)
-}
-
-func configStringValue(paramName string) (value string) {
+func configStringValue(paramName string) (string, error) {
+	var value string
 	if _, ok := ini.GetValue(paramName); ok {
 		value = ini.String(paramName)
 	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"" + paramName + "\""))
+		return value, errors.New("app.ini: Undefined parameter \"" + paramName + "\"")
 	}
 
-	return
+	return value, nil
 }
 
-func configIntValue(paramName string) (value int) {
+func configIntValue(paramName string) (int, error) {
+	var value int
 	if _, ok := ini.GetValue(paramName); ok {
 		value = ini.Int(paramName)
 	} else {
-		handleError(errors.New("app.ini: Undefined parameter \"" + paramName + "\""))
+		return value, errors.New("app.ini: Undefined parameter \"" + paramName + "\"")
 	}
 
-	return
+	return value, nil
 }
 
 type structField struct {
@@ -97,7 +89,13 @@ func (c *AppConfig) load(file string) error {
 		return fmt.Errorf("config: load error %v", reflect.TypeOf(c))
 	}
 
-	fields := parseFields(reflect.TypeOf(*c))
+	return setupFields(rv, parseFields(reflect.TypeOf(*c)))
+}
+
+func setupFields(rv reflect.Value, fields []structField) error {
+	if rv.Kind() != reflect.Pointer {
+		return fmt.Errorf("config: argument is not a pointer")
+	}
 
 	confValue := rv.Elem()
 	for _, field := range fields {
@@ -105,14 +103,22 @@ func (c *AppConfig) load(file string) error {
 		if f.IsValid() && f.CanSet() {
 			switch field.fieldType {
 			case reflect.Int:
-				x := int64(configIntValue(field.parameterName))
+				intVal, err := configIntValue(field.parameterName)
+				if err != nil {
+					return err
+				}
+				x := int64(intVal)
 				if !f.OverflowInt(x) {
 					f.SetInt(x)
 				} else {
 					return fmt.Errorf("config: int overflow for field %s", field.name)
 				}
 			case reflect.String:
-				f.SetString(configStringValue(field.parameterName))
+				stringVal, err := configStringValue(field.parameterName)
+				if err != nil {
+					return err
+				}
+				f.SetString(stringVal)
 			default:
 				return fmt.Errorf("config: undefined type %s of field %s", field.fieldType, field.name)
 			}
