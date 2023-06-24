@@ -40,11 +40,28 @@
     {
       "text": "GTmetrix optimization #27",
       "priority": "low",
-      "creation": 1686424120
+      "creation": 1686424120,
+      "tasks": [
+        {
+          "text": "Использовать GPRS-троттлинг при загрузке",
+          "priority": "medium",
+          "creation": 1687596660
+        },
+        {
+          "text": "Критические стили сразу в html",
+          "priority": "medium",
+          "creation": 1687596690
+        },
+        {
+          "text": "Сокращение цепочек отложенной загрузки (шрифты, фоны)",
+          "priority": "medium",
+          "creation": 1687596740
+        }
+      ]
     },
     {
       "text": "External library for cache #25",
-      "priority": "medium",
+      "priority": "high",
       "creation": 1686424143,
       "tasks": [
         {
@@ -166,8 +183,9 @@
     },
     {
       "text": "Config refactoring #13",
-      "priority": "low",
-      "creation": 1686424646
+      "priority": "high",
+      "creation": 1686424646,
+      "completion": 1687609017
     },
     {
       "text": "After new comment #12",
@@ -223,6 +241,21 @@
           "text": "https://html.spec.whatwg.org/multipage/embedded-content.html#element-attrdef-img-srcset",
           "priority": "medium",
           "creation": 1686470781
+        },
+        {
+          "text": "example: https://xeiaso.net/blog/site-update-v3",
+          "priority": "low",
+          "creation": 1687503586
+        },
+        {
+          "text": "example: https://clivern.com/how-to-connect-arduino-with-a-raspberry-pi-over-a-serial-port/",
+          "priority": "low",
+          "creation": 1687622203
+        },
+        {
+          "text": "Подготовка изображений из оригинального",
+          "priority": "medium",
+          "creation": 1687595434
         }
       ]
     },
@@ -277,6 +310,18 @@
       "priority": "high",
       "creation": 1687069175,
       "completion": 1687169518
+    },
+    {
+      "text": "Graceful shutdown",
+      "priority": "medium",
+      "creation": 1687236055,
+      "tasks": [
+        {
+          "text": "https://www.rudderstack.com/blog/implementing-graceful-shutdown-in-go/",
+          "priority": "medium",
+          "creation": 1687236073
+        }
+      ]
     }
   ]
 }

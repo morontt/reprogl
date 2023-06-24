@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+echo -e "\e[36mStart pre-push hook\e[0m\n"
+
+LDFLAGS="-X 'xelbot.com/reprogl/container.BuildTime=$(date -u +"%a, %d %b %Y %H:%M:%S %Z")'"
+LDFLAGS="$LDFLAGS -X 'xelbot.com/reprogl/container.Version=9.9.9'"
+LDFLAGS="$LDFLAGS -X 'xelbot.com/reprogl/container.GitRevision=f0f0f0'"
+
+./test.sh
+
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo -e "\n\e[31mgo test error\e[0m\n"
+    exit 1
+else
+    echo -e "\n\e[32mgo test OK\e[0m\n"
+fi
+
+exit 0
