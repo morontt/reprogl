@@ -7,7 +7,7 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/gookit/ini/v2 v2.2.2
 	github.com/gorilla/mux v1.8.0
-	github.com/xelbot/yetacache v0.0.0-20230624221850-d640fc952619
+	github.com/xelbot/yetacache v0.9.0
 )
 
 require (

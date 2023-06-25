@@ -19,11 +19,11 @@ import (
 var (
 	regexpArticle = regexp.MustCompile(`^\/article\/(?P<slug>[^/?#]+)`)
 	slugIndex     = regexpArticle.SubexpIndex("slug")
-	cache         *yetacache.Cache
+	cache         *yetacache.Cache[string, int8]
 )
 
 func init() {
-	cache = yetacache.New(container.TrackExpiration, container.CleanUpInterval)
+	cache = yetacache.New[string, int8](container.TrackExpiration, container.CleanUpInterval)
 }
 
 func CreateActivity(req *http.Request) *trackmodels.Activity {
@@ -83,14 +83,14 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		articleId = articleRepo.GetIdBySlug(matches[slugIndex])
 	}
 
-	if !cache.TestItem(activity.FingerPrint) {
+	if !cache.Has(activity.FingerPrint) {
 		err = repo.SaveTracking(activity, userAgentId, articleId)
 		if err != nil {
 			app.LogError(err)
 			return
 		}
 
-		cache.SetItem(activity.FingerPrint)
+		cache.Set(activity.FingerPrint, 1, yetacache.DefaultTTL)
 	}
 }
 
