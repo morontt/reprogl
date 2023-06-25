@@ -9,6 +9,8 @@ import (
 	"runtime"
 	"runtime/debug"
 	"time"
+
+	"github.com/xelbot/yetacache"
 )
 
 var Version string
@@ -22,6 +24,8 @@ type Application struct {
 	ErrorLog *log.Logger
 	InfoLog  *log.Logger
 	DB       *sql.DB
+
+	intCache *yetacache.Cache[string, int]
 }
 
 var urlGen URLGenerator
@@ -77,4 +81,13 @@ func (app *Application) ClientError(w http.ResponseWriter, status int) {
 func (app *Application) LogError(err error) {
 	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
 	app.ErrorLog.Println(trace)
+}
+
+func (app *Application) GetIntCache() *yetacache.Cache[string, int] {
+	if app.intCache == nil {
+		app.InfoLog.Println("[CACHE] create integer instance")
+		app.intCache = yetacache.New[string, int](time.Hour, 24*time.Hour)
+	}
+
+	return app.intCache
 }

@@ -3,6 +3,8 @@ package handlers
 import (
 	"errors"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/container"
@@ -42,6 +44,25 @@ func PageAction(app *container.Application) http.HandlerFunc {
 			app.ServerError(w, err)
 
 			return
+		}
+
+		cache := app.GetIntCache()
+
+		var recentID int
+		var found bool
+		if recentID, found = cache.Get("last_recent_id"); !found {
+			recentID, err = repo.GetLastRecentPostsID()
+			if err != nil {
+				app.ServerError(w, err)
+
+				return
+			}
+			cache.Set("last_recent_id", recentID, 24*time.Hour)
+		}
+		if article.ID >= recentID {
+			article.RecentPostsID = strconv.Itoa(article.ID)
+		} else {
+			article.RecentPostsID = "0"
 		}
 
 		templateData := views.NewArticlePageData(article, lastUpdate)

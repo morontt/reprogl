@@ -46,9 +46,9 @@ type InfoPageData struct {
 }
 
 type SidebarDummyArticle struct {
-	HasImage  bool
-	IsArticle bool
-	IdString  string
+	HasImage      bool
+	IsArticle     bool
+	RecentPostsID string
 }
 
 type StatisticsPageData struct {
@@ -155,6 +155,6 @@ func NewStatisticsPageData() *StatisticsPageData {
 	return &StatisticsPageData{
 		Meta:         meta,
 		Now:          time.Now(),
-		DummyArticle: SidebarDummyArticle{IdString: "0"},
+		DummyArticle: SidebarDummyArticle{RecentPostsID: "0"},
 	}
 }

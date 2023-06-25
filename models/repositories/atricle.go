@@ -3,8 +3,11 @@ package repositories
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"xelbot.com/reprogl/models"
 )
+
+const RecentPostsCount = 6
 
 type ArticleRepository struct {
 	DB *sql.DB
@@ -261,7 +264,7 @@ func (ar *ArticleRepository) GetFeedCollection() (*models.FeedItemList, error) {
 }
 
 func (ar *ArticleRepository) GetRecentPostsCollection(articleId int) (*models.RecentPostList, error) {
-	query := `
+	query := fmt.Sprintf(`
 		SELECT
 			title,
 			url
@@ -270,8 +273,7 @@ func (ar *ArticleRepository) GetRecentPostsCollection(articleId int) (*models.Re
 			hide = 0
 			AND id != ?
 		ORDER BY time_created DESC
-		LIMIT 6
-`
+		LIMIT %d`, RecentPostsCount)
 
 	rows, err := ar.DB.Query(query, articleId)
 	if err != nil {
@@ -296,6 +298,26 @@ func (ar *ArticleRepository) GetRecentPostsCollection(articleId int) (*models.Re
 	}
 
 	return &articles, nil
+}
+
+func (ar *ArticleRepository) GetLastRecentPostsID() (int, error) {
+	query := fmt.Sprintf(`
+		SELECT
+			MIN(src.id) AS id
+		FROM (
+			SELECT id
+			FROM posts
+			WHERE hide = 0
+			ORDER BY time_created DESC
+			LIMIT %d) AS src`, RecentPostsCount)
+
+	var id int
+	err := ar.DB.QueryRow(query).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }
 
 func (ar *ArticleRepository) GetByIdForComment(id int) (*models.ArticleForComment, error) {

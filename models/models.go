@@ -42,6 +42,7 @@ type Article struct {
 	Tags TagList
 
 	DisabledComments bool
+	RecentPostsID    string
 }
 
 type ArticleListItem struct {

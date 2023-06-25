@@ -68,6 +68,12 @@
           "text": "Сохранять Geolocation ID в трекинге",
           "priority": "medium",
           "creation": 1687082513
+        },
+        {
+          "text": "Сохранять минимальный Recent Posts ID для сайдбара",
+          "priority": "medium",
+          "creation": 1687670277,
+          "completion": 1687728195
         }
       ]
     },
