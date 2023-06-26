@@ -11,7 +11,6 @@ sub vcl_recv {
     if (req.method == "POST" && req.url == "/purge-cache") {
         if (req.http.x-ban-token == std.getenv("BAN_TOKEN")) {
             std.ban("req.http.host ~ .*");
-            return (synth(200, "OK"));
         } else {
             return (synth(403, "Forbidden"));
         }

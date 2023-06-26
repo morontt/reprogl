@@ -63,6 +63,7 @@
       "text": "External library for cache #25",
       "priority": "high",
       "creation": 1686424143,
+      "completion": 1687780776,
       "tasks": [
         {
           "text": "Сохранять Geolocation ID в трекинге",
