@@ -71,9 +71,8 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		userAgentId = agent.ID
 	}
 
-	geolocationRepo := repositories.GeolocationRepository{DB: app.DB}
-	location, err := geolocationRepo.FindByIP(activity.Addr)
-	if err == nil && location != nil {
+	location, err := findLocationByIP(activity.Addr, app)
+	if err == nil {
 		activity.LocationID = location.ID
 	}
 
@@ -92,6 +91,29 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 
 		cache.Set(activity.FingerPrint, 1, yetacache.DefaultTTL)
 	}
+}
+
+func findLocationByIP(ip net.IP, app *container.Application) (*models.Geolocation, error) {
+	ipKey := "IP_" + ip.String()
+
+	cache := app.GetIntCache()
+	if locationID, found := cache.Get(ipKey); found {
+		app.InfoLog.Printf("[CACHE] IP %s HIT\n", ip.String())
+
+		return &models.Geolocation{IpAddr: ip.String(), ID: locationID}, nil
+	} else {
+		app.InfoLog.Printf("[CACHE] IP %s MISS\n", ip.String())
+	}
+
+	geolocationRepo := repositories.GeolocationRepository{DB: app.DB}
+	location, err := geolocationRepo.FindByIP(ip)
+	if err != nil {
+		return nil, err
+	}
+
+	cache.Set(ipKey, location.ID, 168*time.Hour)
+
+	return location, nil
 }
 
 func setupBrowserPassiveFingerprint(req *http.Request, a *trackmodels.Activity) {
