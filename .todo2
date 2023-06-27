@@ -16,7 +16,7 @@
     },
     {
       "text": "Avatar generator #31",
-      "priority": "low",
+      "priority": "high",
       "creation": 1686423877,
       "tasks": [
         {
@@ -269,6 +269,11 @@
           "text": "Подготовка изображений из оригинального (при процессинге статьи)",
           "priority": "medium",
           "creation": 1687595434
+        },
+        {
+          "text": "example: https://joppe.dev/2020/06/17/behaviour-driven-development-basics/",
+          "priority": "low",
+          "creation": 1687861534
         }
       ]
     },
@@ -316,7 +321,19 @@
     {
       "text": "Default image for feeds (for example https://feedly.com)",
       "priority": "medium",
-      "creation": 1686847532
+      "creation": 1686847532,
+      "tasks": [
+        {
+          "text": "example: https://apps.timwhitlock.info/unicode/inspect?s=%E2%99%82",
+          "priority": "low",
+          "creation": 1687851554
+        },
+        {
+          "text": "example: https://joppe.dev/2020/06/17/behaviour-driven-development-basics/",
+          "priority": "low",
+          "creation": 1687861639
+        }
+      ]
     },
     {
       "text": "Использовать один docker-контейнер для приложения и nodejs",

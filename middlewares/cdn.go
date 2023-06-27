@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"net/http"
+	"strings"
 
 	"xelbot.com/reprogl/container"
 )
@@ -14,7 +15,9 @@ func CDN(next http.Handler) http.Handler {
 				w.Write([]byte("This is static assets storage"))
 
 				return
-			} else if r.URL.Path != "/robots.txt" && r.URL.Path != "/sitemap.xml" {
+			} else if r.URL.Path != "/robots.txt" &&
+				r.URL.Path != "/sitemap.xml" &&
+				!strings.HasPrefix(r.URL.Path, "/images/avatar/") {
 				http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 
 				return
