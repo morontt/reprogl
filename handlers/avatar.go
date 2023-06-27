@@ -1,11 +1,12 @@
 package handlers
 
 import (
-	"encoding/base64"
 	"github.com/gorilla/mux"
+	"image/png"
 	"net/http"
 
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/utils/avatar"
 	"xelbot.com/reprogl/utils/hashid"
 )
 
@@ -14,19 +15,19 @@ func AvatarGenerator(app *container.Application) http.HandlerFunc {
 		vars := mux.Vars(r)
 		hash := vars["hash"]
 
-		_, err := hashid.Decode(hash)
+		hashModel, err := hashid.Decode(hash)
 		if err != nil {
 			app.ClientError(w, http.StatusBadRequest)
 			return
 		}
 
-		pixel := "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-		body, err := base64.StdEncoding.DecodeString(pixel)
+		img, err := avatar.GenerateAvatar(hash, hashModel.IsMale())
 		if err != nil {
-			panic(err)
+			app.ServerError(w, err)
+			return
 		}
 
 		w.Header().Set("Content-Type", "image/png")
-		w.Write(body)
+		png.Encode(w, img)
 	}
 }
