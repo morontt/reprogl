@@ -56,7 +56,12 @@
                                     <footer class="post-meta clearfix">
                                         <div class="left">{{tags .Tags}}</div>
                                         {{if gt .CommentsCount 0}}
-                                            <div class="right">{{cnt_comments .CommentsCount}}</div>
+                                            <div class="right">
+                                                <a class="to-comments"
+                                                   href="{{path "article" "slug" .Slug}}#comments-wrapper">
+                                                    {{cnt_comments .CommentsCount}}
+                                                </a>
+                                            </div>
                                         {{end}}
                                     </footer>
                                 </div>

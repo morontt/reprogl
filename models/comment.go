@@ -2,11 +2,10 @@ package models
 
 import (
 	"database/sql"
-	"fmt"
-	"strings"
 	"time"
 
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/utils/hashid"
 )
 
 type Commentator struct {
@@ -16,7 +15,7 @@ type Commentator struct {
 	CommentatorID sql.NullInt32
 	AuthorID      sql.NullInt32
 	CommentsCount int
-	ForceImage    bool
+	Gender        int
 }
 
 type Comment struct {
@@ -49,49 +48,23 @@ func (c *Comment) Avatar() (src string) {
 }
 
 func (ctt *Commentator) Avatar() (src string) {
-	var str string
+	var id int
+	var options hashid.Option
+
 	switch {
-	case ctt.CommentatorID.Valid && !ctt.ForceImage:
-		return ctt.gravatar()
-	case ctt.CommentatorID.Valid && ctt.ForceImage:
-		str = fmt.Sprintf("ratava%d", ctt.CommentatorID.Int32)
+	case ctt.CommentatorID.Valid:
+		id = int(ctt.CommentatorID.Int32)
+		options = hashid.Commentator
 	case ctt.AuthorID.Valid:
-		str = fmt.Sprintf("avatar%d", ctt.AuthorID.Int32)
+		id = int(ctt.AuthorID.Int32)
+		options = hashid.User
 	}
 
-	hashString := strings.ToUpper(container.MD5(str))
-
-	return container.GetConfig().CDNBaseURL + "/images/avatar/" + hashString[2:8] + ".png"
-}
-
-func (ctt *Commentator) gravatar() string {
-	defaults := make(map[int32]string)
-	defaults[0] = "wavatar"
-	defaults[1] = "monsterid"
-
-	var idx int32
-	if ctt.CommentatorID.Valid {
-		idx = ctt.CommentatorID.Int32 % 2
-	}
-
-	return fmt.Sprintf("//www.gravatar.com/avatar/%s?s=80&d=%s", ctt.gravatarHash(), defaults[idx])
-}
-
-func (ctt *Commentator) gravatarHash() (hash string) {
-	if ctt.Email.Valid {
-		hash = md5sum(ctt.Email.String)
+	if ctt.Gender == 1 {
+		options |= hashid.Male
 	} else {
-		hash = md5sum(ctt.Name)
-		if ctt.Website.Valid {
-			hash = md5sum(
-				fmt.Sprintf("%s%s", hash, ctt.Website.String),
-			)
-		}
+		options |= hashid.Female
 	}
 
-	return
-}
-
-func md5sum(s string) string {
-	return container.MD5(strings.ToLower(strings.TrimSpace(s)))
+	return container.GetConfig().CDNBaseURL + "/images/avatar/" + hashid.Encode(id, options) + ".png"
 }

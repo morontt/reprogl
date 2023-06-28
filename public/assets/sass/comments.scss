@@ -39,6 +39,11 @@ section.comments {
 
             .comment-text {
                 margin-left: 0.6em;
+                a {
+                    &:hover, &:focus, &:active {
+                        color: darken($color-main-contrast, 10%);
+                    }
+                }
 
                 @media only screen and (min-width: 48em) {
                     margin-left: 99px;
@@ -81,11 +86,14 @@ section.comments {
             }
 
             a {
-                color: #FFF200;
+                color: $color-comment-header-link;
                 text-decoration: none;
 
                 &:after {
                     content: '\21B5';
+                }
+                &:hover, &:focus, &:active {
+                    color: darken($color-comment-header-link, 5%);
                 }
             }
 

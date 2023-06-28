@@ -686,6 +686,12 @@ html.no-csstransforms3d {
                             width: 100%;
                         }
                     }
+                    &.to-comments {
+                        color: $color-main-dark;
+                        &:after {
+                            background-color: $color-main-dark;
+                        }
+                    }
                 }
             }
         }

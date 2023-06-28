@@ -22,7 +22,8 @@
         {
           "text": "Use gravatar if picture exist",
           "priority": "medium",
-          "creation": 1686423927
+          "creation": 1686423927,
+          "completion": 1687961663
         }
       ]
     },
@@ -369,6 +370,11 @@
           "creation": 1687796069
         }
       ]
+    },
+    {
+      "text": "Проверить протухшие ссылки у комментаторов",
+      "priority": "medium",
+      "creation": 1687968750
     }
   ]
 }

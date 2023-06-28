@@ -30,6 +30,15 @@ func init() {
 	}
 }
 
+func Encode(id int, options Option) (hashString string) {
+	hashString, err := encode(id, options)
+	if err != nil {
+		panic(err)
+	}
+
+	return
+}
+
 func Decode(str string) (HashData, error) {
 	var data = HashData{Hash: str}
 
@@ -53,4 +62,8 @@ func Decode(str string) (HashData, error) {
 
 func decode(str string) ([]int, error) {
 	return hash.DecodeWithError(str)
+}
+
+func encode(id int, options Option) (string, error) {
+	return hash.EncodeInt64([]int64{int64(id), int64(options)})
 }

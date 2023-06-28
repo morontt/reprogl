@@ -305,6 +305,11 @@
                         display: block;
                         overflow: auto;
                     }
+                    .comment-header a {
+                        &:hover, &:focus, &:active {
+                            color: darken($color-comment-header-link, 5%);
+                        }
+                    }
                 }
                 .post-header-content {
                     margin-bottom: rem-calc(60);
