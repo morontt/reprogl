@@ -18,12 +18,18 @@
       "text": "Avatar generator #31",
       "priority": "high",
       "creation": 1686423877,
+      "completion": 1687988349,
       "tasks": [
         {
           "text": "Use gravatar if picture exist",
           "priority": "medium",
           "creation": 1686423927,
           "completion": 1687961663
+        },
+        {
+          "text": "Avatar compression",
+          "priority": "medium",
+          "creation": 1687968893
         }
       ]
     },

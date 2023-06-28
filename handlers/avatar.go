@@ -1,11 +1,16 @@
 package handlers
 
 import (
+	"bufio"
+	"bytes"
 	"errors"
-	"github.com/gorilla/mux"
+	"image"
 	"image/png"
 	"net/http"
+	"os"
+	"os/exec"
 
+	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/utils/avatar"
@@ -36,6 +41,33 @@ func AvatarGenerator(app *container.Application) http.HandlerFunc {
 
 		cacheControl(w, container.AvatarTTL)
 		w.Header().Set("Content-Type", "image/png")
-		png.Encode(w, img)
+
+		err = pngquantPipe(w, img)
+		if err != nil {
+			panic(err)
+		}
 	}
+}
+
+func pngquantPipe(w http.ResponseWriter, avatarImage image.Image) error {
+	buf := new(bytes.Buffer)
+	quantBuf := new(bytes.Buffer)
+
+	cmd := exec.Command("/usr/bin/pngquant", "-s1", "--quality=60-80", "-")
+	cmd.Stdin = bufio.NewReader(buf)
+	cmd.Stderr = os.Stderr
+	cmd.Stdout = quantBuf
+
+	err := png.Encode(buf, avatarImage)
+	if err != nil {
+		return err
+	}
+
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	_, err = w.Write(quantBuf.Bytes())
+	return err
 }
