@@ -8,14 +8,19 @@ import (
 	_ "image/png"
 	"os"
 	"strconv"
+
+	xdraw "golang.org/x/image/draw"
+	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/models/repositories"
+	"xelbot.com/reprogl/utils/hashid"
 )
 
 var iconsConfig = map[string]map[string]int{
 	"male": {
 		"eye":        33,
-		"hair":       37,
+		"hair":       36,
 		"mouth":      26,
-		"clothes":    66,
+		"clothes":    64,
 		"face":       4,
 		"background": 5,
 	},
@@ -31,7 +36,25 @@ var iconsConfig = map[string]map[string]int{
 
 type dataDict map[string]string
 
-func GenerateAvatar(hash string, male bool) (image.Image, error) {
+func GenerateAvatar(hashData hashid.HashData, app *container.Application) (image.Image, error) {
+	app.InfoLog.Printf("[IMG] Avatar generation by %+v\n", hashData)
+	if !hashData.IsUser() {
+		repository := repositories.CommentRepository{DB: app.DB}
+		commentator, err := repository.FindForGravatar(hashData.ID)
+		if err != nil {
+			return nil, err
+		}
+
+		gravatar, err := tryGravatar(commentator)
+		if err == nil {
+			return gravatar, nil
+		}
+	}
+
+	return generate8BitIconAvatar(hashData.Hash, hashData.IsMale())
+}
+
+func generate8BitIconAvatar(hash string, male bool) (image.Image, error) {
 	dict := dataByHash(hash, male)
 	baseImage := image.NewRGBA(image.Rect(0, 0, 400, 400))
 
@@ -77,7 +100,10 @@ func GenerateAvatar(hash string, male bool) (image.Image, error) {
 	draw.Draw(baseImage, hairImage.Bounds(), hairImage, image.Point{}, draw.Over)
 	draw.Draw(baseImage, eyeImage.Bounds(), eyeImage, image.Point{}, draw.Over)
 
-	return baseImage, nil
+	image80x80 := image.NewRGBA(image.Rect(0, 0, 80, 80))
+	xdraw.NearestNeighbor.Scale(image80x80, image80x80.Bounds(), baseImage, baseImage.Bounds(), draw.Src, nil)
+
+	return image80x80, nil
 }
 
 func dataByHash(hash string, male bool) dataDict {

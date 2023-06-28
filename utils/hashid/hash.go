@@ -31,7 +31,7 @@ func init() {
 }
 
 func Decode(str string) (HashData, error) {
-	var data HashData
+	var data = HashData{Hash: str}
 
 	ids, err := decode(str)
 	if err != nil {

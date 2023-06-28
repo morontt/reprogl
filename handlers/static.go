@@ -89,6 +89,9 @@ func HumansTXTAction(w http.ResponseWriter, r *http.Request) {
 	Site: https://colorlib.com/wp/free-404-error-page-templates/
 	Location: Latvia
 
+	8biticon: Pixel Character Maker
+	Site: https://8biticon.com/
+
 /* SITE */
 	Last update: %s
 	Language: Russian

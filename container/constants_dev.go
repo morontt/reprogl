@@ -9,6 +9,7 @@ const (
 	StatisticsTTL
 	RobotsTxtTTL
 	FeedTTL
+	AvatarTTL
 	devMode = true
 
 	TrackExpiration time.Duration = time.Minute

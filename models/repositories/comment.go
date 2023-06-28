@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"errors"
 
 	"xelbot.com/reprogl/models"
 )
@@ -146,4 +147,31 @@ func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorLis
 	}
 
 	return &commentators, nil
+}
+
+func (cr *CommentRepository) FindForGravatar(id int) (*models.CommentatorForGravatar, error) {
+	query := `
+		SELECT
+			c.id,
+			c.mail,
+			c.fake_email
+		FROM commentators AS c
+		WHERE (c.id = ?)`
+
+	commentator := models.CommentatorForGravatar{}
+
+	err := cr.DB.QueryRow(query, id).Scan(
+		&commentator.ID,
+		&commentator.Email,
+		&commentator.FakeEmail)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, models.RecordNotFound
+		} else {
+			return nil, err
+		}
+	}
+
+	return &commentator, nil
 }

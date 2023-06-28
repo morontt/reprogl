@@ -2,6 +2,7 @@ package hashid
 
 type HashData struct {
 	ID      int
+	Hash    string
 	options Option
 }
 

@@ -28,6 +28,12 @@ type Comment struct {
 	Commentator
 }
 
+type CommentatorForGravatar struct {
+	ID        int
+	Email     sql.NullString
+	FakeEmail sql.NullBool
+}
+
 type CommentList []*Comment
 
 type CommentatorList []*Commentator
