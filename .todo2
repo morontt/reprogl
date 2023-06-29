@@ -361,26 +361,15 @@
       ]
     },
     {
-      "text": "Уведомление на почту об ответе на комментарий",
-      "priority": "medium",
-      "creation": 1687795993,
-      "tasks": [
-        {
-          "text": "Нет логотипа",
-          "priority": "medium",
-          "creation": 1687796021
-        },
-        {
-          "text": "Поломаное сообщение в виде обычного текста",
-          "priority": "medium",
-          "creation": 1687796069
-        }
-      ]
-    },
-    {
       "text": "Проверить протухшие ссылки у комментаторов",
       "priority": "medium",
       "creation": 1687968750
+    },
+    {
+      "text": "Use ETag for avatar",
+      "priority": "high",
+      "creation": 1688036716,
+      "completion": 1688041076
     }
   ]
 }

@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
+	"fmt"
+	"hash/crc32"
 	"image"
 	"image/png"
 	"net/http"
@@ -42,26 +44,37 @@ func AvatarGenerator(app *container.Application) http.HandlerFunc {
 		cacheControl(w, container.AvatarTTL)
 		w.Header().Set("Content-Type", "image/png")
 
-		err = pngquantPipe(w, img)
+		err = pngquantPipe(w, img, r.Header.Values("If-None-Match"))
 		if err != nil {
 			panic(err)
 		}
 	}
 }
 
-func pngquantPipe(w http.ResponseWriter, avatarImage image.Image) error {
+func pngquantPipe(w http.ResponseWriter, avatarImage image.Image, etags []string) error {
 	buf := new(bytes.Buffer)
+	err := png.Encode(buf, avatarImage)
+	if err != nil {
+		return err
+	}
+
+	crc32cs := crc32.Checksum(buf.Bytes(), crc32.MakeTable(crc32.Castagnoli))
+	chechSum := fmt.Sprintf("%08X", crc32cs)
+
+	w.Header().Set("Etag", chechSum)
+	for _, item := range etags {
+		if chechSum == item {
+			w.WriteHeader(http.StatusNotModified)
+			return nil
+		}
+	}
+
 	quantBuf := new(bytes.Buffer)
 
 	cmd := exec.Command("/usr/bin/pngquant", "-s1", "--quality=60-80", "-")
 	cmd.Stdin = bufio.NewReader(buf)
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = quantBuf
-
-	err := png.Encode(buf, avatarImage)
-	if err != nil {
-		return err
-	}
 
 	err = cmd.Run()
 	if err != nil {

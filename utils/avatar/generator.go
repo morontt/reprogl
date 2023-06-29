@@ -6,6 +6,7 @@ import (
 	"image"
 	"image/draw"
 	_ "image/png"
+	"log"
 	"os"
 	"strconv"
 
@@ -37,7 +38,7 @@ var iconsConfig = map[string]map[string]int{
 type dataDict map[string]string
 
 func GenerateAvatar(hashData hashid.HashData, app *container.Application) (image.Image, error) {
-	app.InfoLog.Printf("[IMG] Avatar generation by %+v\n", hashData)
+	app.InfoLog.Printf("[IMG] avatar generation by %+v\n", hashData)
 	if !hashData.IsUser() {
 		repository := repositories.CommentRepository{DB: app.DB}
 		commentator, err := repository.FindForGravatar(hashData.ID)
@@ -51,11 +52,13 @@ func GenerateAvatar(hashData hashid.HashData, app *container.Application) (image
 		}
 	}
 
-	return generate8BitIconAvatar(hashData.Hash, hashData.IsMale())
+	return generate8BitIconAvatar(hashData.Hash, hashData.IsMale(), app.InfoLog)
 }
 
-func generate8BitIconAvatar(hash string, male bool) (image.Image, error) {
+func generate8BitIconAvatar(hash string, male bool, logger *log.Logger) (image.Image, error) {
 	dict := dataByHash(hash, male)
+	logger.Printf("[IMG] details for %s: %+v\n", hash, dict)
+
 	baseImage := image.NewRGBA(image.Rect(0, 0, 400, 400))
 
 	bgImage, err := loadImage(filePath(dict, "background"))
