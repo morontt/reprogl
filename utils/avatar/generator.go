@@ -48,6 +48,8 @@ func GenerateAvatar(hashData hashid.HashData, app *container.Application) (image
 
 		gravatar, err := tryGravatar(commentator)
 		if err == nil {
+			app.InfoLog.Printf("[IMG] avatar %s found on gravatar.com\n", hashData.Hash)
+
 			return gravatar, nil
 		}
 	}

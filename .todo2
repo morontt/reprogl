@@ -211,6 +211,7 @@
       "text": "After new comment #12",
       "priority": "medium",
       "creation": 1686424677,
+      "completion": 1688076899,
       "tasks": [
         {
           "text": "geolocation",
