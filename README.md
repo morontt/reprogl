@@ -1,5 +1,7 @@
 # Reprogl
 
+![license](https://img.shields.io/github/license/morontt/reprogl)
+
 Source code of new version my [blog](https://morontt.info/)
 
 This project is part of my personal blog system. Admin panel and information about the database (container, migrations,
