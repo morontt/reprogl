@@ -146,20 +146,6 @@ var anima = (function ($) {
         }
     },
 
-    shuffle = function () {
-        var $grid = $('.js-post-block-grid');
-        if ($grid.length) {
-            imagesLoaded('.js-post-block-grid', function () {
-                $grid.shuffle({
-                    itemSelector: '.js-post-block-grid-item',
-                });
-                $grid.on('done.shuffle', function() {
-                    $grid.shuffle('update');
-                });
-            });
-        }
-    },
-
     readingTime = function () {
         var $postArticleContent = $('.post-article-content');
         if ($postArticleContent.length) {
@@ -229,7 +215,6 @@ var anima = (function ($) {
         headroom();
         niceSroll();
         niceScrollShowEvent();
-        shuffle();
         filterTagsSelector();
         imageCarousel();
         imageLightbox();

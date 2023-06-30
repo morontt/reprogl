@@ -63,6 +63,12 @@
           "text": "Сокращение цепочек отложенной загрузки (шрифты, фоны)",
           "priority": "medium",
           "creation": 1687596740
+        },
+        {
+          "text": "remove Shuffle.js",
+          "priority": "medium",
+          "creation": 1688143411,
+          "completion": 1688145692
         }
       ]
     },
