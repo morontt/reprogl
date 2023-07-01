@@ -377,6 +377,18 @@
       "priority": "high",
       "creation": 1688036716,
       "completion": 1688041076
+    },
+    {
+      "text": "User authentication",
+      "priority": "high",
+      "creation": 1688249143,
+      "tasks": [
+        {
+          "text": "login: https://colorlib.com/wp/cat/login-forms/",
+          "priority": "low",
+          "creation": 1688249245
+        }
+      ]
     }
   ]
 }
