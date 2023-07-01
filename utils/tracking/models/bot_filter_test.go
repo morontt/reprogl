@@ -82,6 +82,10 @@ func TestBotFilter(t *testing.T) {
 			name: "Mozilla/5.0 (Linux; Android 5.0) AppleWebKit/537.36 (KHTML, like Gecko) Mobile Safari/537.36 (compatible; Bytespider; spider-feedback@bytedance.com)",
 			want: true,
 		},
+		{
+			name: "Sogou web spider/4.0(+http://www.sogou.com/docs/help/webmasters.htm#07)",
+			want: true,
+		},
 	}
 
 	for idx, item := range tests {
