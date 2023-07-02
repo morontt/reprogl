@@ -387,6 +387,11 @@
           "text": "login: https://colorlib.com/wp/cat/login-forms/",
           "priority": "low",
           "creation": 1688249245
+        },
+        {
+          "text": "session by secure cookie",
+          "priority": "medium",
+          "creation": 1688278184
         }
       ]
     }

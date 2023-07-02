@@ -68,6 +68,9 @@ func LoadViewSet() error {
 		"recent-posts.gohtml": {
 			"./templates/fragments/recent-posts.gohtml",
 		},
+		"login.gohtml": {
+			"./templates/auth/login.gohtml",
+		},
 	}
 
 	customFunctions := template.FuncMap{

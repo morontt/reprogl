@@ -28,6 +28,7 @@ module.exports = function (grunt) {
                     'public/assets/css/pygments.css': 'public/assets/sass/pygments.scss',
                     'public/assets/css/errors.css': 'public/assets/sass/errors.scss',
                     'public/assets/css/glyphicons.css': 'public/assets/sass/glyphicons.scss',
+                    'public/assets/css/login.css': 'public/assets/sass/login.scss',
                 }
             }
         },

@@ -58,6 +58,10 @@ type StatisticsPageData struct {
 	DummyArticle SidebarDummyArticle
 }
 
+type LoginPageData struct {
+	Meta
+}
+
 type FragmentCategoriesData struct {
 	Categories *models.CategoryList
 }
@@ -156,5 +160,14 @@ func NewStatisticsPageData() *StatisticsPageData {
 		Meta:         meta,
 		Now:          time.Now(),
 		DummyArticle: SidebarDummyArticle{RecentPostsID: "0"},
+	}
+}
+
+func NewLoginPageData() *LoginPageData {
+	meta := defaultMeta()
+	meta.AppendTitle("Вход")
+
+	return &LoginPageData{
+		Meta: meta,
 	}
 }
