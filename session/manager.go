@@ -9,6 +9,9 @@ import (
 const (
 	CookieName = "session"
 	CtxKey     = "session.ctx.key"
+	CsrfCookie = "csrf_token"
+
+	VarnishSessionKey = "X-Varnish-Session"
 )
 
 var (

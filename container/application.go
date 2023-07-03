@@ -26,6 +26,7 @@ type Application struct {
 	DB       *sql.DB
 
 	intCache *yetacache.Cache[string, int]
+	strCache *yetacache.Cache[string, string]
 }
 
 var urlGen URLGenerator
@@ -86,8 +87,17 @@ func (app *Application) LogError(err error) {
 func (app *Application) GetIntCache() *yetacache.Cache[string, int] {
 	if app.intCache == nil {
 		app.InfoLog.Println("[CACHE] create integer instance")
-		app.intCache = yetacache.New[string, int](time.Hour, 24*time.Hour)
+		app.intCache = yetacache.New[string, int](time.Hour, 8*time.Hour)
 	}
 
 	return app.intCache
+}
+
+func (app *Application) GetStringCache() *yetacache.Cache[string, string] {
+	if app.strCache == nil {
+		app.InfoLog.Println("[CACHE] create string instance")
+		app.strCache = yetacache.New[string, string](time.Hour, 8*time.Hour)
+	}
+
+	return app.strCache
 }

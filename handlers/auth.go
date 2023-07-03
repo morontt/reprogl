@@ -4,9 +4,11 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"net/http"
-	"xelbot.com/reprogl/session"
+	"time"
 
+	"github.com/xelbot/yetacache"
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/session"
 	"xelbot.com/reprogl/views"
 )
 
@@ -15,15 +17,15 @@ func LoginAction(app *container.Application) http.HandlerFunc {
 		var csrfToken string
 		var found bool
 
-		if csrfToken, found = session.GetString(r.Context(), "csrf_token"); !found {
-			nonce := make([]byte, 18)
-			_, err := rand.Read(nonce)
-			if err != nil {
-				panic(err)
-			}
+		cache := app.GetStringCache()
 
-			csrfToken = base64.URLEncoding.EncodeToString(nonce)
-			session.Put(r.Context(), "csrf_token", csrfToken)
+		if cookie, errNoCookie := r.Cookie(session.CsrfCookie); errNoCookie != nil {
+			csrfToken = generateCsrfPair(w, cache)
+		} else {
+			csrfTokenKey := cookie.Value
+			if csrfToken, found = cache.Get(csrfTokenKey); !found {
+				csrfToken = generateCsrfPair(w, cache)
+			}
 		}
 
 		templateData := views.NewLoginPageData(csrfToken)
@@ -45,4 +47,24 @@ func LoginLogoutLinks(app *container.Application) http.HandlerFunc {
 			app.ServerError(w, err)
 		}
 	}
+}
+
+func generateCsrfPair(w http.ResponseWriter, cache *yetacache.Cache[string, string]) string {
+	csrfToken := generateToken()
+	csrfTokenKey := generateToken()
+
+	cache.Set(csrfTokenKey, csrfToken, 30*time.Minute)
+	session.WriteSessionCookie(w, session.CsrfCookie, csrfTokenKey, "/login")
+
+	return csrfToken
+}
+
+func generateToken() string {
+	nonce := make([]byte, 18)
+	_, err := rand.Read(nonce)
+	if err != nil {
+		panic(err)
+	}
+
+	return base64.URLEncoding.EncodeToString(nonce)
 }

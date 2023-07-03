@@ -17,7 +17,12 @@ sub vcl_recv {
     }
 
     if (req.http.Cookie) {
-        unset req.http.Cookie;
+        set req.http.X-Varnish-Session = req.http.Cookie;
+        set req.http.X-Varnish-Session = regsuball(req.http.X-Varnish-Session, ".*;? ?session=([a-zA-Z0-9\-_]+)( |;| ;)?.*", "\1");
+
+        if (!(req.url ~ "^/login")) {
+            unset req.http.Cookie;
+        }
     }
 }
 

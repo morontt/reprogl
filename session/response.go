@@ -40,17 +40,21 @@ func (sw *ResponseWriter) CheckAndWrite() {
 				panic(err)
 			}
 
-			WriteSessionCookie(sw, secureCookie, expiry)
+			writeCookie(sw, secureCookie, expiry)
 		case Destroyed:
 			secureCookie = NewSecureCookie()
-			WriteSessionCookie(sw, secureCookie, time.Time{})
+			writeCookie(sw, secureCookie, time.Time{})
+		}
+
+		if len(sw.Header().Values("Set-Cookie")) > 0 {
+			sw.Header().Set("Cache-Control", `no-cache="Set-Cookie"`)
 		}
 	}
 
 	sw.written = true
 }
 
-func WriteSessionCookie(w http.ResponseWriter, c CookieInterface, expiry time.Time) {
+func writeCookie(w http.ResponseWriter, c CookieInterface, expiry time.Time) {
 	cookie := &http.Cookie{
 		Name:     c.Name(),
 		Value:    c.Value(),
@@ -68,6 +72,5 @@ func WriteSessionCookie(w http.ResponseWriter, c CookieInterface, expiry time.Ti
 		cookie.MaxAge = int(time.Until(expiry).Seconds() + 1)
 	}
 
-	w.Header().Set("Cache-Control", `no-cache="Set-Cookie"`)
-	w.Header().Add("Set-Cookie", cookie.String())
+	http.SetCookie(w, cookie)
 }
