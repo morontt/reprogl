@@ -19,11 +19,11 @@ import (
 var (
 	regexpArticle = regexp.MustCompile(`^\/article\/(?P<slug>[^/?#]+)`)
 	slugIndex     = regexpArticle.SubexpIndex("slug")
-	cache         *yetacache.Cache[string, int8]
+	trackingCache *yetacache.Cache[string, int8]
 )
 
 func init() {
-	cache = yetacache.New[string, int8](container.TrackExpiration, container.CleanUpInterval)
+	trackingCache = yetacache.New[string, int8](container.TrackExpiration, container.CleanUpInterval)
 }
 
 func CreateActivity(req *http.Request) *trackmodels.Activity {
@@ -82,19 +82,24 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		articleId = articleRepo.GetIdBySlug(matches[slugIndex])
 	}
 
-	if !cache.Has(activity.FingerPrint) {
+	if !trackingCache.Has(activity.FingerPrint) {
 		err = repo.SaveTracking(activity, userAgentId, articleId)
 		if err != nil {
 			app.LogError(err)
+
+			ipKey := ipAddrKey(activity.Addr)
+			cache := app.GetIntCache()
+			cache.Delete(ipKey)
+
 			return
 		}
 
-		cache.Set(activity.FingerPrint, 1, yetacache.DefaultTTL)
+		trackingCache.Set(activity.FingerPrint, 1, yetacache.DefaultTTL)
 	}
 }
 
 func findLocationByIP(ip net.IP, app *container.Application) (*models.Geolocation, error) {
-	ipKey := "IP_" + ip.String()
+	ipKey := ipAddrKey(ip)
 
 	cache := app.GetIntCache()
 	if locationID, found := cache.Get(ipKey); found {
@@ -126,4 +131,8 @@ func setupBrowserPassiveFingerprint(req *http.Request, a *trackmodels.Activity) 
 			a.Status,
 		),
 	)
+}
+
+func ipAddrKey(ip net.IP) string {
+	return "IP_" + ip.String()
 }
