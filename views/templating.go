@@ -71,6 +71,9 @@ func LoadViewSet() error {
 		"login.gohtml": {
 			"./templates/auth/login.gohtml",
 		},
+		"login-logout.gohtml": {
+			"./templates/fragments/login-logout.gohtml",
+		},
 	}
 
 	customFunctions := template.FuncMap{

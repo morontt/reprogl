@@ -81,6 +81,10 @@ func HumansTXTAction(w http.ResponseWriter, r *http.Request) {
 	From: Kharkov, Ukraine
 
 /* THANKS */
+	Inspirer: Alex Edwards
+	Site: https://www.alexedwards.net/
+	From: Austria
+
 	pxThemes: Anima Multipurpose Ghost Theme
 	Site: https://themeforest.net/user/pxthemes
 	Location: Poland

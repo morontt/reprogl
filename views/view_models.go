@@ -60,6 +60,7 @@ type StatisticsPageData struct {
 
 type LoginPageData struct {
 	Meta
+	CsrfToken string
 }
 
 type FragmentCategoriesData struct {
@@ -163,11 +164,12 @@ func NewStatisticsPageData() *StatisticsPageData {
 	}
 }
 
-func NewLoginPageData() *LoginPageData {
+func NewLoginPageData(token string) *LoginPageData {
 	meta := defaultMeta()
 	meta.AppendTitle("Вход")
 
 	return &LoginPageData{
-		Meta: meta,
+		Meta:      meta,
+		CsrfToken: token,
 	}
 }

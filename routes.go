@@ -40,6 +40,7 @@ func getRoutes(app *container.Application) *mux.Router {
 		handlers.RecentPostsFragment(app),
 	).Name("fragment-recent-posts")
 	fragmentsMux.HandleFunc("/war-in-ukraine", handlers.DaysOfWarCounter).Name("fragment-war")
+	fragmentsMux.HandleFunc("/login-logout", handlers.LoginLogoutLinks(app)).Name("login-logout")
 
 	return siteMux
 }

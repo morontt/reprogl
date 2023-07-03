@@ -45,7 +45,8 @@ func main() {
 	}
 
 	router := getRoutes(app)
-	handler := middlewares.CDN(router)
+	handler := middlewares.Session(router)
+	handler = middlewares.CDN(handler)
 	handler = middlewares.Recover(handler, app)
 	handler = middlewares.Track(handler, app)
 	handler = middlewares.AccessLog(handler, app)
