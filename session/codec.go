@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
-	"errors"
 )
 
 type Serializer interface {
@@ -14,10 +13,6 @@ type Serializer interface {
 
 type GobEncoder struct{}
 type JSONEncoder struct{}
-
-var (
-	DecodeError = errors.New("session: decode error")
-)
 
 func (e GobEncoder) Serialize(src any) ([]byte, error) {
 	buf := new(bytes.Buffer)

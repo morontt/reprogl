@@ -29,29 +29,32 @@ func (sw *ResponseWriter) WriteHeader(code int) {
 
 func (sw *ResponseWriter) CheckAndWrite() {
 	if !sw.written {
-		expiry := time.Now().Add(14 * 24 * time.Hour)
+		var secureCookie *SecureCookie
 		switch sw.sessionData.status {
 		case Modified:
-			writeSessionCookie(sw, sw.sessionData, expiry)
+			expiry := time.Now().Add(14 * 24 * time.Hour)
+
+			secureCookie = NewSecureCookie()
+			err := secureCookie.Encode(sw.sessionData.values)
+			if err != nil {
+				panic(err)
+			}
+
+			WriteSessionCookie(sw, secureCookie, expiry)
 		case Destroyed:
-			writeSessionCookie(sw, nil, time.Time{})
+			secureCookie = NewSecureCookie()
+			WriteSessionCookie(sw, secureCookie, time.Time{})
 		}
 	}
 
 	sw.written = true
 }
 
-func writeSessionCookie(w http.ResponseWriter, d *Data, expiry time.Time) {
-	secureCookie := NewSecureCookie()
-	encoded, err := secureCookie.Encode(d.values)
-	if err != nil {
-		panic(err)
-	}
-
+func WriteSessionCookie(w http.ResponseWriter, c CookieInterface, expiry time.Time) {
 	cookie := &http.Cookie{
-		Name:     "session",
-		Value:    encoded,
-		Path:     "/",
+		Name:     c.Name(),
+		Value:    c.Value(),
+		Path:     c.Path(),
 		Secure:   true,
 		HttpOnly: true,
 		SameSite: http.SameSiteDefaultMode,
@@ -60,7 +63,7 @@ func writeSessionCookie(w http.ResponseWriter, d *Data, expiry time.Time) {
 	if expiry.IsZero() {
 		cookie.Expires = time.Unix(1, 0)
 		cookie.MaxAge = -1
-	} else {
+	} else if c.Persist() {
 		cookie.Expires = time.Unix(expiry.Unix()+1, 0)
 		cookie.MaxAge = int(time.Until(expiry).Seconds() + 1)
 	}

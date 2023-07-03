@@ -2,15 +2,11 @@ package session
 
 import (
 	"encoding/base64"
-	"errors"
-)
-
-var (
-	EncodedValueTooLong = errors.New("session: the encoded value is too long")
 )
 
 type SecureCookie struct {
 	maxLength int
+	encoded   string
 	sz        Serializer
 }
 
@@ -21,20 +17,38 @@ func NewSecureCookie() *SecureCookie {
 	}
 }
 
-func (sc *SecureCookie) Encode(value any) (string, error) {
+func (sc *SecureCookie) Encode(value any) error {
 	var err error
 	var b []byte
 
 	if b, err = sc.sz.Serialize(value); err != nil {
-		return "", err
+		return err
 	}
 	b = encode(b)
 
 	if sc.maxLength != 0 && len(b) > sc.maxLength {
-		return "", EncodedValueTooLong
+		return EncodedValueTooLong
 	}
 
-	return string(b), nil
+	sc.encoded = string(b)
+
+	return nil
+}
+
+func (*SecureCookie) Name() string {
+	return CookieName
+}
+
+func (*SecureCookie) Path() string {
+	return "/"
+}
+
+func (*SecureCookie) Persist() bool {
+	return true
+}
+
+func (sc *SecureCookie) Value() string {
+	return sc.encoded
 }
 
 func encode(value []byte) []byte {
