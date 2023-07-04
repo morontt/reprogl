@@ -3,6 +3,7 @@ package session
 import (
 	"context"
 	"errors"
+	"log"
 	"net/http"
 
 	"xelbot.com/reprogl/security"
@@ -13,7 +14,7 @@ const (
 	CtxKey     = "session.ctx.key"
 	CsrfCookie = "csrf_token"
 
-	VarnishSessionHeader = "X-Varnish-Session"
+	varnishSessionHeader = "X-Varnish-Session"
 )
 
 var (
@@ -28,8 +29,19 @@ type CookieInterface interface {
 	Persist() bool
 }
 
-func FromRequest(r *http.Request) (*Store, bool) {
-	return newStore(), true
+func FromRequest(r *http.Request, logger *log.Logger) *Store {
+	requestData := r.Header.Get(varnishSessionHeader)
+	if len(requestData) > 0 {
+		secureCookie := NewSecureCookie()
+		data, err := secureCookie.decode(requestData)
+		if err == nil {
+			return newStoreWithData(data)
+		} else {
+			logger.Printf("[AUTH] session: %s error: %s\n", requestData, err.Error())
+		}
+	}
+
+	return newStore()
 }
 
 func FromContext(ctx context.Context) *Store {
@@ -54,15 +66,10 @@ func Has(ctx context.Context, key string) bool {
 	store := FromContext(ctx)
 
 	store.mu.RLock()
-	defer store.mu.RUnlock()
+	_, exists := store.data.values[key]
+	store.mu.RUnlock()
 
-	if raw, exists := store.data.values[key]; exists {
-		_, ok := raw.(security.Identity)
-
-		return ok
-	}
-
-	return false
+	return exists
 }
 
 // TODO rework to generics
@@ -94,6 +101,14 @@ func Remove(ctx context.Context, key string) {
 
 	delete(store.data.values, key)
 	store.status = Modified
+}
+
+func Destroy(ctx context.Context) {
+	store := FromContext(ctx)
+
+	store.mu.Lock()
+	store.status = Destroyed
+	store.mu.Unlock()
 }
 
 func HasIdentity(ctx context.Context) (result bool) {

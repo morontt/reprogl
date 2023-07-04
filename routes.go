@@ -29,6 +29,7 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/images/avatar/{hash:[0-9A-Z]+}.png", handlers.AvatarGenerator(app))
 	siteMux.HandleFunc("/login", handlers.LoginAction(app)).Methods("GET").Name("login")
 	siteMux.HandleFunc("/login", handlers.LoginCheck(app)).Methods("POST")
+	siteMux.HandleFunc("/logout", handlers.LogoutAction).Name("logout")
 
 	fragmentsMux := siteMux.PathPrefix("/_fragment").Subrouter()
 	fragmentsMux.HandleFunc("/categories", handlers.CategoriesFragment(app)).Name("fragment-categories")
@@ -41,7 +42,7 @@ func getRoutes(app *container.Application) *mux.Router {
 		handlers.RecentPostsFragment(app),
 	).Name("fragment-recent-posts")
 	fragmentsMux.HandleFunc("/war-in-ukraine", handlers.DaysOfWarCounter).Name("fragment-war")
-	fragmentsMux.HandleFunc("/login-logout", handlers.LoginLogoutLinks(app)).Name("login-logout")
+	fragmentsMux.HandleFunc("/auth-navigation", handlers.LoginLogoutLinks(app)).Name("auth-navigation")
 
 	return siteMux
 }

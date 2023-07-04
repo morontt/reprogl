@@ -33,3 +33,10 @@ func newStore() *Store {
 		},
 	}
 }
+
+func newStoreWithData(d internalData) *Store {
+	return &Store{
+		status: Unmodified,
+		data:   d,
+	}
+}

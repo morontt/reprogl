@@ -17,7 +17,7 @@ func NewSecureCookie() *SecureCookie {
 	}
 }
 
-func (sc *SecureCookie) Encode(data internalData) error {
+func (sc *SecureCookie) encode(data internalData) error {
 	var err error
 	var b []byte
 
@@ -33,6 +33,19 @@ func (sc *SecureCookie) Encode(data internalData) error {
 	sc.encoded = string(b)
 
 	return nil
+}
+
+func (sc *SecureCookie) decode(value string) (internalData, error) {
+	var err error
+	var b []byte
+	var data internalData
+
+	b, err = decode(value)
+	if err != nil {
+		return data, err
+	}
+
+	return sc.sz.deserialize(b)
 }
 
 func (*SecureCookie) Name() string {
@@ -56,4 +69,8 @@ func encode(value []byte) []byte {
 	base64.URLEncoding.Encode(encoded, value)
 
 	return encoded
+}
+
+func decode(value string) ([]byte, error) {
+	return base64.URLEncoding.DecodeString(value)
 }

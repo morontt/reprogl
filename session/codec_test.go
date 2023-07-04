@@ -18,6 +18,12 @@ var testData = []internalData{
 			"width": 15,
 		},
 	},
+	{
+		identity: security.Identity{ID: 7, Username: "lupa"},
+		values: map[string]any{
+			"abc": "zxc",
+		},
+	},
 }
 
 func TestJSONSerialization(t *testing.T) {

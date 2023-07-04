@@ -2,14 +2,15 @@ package middlewares
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	"xelbot.com/reprogl/session"
 )
 
-func Session(next http.Handler) http.Handler {
+func Session(next http.Handler, logger *log.Logger) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		sessionData, _ := session.FromRequest(r)
+		sessionData := session.FromRequest(r, logger)
 
 		ctx := r.Context()
 		ctx = context.WithValue(ctx, session.CtxKey, sessionData)

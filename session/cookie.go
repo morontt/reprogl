@@ -39,9 +39,8 @@ func WritePermanentCookie(w http.ResponseWriter, name, value, path string, expir
 // From: https://www.rfc-editor.org/rfc/rfc6265.html
 func DeleteCookie(w http.ResponseWriter, name, path string) {
 	cookie := &internalCookie{
-		name:  name,
-		value: "deleted",
-		path:  path,
+		name: name,
+		path: path,
 	}
 
 	writeCookie(w, cookie, time.Time{})

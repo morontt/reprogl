@@ -17,8 +17,9 @@ sub vcl_recv {
     }
 
     if (req.http.Cookie) {
-        set req.http.X-Varnish-Session = req.http.Cookie;
-        set req.http.X-Varnish-Session = regsuball(req.http.X-Varnish-Session, ".*;? ?session=([a-zA-Z0-9\-_]+)( |;| ;)?.*", "\1");
+        if (req.http.Cookie ~ "(^|;| )?session=([a-zA-Z0-9\-_=]+)( |;|$)?") {
+            set req.http.X-Varnish-Session = regsub(req.http.Cookie, "(^|;| )?session=([a-zA-Z0-9\-_=]+)( |;|$)?", "\2");
+        }
 
         if (!(req.url ~ "^/login")) {
             unset req.http.Cookie;

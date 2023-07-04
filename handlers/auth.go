@@ -109,9 +109,15 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 	}
 }
 
+func LogoutAction(w http.ResponseWriter, r *http.Request) {
+	session.Destroy(r.Context())
+	http.Redirect(w, r, "/", http.StatusFound)
+}
+
 func LoginLogoutLinks(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := views.WriteTemplate(w, "login-logout.gohtml", nil)
+		templateData := views.NewAuthNavigationData(session.HasIdentity(r.Context()))
+		err := views.WriteTemplate(w, "auth-navigation.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 		}

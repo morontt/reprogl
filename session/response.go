@@ -35,7 +35,7 @@ func (sw *ResponseWriter) CheckAndWrite() {
 			expiry := time.Now().Add(14 * 24 * time.Hour)
 
 			secureCookie = NewSecureCookie()
-			err := secureCookie.Encode(sw.sessionData.data)
+			err := secureCookie.encode(sw.sessionData.data)
 			if err != nil {
 				panic(err)
 			}

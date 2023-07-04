@@ -71,8 +71,8 @@ func LoadViewSet() error {
 		"login.gohtml": {
 			"./templates/auth/login.gohtml",
 		},
-		"login-logout.gohtml": {
-			"./templates/fragments/login-logout.gohtml",
+		"auth-navigation.gohtml": {
+			"./templates/fragments/auth-navigation.gohtml",
 		},
 	}
 

@@ -63,6 +63,10 @@ type LoginPageData struct {
 	CsrfToken string
 }
 
+type AuthNavigation struct {
+	Authenticated bool
+}
+
 type FragmentCategoriesData struct {
 	Categories *models.CategoryList
 }
@@ -171,5 +175,11 @@ func NewLoginPageData(token string) *LoginPageData {
 	return &LoginPageData{
 		Meta:      meta,
 		CsrfToken: token,
+	}
+}
+
+func NewAuthNavigationData(has bool) *AuthNavigation {
+	return &AuthNavigation{
+		Authenticated: has,
 	}
 }
