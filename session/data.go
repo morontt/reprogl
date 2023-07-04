@@ -1,6 +1,10 @@
 package session
 
-import "sync"
+import (
+	"sync"
+
+	"xelbot.com/reprogl/security"
+)
 
 type Status uint8
 
@@ -10,15 +14,22 @@ const (
 	Destroyed
 )
 
-type Data struct {
+type Store struct {
 	status Status
-	values map[string]interface{}
+	data   internalData
 	mu     sync.RWMutex
 }
 
-func newData() *Data {
-	return &Data{
+type internalData struct {
+	values   map[string]interface{}
+	identity security.Identity
+}
+
+func newStore() *Store {
+	return &Store{
 		status: Unmodified,
-		values: make(map[string]interface{}),
+		data: internalData{
+			values: make(map[string]interface{}),
+		},
 	}
 }

@@ -3,30 +3,40 @@ package session
 import (
 	"fmt"
 	"testing"
+
+	"xelbot.com/reprogl/security"
 )
 
-var testData = []map[string]any{
-	{"key_1": "ABC", "key_2": 38},
-	{"idx": []int{1, 2, 3}},
+var testData = []internalData{
+	{
+		identity: security.Identity{ID: 13, Username: "pupa"},
+	},
+	{
+		identity: security.Identity{},
+		values: map[string]any{
+			"token": "random data",
+			"width": 15,
+		},
+	},
 }
 
 func TestJSONSerialization(t *testing.T) {
 	var (
-		codec      JSONEncoder
-		serialized []byte
-		err        error
+		codec        jsonEncoder
+		serialized   []byte
+		deserialized internalData
+		err          error
 	)
 
 	for _, value := range testData {
-		if serialized, err = codec.Serialize(value); err != nil {
+		if serialized, err = codec.serialize(value); err != nil {
 			t.Error(err)
 		} else {
-			deserialized := make(map[string]any)
-			if err = codec.Deserialize(serialized, &deserialized); err != nil {
+			if deserialized, err = codec.deserialize(serialized); err != nil {
 				t.Error(err)
 			}
-			if fmt.Sprintf("%v", deserialized) != fmt.Sprintf("%v", value) {
-				t.Errorf("Expected %v, got %v.", value, deserialized)
+			if fmt.Sprintf("%+v", deserialized) != fmt.Sprintf("%+v", value) {
+				t.Errorf("Expected %+v, got %+v.", value, deserialized)
 			}
 		}
 	}
@@ -34,21 +44,21 @@ func TestJSONSerialization(t *testing.T) {
 
 func TestGobSerialization(t *testing.T) {
 	var (
-		codec      GobEncoder
-		serialized []byte
-		err        error
+		codec        gobEncoder
+		serialized   []byte
+		deserialized internalData
+		err          error
 	)
 
 	for _, value := range testData {
-		if serialized, err = codec.Serialize(value); err != nil {
+		if serialized, err = codec.serialize(value); err != nil {
 			t.Error(err)
 		} else {
-			deserialized := make(map[string]any)
-			if err = codec.Deserialize(serialized, &deserialized); err != nil {
+			if deserialized, err = codec.deserialize(serialized); err != nil {
 				t.Error(err)
 			}
-			if fmt.Sprintf("%v", deserialized) != fmt.Sprintf("%v", value) {
-				t.Errorf("Expected %v, got %v.", value, deserialized)
+			if fmt.Sprintf("%+v", deserialized) != fmt.Sprintf("%+v", value) {
+				t.Errorf("Expected %+v, got %+v.", value, deserialized)
 			}
 		}
 	}

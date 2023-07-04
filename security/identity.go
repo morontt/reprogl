@@ -13,3 +13,7 @@ func CreateIdentity(user *models.LoggedUser) Identity {
 		Username: user.Username,
 	}
 }
+
+func (i Identity) IsZero() bool {
+	return i.ID == 0
+}

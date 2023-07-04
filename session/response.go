@@ -7,11 +7,11 @@ import (
 
 type ResponseWriter struct {
 	http.ResponseWriter
-	sessionData *Data
+	sessionData *Store
 	written     bool
 }
 
-func (sw *ResponseWriter) SetSessionData(d *Data) {
+func (sw *ResponseWriter) SetSessionData(d *Store) {
 	sw.sessionData = d
 }
 
@@ -35,7 +35,7 @@ func (sw *ResponseWriter) CheckAndWrite() {
 			expiry := time.Now().Add(14 * 24 * time.Hour)
 
 			secureCookie = NewSecureCookie()
-			err := secureCookie.Encode(sw.sessionData.values)
+			err := secureCookie.Encode(sw.sessionData.data)
 			if err != nil {
 				panic(err)
 			}

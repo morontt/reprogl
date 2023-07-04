@@ -7,21 +7,21 @@ import (
 type SecureCookie struct {
 	maxLength int
 	encoded   string
-	sz        Serializer
+	sz        serializer
 }
 
 func NewSecureCookie() *SecureCookie {
 	return &SecureCookie{
 		maxLength: 4096,
-		sz:        JSONEncoder{},
+		sz:        jsonEncoder{},
 	}
 }
 
-func (sc *SecureCookie) Encode(value any) error {
+func (sc *SecureCookie) Encode(data internalData) error {
 	var err error
 	var b []byte
 
-	if b, err = sc.sz.Serialize(value); err != nil {
+	if b, err = sc.sz.serialize(data); err != nil {
 		return err
 	}
 	b = encode(b)

@@ -119,7 +119,7 @@ func LoginLogoutLinks(app *container.Application) http.HandlerFunc {
 }
 
 func authSuccess(user *models.LoggedUser, app *container.Application, ctx context.Context) {
-	session.Put(ctx, session.IdentityKey, security.CreateIdentity(user))
+	session.SetIdentity(ctx, security.CreateIdentity(user))
 }
 
 func generateCsrfPair(w http.ResponseWriter, cache *yetacache.Cache[string, string]) string {

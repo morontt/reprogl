@@ -13,8 +13,6 @@ const (
 	CtxKey     = "session.ctx.key"
 	CsrfCookie = "csrf_token"
 
-	IdentityKey = "identity"
-
 	VarnishSessionHeader = "X-Varnish-Session"
 )
 
@@ -30,12 +28,12 @@ type CookieInterface interface {
 	Persist() bool
 }
 
-func FromRequest(r *http.Request) (*Data, bool) {
-	return newData(), true
+func FromRequest(r *http.Request) (*Store, bool) {
+	return newStore(), true
 }
 
-func FromContext(ctx context.Context) *Data {
-	c, ok := ctx.Value(CtxKey).(*Data)
+func FromContext(ctx context.Context) *Store {
+	c, ok := ctx.Value(CtxKey).(*Store)
 	if !ok {
 		panic("session: no data in context")
 	}
@@ -43,37 +41,22 @@ func FromContext(ctx context.Context) *Data {
 	return c
 }
 
-func GetString(ctx context.Context, key string) (string, bool) {
-	data := FromContext(ctx)
-
-	data.mu.RLock()
-	defer data.mu.RUnlock()
-
-	if value, ok1 := data.values[key]; ok1 {
-		if val, ok2 := value.(string); ok2 {
-			return val, true
-		}
-	}
-
-	return "", false
-}
-
 func Put(ctx context.Context, key string, value any) {
-	data := FromContext(ctx)
+	store := FromContext(ctx)
 
-	data.mu.Lock()
-	data.values[key] = value
-	data.status = Modified
-	data.mu.Unlock()
+	store.mu.Lock()
+	store.data.values[key] = value
+	store.status = Modified
+	store.mu.Unlock()
 }
 
-func HasIdentity(ctx context.Context) bool {
-	data := FromContext(ctx)
+func Has(ctx context.Context, key string) bool {
+	store := FromContext(ctx)
 
-	data.mu.RLock()
-	defer data.mu.RUnlock()
+	store.mu.RLock()
+	defer store.mu.RUnlock()
 
-	if raw, exists := data.values[IdentityKey]; exists {
+	if raw, exists := store.data.values[key]; exists {
 		_, ok := raw.(security.Identity)
 
 		return ok
@@ -82,32 +65,75 @@ func HasIdentity(ctx context.Context) bool {
 	return false
 }
 
-func GetIdentity(ctx context.Context) (security.Identity, bool) {
-	data := FromContext(ctx)
+// TODO rework to generics
+func GetString(ctx context.Context, key string) (string, bool) {
+	store := FromContext(ctx)
 
-	data.mu.RLock()
-	defer data.mu.RUnlock()
+	store.mu.RLock()
+	defer store.mu.RUnlock()
 
-	if raw, exists := data.values[IdentityKey]; exists {
-		if identity, ok := raw.(security.Identity); ok {
-			return identity, true
+	if raw, exists := store.data.values[key]; exists {
+		if val, ok2 := raw.(string); ok2 {
+			return val, true
 		}
 	}
 
-	return security.Identity{}, false
+	return "", false
 }
 
-func ClearIdentity(ctx context.Context) {
-	data := FromContext(ctx)
+func Remove(ctx context.Context, key string) {
+	store := FromContext(ctx)
 
-	data.mu.Lock()
-	defer data.mu.Unlock()
+	store.mu.Lock()
+	defer store.mu.Unlock()
 
-	_, exists := data.values[IdentityKey]
+	_, exists := store.data.values[key]
 	if !exists {
 		return
 	}
 
-	delete(data.values, IdentityKey)
-	data.status = Modified
+	delete(store.data.values, key)
+	store.status = Modified
+}
+
+func HasIdentity(ctx context.Context) (result bool) {
+	store := FromContext(ctx)
+
+	store.mu.RLock()
+	result = !store.data.identity.IsZero()
+	store.mu.RUnlock()
+
+	return
+}
+
+func GetIdentity(ctx context.Context) (security.Identity, bool) {
+	store := FromContext(ctx)
+
+	store.mu.RLock()
+	defer store.mu.RUnlock()
+
+	return store.data.identity, !store.data.identity.IsZero()
+}
+
+func SetIdentity(ctx context.Context, identity security.Identity) {
+	store := FromContext(ctx)
+
+	store.mu.Lock()
+	store.data.identity = identity
+	store.status = Modified
+	store.mu.Unlock()
+}
+
+func ClearIdentity(ctx context.Context) {
+	store := FromContext(ctx)
+
+	store.mu.Lock()
+	defer store.mu.Unlock()
+
+	if !store.data.identity.IsZero() {
+		return
+	}
+
+	store.data.identity = security.Identity{}
+	store.status = Modified
 }

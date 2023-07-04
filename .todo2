@@ -135,6 +135,11 @@
           "text": "maybe use logrotate on production",
           "priority": "medium",
           "creation": 1686424345
+        },
+        {
+          "text": "maybe use other logs system, with GUI, search etc.",
+          "priority": "medium",
+          "creation": 1688471622
         }
       ]
     },

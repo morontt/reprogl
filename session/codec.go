@@ -4,50 +4,79 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
+	"xelbot.com/reprogl/security"
 )
 
-type Serializer interface {
-	Serialize(src interface{}) ([]byte, error)
-	Deserialize(src []byte, dst interface{}) error
+type serializer interface {
+	serialize(src internalData) ([]byte, error)
+	deserialize(src []byte) (internalData, error)
 }
 
-type GobEncoder struct{}
-type JSONEncoder struct{}
+type gobEncoder struct{}
+type jsonEncoder struct{}
 
-func (e GobEncoder) Serialize(src any) ([]byte, error) {
+func (e gobEncoder) serialize(src internalData) ([]byte, error) {
+	aux := struct {
+		Identity security.Identity
+		Values   map[string]interface{}
+	}{
+		Identity: src.identity,
+		Values:   src.values,
+	}
+
 	buf := new(bytes.Buffer)
-	enc := gob.NewEncoder(buf)
-	if err := enc.Encode(src); err != nil {
+	if err := gob.NewEncoder(buf).Encode(&aux); err != nil {
 		return nil, err
 	}
 
 	return buf.Bytes(), nil
 }
 
-func (e GobEncoder) Deserialize(src []byte, dst any) error {
-	dec := gob.NewDecoder(bytes.NewBuffer(src))
-	if err := dec.Decode(dst); err != nil {
-		return DecodeError
+func (e gobEncoder) deserialize(src []byte) (internalData, error) {
+	aux := struct {
+		Identity security.Identity
+		Values   map[string]interface{}
+	}{}
+
+	if err := gob.NewDecoder(bytes.NewBuffer(src)).Decode(&aux); err != nil {
+		return internalData{}, DecodeError
 	}
 
-	return nil
+	return internalData{
+		identity: aux.Identity,
+		values:   aux.Values,
+	}, nil
 }
 
-func (e JSONEncoder) Serialize(src any) ([]byte, error) {
+func (e jsonEncoder) serialize(src internalData) ([]byte, error) {
+	aux := struct {
+		Identity security.Identity
+		Values   map[string]interface{}
+	}{
+		Identity: src.identity,
+		Values:   src.values,
+	}
+
 	buf := new(bytes.Buffer)
-	enc := json.NewEncoder(buf)
-	if err := enc.Encode(src); err != nil {
+	if err := json.NewEncoder(buf).Encode(&aux); err != nil {
 		return nil, err
 	}
 
 	return buf.Bytes(), nil
 }
 
-func (e JSONEncoder) Deserialize(src []byte, dst any) error {
-	dec := json.NewDecoder(bytes.NewReader(src))
-	if err := dec.Decode(dst); err != nil {
-		return DecodeError
+func (e jsonEncoder) deserialize(src []byte) (internalData, error) {
+	aux := struct {
+		Identity security.Identity
+		Values   map[string]interface{}
+	}{}
+
+	if err := json.NewDecoder(bytes.NewReader(src)).Decode(&aux); err != nil {
+		return internalData{}, DecodeError
 	}
 
-	return nil
+	return internalData{
+		identity: aux.Identity,
+		values:   aux.Values,
+	}, nil
 }
