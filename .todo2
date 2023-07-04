@@ -391,7 +391,36 @@
         {
           "text": "session by secure cookie",
           "priority": "medium",
-          "creation": 1688278184
+          "creation": 1688278184,
+          "tasks": [
+            {
+              "text": "Sign cookie value",
+              "priority": "medium",
+              "creation": 1688422511
+            },
+            {
+              "text": "encrypt/decrypt value",
+              "priority": "medium",
+              "creation": 1688422544
+            }
+          ]
+        },
+        {
+          "text": "Login user",
+          "priority": "medium",
+          "creation": 1688422755,
+          "tasks": [
+            {
+              "text": "Update last login and logins count",
+              "priority": "medium",
+              "creation": 1688422798
+            },
+            {
+              "text": "flash message",
+              "priority": "medium",
+              "creation": 1688422875
+            }
+          ]
         }
       ]
     }

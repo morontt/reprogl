@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"net/http"
+
+	"xelbot.com/reprogl/security"
 )
 
 const (
@@ -11,7 +13,9 @@ const (
 	CtxKey     = "session.ctx.key"
 	CsrfCookie = "csrf_token"
 
-	VarnishSessionKey = "X-Varnish-Session"
+	IdentityKey = "identity"
+
+	VarnishSessionHeader = "X-Varnish-Session"
 )
 
 var (
@@ -41,6 +45,10 @@ func FromContext(ctx context.Context) *Data {
 
 func GetString(ctx context.Context, key string) (string, bool) {
 	data := FromContext(ctx)
+
+	data.mu.RLock()
+	defer data.mu.RUnlock()
+
 	if value, ok1 := data.values[key]; ok1 {
 		if val, ok2 := value.(string); ok2 {
 			return val, true
@@ -57,4 +65,49 @@ func Put(ctx context.Context, key string, value any) {
 	data.values[key] = value
 	data.status = Modified
 	data.mu.Unlock()
+}
+
+func HasIdentity(ctx context.Context) bool {
+	data := FromContext(ctx)
+
+	data.mu.RLock()
+	defer data.mu.RUnlock()
+
+	if raw, exists := data.values[IdentityKey]; exists {
+		_, ok := raw.(security.Identity)
+
+		return ok
+	}
+
+	return false
+}
+
+func GetIdentity(ctx context.Context) (security.Identity, bool) {
+	data := FromContext(ctx)
+
+	data.mu.RLock()
+	defer data.mu.RUnlock()
+
+	if raw, exists := data.values[IdentityKey]; exists {
+		if identity, ok := raw.(security.Identity); ok {
+			return identity, true
+		}
+	}
+
+	return security.Identity{}, false
+}
+
+func ClearIdentity(ctx context.Context) {
+	data := FromContext(ctx)
+
+	data.mu.Lock()
+	defer data.mu.Unlock()
+
+	_, exists := data.values[IdentityKey]
+	if !exists {
+		return
+	}
+
+	delete(data.values, IdentityKey)
+	data.status = Modified
 }

@@ -31,6 +31,22 @@ func WritePermanentCookie(w http.ResponseWriter, name, value, path string, expir
 	writeCookie(w, cookie, expiry)
 }
 
+// DeleteCookie note: Finally, to remove a cookie, the server returns a Set-Cookie header
+// with an expiration date in the past. The server will be successful in removing the
+// cookie only if the Path and the Domain attribute in the Set-Cookie header match the values
+// used when the cookie was created.
+//
+// From: https://www.rfc-editor.org/rfc/rfc6265.html
+func DeleteCookie(w http.ResponseWriter, name, path string) {
+	cookie := &internalCookie{
+		name:  name,
+		value: "deleted",
+		path:  path,
+	}
+
+	writeCookie(w, cookie, time.Time{})
+}
+
 func (c *internalCookie) Name() string {
 	return c.name
 }

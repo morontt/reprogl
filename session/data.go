@@ -13,7 +13,7 @@ const (
 type Data struct {
 	status Status
 	values map[string]interface{}
-	mu     sync.Mutex
+	mu     sync.RWMutex
 }
 
 func newData() *Data {

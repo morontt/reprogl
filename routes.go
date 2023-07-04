@@ -28,6 +28,7 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/purge-cache", handlers.PurgeCache(app)).Methods("POST")
 	siteMux.HandleFunc("/images/avatar/{hash:[0-9A-Z]+}.png", handlers.AvatarGenerator(app))
 	siteMux.HandleFunc("/login", handlers.LoginAction(app)).Methods("GET").Name("login")
+	siteMux.HandleFunc("/login", handlers.LoginCheck(app)).Methods("POST")
 
 	fragmentsMux := siteMux.PathPrefix("/_fragment").Subrouter()
 	fragmentsMux.HandleFunc("/categories", handlers.CategoriesFragment(app)).Name("fragment-categories")

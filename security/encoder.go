@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-const iterations = 4000
+const iterations = 3600
 
 func EncodePassword(password string, salt string) string {
 	salted := []byte(password + "{" + salt + "}")
