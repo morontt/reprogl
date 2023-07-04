@@ -7,6 +7,7 @@ body {
     font-family: $main-font;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 14px;
 }
 
 .login-page {
@@ -66,6 +67,13 @@ body {
             color: #4CAF50;
             text-decoration: none;
         }
+    }
+
+    .error {
+        display: inline-block;
+        font-size: 16px;
+        color: #EF3B3A;
+        margin-bottom: 7px;
     }
 }
 .form .register-form {

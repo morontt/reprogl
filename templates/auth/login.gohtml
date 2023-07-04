@@ -12,6 +12,9 @@
 <div class="login-page">
     <div class="form">
         <form class="login-form" enctype="application/x-www-form-urlencoded" method="POST">
+            {{if .HasError}}
+                <span class="error">{{.ErrorMessage}}</span>
+            {{end}}
             <input type="hidden"
                    name="_csrf_token"
                    value="{{.CsrfToken}}">

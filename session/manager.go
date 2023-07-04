@@ -14,6 +14,9 @@ const (
 	CtxKey     = "session.ctx.key"
 	CsrfCookie = "csrf_token"
 
+	FlashErrorKey   = "fe"
+	FlashSuccessKey = "fs"
+
 	varnishSessionHeader = "X-Varnish-Session"
 )
 
@@ -72,20 +75,41 @@ func Has(ctx context.Context, key string) bool {
 	return exists
 }
 
-// TODO rework to generics
-func GetString(ctx context.Context, key string) (string, bool) {
+func Get[T any](ctx context.Context, key string) (T, bool) {
 	store := FromContext(ctx)
 
 	store.mu.RLock()
 	defer store.mu.RUnlock()
 
+	var result T
+	var ok bool
 	if raw, exists := store.data.values[key]; exists {
-		if val, ok2 := raw.(string); ok2 {
-			return val, true
+		if result, ok = raw.(T); ok {
+			return result, true
 		}
 	}
 
-	return "", false
+	return result, false
+}
+
+func Pop[T any](ctx context.Context, key string) (T, bool) {
+	store := FromContext(ctx)
+
+	store.mu.Lock()
+	defer store.mu.Unlock()
+
+	var result T
+	var ok bool
+	if raw, exists := store.data.values[key]; exists {
+		if result, ok = raw.(T); ok {
+			delete(store.data.values, key)
+			store.status = Modified
+
+			return result, true
+		}
+	}
+
+	return result, false
 }
 
 func Remove(ctx context.Context, key string) {

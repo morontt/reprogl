@@ -33,7 +33,9 @@ func LoginAction(app *container.Application) http.HandlerFunc {
 			}
 		}
 
-		templateData := views.NewLoginPageData(csrfToken)
+		errorMessage, hasError := session.Pop[string](r.Context(), session.FlashErrorKey)
+
+		templateData := views.NewLoginPageData(csrfToken, errorMessage, hasError)
 		err := views.WriteTemplate(w, "login.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
@@ -57,6 +59,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 			csrfTokenKey := cookie.Value
 			if csrfToken, found = cache.Get(csrfTokenKey); !found {
 				deleteCsrfCookie(w)
+				session.Put(r.Context(), session.FlashErrorKey, "Непонятная ошибка")
 				http.Redirect(w, r, container.GenerateURL("login"), http.StatusSeeOther)
 				return
 			}
@@ -72,6 +75,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 		formCsrfToken := r.PostForm.Get("_csrf_token")
 		if formCsrfToken != csrfToken {
 			deleteCsrfCookie(w)
+			session.Put(r.Context(), session.FlashErrorKey, "Непонятная ошибка")
 			app.InfoLog.Println("[AUTH] wrong CSRF-token")
 			http.Redirect(w, r, container.GenerateURL("login"), http.StatusSeeOther)
 			return
@@ -85,7 +89,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 		if err != nil {
 			deleteCsrfCookie(w)
 			if errors.Is(err, models.RecordNotFound) {
-				// TODO flash message
+				session.Put(r.Context(), session.FlashErrorKey, "Недействительные логин/пароль")
 				app.InfoLog.Printf("[AUTH] user \"%s\" not found\n", username)
 				http.Redirect(w, r, container.GenerateURL("login"), http.StatusSeeOther)
 			} else {
@@ -97,7 +101,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 
 		passwordHash := security.EncodePassword(password, user.Salt)
 		if passwordHash != user.PasswordHash {
-			// TODO flash message, random pause
+			session.Put(r.Context(), session.FlashErrorKey, "Недействительные логин/пароль")
 			app.InfoLog.Printf("[AUTH] invalid password for \"%s\"\n", username)
 		} else {
 			app.InfoLog.Printf("[AUTH] success for \"%s\"\n", username)

@@ -60,7 +60,9 @@ type StatisticsPageData struct {
 
 type LoginPageData struct {
 	Meta
-	CsrfToken string
+	CsrfToken    string
+	ErrorMessage string
+	HasError     bool
 }
 
 type AuthNavigation struct {
@@ -168,13 +170,15 @@ func NewStatisticsPageData() *StatisticsPageData {
 	}
 }
 
-func NewLoginPageData(token string) *LoginPageData {
+func NewLoginPageData(token, errorMessage string, hasError bool) *LoginPageData {
 	meta := defaultMeta()
 	meta.AppendTitle("Вход")
 
 	return &LoginPageData{
-		Meta:      meta,
-		CsrfToken: token,
+		Meta:         meta,
+		CsrfToken:    token,
+		ErrorMessage: errorMessage,
+		HasError:     hasError,
 	}
 }
 
