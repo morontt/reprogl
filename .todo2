@@ -412,7 +412,8 @@
             {
               "text": "check session expiration",
               "priority": "medium",
-              "creation": 1688582203
+              "creation": 1688582203,
+              "completion": 1688585748
             }
           ]
         },

@@ -72,3 +72,9 @@ func (s *Store) setModified() {
 		s.status = Modified
 	}
 }
+
+func (d deadline) IsExpired() bool {
+	t := time.Time(d)
+
+	return t.Before(time.Now())
+}

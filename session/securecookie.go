@@ -13,6 +13,9 @@ type SecureCookie struct {
 	encoded   string
 	sz        serializer
 
+	// For testing purposes
+	skipExpiration bool
+
 	hashKey  []byte
 	hashFunc func() hash.Hash
 }
@@ -60,7 +63,16 @@ func (sc *SecureCookie) decode(value string) (internalData, error) {
 		return data, err
 	}
 
-	return sc.sz.deserialize(b)
+	data, err = sc.sz.deserialize(b)
+	if err != nil {
+		return data, err
+	}
+
+	if !sc.skipExpiration && data.deadline.IsExpired() {
+		return data, Expired
+	}
+
+	return data, nil
 }
 
 func (*SecureCookie) Name() string {
@@ -105,4 +117,9 @@ func verifyMac(value, key []byte) error {
 	}
 
 	return ErrMacInvalid
+}
+
+// For testing purposes
+func (sc *SecureCookie) ignoreExpiration() {
+	sc.skipExpiration = true
 }

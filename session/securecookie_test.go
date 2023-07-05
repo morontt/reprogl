@@ -13,6 +13,7 @@ func TestSecureCookie(t *testing.T) {
 	)
 
 	secureCookie := NewSecureCookie("hash key")
+	secureCookie.ignoreExpiration()
 	for _, value := range testData {
 		if err = secureCookie.encode(value.data); err != nil {
 			t.Error(err)

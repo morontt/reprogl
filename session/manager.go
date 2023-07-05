@@ -28,6 +28,7 @@ var (
 	DecodeError         = errors.New("session: decode error")
 	EncodedValueTooLong = errors.New("session: the encoded value is too long")
 	ErrMacInvalid       = errors.New("session: the HMAC is not valid")
+	Expired             = errors.New("session: expired")
 )
 
 type CookieInterface interface {
