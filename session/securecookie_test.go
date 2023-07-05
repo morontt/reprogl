@@ -1,6 +1,7 @@
 package session
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 )
@@ -11,9 +12,9 @@ func TestSecureCookie(t *testing.T) {
 		err          error
 	)
 
-	secureCookie := NewSecureCookie()
+	secureCookie := NewSecureCookie("hash key")
 	for _, value := range testData {
-		if err = secureCookie.encode(value); err != nil {
+		if err = secureCookie.encode(value.data); err != nil {
 			t.Error(err)
 		}
 
@@ -22,9 +23,33 @@ func TestSecureCookie(t *testing.T) {
 			t.Error(err)
 		}
 
-		if fmt.Sprintf("%+v", deserialized) != fmt.Sprintf("%+v", value) {
-			t.Errorf("Expected %+v, got %+v.", value, deserialized)
+		if fmt.Sprintf("%+v", deserialized) != fmt.Sprintf("%+v", value.data) {
+			t.Errorf("Expected %+v, got %+v.", value.data, deserialized)
+		}
+	}
+}
+
+func TestInvalidHMAC(t *testing.T) {
+	var (
+		err error
+	)
+
+	secureCookie := NewSecureCookie("Lorem ipsum...")
+	for _, value := range testData {
+		if err = secureCookie.encode(value.data); err != nil {
+			t.Error(err)
 		}
 
+		raw := []byte(secureCookie.Value())
+		raw[1] = 'N'
+		raw[17] = 'u'
+		serialized := string(raw)
+		if _, err = secureCookie.decode(serialized); err != nil {
+			if !errors.Is(err, ErrMacInvalid) {
+				t.Error(err)
+			}
+		} else {
+			t.Errorf("Expected invalid HMAC for %+v", value.data)
+		}
 	}
 }

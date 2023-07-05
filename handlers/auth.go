@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"crypto/rand"
+	"crypto/subtle"
 	"encoding/base64"
 	"errors"
 	"net/http"
@@ -101,7 +102,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 		}
 
 		passwordHash := security.EncodePassword(password, user.Salt)
-		if passwordHash != user.PasswordHash {
+		if subtle.ConstantTimeCompare([]byte(passwordHash), []byte(user.PasswordHash)) == 0 {
 			session.Put(r.Context(), session.FlashErrorKey, "Недействительные логин/пароль")
 			app.InfoLog.Printf("[AUTH] invalid password for \"%s\"\n", username)
 		} else {

@@ -3,6 +3,8 @@ package session
 import (
 	"net/http"
 	"time"
+
+	"xelbot.com/reprogl/container"
 )
 
 type ResponseWriter struct {
@@ -32,17 +34,22 @@ func (sw *ResponseWriter) CheckAndWrite() {
 		var secureCookie *SecureCookie
 		switch sw.sessionData.status {
 		case Modified:
-			expiry := time.Now().Add(14 * 24 * time.Hour)
+			expiry := time.Now().Add(maxAge)
 
-			secureCookie = NewSecureCookie()
+			secureCookie = NewSecureCookie(container.GetConfig().SessionHashKey)
+
+			sw.sessionData.mu.Lock()
+			sw.sessionData.data.deadline = deadline(expiry)
 			err := secureCookie.encode(sw.sessionData.data)
+			sw.sessionData.mu.Unlock()
+
 			if err != nil {
 				panic(err)
 			}
 
 			writeCookie(sw, secureCookie, expiry)
 		case Destroyed:
-			secureCookie = NewSecureCookie()
+			secureCookie = NewSecureCookie(container.GetConfig().SessionHashKey)
 			writeCookie(sw, secureCookie, time.Time{})
 		}
 

@@ -401,12 +401,18 @@
             {
               "text": "Sign cookie value",
               "priority": "medium",
-              "creation": 1688422511
+              "creation": 1688422511,
+              "completion": 1688582013
             },
             {
               "text": "encrypt/decrypt value",
               "priority": "medium",
               "creation": 1688422544
+            },
+            {
+              "text": "check session expiration",
+              "priority": "medium",
+              "creation": 1688582203
             }
           ]
         },

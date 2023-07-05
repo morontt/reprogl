@@ -5,7 +5,9 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"time"
 
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/security"
 )
 
@@ -18,11 +20,14 @@ const (
 	FlashSuccessKey = "fs"
 
 	varnishSessionHeader = "X-Varnish-Session"
+
+	maxAge = 14 * 24 * time.Hour
 )
 
 var (
 	DecodeError         = errors.New("session: decode error")
 	EncodedValueTooLong = errors.New("session: the encoded value is too long")
+	ErrMacInvalid       = errors.New("session: the HMAC is not valid")
 )
 
 type CookieInterface interface {
@@ -33,18 +38,27 @@ type CookieInterface interface {
 }
 
 func FromRequest(r *http.Request, logger *log.Logger) *Store {
+	var withError bool
 	requestData := r.Header.Get(varnishSessionHeader)
 	if len(requestData) > 0 {
-		secureCookie := NewSecureCookie()
+		secureCookie := NewSecureCookie(container.GetConfig().SessionHashKey)
 		data, err := secureCookie.decode(requestData)
 		if err == nil {
 			return newStoreWithData(data)
 		} else {
+			withError = true
 			logger.Printf("[AUTH] session: %s error: %s\n", requestData, err.Error())
 		}
 	}
 
-	return newStore()
+	store := newStore()
+	if withError {
+		store.mu.Lock()
+		store.status = Destroyed
+		store.mu.Unlock()
+	}
+
+	return store
 }
 
 func FromContext(ctx context.Context) *Store {
@@ -61,7 +75,7 @@ func Put(ctx context.Context, key string, value any) {
 
 	store.mu.Lock()
 	store.data.values[key] = value
-	store.status = Modified
+	store.setModified()
 	store.mu.Unlock()
 }
 
@@ -103,7 +117,7 @@ func Pop[T any](ctx context.Context, key string) (T, bool) {
 	if raw, exists := store.data.values[key]; exists {
 		if result, ok = raw.(T); ok {
 			delete(store.data.values, key)
-			store.status = Modified
+			store.setModified()
 
 			return result, true
 		}
@@ -124,7 +138,7 @@ func Remove(ctx context.Context, key string) {
 	}
 
 	delete(store.data.values, key)
-	store.status = Modified
+	store.setModified()
 }
 
 func Destroy(ctx context.Context) {
@@ -159,7 +173,7 @@ func SetIdentity(ctx context.Context, identity security.Identity) {
 
 	store.mu.Lock()
 	store.data.identity = identity
-	store.status = Modified
+	store.setModified()
 	store.mu.Unlock()
 }
 
@@ -174,5 +188,5 @@ func ClearIdentity(ctx context.Context) {
 	}
 
 	store.data.identity = security.Identity{}
-	store.status = Modified
+	store.setModified()
 }

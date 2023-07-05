@@ -3,8 +3,8 @@ package security
 import "xelbot.com/reprogl/models"
 
 type Identity struct {
-	ID       int
-	Username string
+	ID       int    `json:"i,omitempty"`
+	Username string `json:"u,omitempty"`
 }
 
 func CreateIdentity(user *models.LoggedUser) Identity {
