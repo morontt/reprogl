@@ -135,6 +135,11 @@
           "text": "maybe use logrotate on production",
           "priority": "medium",
           "creation": 1686424345
+        },
+        {
+          "text": "maybe use other logs system, with GUI, search etc.",
+          "priority": "medium",
+          "creation": 1688471622
         }
       ]
     },
@@ -387,6 +392,55 @@
           "text": "login: https://colorlib.com/wp/cat/login-forms/",
           "priority": "low",
           "creation": 1688249245
+        },
+        {
+          "text": "session by secure cookie",
+          "priority": "medium",
+          "creation": 1688278184,
+          "completion": 1688591205,
+          "tasks": [
+            {
+              "text": "Sign cookie value",
+              "priority": "medium",
+              "creation": 1688422511,
+              "completion": 1688582013
+            },
+            {
+              "text": "encrypt/decrypt value",
+              "priority": "medium",
+              "creation": 1688422544
+            },
+            {
+              "text": "check session expiration",
+              "priority": "medium",
+              "creation": 1688582203,
+              "completion": 1688585748
+            }
+          ]
+        },
+        {
+          "text": "Login user",
+          "priority": "medium",
+          "creation": 1688422755,
+          "tasks": [
+            {
+              "text": "Update last login and logins count",
+              "priority": "medium",
+              "creation": 1688422798,
+              "completion": 1688552577
+            },
+            {
+              "text": "flash message",
+              "priority": "medium",
+              "creation": 1688422875,
+              "completion": 1688505709
+            },
+            {
+              "text": "Success flash",
+              "priority": "medium",
+              "creation": 1688552607
+            }
+          ]
         }
       ]
     }

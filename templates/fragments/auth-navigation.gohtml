@@ -1,0 +1,11 @@
+{{if .Authenticated -}}
+<a href="{{path "logout"}}">
+    <span class="glyphicon glyph-fw glyphicon-off"></span>
+    <span>Logout</span>
+</a>
+{{- else -}}
+<a href="{{path "login"}}">
+    <span class="glyphicon glyph-fw glyphicon-log-in"></span>
+    <span>Login</span>
+</a>
+{{- end}}

@@ -18,14 +18,14 @@ services:
             - blognet
 
     varnish:
-        image: varnish:7.0-alpine
+        image: varnish:7.2-alpine
         container_name: "reprogl_varnish"
         environment:
             BAN_TOKEN: ${BAN_TOKEN}
         volumes:
             - ./docker/varnish/default.vcl:/etc/varnish/default.vcl:ro
         tmpfs:
-            - /var/lib/varnish:exec
+            - /var/lib/varnish:exec,uid=100,gid=101
         ports:
             - "8086:80"
         links:

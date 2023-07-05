@@ -58,6 +58,17 @@ type StatisticsPageData struct {
 	DummyArticle SidebarDummyArticle
 }
 
+type LoginPageData struct {
+	Meta
+	CsrfToken    string
+	ErrorMessage string
+	HasError     bool
+}
+
+type AuthNavigation struct {
+	Authenticated bool
+}
+
 type FragmentCategoriesData struct {
 	Categories *models.CategoryList
 }
@@ -156,5 +167,23 @@ func NewStatisticsPageData() *StatisticsPageData {
 		Meta:         meta,
 		Now:          time.Now(),
 		DummyArticle: SidebarDummyArticle{RecentPostsID: "0"},
+	}
+}
+
+func NewLoginPageData(token, errorMessage string, hasError bool) *LoginPageData {
+	meta := defaultMeta()
+	meta.AppendTitle("Вход")
+
+	return &LoginPageData{
+		Meta:         meta,
+		CsrfToken:    token,
+		ErrorMessage: errorMessage,
+		HasError:     hasError,
+	}
+}
+
+func NewAuthNavigationData(has bool) *AuthNavigation {
+	return &AuthNavigation{
+		Authenticated: has,
 	}
 }

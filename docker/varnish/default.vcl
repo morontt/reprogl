@@ -17,7 +17,13 @@ sub vcl_recv {
     }
 
     if (req.http.Cookie) {
-        unset req.http.Cookie;
+        if (req.http.Cookie ~ ".*(^|;| )?session=([a-zA-Z0-9\-_=]+)( |;|$)?.*") {
+            set req.http.X-Varnish-Session = regsub(req.http.Cookie, ".*(^|;| )?session=([a-zA-Z0-9\-_=]+)( |;|$)?.*", "\2");
+        }
+
+        if (!(req.url ~ "^/login")) {
+            unset req.http.Cookie;
+        }
     }
 }
 
@@ -26,6 +32,15 @@ sub vcl_backend_response {
         unset beresp.http.Surrogate-Control;
         set beresp.do_esi = true;
     }
+}
+
+sub vcl_hash {
+    hash_data(req.url);
+    if (req.http.X-Varnish-Session && req.url == "/_fragment/auth-navigation") {
+        hash_data(req.http.X-Varnish-Session);
+    }
+
+    return (lookup);
 }
 
 sub vcl_deliver {
