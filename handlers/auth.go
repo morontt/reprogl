@@ -60,6 +60,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 			if csrfToken, found = cache.Get(csrfTokenKey); !found {
 				deleteCsrfCookie(w)
 				session.Put(r.Context(), session.FlashErrorKey, "Непонятная ошибка")
+				app.InfoLog.Println("[AUTH] not found CSRF-token in cache")
 				http.Redirect(w, r, container.GenerateURL("login"), http.StatusSeeOther)
 				return
 			}
@@ -105,7 +106,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 			app.InfoLog.Printf("[AUTH] invalid password for \"%s\"\n", username)
 		} else {
 			app.InfoLog.Printf("[AUTH] success for \"%s\"\n", username)
-			authSuccess(user, app, r.Context())
+			authSuccess(user, app, container.RealRemoteAddress(r), r.Context())
 		}
 
 		deleteCsrfCookie(w)
@@ -129,8 +130,13 @@ func LoginLogoutLinks(app *container.Application) http.HandlerFunc {
 	}
 }
 
-func authSuccess(user *models.LoggedUser, app *container.Application, ctx context.Context) {
+func authSuccess(user *models.LoggedUser, app *container.Application, ip string, ctx context.Context) {
 	session.SetIdentity(ctx, security.CreateIdentity(user))
+
+	repo := repositories.UserRepository{DB: app.DB}
+	if err := repo.SaveLoginEvent(user.ID, ip); err != nil {
+		app.LogError(err)
+	}
 }
 
 func generateCsrfPair(w http.ResponseWriter, cache *yetacache.Cache[string, string]) string {

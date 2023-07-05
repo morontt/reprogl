@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 	"errors"
+	"time"
 
 	"xelbot.com/reprogl/models"
 )
@@ -38,4 +39,25 @@ func (ur *UserRepository) GetLoggedUserByUsername(username string) (*models.Logg
 	}
 
 	return &user, nil
+}
+
+func (ur *UserRepository) SaveLoginEvent(id int, ip string) error {
+	query := `
+		UPDATE
+			users
+		SET
+			last_login = ?,
+			login_count = login_count + 1,
+			ip_last = ?
+		WHERE
+			id = ?`
+
+	_, err := ur.DB.Exec(
+		query,
+		time.Now().Format("2006-01-02 15:04:05.000"),
+		ip,
+		id,
+	)
+
+	return err
 }

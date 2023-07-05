@@ -418,13 +418,19 @@
             {
               "text": "Update last login and logins count",
               "priority": "medium",
-              "creation": 1688422798
+              "creation": 1688422798,
+              "completion": 1688552577
             },
             {
               "text": "flash message",
               "priority": "medium",
               "creation": 1688422875,
               "completion": 1688505709
+            },
+            {
+              "text": "Success flash",
+              "priority": "medium",
+              "creation": 1688552607
             }
           ]
         }
