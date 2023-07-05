@@ -34,6 +34,15 @@ sub vcl_backend_response {
     }
 }
 
+sub vcl_hash {
+    hash_data(req.url);
+    if (req.http.X-Varnish-Session && req.url == "/_fragment/auth-navigation") {
+        hash_data(req.http.X-Varnish-Session);
+    }
+
+    return (lookup);
+}
+
 sub vcl_deliver {
     unset resp.http.Age;
     unset resp.http.Via;
