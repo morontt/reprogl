@@ -397,6 +397,7 @@
           "text": "session by secure cookie",
           "priority": "medium",
           "creation": 1688278184,
+          "completion": 1688591205,
           "tasks": [
             {
               "text": "Sign cookie value",

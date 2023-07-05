@@ -12,7 +12,7 @@ func TestSecureCookie(t *testing.T) {
 		err          error
 	)
 
-	secureCookie := NewSecureCookie("hash key")
+	secureCookie := NewSecureCookie("hash key", "block key")
 	secureCookie.ignoreExpiration()
 	for _, value := range testData {
 		if err = secureCookie.encode(value.data); err != nil {
@@ -35,7 +35,7 @@ func TestInvalidHMAC(t *testing.T) {
 		err error
 	)
 
-	secureCookie := NewSecureCookie("Lorem ipsum...")
+	secureCookie := NewSecureCookie("Lorem ipsum...", "dolor sit amet...")
 	for _, value := range testData {
 		if err = secureCookie.encode(value.data); err != nil {
 			t.Error(err)

@@ -1,11 +1,13 @@
 package session
 
 import (
+	"crypto/cipher"
+	"crypto/des"
 	"crypto/hmac"
+	"crypto/rand"
 	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/base64"
-	"hash"
 )
 
 type SecureCookie struct {
@@ -16,15 +18,21 @@ type SecureCookie struct {
 	// For testing purposes
 	skipExpiration bool
 
-	hashKey  []byte
-	hashFunc func() hash.Hash
+	hashKey []byte
+	block   cipher.Block
 }
 
-func NewSecureCookie(hashKey string) *SecureCookie {
+func NewSecureCookie(hashKey, cipherKey string) *SecureCookie {
+	h := sha256.New()
+	h.Write([]byte(cipherKey))
+	cipherKeyHash := h.Sum(nil)
+	block, _ := des.NewTripleDESCipher(cipherKeyHash[:24])
+
 	return &SecureCookie{
 		maxLength: 4096,
 		sz:        jsonEncoder{},
 		hashKey:   []byte(hashKey),
+		block:     block,
 	}
 }
 
@@ -34,6 +42,12 @@ func (sc *SecureCookie) encode(data internalData) error {
 
 	if b, err = sc.sz.serialize(data); err != nil {
 		return err
+	}
+
+	if sc.block != nil {
+		if b, err = encrypt(sc.block, b); err != nil {
+			return err
+		}
 	}
 
 	mac := createMac(b, sc.hashKey)
@@ -61,6 +75,12 @@ func (sc *SecureCookie) decode(value string) (internalData, error) {
 
 	if err = verifyMac(b, sc.hashKey); err != nil {
 		return data, err
+	}
+
+	if sc.block != nil {
+		if b, err = decrypt(sc.block, b); err != nil {
+			return data, err
+		}
 	}
 
 	data, err = sc.sz.deserialize(b)
@@ -122,4 +142,30 @@ func verifyMac(value, key []byte) error {
 // For testing purposes
 func (sc *SecureCookie) ignoreExpiration() {
 	sc.skipExpiration = true
+}
+
+func encrypt(block cipher.Block, value []byte) ([]byte, error) {
+	iv := make([]byte, block.BlockSize())
+	_, err := rand.Read(iv)
+	if err != nil {
+		return nil, EncryptionError
+	}
+
+	stream := cipher.NewCTR(block, iv)
+	stream.XORKeyStream(value, value)
+
+	return append(iv, value...), nil
+}
+
+func decrypt(block cipher.Block, value []byte) ([]byte, error) {
+	size := block.BlockSize()
+	if len(value) > size {
+		iv := value[:size]
+		value = value[size:]
+		stream := cipher.NewCTR(block, iv)
+		stream.XORKeyStream(value, value)
+		return value, nil
+	}
+
+	return nil, DecryptionError
 }

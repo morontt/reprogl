@@ -36,7 +36,10 @@ func (sw *ResponseWriter) CheckAndWrite() {
 		case Modified:
 			expiry := time.Now().Add(maxAge)
 
-			secureCookie = NewSecureCookie(container.GetConfig().SessionHashKey)
+			secureCookie = NewSecureCookie(
+				container.GetConfig().SessionHashKey,
+				container.GetConfig().SessionBlockKey,
+			)
 
 			sw.sessionData.mu.Lock()
 			sw.sessionData.data.deadline = deadline(expiry)
@@ -49,7 +52,10 @@ func (sw *ResponseWriter) CheckAndWrite() {
 
 			writeCookie(sw, secureCookie, expiry)
 		case Destroyed:
-			secureCookie = NewSecureCookie(container.GetConfig().SessionHashKey)
+			secureCookie = NewSecureCookie(
+				container.GetConfig().SessionHashKey,
+				container.GetConfig().SessionBlockKey,
+			)
 			writeCookie(sw, secureCookie, time.Time{})
 		}
 

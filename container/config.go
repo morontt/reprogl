@@ -25,6 +25,7 @@ type AppConfig struct {
 	TelegramToken     string `app_config:"TELEGRAM_TOKEN"`
 	TelegramAdminID   int    `app_config:"TELEGRAM_ADMIN_ID"`
 	SessionHashKey    string `app_config:"SESSION_HASH_KEY"`
+	SessionBlockKey   string `app_config:"SESSION_BLOCK_KEY"`
 }
 
 var cnf AppConfig

@@ -29,6 +29,8 @@ var (
 	EncodedValueTooLong = errors.New("session: the encoded value is too long")
 	ErrMacInvalid       = errors.New("session: the HMAC is not valid")
 	Expired             = errors.New("session: expired")
+	EncryptionError     = errors.New("session: encryption error")
+	DecryptionError     = errors.New("session: decryption failed")
 )
 
 type CookieInterface interface {
@@ -42,7 +44,10 @@ func FromRequest(r *http.Request, logger *log.Logger) *Store {
 	var withError bool
 	requestData := r.Header.Get(varnishSessionHeader)
 	if len(requestData) > 0 {
-		secureCookie := NewSecureCookie(container.GetConfig().SessionHashKey)
+		secureCookie := NewSecureCookie(
+			container.GetConfig().SessionHashKey,
+			container.GetConfig().SessionBlockKey,
+		)
 		data, err := secureCookie.decode(requestData)
 		if err == nil {
 			return newStoreWithData(data)
