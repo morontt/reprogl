@@ -82,7 +82,7 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		articleId = articleRepo.GetIdBySlug(matches[slugIndex])
 	}
 
-	if !trackingCache.Has(activity.FingerPrint) {
+	if !trackingCache.Has(activity.FingerPrint) || activity.Status != http.StatusOK {
 		err = repo.SaveTracking(activity, userAgentId, articleId)
 		if err != nil {
 			app.LogError(err)
