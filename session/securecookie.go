@@ -8,6 +8,8 @@ import (
 	"crypto/sha256"
 	"crypto/subtle"
 	"encoding/base64"
+	"errors"
+	"hash"
 )
 
 type SecureCookie struct {
@@ -23,7 +25,11 @@ type SecureCookie struct {
 }
 
 func NewSecureCookie(hashKey, cipherKey string) *SecureCookie {
-	h := sha256.New()
+	h := (hashFunc())()
+	if h.Size() < 24 {
+		panic(errors.New("session: invalid hash size"))
+	}
+
 	h.Write([]byte(cipherKey))
 	cipherKeyHash := h.Sum(nil)
 	block, _ := des.NewTripleDESCipher(cipherKeyHash[:24])
@@ -124,15 +130,16 @@ func decode(value string) ([]byte, error) {
 
 // createMac creates a message authentication code.
 func createMac(value, key []byte) []byte {
-	h := hmac.New(sha256.New, key)
+	h := hmac.New(hashFunc(), key)
 	h.Write(value)
 
 	return h.Sum(nil)
 }
 
 func verifyMac(value, key []byte) error {
-	mac := createMac(value[:len(value)-32], key)
-	if subtle.ConstantTimeCompare(value[len(value)-32:], mac) == 1 {
+	h := (hashFunc())()
+	mac := createMac(value[:len(value)-h.Size()], key)
+	if subtle.ConstantTimeCompare(value[len(value)-h.Size():], mac) == 1 {
 		return nil
 	}
 
@@ -168,4 +175,8 @@ func decrypt(block cipher.Block, value []byte) ([]byte, error) {
 	}
 
 	return nil, DecryptionError
+}
+
+func hashFunc() func() hash.Hash {
+	return sha256.New224
 }
