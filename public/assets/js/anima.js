@@ -204,6 +204,15 @@ var anima = (function ($) {
         }
     },
 
+    flassMessages = function() {
+        var successMessage = $('.success-flash');
+        if(successMessage.length) {
+            setTimeout(function () {
+                successMessage.hide(300);
+            }, 3000);
+        }
+    },
+
     // anima javascripts initialization
     init = function () {
         $(document).foundation();
@@ -218,6 +227,7 @@ var anima = (function ($) {
         filterTagsSelector();
         imageCarousel();
         imageLightbox();
+        flassMessages();
     };
 
     return {

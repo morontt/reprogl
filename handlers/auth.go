@@ -6,6 +6,7 @@ import (
 	"crypto/subtle"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -106,6 +107,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 			session.Put(r.Context(), session.FlashErrorKey, "Недействительные логин/пароль")
 			app.InfoLog.Printf("[AUTH] invalid password for \"%s\"\n", username)
 		} else {
+			session.Put(r.Context(), session.FlashSuccessKey, fmt.Sprintf("Привет, %s :)", username))
 			app.InfoLog.Printf("[AUTH] success for \"%s\"\n", username)
 			authSuccess(user, app, container.RealRemoteAddress(r), r.Context())
 		}

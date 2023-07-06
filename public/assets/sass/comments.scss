@@ -166,7 +166,7 @@ section.comments {
 
             label.required-field:after {
                 content: '*';
-                color: orangered;
+                color: $color-error;
                 padding-left: 0.2em;
             }
 

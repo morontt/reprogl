@@ -36,8 +36,9 @@ type ArticlePageData struct {
 
 type IndexPageData struct {
 	Meta
-	HeaderInfo HeaderLineInfo
-	Paginator  *models.ArticlesPaginator
+	HeaderInfo   HeaderLineInfo
+	Paginator    *models.ArticlesPaginator
+	FlashSuccess string
 }
 
 type InfoPageData struct {
@@ -108,6 +109,10 @@ func (m *Meta) BrowserTitle() string {
 	return title
 }
 
+func (ipd *IndexPageData) HasSuccessFlash() bool {
+	return len(ipd.FlashSuccess) > 0
+}
+
 func NewArticlePageData(article *models.Article, commentKey string) *ArticlePageData {
 	meta := defaultMeta()
 	if article.Description.Valid {
@@ -117,11 +122,15 @@ func NewArticlePageData(article *models.Article, commentKey string) *ArticlePage
 	return &ArticlePageData{Article: article, Meta: meta, CommentKey: commentKey}
 }
 
-func NewIndexPageData(paginator *models.ArticlesPaginator) *IndexPageData {
+func NewIndexPageData(paginator *models.ArticlesPaginator, flashSuccess string) *IndexPageData {
 	meta := defaultMeta()
 	meta.IsIndexPage = true
 
-	return &IndexPageData{Paginator: paginator, Meta: meta}
+	return &IndexPageData{
+		Paginator:    paginator,
+		Meta:         meta,
+		FlashSuccess: flashSuccess,
+	}
 }
 
 func NewCategoryPageData(paginator *models.ArticlesPaginator, headerInfo HeaderLineInfo) *IndexPageData {

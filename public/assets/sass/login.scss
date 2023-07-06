@@ -70,10 +70,11 @@ body {
     }
 
     .error {
-        display: inline-block;
-        font-size: 16px;
-        color: #EF3B3A;
-        margin-bottom: 7px;
+        display: block;
+        padding: 15px;
+        color: $color-error;
+        margin: 0 0 15px;
+        background-color: lighten($color-error, 35%);
     }
 }
 .form .register-form {
