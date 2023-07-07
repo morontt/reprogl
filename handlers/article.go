@@ -10,6 +10,7 @@ import (
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
+	"xelbot.com/reprogl/session"
 	"xelbot.com/reprogl/views"
 )
 
@@ -65,7 +66,7 @@ func PageAction(app *container.Application) http.HandlerFunc {
 			article.RecentPostsID = "0"
 		}
 
-		templateData := views.NewArticlePageData(article, lastUpdate)
+		templateData := views.NewArticlePageData(article, lastUpdate, session.HasIdentity(r.Context()))
 		templateData.AppendTitle(article.Title)
 
 		err = views.WriteTemplate(w, "article.gohtml", templateData)

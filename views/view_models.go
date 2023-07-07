@@ -30,8 +30,9 @@ type HeaderLineInfo interface {
 
 type ArticlePageData struct {
 	Meta
-	Article    *models.Article
-	CommentKey string
+	Article     *models.Article
+	CommentKey  string
+	HasIdentity bool
 }
 
 type IndexPageData struct {
@@ -113,13 +114,18 @@ func (ipd *IndexPageData) HasSuccessFlash() bool {
 	return len(ipd.FlashSuccess) > 0
 }
 
-func NewArticlePageData(article *models.Article, commentKey string) *ArticlePageData {
+func NewArticlePageData(article *models.Article, commentKey string, hasIdentity bool) *ArticlePageData {
 	meta := defaultMeta()
 	if article.Description.Valid {
 		meta.AppendName("description", article.Description.String)
 	}
 
-	return &ArticlePageData{Article: article, Meta: meta, CommentKey: commentKey}
+	return &ArticlePageData{
+		Article:     article,
+		Meta:        meta,
+		CommentKey:  commentKey,
+		HasIdentity: hasIdentity,
+	}
 }
 
 func NewIndexPageData(paginator *models.ArticlesPaginator, flashSuccess string) *IndexPageData {

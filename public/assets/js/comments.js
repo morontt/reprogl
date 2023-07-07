@@ -73,23 +73,29 @@ $(function () {
 
         function initCommentator() {
             if (storageLocal) {
-                if (storageLocal.getItem('nickname')) {
-                    $('#name').val(storageLocal.getItem('nickname'));
-                }
-                if (storageLocal.getItem('email')) {
-                    $('#mail').val(storageLocal.getItem('email'));
-                }
-                if (storageLocal.getItem('website')) {
-                    $('#website').val(storageLocal.getItem('website'));
+                var nameField = $('#name');
+                if (nameField.length) {
+                    if (storageLocal.getItem('nickname')) {
+                        nameField.val(storageLocal.getItem('nickname'));
+                    }
+                    if (storageLocal.getItem('email')) {
+                        $('#mail').val(storageLocal.getItem('email'));
+                    }
+                    if (storageLocal.getItem('website')) {
+                        $('#website').val(storageLocal.getItem('website'));
+                    }
                 }
             }
         }
 
         function saveCommentator() {
             if (storageLocal) {
-                storageLocal.setItem('nickname', $('#name').val());
-                storageLocal.setItem('email', $('#mail').val());
-                storageLocal.setItem('website', $('#website').val());
+                var nameField = $('#name');
+                if (nameField.length) {
+                    storageLocal.setItem('nickname', nameField.val());
+                    storageLocal.setItem('email', $('#mail').val());
+                    storageLocal.setItem('website', $('#website').val());
+                }
             }
         }
     }

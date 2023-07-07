@@ -10,6 +10,7 @@ import (
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
+	"xelbot.com/reprogl/session"
 )
 
 type addCommentResponse struct {
@@ -29,11 +30,6 @@ func AddComment(app *container.Application) http.HandlerFunc {
 			app.ClientError(w, http.StatusBadRequest)
 			return
 		}
-
-		commentText := r.PostForm.Get("comment_text")
-		nickname := r.PostForm.Get("name")
-		email := r.PostForm.Get("mail")
-		website := r.PostForm.Get("website")
 
 		topicId, err := strconv.Atoi(r.PostForm.Get("topicId"))
 		if err != nil {
@@ -59,17 +55,28 @@ func AddComment(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		var commentator *backend.CommentatorDTO
+		var user *backend.UserDTO
+		if identity, hasIdentity := session.GetIdentity(r.Context()); hasIdentity {
+			user = &backend.UserDTO{
+				ID: identity.ID,
+			}
+		} else {
+			commentator = &backend.CommentatorDTO{
+				Name:    r.PostForm.Get("name"),
+				Email:   r.PostForm.Get("mail"),
+				Website: r.PostForm.Get("website"),
+			}
+		}
+
 		commentData := backend.CommentDTO{
-			Commentator: backend.CommentatorDTO{
-				Name:    nickname,
-				Email:   email,
-				Website: website,
-			},
-			Text:      commentText,
-			TopicID:   topicId,
-			ParentID:  parentId,
-			UserAgent: r.UserAgent(),
-			IP:        container.RealRemoteAddress(r),
+			Commentator: commentator,
+			User:        user,
+			Text:        r.PostForm.Get("comment_text"),
+			TopicID:     topicId,
+			ParentID:    parentId,
+			UserAgent:   r.UserAgent(),
+			IP:          container.RealRemoteAddress(r),
 		}
 
 		var responseData any

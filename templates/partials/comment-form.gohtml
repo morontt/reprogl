@@ -5,6 +5,7 @@
               action="{{path "add-comment-dummy"}}">
             <input type="hidden" name="topicId" value="{{.Article.ID}}" id="topicId">
             <input type="hidden" name="parentId" value="0" id="parentId">
+            {{if not .HasIdentity -}}
             <div class="row">
                 <div class="large-3 columns">
                     <label for="name" class="inline required-field">Имя:</label>
@@ -42,6 +43,7 @@
                            placeholder="http://example.org">
                 </div>
             </div>
+            {{- end}}
             <div class="row">
                 <div class="large-3 columns">
                     <label for="comment_text" class="inline required-field">Текст комментария:</label>

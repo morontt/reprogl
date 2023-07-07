@@ -21,13 +21,18 @@ type CommentatorDTO struct {
 	Website string `json:"website"`
 }
 
+type UserDTO struct {
+	ID int `json:"id"`
+}
+
 type CommentDTO struct {
-	Commentator CommentatorDTO `json:"commentator"`
-	Text        string         `json:"text"`
-	TopicID     int            `json:"topicId"`
-	ParentID    int            `json:"parentId"`
-	UserAgent   string         `json:"userAgent"`
-	IP          string         `json:"ipAddress"`
+	Commentator *CommentatorDTO `json:"commentator,omitempty"`
+	User        *UserDTO        `json:"user,omitempty"`
+	Text        string          `json:"text"`
+	TopicID     int             `json:"topicId"`
+	ParentID    int             `json:"parentId"`
+	UserAgent   string          `json:"userAgent"`
+	IP          string          `json:"ipAddress"`
 }
 
 type CreatedCommentDTO struct {
