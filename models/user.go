@@ -5,4 +5,5 @@ type LoggedUser struct {
 	Username     string
 	PasswordHash string
 	Salt         string
+	Type         string
 }

@@ -11,6 +11,7 @@ import (
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
+	"xelbot.com/reprogl/security"
 	"xelbot.com/reprogl/session"
 	"xelbot.com/reprogl/views"
 )
@@ -139,7 +140,8 @@ func CommentsFragment(app *container.Application) http.HandlerFunc {
 
 		var comments *models.CommentList
 		var hasIdentity bool
-		if _, hasIdentity = session.GetIdentity(r.Context()); hasIdentity {
+		var identity security.Identity
+		if identity, hasIdentity = session.GetIdentity(r.Context()); hasIdentity {
 			comments, err = repo.GetCollectionForUsersByArticleId(articleId)
 		} else {
 			comments, err = repo.GetCollectionByArticleId(articleId)
@@ -154,6 +156,7 @@ func CommentsFragment(app *container.Application) http.HandlerFunc {
 			Comments:        comments,
 			EnabledComments: vars["disabled_flag"] == models.EnabledComments,
 			HasIdentity:     hasIdentity,
+			Identity:        identity,
 		}
 
 		cacheControl(w, container.DefaultEsiTTL)

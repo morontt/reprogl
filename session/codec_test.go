@@ -20,10 +20,10 @@ var time2, _ = time.Parse(time.RFC822, "01 Feb 19 01:37 EET")
 var testData = []testDataItem{
 	{
 		data: internalData{
-			identity: security.Identity{ID: 13, Username: "pupa"},
+			identity: security.Identity{ID: 13, Username: "pupa", Role: security.Admin},
 			deadline: deadline(time1),
 		},
-		jsonString: `{"a":{"i":13,"u":"pupa"},"d":"2023-07-05T16:24:00+03:00"}`,
+		jsonString: `{"a":{"i":13,"u":"pupa","r":"admin"},"d":"2023-07-05T16:24:00+03:00"}`,
 	},
 	{
 		data: internalData{
@@ -38,12 +38,12 @@ var testData = []testDataItem{
 	},
 	{
 		data: internalData{
-			identity: security.Identity{ID: 7, Username: "lupa"},
+			identity: security.Identity{ID: 7, Username: "lupa", Role: security.User},
 			values: map[string]any{
 				"abc": "zxc",
 			},
 		},
-		jsonString: `{"a":{"i":7,"u":"lupa"},"v":{"abc":"zxc"},"d":"0001-01-01T00:00:00Z"}`,
+		jsonString: `{"a":{"i":7,"u":"lupa","r":"user"},"v":{"abc":"zxc"},"d":"0001-01-01T00:00:00Z"}`,
 	},
 }
 

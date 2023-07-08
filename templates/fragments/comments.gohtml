@@ -18,8 +18,10 @@
             {{- end -}}
         {{- end}}
         {{if $.HasIdentity -}}
-            {{- if .IP.Valid -}}
-                [{{.IP.String}}]
+            {{- if $.Identity.IsAdmin -}}
+                {{- if .IP.Valid -}}
+                    [{{.IP.String}}]
+                {{- end -}}
             {{- end -}}
             {{emojiFlag .CountryCode}}
         {{- end}}
@@ -37,7 +39,7 @@
             {{- else -}}
                 {{- raw (nl2br .Text) -}}
             {{- end -}}
-            {{if and $.HasIdentity .UserAgent.Valid -}}
+            {{if and $.Identity.IsAdmin .UserAgent.Valid -}}
                 <hr>
                 <span class="ua-note">{{.UserAgent.String}}</span>
             {{- end -}}

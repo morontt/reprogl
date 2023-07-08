@@ -7,6 +7,7 @@ import (
 
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/security"
 )
 
 type Meta struct {
@@ -79,6 +80,7 @@ type FragmentCommentsData struct {
 	Comments        *models.CommentList
 	EnabledComments bool
 	HasIdentity     bool
+	Identity        security.Identity
 }
 
 type FragmentRecentPostsData struct {

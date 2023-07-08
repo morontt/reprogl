@@ -17,6 +17,7 @@ func (ur *UserRepository) GetLoggedUserByUsername(username string) (*models.Logg
 		SELECT
 			u.id,
 			u.username,
+			u.user_type,
 			u.password,
 			u.password_salt
 		FROM users AS u
@@ -27,6 +28,7 @@ func (ur *UserRepository) GetLoggedUserByUsername(username string) (*models.Logg
 	err := ur.DB.QueryRow(query, username).Scan(
 		&user.ID,
 		&user.Username,
+		&user.Type,
 		&user.PasswordHash,
 		&user.Salt)
 
