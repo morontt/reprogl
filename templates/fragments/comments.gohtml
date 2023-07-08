@@ -21,7 +21,7 @@
             {{- if .IP.Valid -}}
                 [{{.IP.String}}]
             {{- end -}}
-            {{.CountryCode}}
+            {{emojiFlag .CountryCode}}
         {{- end}}
     </div>
     <div class="comment-body">

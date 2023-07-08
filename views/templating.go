@@ -95,6 +95,7 @@ func LoadViewSet() error {
 		"cnt_comments":    commentsCountString,
 		"flag_cnt":        flagCounterImage(true),
 		"flag_cnt_mini":   flagCounterImage(false),
+		"emojiFlag":       emojiFlag,
 	}
 
 	for key, files := range templatesMap {
