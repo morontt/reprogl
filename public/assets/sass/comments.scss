@@ -48,6 +48,16 @@ section.comments {
                 @media only screen and (min-width: 48em) {
                     margin-left: 99px;
                 }
+
+                .ua-note {
+                    color: lighten($color-main-dark, 35%);
+                    font-size: 75%;
+                }
+                hr {
+                    margin: 0.5em 0 0.25em;
+                    border: solid #DDD;
+                    border-width: 1px 0 0;
+                }
             }
 
             .comment-reply {

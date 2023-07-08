@@ -5,12 +5,14 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/api/telegram"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/session"
+	"xelbot.com/reprogl/views"
 )
 
 type addCommentResponse struct {
@@ -119,6 +121,46 @@ func AddComment(app *container.Application) http.HandlerFunc {
 		}
 
 		jsonResponse(w, statusCode, responseData)
+	}
+}
+
+func CommentsFragment(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var err error
+		vars := mux.Vars(r)
+		articleId, err := strconv.Atoi(vars["article_id"])
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
+		repo := repositories.CommentRepository{DB: app.DB}
+
+		var comments *models.CommentList
+		var hasIdentity bool
+		if _, hasIdentity = session.GetIdentity(r.Context()); hasIdentity {
+			comments, err = repo.GetCollectionForUsersByArticleId(articleId)
+		} else {
+			comments, err = repo.GetCollectionByArticleId(articleId)
+		}
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
+		templateData := &views.FragmentCommentsData{
+			Comments:        comments,
+			EnabledComments: vars["disabled_flag"] == models.EnabledComments,
+			HasIdentity:     hasIdentity,
+		}
+
+		cacheControl(w, container.DefaultEsiTTL)
+		err = views.WriteTemplate(w, "comments.gohtml", templateData)
+		if err != nil {
+			app.ServerError(w, err)
+		}
 	}
 }
 

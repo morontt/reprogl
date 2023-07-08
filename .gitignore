@@ -23,4 +23,5 @@
 node_modules/
 package-lock.json
 yarn.lock
-!var/logs/.gitkeep
+/var/logs/
+!/var/logs/.gitkeep

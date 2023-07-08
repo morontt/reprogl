@@ -70,7 +70,7 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 	comments := models.CommentList{}
 
 	for rows.Next() {
-		comment := &models.Comment{}
+		comment := models.Comment{}
 		err = rows.Scan(
 			&comment.ID,
 			&comment.Name,
@@ -88,7 +88,85 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 			return nil, err
 		}
 
-		comments = append(comments, comment)
+		comments = append(comments, &comment)
+	}
+
+	return &comments, nil
+}
+
+// GetCollectionForUsersByArticleId TODO use query builder with GetCollectionByArticleId
+func (cr *CommentRepository) GetCollectionForUsersByArticleId(articleId int) (*models.CommentList, error) {
+	query := `
+		SELECT
+			c.id,
+			COALESCE(t.name, u.username) AS username,
+			COALESCE(t.mail, u.mail) AS email,
+			t.website,
+			COALESCE(t.gender, 1) AS gender,
+			c.commentator_id,
+			c.user_id,
+			c.text,
+			c.tree_depth,
+			c.time_created,
+			c.ip_addr,
+			COALESCE(gco.country_code, '-') AS country_code,
+			ta.user_agent,
+			c.deleted
+		FROM comments AS c
+		LEFT JOIN commentators AS t ON c.commentator_id = t.id
+		LEFT JOIN users AS u ON c.user_id = u.id
+		LEFT JOIN geo_location AS gl ON c.ip_long = gl.ip_long
+		LEFT JOIN geo_location_city AS gci ON gl.city_id = gci.id
+		LEFT JOIN geo_location_country AS gco ON gci.country_id = gco.id
+		LEFT JOIN tracking_agent ta on c.user_agent_id = ta.id
+		INNER JOIN (
+			SELECT
+				c1.id
+			FROM
+				comments AS c1,
+				comments AS c2
+			WHERE
+				c1.post_id = ?
+				AND c2.post_id = ?
+				AND c1.tree_left_key <= c2.tree_left_key
+				AND c1.tree_right_key >= c2.tree_right_key
+				AND c2.deleted = 0
+			GROUP BY c1.id
+		) AS cc ON c.id = cc.id
+		ORDER BY c.tree_left_key`
+
+	rows, err := cr.DB.Query(query, articleId, articleId)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	comments := models.CommentList{}
+
+	for rows.Next() {
+		comment := models.Comment{}
+		err = rows.Scan(
+			&comment.ID,
+			&comment.Name,
+			&comment.Email,
+			&comment.Website,
+			&comment.Gender,
+			&comment.CommentatorID,
+			&comment.AuthorID,
+			&comment.Text,
+			&comment.Depth,
+			&comment.CreatedAt,
+			&comment.IP,
+			&comment.CountryCode,
+			&comment.UserAgent,
+			&comment.Deleted)
+
+		if err != nil {
+			return nil, err
+		}
+
+		comments = append(comments, &comment)
 	}
 
 	return &comments, nil

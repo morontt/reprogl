@@ -387,12 +387,12 @@
       "text": "User authentication",
       "priority": "high",
       "creation": 1688249143,
-      "completion": 1688642371,
       "tasks": [
         {
           "text": "login: https://colorlib.com/wp/cat/login-forms/",
           "priority": "low",
-          "creation": 1688249245
+          "creation": 1688249245,
+          "completion": 1688801221
         },
         {
           "text": "session by secure cookie",
@@ -439,7 +439,13 @@
             {
               "text": "Success flash",
               "priority": "medium",
-              "creation": 1688552607
+              "creation": 1688552607,
+              "completion": 1688642371
+            },
+            {
+              "text": "Redirect to referer",
+              "priority": "medium",
+              "creation": 1688801195
             }
           ]
         }

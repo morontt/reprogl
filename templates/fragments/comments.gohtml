@@ -17,6 +17,12 @@
                 {{.Name}}
             {{- end -}}
         {{- end}}
+        {{if $.HasIdentity -}}
+            {{- if .IP.Valid -}}
+                [{{.IP.String}}]
+            {{- end -}}
+            {{.CountryCode}}
+        {{- end}}
     </div>
     <div class="comment-body">
         <div class="avatar">
@@ -30,6 +36,10 @@
                 Комментарий удалён
             {{- else -}}
                 {{- raw (nl2br .Text) -}}
+            {{- end -}}
+            {{if and $.HasIdentity .UserAgent.Valid -}}
+                <hr>
+                <span class="ua-note">{{.UserAgent.String}}</span>
             {{- end -}}
         </div>
         {{if $.EnabledComments -}}
