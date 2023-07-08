@@ -91,7 +91,7 @@ func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agent
 		data["ip_long"] = activity.LocationID
 	}
 
-	ds := goqu.Dialect("mysql").Insert("tracking").Rows(data)
+	ds := goqu.Dialect("mysql8").Insert("tracking").Rows(data)
 
 	query, _, err := ds.ToSQL()
 	if err != nil {

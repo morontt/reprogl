@@ -10,6 +10,8 @@ import (
 	"xelbot.com/reprogl/models"
 )
 
+const RegionalIndicatorOffset = 127397
+
 func rawHTML(s string) template.HTML {
 	return template.HTML(s)
 }
@@ -134,4 +136,24 @@ func flagCounterImage(fullSize bool) func() template.HTML {
 	return func() template.HTML {
 		return template.HTML("<img src=\"" + url + "\" alt=\"Free counters!\">")
 	}
+}
+
+func emojiFlag(countryCode string) string {
+	if countryCode == "-" {
+		// https://apps.timwhitlock.info/unicode/inspect?s=%F0%9F%8F%B4%E2%80%8D%E2%98%A0%EF%B8%8F
+		return string([]rune{'\U0001F3F4', '\u200D', '\u2620', '\uFE0F'})
+	}
+
+	if len(countryCode) != 2 {
+		return countryCode
+	}
+
+	countryCode = strings.ToUpper(countryCode)
+
+	resultBytes := make([]rune, 0, 2)
+	for _, b := range []byte(countryCode) {
+		resultBytes = append(resultBytes, rune(RegionalIndicatorOffset+int(b)))
+	}
+
+	return string(resultBytes)
 }

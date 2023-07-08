@@ -25,6 +25,10 @@ type Comment struct {
 	CreatedAt time.Time
 	Deleted   bool
 	Commentator
+
+	IP          sql.NullString
+	CountryCode string
+	UserAgent   sql.NullString
 }
 
 type CommentatorForGravatar struct {

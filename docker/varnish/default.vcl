@@ -36,7 +36,10 @@ sub vcl_backend_response {
 
 sub vcl_hash {
     hash_data(req.url);
-    if (req.http.X-Varnish-Session && req.url == "/_fragment/auth-navigation") {
+    if (req.http.X-Varnish-Session && (
+        req.url == "/_fragment/auth-navigation" ||
+        req.url ~ "^/_fragment/comments/")
+    ) {
         hash_data(req.http.X-Varnish-Session);
     }
 

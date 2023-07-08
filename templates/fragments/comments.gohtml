@@ -17,6 +17,14 @@
                 {{.Name}}
             {{- end -}}
         {{- end}}
+        {{if $.HasIdentity -}}
+            {{- if $.Identity.IsAdmin -}}
+                {{- if .IP.Valid -}}
+                    [{{.IP.String}}]
+                {{- end -}}
+            {{- end -}}
+            {{emojiFlag .CountryCode}}
+        {{- end}}
     </div>
     <div class="comment-body">
         <div class="avatar">
@@ -30,6 +38,10 @@
                 Комментарий удалён
             {{- else -}}
                 {{- raw (nl2br .Text) -}}
+            {{- end -}}
+            {{if and $.Identity.IsAdmin .UserAgent.Valid -}}
+                <hr>
+                <span class="ua-note">{{.UserAgent.String}}</span>
             {{- end -}}
         </div>
         {{if $.EnabledComments -}}
