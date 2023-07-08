@@ -5,19 +5,26 @@ import (
 	"html/template"
 	"net/http"
 	"strings"
+	"sync"
 
 	"xelbot.com/reprogl/container"
 )
 
 const defaultPageSize = 64 * 1024
 
-var templates map[string]*template.Template
+var (
+	templates          map[string]*template.Template
+	templatesMapLocker sync.Mutex
+)
 
 func init() {
 	templates = make(map[string]*template.Template)
 }
 
 func LoadViewSet() error {
+	templatesMapLocker.Lock()
+	defer templatesMapLocker.Unlock()
+
 	templatesMap := map[string][]string{
 		"info.gohtml": {
 			"./templates/info.gohtml",
