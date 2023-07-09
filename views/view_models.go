@@ -71,6 +71,9 @@ type StatisticsPageData struct {
 	Now          time.Time
 	Commentators *models.CommentatorList
 	DummyArticle SidebarDummyArticle
+
+	MonthArticles   []models.ArticleStatItem
+	AllTimeArticles []models.ArticleStatItem
 }
 
 type LoginPageData struct {

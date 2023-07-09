@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"time"
+
 	"xelbot.com/reprogl/models"
 )
 
@@ -371,6 +373,8 @@ func (ar *ArticleRepository) newPaginator(countQuery, query string, page int, pa
 		return nil, err
 	}
 
+	defer rows.Close()
+
 	articles, err := populateArticles(rows)
 	if err != nil {
 		return nil, err
@@ -379,9 +383,85 @@ func (ar *ArticleRepository) newPaginator(countQuery, query string, page int, pa
 	return &models.ArticlesPaginator{Items: articles, CurrentPage: page, PageCount: pageCount}, nil
 }
 
+func (ar *ArticleRepository) GetMostVisitedArticlesOfMonth() ([]models.ArticleStatItem, error) {
+	query := `
+		SELECT
+			p.title,
+			p.url,
+			COUNT(t.id) AS cnt
+		FROM posts AS p
+		INNER JOIN tracking AS t ON t.post_id = p.id
+		INNER JOIN tracking_agent AS ta ON t.user_agent_id = ta.id
+		WHERE t.time_created > ?
+			AND ta.is_bot = 0
+		GROUP BY p.id
+		ORDER BY cnt DESC
+		LIMIT 6`
+
+	from := time.Now().Add(-30 * 24 * time.Hour).Format(time.DateTime)
+
+	rows, err := ar.DB.Query(query, from)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	data := make([]models.ArticleStatItem, 0, 6)
+	for rows.Next() {
+		item := models.ArticleStatItem{}
+		err = rows.Scan(
+			&item.Title,
+			&item.Slug,
+			&item.Views)
+
+		if err != nil {
+			return nil, err
+		}
+
+		data = append(data, item)
+	}
+
+	return data, nil
+}
+
+func (ar *ArticleRepository) GetMostVisitedArticles() ([]models.ArticleStatItem, error) {
+	query := `
+		SELECT
+			p.title,
+			p.url,
+			p.views_count AS cnt
+		FROM posts AS p
+		ORDER BY cnt DESC
+		LIMIT 6`
+
+	rows, err := ar.DB.Query(query)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	data := make([]models.ArticleStatItem, 0, 6)
+	for rows.Next() {
+		item := models.ArticleStatItem{}
+		err = rows.Scan(
+			&item.Title,
+			&item.Slug,
+			&item.Views)
+
+		if err != nil {
+			return nil, err
+		}
+
+		data = append(data, item)
+	}
+
+	return data, nil
+}
+
 func populateArticles(rows *sql.Rows) (models.ArticleList, error) {
 	var err error
-	defer rows.Close()
 
 	articles := models.ArticleList{}
 

@@ -12,7 +12,7 @@
     <main class="post-view-content scene-element fade-in-right" role="main">
         <div class="post-view-right-container">
             <article class="post-view-article post">
-                <section class="post-content row">
+                <section class="post-content row statistic-row">
                     <div class="small-12 columns">
                         <div class="post-header-content">
                             <section class="post-meta js-bg-check">
@@ -56,6 +56,25 @@
                                     {{end}}
                                 </div>
                             </section>
+                            <h2>Записи</h2>
+                            <p>Самые посещаемые статьи за последний месяц:</p>
+                            <ul>
+                                {{- range .MonthArticles}}
+                                    <li>
+                                        <a href="{{path "article" "slug" .Slug}}">{{substr .Title 60}}</a>
+                                        [{{cnt_times .Views}}]
+                                    </li>
+                                {{end -}}
+                            </ul>
+                            <p>Самые посещаемые статьи за всё время:</p>
+                            <ul>
+                                {{- range .AllTimeArticles}}
+                                    <li>
+                                        <a href="{{path "article" "slug" .Slug}}">{{substr .Title 60}}</a>
+                                        [{{cnt_times .Views}}]
+                                    </li>
+                                {{end -}}
+                            </ul>
                         </div>
                     </div>
                 </section>

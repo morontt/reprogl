@@ -118,6 +118,28 @@ func commentsCountString(cnt int) (str string) {
 	return
 }
 
+func timesCountString(cnt int) (str string) {
+	modulo := cnt % 10
+	if modulo == 1 {
+		str = fmt.Sprintf("%d раз", cnt)
+	}
+
+	if modulo > 1 && modulo < 5 {
+		str = fmt.Sprintf("%d раза", cnt)
+	}
+
+	if modulo > 4 || modulo == 0 {
+		str = fmt.Sprintf("%d раз", cnt)
+	}
+
+	modulo100 := cnt % 100
+	if modulo100 >= 12 && modulo100 <= 14 {
+		str = fmt.Sprintf("%d раз", cnt)
+	}
+
+	return
+}
+
 func flagCounterImage(fullSize bool) func() template.HTML {
 	var url string
 

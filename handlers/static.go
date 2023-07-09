@@ -32,8 +32,25 @@ func StatisticsAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		articleRepo := repositories.ArticleRepository{DB: app.DB}
+		monthArticles, err := articleRepo.GetMostVisitedArticlesOfMonth()
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
+		allTimeArticles, err := articleRepo.GetMostVisitedArticles()
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
 		templateData := views.NewStatisticsPageData()
 		templateData.Commentators = commentators
+		templateData.MonthArticles = monthArticles
+		templateData.AllTimeArticles = allTimeArticles
 
 		cacheControl(w, container.StatisticsTTL)
 		err = views.WriteTemplate(w, "statistics.gohtml", templateData)

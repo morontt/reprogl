@@ -102,6 +102,7 @@ func LoadViewSet() error {
 		"asset":           assetTag,
 		"go_version":      goVersion,
 		"cnt_comments":    commentsCountString,
+		"cnt_times":       timesCountString,
 		"flag_cnt":        flagCounterImage(true),
 		"flag_cnt_mini":   flagCounterImage(false),
 		"emojiFlag":       emojiFlag,
