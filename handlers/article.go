@@ -69,7 +69,7 @@ func PageAction(app *container.Application) http.HandlerFunc {
 		templateData := views.NewArticlePageData(article, lastUpdate, session.HasIdentity(r.Context()))
 		templateData.AppendTitle(article.Title)
 
-		err = views.WriteTemplate(w, "article.gohtml", templateData)
+		err = views.WriteTemplateWithContext(r.Context(), w, "article.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 		}

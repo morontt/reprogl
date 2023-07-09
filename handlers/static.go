@@ -13,7 +13,7 @@ import (
 
 func InfoAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := views.WriteTemplate(w, "info.gohtml", views.NewInfoPageData())
+		err := views.WriteTemplateWithContext(r.Context(), w, "info.gohtml", views.NewInfoPageData())
 		if err != nil {
 			app.ServerError(w, err)
 

@@ -353,6 +353,8 @@
                 @media only screen and (min-width: 100em) {
                     max-width: rem-calc(1120);
                 }
+
+                @include flash-messages;
             }
         }
     }

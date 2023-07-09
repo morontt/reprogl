@@ -12,6 +12,13 @@
     <main class="post-view-content scene-element fade-in-right" role="main">
         <div class="post-view-right-container">
             <article class="post-view-article post">
+                {{if .HasSuccessFlash}}
+                    <div class="row success-flash">
+                        <div class="success-flash-content">
+                            {{.FlashSuccess}}
+                        </div>
+                    </div>
+                {{end}}
                 <section class="post-content row">
                     <div class="small-12 columns">
                         <div class="post-header-content">

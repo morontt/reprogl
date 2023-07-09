@@ -1,6 +1,7 @@
 package views
 
 import (
+	"context"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -8,6 +9,7 @@ import (
 	"sync"
 
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/session"
 )
 
 const defaultPageSize = 64 * 1024
@@ -155,4 +157,12 @@ func WriteTemplate(w http.ResponseWriter, name string, data interface{}) error {
 	}
 
 	return nil
+}
+
+func WriteTemplateWithContext(ctx context.Context, w http.ResponseWriter, name string, data DataWithFlashMessage) error {
+	if flashSuccessMessage, found := session.Pop[string](ctx, session.FlashSuccessKey); found {
+		data.SetSuccessFlash(flashSuccessMessage)
+	}
+
+	return WriteTemplate(w, name, data)
 }

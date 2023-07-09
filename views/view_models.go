@@ -29,23 +29,35 @@ type HeaderLineInfo interface {
 	HeaderLineText() string
 }
 
+type DataWithFlashMessage interface {
+	HasSuccessFlash() bool
+	FlashSuccess() string
+	SetSuccessFlash(string)
+}
+
+type flashObjectPart struct {
+	flashSuccess string
+}
+
 type ArticlePageData struct {
 	Meta
 	Article     *models.Article
 	CommentKey  string
 	HasIdentity bool
+	flashObjectPart
 }
 
 type IndexPageData struct {
 	Meta
-	HeaderInfo   HeaderLineInfo
-	Paginator    *models.ArticlesPaginator
-	FlashSuccess string
+	HeaderInfo HeaderLineInfo
+	Paginator  *models.ArticlesPaginator
+	flashObjectPart
 }
 
 type InfoPageData struct {
 	Meta
 	HeaderInfo HeaderLineInfo
+	flashObjectPart
 }
 
 type SidebarDummyArticle struct {
@@ -113,8 +125,16 @@ func (m *Meta) BrowserTitle() string {
 	return title
 }
 
-func (ipd *IndexPageData) HasSuccessFlash() bool {
-	return len(ipd.FlashSuccess) > 0
+func (fo *flashObjectPart) HasSuccessFlash() bool {
+	return len(fo.flashSuccess) > 0
+}
+
+func (fo *flashObjectPart) FlashSuccess() string {
+	return fo.flashSuccess
+}
+
+func (fo *flashObjectPart) SetSuccessFlash(msg string) {
+	fo.flashSuccess = msg
 }
 
 func NewArticlePageData(article *models.Article, commentKey string, hasIdentity bool) *ArticlePageData {
@@ -131,14 +151,13 @@ func NewArticlePageData(article *models.Article, commentKey string, hasIdentity 
 	}
 }
 
-func NewIndexPageData(paginator *models.ArticlesPaginator, flashSuccess string) *IndexPageData {
+func NewIndexPageData(paginator *models.ArticlesPaginator) *IndexPageData {
 	meta := defaultMeta()
 	meta.IsIndexPage = true
 
 	return &IndexPageData{
-		Paginator:    paginator,
-		Meta:         meta,
-		FlashSuccess: flashSuccess,
+		Paginator: paginator,
+		Meta:      meta,
 	}
 }
 

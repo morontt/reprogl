@@ -10,6 +10,13 @@
         <div class="loop">
             <div class="post-row">
                 <article class="js-post-block-grid post-block-grid">
+                    {{if .HasSuccessFlash}}
+                        <div class="row success-flash">
+                            <div class="success-flash-content">
+                                {{.FlashSuccess}}
+                            </div>
+                        </div>
+                    {{end}}
                     <div class="post js-post-block-grid-item post-block-grid-item list"
                          data-tags=""
                          data-groups="">

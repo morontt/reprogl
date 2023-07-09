@@ -8,6 +8,8 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"regexp"
+	"strings"
 	"time"
 
 	"github.com/xelbot/yetacache"
@@ -35,6 +37,7 @@ func LoginAction(app *container.Application) http.HandlerFunc {
 			}
 		}
 
+		saveReferer(w, r.Referer())
 		errorMessage, hasError := session.Pop[string](r.Context(), session.FlashErrorKey)
 
 		templateData := views.NewLoginPageData(csrfToken, errorMessage, hasError)
@@ -112,8 +115,16 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 			authSuccess(user, app, container.RealRemoteAddress(r), r.Context())
 		}
 
+		var redirectUrl string
+		if cookie, errNoCookie := r.Cookie(session.RefererCookie); errNoCookie == nil {
+			redirectUrl = cookie.Value
+			deleteRefererCookie(w)
+		} else {
+			redirectUrl = "/"
+		}
+
 		deleteCsrfCookie(w)
-		http.Redirect(w, r, "/", http.StatusFound)
+		http.Redirect(w, r, redirectUrl, http.StatusFound)
 	}
 }
 
@@ -164,4 +175,17 @@ func generateToken() string {
 	}
 
 	return base64.URLEncoding.EncodeToString(nonce)
+}
+
+func saveReferer(w http.ResponseWriter, referer string) {
+	host := container.GetConfig().Host
+	host = strings.ReplaceAll(host, ".", "\\.")
+	matches := regexp.MustCompile(`^https?:\/\/` + host + `(.*)$`).FindStringSubmatch(referer)
+	if matches != nil && matches[1] != "/login" {
+		session.WriteSessionCookie(w, session.RefererCookie, matches[1], "/login")
+	}
+}
+
+func deleteRefererCookie(w http.ResponseWriter) {
+	session.DeleteCookie(w, session.RefererCookie, "/login")
 }

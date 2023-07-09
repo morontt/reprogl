@@ -134,3 +134,14 @@ $color-error: #EF3B3A;
         }
     }
 }
+
+@mixin flash-messages {
+    .success-flash {
+        padding: 0 rem-calc(15) rem-calc(15);
+        .success-flash-content {
+            background-color: #E3F2C1;
+            color: $color-main-contrast;
+            padding: rem-calc(30);
+        }
+    }
+}
