@@ -34,7 +34,7 @@
                                         <div class="small-12 medium-6 columns">
                                             <div class="comment-item">
                                                 <div class="comment-header">
-                                                    {{if .Website.Valid}}
+                                                    {{if and .Website.Valid (not .RottenLink)}}
                                                         <a href="{{.Website.String}}">{{.Name}}</a>
                                                     {{else}}
                                                         {{.Name}}

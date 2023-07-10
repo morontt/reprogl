@@ -11,7 +11,7 @@
         {{if .Deleted -}}
             (⊙_⊙)
         {{- else -}}
-            {{- if .Website.Valid -}}
+            {{- if and .Website.Valid (not .RottenLink) -}}
                 <a href="{{.Website.String}}">{{.Name}}</a>
             {{- else -}}
                 {{.Name}}

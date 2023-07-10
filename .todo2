@@ -375,7 +375,8 @@
     {
       "text": "Проверить протухшие ссылки у комментаторов",
       "priority": "medium",
-      "creation": 1687968750
+      "creation": 1687968750,
+      "completion": 1689009802
     },
     {
       "text": "Use ETag for avatar",
@@ -387,6 +388,7 @@
       "text": "User authentication",
       "priority": "high",
       "creation": 1688249143,
+      "completion": 1688919125,
       "tasks": [
         {
           "text": "login: https://colorlib.com/wp/cat/login-forms/",
@@ -445,7 +447,8 @@
             {
               "text": "Redirect to referer",
               "priority": "medium",
-              "creation": 1688801195
+              "creation": 1688801195,
+              "completion": 1688919125
             }
           ]
         }

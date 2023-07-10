@@ -16,6 +16,7 @@ type Commentator struct {
 	AuthorID      sql.NullInt32
 	CommentsCount int
 	Gender        int
+	RottenLink    bool
 }
 
 type Comment struct {
