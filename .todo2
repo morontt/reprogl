@@ -294,6 +294,48 @@
           "text": "example: https://joppe.dev/2020/06/17/behaviour-driven-development-basics/",
           "priority": "low",
           "creation": 1687861534
+        },
+        {
+          "text": "https://cloudfour.com/thinks/responsive-images-101-definitions/",
+          "priority": "medium",
+          "creation": 1689018647
+        },
+        {
+          "text": "https://css-tricks.com/a-guide-to-the-responsive-images-syntax-in-html/",
+          "priority": "medium",
+          "creation": 1689065712
+        },
+        {
+          "text": "http://www.useragentman.com/tests/html5ImageConverter/examples/dice-compare/drag-test.html",
+          "priority": "medium",
+          "creation": 1689098058
+        },
+        {
+          "text": "Перенести фон сайдабара в стили страницы, учитывать media query",
+          "priority": "medium",
+          "creation": 1689101418,
+          "tasks": [
+            {
+              "text": "синхронизировать фон сайдбара и картинку в записи",
+              "priority": "medium",
+              "creation": 1689316299
+            }
+          ]
+        },
+        {
+          "text": "Optimization: https://kinsta.com/blog/optimize-images-for-web/",
+          "priority": "medium",
+          "creation": 1689144065
+        },
+        {
+          "text": "https://css-tricks.com/using-webp-images/",
+          "priority": "medium",
+          "creation": 1689529382
+        },
+        {
+          "text": "Проверка веса альтернативных картинок, исходная может быть легче",
+          "priority": "medium",
+          "creation": 1689533411
         }
       ]
     },

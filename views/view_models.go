@@ -61,7 +61,6 @@ type InfoPageData struct {
 }
 
 type SidebarDummyArticle struct {
-	HasImage      bool
 	IsArticle     bool
 	RecentPostsID string
 }

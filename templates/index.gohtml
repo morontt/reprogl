@@ -1,5 +1,7 @@
 {{template "base" . -}}
 
+{{- define "inline_styles"}}{{end -}}
+
 {{- define "body_class"}}home-template{{end -}}
 
 {{- define "body"}}
@@ -24,9 +26,7 @@
                             <div class="post-block-wrapper">
                                 {{if .HasImage}}
                                     <figure class="effect-hera">
-                                        <img src="{{.ImageURL}}"
-                                             alt="{{.ImageDescription.Value}}"
-                                             class="index-post-image">
+                                        {{raw .PictureTag.Value}}
                                         <figcaption>
                                             <p>
                                                 <a href="{{path "article" "slug" .Slug}}">

@@ -1,5 +1,13 @@
 {{template "base" . -}}
 
+{{- define "inline_styles" -}}
+<style>
+    .post-view .post-view-sidebar {
+        background-image: url("/images/mantis.jpg");
+    }
+</style>
+{{- end -}}
+
 {{- define "body_class"}}post-template{{end -}}
 
 {{- define "body"}}

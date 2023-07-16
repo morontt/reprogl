@@ -18,8 +18,9 @@ const (
 )
 
 type FeaturedImage struct {
-	ImagePath        sql.NullString
-	ImageDescription sql.NullString
+	ImagePath  sql.NullString
+	Width      sql.NullInt32
+	PictureTag sql.NullString
 }
 
 type ArticleBasePart struct {
@@ -86,7 +87,7 @@ type ArticleForComment struct {
 }
 
 func (i *FeaturedImage) HasImage() bool {
-	return i.ImagePath.Valid
+	return i.PictureTag.Valid || i.ImagePath.Valid
 }
 
 func (i *FeaturedImage) ImageURL() string {

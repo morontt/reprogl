@@ -3,6 +3,7 @@ package views
 import (
 	"fmt"
 	"html/template"
+	"strconv"
 	"strings"
 	"time"
 
@@ -189,4 +190,29 @@ func emojiFlag(countryCode string) string {
 	}
 
 	return string(resultBytes)
+}
+
+func imageURL(i *models.FeaturedImage, width int32, format string) string {
+	var url string
+
+	if !i.ImagePath.Valid {
+		return ""
+	}
+
+	path := i.ImagePath.String
+	extensionIndex := strings.LastIndex(path, ".")
+	if i.Width.Valid && i.Width.Int32 > width {
+		url = path[:extensionIndex] + "_" + strconv.Itoa(int(width)) + "w"
+	} else {
+		url = path[:extensionIndex]
+	}
+	url += "."
+
+	if format == "origin" {
+		url += path[extensionIndex+1:]
+	} else {
+		url += format
+	}
+
+	return container.GetConfig().CDNBaseURL + "/uploads/" + url
 }

@@ -29,12 +29,13 @@
     <link href="{{abs_path "feed-rss"}}" rel="alternate" type="application/rss+xml" title="RSS">
     <link href="{{abs_path "feed-atom"}}" rel="alternate" type="application/atom+xml" title="Atom">
     <link href="/humans.txt" rel="author" type="text/plain" >
+    {{template "inline_styles" .}}
 </head>
 <body class="{{template "body_class"}}">
     {{- template "svg-sprites" -}}
     <div id="main" class="main-scene">
         {{template "body" .}}
-        {{template "menu" .}}
+        {{template "menu"}}
     </div>
 
     <a href="#" class="back-to-top-btn js-back-to-top-btn hidden">

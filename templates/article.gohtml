@@ -1,5 +1,20 @@
 {{template "base" . -}}
 
+{{- define "inline_styles" -}}
+<style>
+    .post-view .post-view-sidebar {
+        {{if .Article.HasImage -}}
+        background-image: url({{imageURL .Article.FeaturedImage 864 "origin"}});
+        @supports (background-image: url({{imageURL .Article.FeaturedImage 864 "webp"}})) {
+            background-image: url({{imageURL .Article.FeaturedImage 864 "webp"}});
+        }
+        {{- else -}}
+        background-image: url("/images/mantis.jpg");
+        {{- end}}
+    }
+</style>
+{{- end -}}
+
 {{- define "body_class"}}post-template{{end -}}
 
 {{- define "body"}}

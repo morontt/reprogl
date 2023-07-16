@@ -27,7 +27,7 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 			p.comments_count,
 			p.disable_comments,
 			mf.path AS image_path,
-			mf.description AS image_description,
+			mf.width AS image_width,
 			c.name AS cat_name,
 			c.url AS cat_url
 		FROM posts AS p
@@ -49,7 +49,7 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 		&article.CommentsCount,
 		&article.DisabledComments,
 		&article.ImagePath,
-		&article.ImageDescription,
+		&article.Width,
 		&article.CategoryName,
 		&article.CategorySlug)
 
@@ -95,8 +95,7 @@ func (ar *ArticleRepository) GetCollection(page int) (*models.ArticlesPaginator,
 			p.preview,
 			p.time_created,
 			p.comments_count,
-			mf.path AS image_path,
-			mf.description AS image_description,
+			mf.picture_tag,
 			c.name AS cat_name,
 			c.url AS cat_url
 		FROM posts AS p
@@ -130,8 +129,7 @@ func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, 
 			p.preview,
 			p.time_created,
 			p.comments_count,
-			mf.path AS image_path,
-			mf.description AS image_description,
+			mf.picture_tag,
 			c.name AS cat_name,
 			c.url AS cat_url
 		FROM posts AS p
@@ -167,8 +165,7 @@ func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (*mod
 			p.preview,
 			p.time_created,
 			p.comments_count,
-			mf.path AS image_path,
-			mf.description AS image_description,
+			mf.picture_tag,
 			c.name AS cat_name,
 			c.url AS cat_url
 		FROM posts AS p
@@ -475,8 +472,7 @@ func populateArticles(rows *sql.Rows) (models.ArticleList, error) {
 			&article.Preview,
 			&article.CreatedAt,
 			&article.CommentsCount,
-			&article.ImagePath,
-			&article.ImageDescription,
+			&article.PictureTag,
 			&article.CategoryName,
 			&article.CategorySlug)
 
