@@ -246,15 +246,20 @@
 
         .flagcounter {
             margin-top: rem-calc(5);
-            display: none;
-            @media only screen and (min-width: 64em) {
-                display: block;
-            }
             @media only screen and (min-width: 64em) and (min-height: rem-calc(720)) {
                 margin-top: rem-calc(30);
                 a {
                     display: block;
                     text-align: center;
+                }
+            }
+            @media only screen and (max-width: 64em) {
+                img {
+                    width: 2px;
+                    height: 2px;
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
                 }
             }
         }

@@ -141,22 +141,33 @@ func timesCountString(cnt int) (str string) {
 }
 
 func flagCounterImage(fullSize bool) func() template.HTML {
-	var url string
+	var (
+		url  string
+		w, h int
+	)
 
+	w = 162
+	h = 82
 	if container.IsDevMode() {
 		url = "/images/flagcounter.png"
 		if !fullSize {
 			url = "/images/flagcounter_mini.png"
+			w = 160
+			h = 20
 		}
 	} else {
 		url = "//s05.flagcounter.com/count2/D9g3/bg_23222D/txt_FFFFFF/border_FFFFFF/columns_2/maxflags_4/viewers_3/labels_0/pageviews_1/flags_0/percent_1/"
 		if !fullSize {
 			url = "//s05.flagcounter.com/mini/D9g3/bg_23222D/txt_FFFFFF/border_23222D/flags_0/"
+			w = 160
+			h = 20
 		}
 	}
 
 	return func() template.HTML {
-		return template.HTML("<img src=\"" + url + "\" alt=\"Free counters!\">")
+		return template.HTML(
+			fmt.Sprintf("<img src=\"%s\" alt=\"Free counters!\" width=\"%d\" height=\"%d\">", url, w, h),
+		)
 	}
 }
 
