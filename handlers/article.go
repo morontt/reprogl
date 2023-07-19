@@ -66,7 +66,12 @@ func PageAction(app *container.Application) http.HandlerFunc {
 			article.RecentPostsID = "0"
 		}
 
-		templateData := views.NewArticlePageData(article, lastUpdate, session.HasIdentity(r.Context()))
+		templateData := views.NewArticlePageData(
+			article,
+			lastUpdate,
+			r.Header.Get("Accept"),
+			session.HasIdentity(r.Context()),
+		)
 		templateData.AppendTitle(article.Title)
 
 		err = views.WriteTemplateWithContext(r.Context(), w, "article.gohtml", templateData)

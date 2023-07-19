@@ -28,6 +28,7 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 			p.disable_comments,
 			mf.path AS image_path,
 			mf.width AS image_width,
+			mf.src_set,
 			c.name AS cat_name,
 			c.url AS cat_url
 		FROM posts AS p
@@ -50,6 +51,7 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 		&article.DisabledComments,
 		&article.ImagePath,
 		&article.Width,
+		&article.SrcSet,
 		&article.CategoryName,
 		&article.CategorySlug)
 

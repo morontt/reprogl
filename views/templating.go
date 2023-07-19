@@ -87,6 +87,7 @@ func LoadViewSet() error {
 
 	customFunctions := template.FuncMap{
 		"raw":             rawHTML,
+		"is_dev":          isDev,
 		"path":            urlGenerator,
 		"abs_path":        absUrlGenerator,
 		"render_esi":      renderESI,

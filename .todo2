@@ -69,6 +69,23 @@
           "priority": "medium",
           "creation": 1688143411,
           "completion": 1688145692
+        },
+        {
+          "text": "оптимизация стилей",
+          "priority": "medium",
+          "creation": 1689582219,
+          "tasks": [
+            {
+              "text": "сборка foundation.css без ненужных стилей",
+              "priority": "medium",
+              "creation": 1689582284
+            },
+            {
+              "text": "упорядочить и проредить размеры @media в CSS",
+              "priority": "medium",
+              "creation": 1689582357
+            }
+          ]
         }
       ]
     },
@@ -288,7 +305,8 @@
         {
           "text": "Подготовка изображений из оригинального (при процессинге статьи)",
           "priority": "medium",
-          "creation": 1687595434
+          "creation": 1687595434,
+          "completion": 1689613628
         },
         {
           "text": "example: https://joppe.dev/2020/06/17/behaviour-driven-development-basics/",
@@ -314,17 +332,23 @@
           "text": "Перенести фон сайдабара в стили страницы, учитывать media query",
           "priority": "medium",
           "creation": 1689101418,
+          "completion": 1689769919,
           "tasks": [
             {
               "text": "синхронизировать фон сайдбара и картинку в записи",
               "priority": "medium",
               "creation": 1689316299
+            },
+            {
+              "text": "Альтернативная картинка может быть больше",
+              "priority": "medium",
+              "creation": 1689613755
             }
           ]
         },
         {
           "text": "Optimization: https://kinsta.com/blog/optimize-images-for-web/",
-          "priority": "medium",
+          "priority": "verylow",
           "creation": 1689144065
         },
         {
@@ -335,7 +359,13 @@
         {
           "text": "Проверка веса альтернативных картинок, исходная может быть легче",
           "priority": "medium",
-          "creation": 1689533411
+          "creation": 1689533411,
+          "completion": 1689613555
+        },
+        {
+          "text": "Optimization: https://www.freshleafmedia.co.uk/blog/automatically-find-best-image-compression",
+          "priority": "verylow",
+          "creation": 1689684050
         }
       ]
     },

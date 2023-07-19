@@ -3,6 +3,7 @@ package views
 import (
 	"fmt"
 	"reflect"
+	"strings"
 	"time"
 
 	"xelbot.com/reprogl/container"
@@ -41,9 +42,10 @@ type flashObjectPart struct {
 
 type ArticlePageData struct {
 	Meta
-	Article     *models.Article
-	CommentKey  string
-	HasIdentity bool
+	Article      *models.Article
+	CommentKey   string
+	HasIdentity  bool
+	AcceptHeader string
 	flashObjectPart
 }
 
@@ -139,17 +141,18 @@ func (fo *flashObjectPart) SetSuccessFlash(msg string) {
 	fo.flashSuccess = msg
 }
 
-func NewArticlePageData(article *models.Article, commentKey string, hasIdentity bool) *ArticlePageData {
+func NewArticlePageData(article *models.Article, commentKey, accept string, hasIdentity bool) *ArticlePageData {
 	meta := defaultMeta()
 	if article.Description.Valid {
 		meta.AppendName("description", article.Description.String)
 	}
 
 	return &ArticlePageData{
-		Article:     article,
-		Meta:        meta,
-		CommentKey:  commentKey,
-		HasIdentity: hasIdentity,
+		Article:      article,
+		Meta:         meta,
+		CommentKey:   commentKey,
+		HasIdentity:  hasIdentity,
+		AcceptHeader: accept,
 	}
 }
 
@@ -225,4 +228,12 @@ func NewAuthNavigationData(has bool) *AuthNavigation {
 	return &AuthNavigation{
 		Authenticated: has,
 	}
+}
+
+func (apd *ArticlePageData) AcceptWebp() bool {
+	return strings.Contains(apd.AcceptHeader, "image/webp")
+}
+
+func (apd *ArticlePageData) AcceptAvif() bool {
+	return strings.Contains(apd.AcceptHeader, "image/avif")
 }

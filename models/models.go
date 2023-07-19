@@ -6,8 +6,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"xelbot.com/reprogl/container"
 )
 
 var RecordNotFound = errors.New("models: no matching record found")
@@ -16,12 +14,6 @@ const (
 	DisabledComments = "d"
 	EnabledComments  = "e"
 )
-
-type FeaturedImage struct {
-	ImagePath  sql.NullString
-	Width      sql.NullInt32
-	PictureTag sql.NullString
-}
 
 type ArticleBasePart struct {
 	ID           int
@@ -84,21 +76,6 @@ type ArticleForComment struct {
 	ID     int
 	Slug   string
 	Hidden bool
-}
-
-func (i *FeaturedImage) HasImage() bool {
-	return i.PictureTag.Valid || i.ImagePath.Valid
-}
-
-func (i *FeaturedImage) ImageURL() string {
-	var url string
-	if i.ImagePath.Valid {
-		url = container.GetConfig().CDNBaseURL + "/uploads/" + i.ImagePath.String
-	} else {
-		url = ""
-	}
-
-	return url
 }
 
 func (cat *Category) HeaderLineDescription() string {

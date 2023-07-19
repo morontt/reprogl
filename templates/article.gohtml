@@ -2,16 +2,127 @@
 
 {{- define "inline_styles" -}}
 <style>
-    .post-view .post-view-sidebar {
-        {{if .Article.HasImage -}}
-        background-image: url({{imageURL .Article.FeaturedImage 864 "origin"}});
-        @supports (background-image: url({{imageURL .Article.FeaturedImage 864 "webp"}})) {
+{{if .Article.HasImage -}}
+    {{if and .AcceptAvif .Article.HasAvif -}}
+        .post-view .post-view-sidebar {
+            background-image: url({{imageURL .Article.FeaturedImage 864 "avif"}});
+        }
+        @media only screen and (max-width: 624px) {
+            .post-view .post-view-sidebar {
+                background-image: url({{imageURL .Article.FeaturedImage 624 "avif"}});
+            }
+        }
+        @media only screen and (max-width: 448px) {
+            .post-view .post-view-sidebar {
+                background-image: url({{imageURL .Article.FeaturedImage 448 "avif"}});
+            }
+        }
+        @media only screen and (max-width: 320px) {
+            .post-view .post-view-sidebar {
+                background-image: url({{imageURL .Article.FeaturedImage 320 "avif"}});
+            }
+        }
+    {{- else if and .AcceptWebp .Article.HasWebp -}}
+        .post-view .post-view-sidebar {
             background-image: url({{imageURL .Article.FeaturedImage 864 "webp"}});
         }
-        {{- else -}}
+        @media only screen and (max-width: 624px) {
+            .post-view .post-view-sidebar {
+                background-image: url({{imageURL .Article.FeaturedImage 624 "webp"}});
+            }
+        }
+        @media only screen and (max-width: 448px) {
+            .post-view .post-view-sidebar {
+                background-image: url({{imageURL .Article.FeaturedImage 448 "webp"}});
+            }
+        }
+        @media only screen and (max-width: 320px) {
+            .post-view .post-view-sidebar {
+                background-image: url({{imageURL .Article.FeaturedImage 320 "webp"}});
+            }
+        }
+    {{- else -}}
+        .post-view .post-view-sidebar {
+            background-image: url({{imageURL .Article.FeaturedImage 864 "origin"}});
+        }
+        @media only screen and (max-width: 624px) {
+            .post-view .post-view-sidebar {
+                background-image: url({{imageURL .Article.FeaturedImage 624 "origin"}});
+            }
+        }
+        @media only screen and (max-width: 448px) {
+            .post-view .post-view-sidebar {
+                background-image: url({{imageURL .Article.FeaturedImage 448 "origin"}});
+            }
+        }
+        @media only screen and (max-width: 320px) {
+            .post-view .post-view-sidebar {
+                background-image: url({{imageURL .Article.FeaturedImage 320 "origin"}});
+            }
+        }
+        {{if .Article.HasWebp -}}
+        @supports (background-image: url({{imageURL .Article.FeaturedImage 864 "webp"}})) {
+            .post-view .post-view-sidebar {
+                background-image: url({{imageURL .Article.FeaturedImage 864 "webp"}});
+            }
+            @media only screen and (max-width: 624px) {
+                .post-view .post-view-sidebar {
+                    background-image: url({{imageURL .Article.FeaturedImage 624 "webp"}});
+                }
+            }
+            @media only screen and (max-width: 448px) {
+                .post-view .post-view-sidebar {
+                    background-image: url({{imageURL .Article.FeaturedImage 448 "webp"}});
+                }
+            }
+            @media only screen and (max-width: 320px) {
+                .post-view .post-view-sidebar {
+                    background-image: url({{imageURL .Article.FeaturedImage 320 "webp"}});
+                }
+            }
+        }
+        {{- end -}}
+    {{- end -}}
+{{- else -}}
+    .post-view .post-view-sidebar {
         background-image: url("/images/mantis.jpg");
-        {{- end}}
     }
+    @media only screen and (max-width: 624px) {
+        .post-view .post-view-sidebar {
+            background-image: url("/images/mantis/mantis_624w.jpg");
+        }
+    }
+    @media only screen and (max-width: 448px) {
+        .post-view .post-view-sidebar {
+            background-image: url("/images/mantis/mantis_448w.jpg");
+        }
+    }
+    @media only screen and (max-width: 320px) {
+        .post-view .post-view-sidebar {
+            background-image: url("/images/mantis/mantis_320w.jpg");
+        }
+    }
+    @supports (background-image: url("/images/mantis/mantis.webp")) {
+        .post-view .post-view-sidebar {
+            background-image: url("/images/mantis/mantis.webp");
+        }
+        @media only screen and (max-width: 624px) {
+            .post-view .post-view-sidebar {
+                background-image: url("/images/mantis/mantis_624w.webp");
+            }
+        }
+        @media only screen and (max-width: 448px) {
+            .post-view .post-view-sidebar {
+                background-image: url("/images/mantis/mantis_448w.webp");
+            }
+        }
+        @media only screen and (max-width: 320px) {
+            .post-view .post-view-sidebar {
+                background-image: url("/images/mantis/mantis_320w.webp");
+            }
+        }
+    }
+{{- end}}
 </style>
 {{- end -}}
 
@@ -38,6 +149,7 @@
                     <div class="small-12 columns">
                         <div class="post-header-content">
                             <section class="post-meta js-bg-check">
+                                {{if is_dev}}[ID: {{.Article.ID}}] {{end -}}
                                 {{time_tag .Article.CreatedAt}}
                             </section>
                             <h1 class="post-title">
