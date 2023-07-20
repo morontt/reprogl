@@ -89,7 +89,7 @@ type LoginPageData struct {
 }
 
 type AuthNavigation struct {
-	Authenticated bool
+	identityPart
 }
 
 type FragmentCategoriesData struct {
@@ -99,8 +99,7 @@ type FragmentCategoriesData struct {
 type FragmentCommentsData struct {
 	Comments        *models.CommentList
 	EnabledComments bool
-	HasIdentity     bool
-	Identity        security.Identity
+	identityPart
 }
 
 type FragmentRecentPostsData struct {
@@ -239,10 +238,8 @@ func NewLoginPageData(token, errorMessage string, hasError bool) *LoginPageData 
 	}
 }
 
-func NewAuthNavigationData(has bool) *AuthNavigation {
-	return &AuthNavigation{
-		Authenticated: has,
-	}
+func NewAuthNavigationData() *AuthNavigation {
+	return &AuthNavigation{}
 }
 
 func (apd *ArticlePageData) AcceptWebp() bool {

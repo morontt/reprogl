@@ -196,6 +196,10 @@ func articleStyles(article *models.Article, acceptAvif, acceptWebp bool) templat
 	return template.HTML(style.GenerateArticleStyles(article, acceptAvif, acceptWebp))
 }
 
+func statisticsStyles() template.HTML {
+	return template.HTML(style.GenerateStatisticsStyles())
+}
+
 func isDev() bool {
 	return container.IsDevMode()
 }

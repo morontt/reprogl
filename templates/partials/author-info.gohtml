@@ -2,11 +2,15 @@
 <section class="author-info">
     <div class="row">
         <section class="post-author small-12 columns">
-            <img src="{{ cdn }}/images/space_200.png"
-                 class="post-author-avatar"
-                 width="200"
-                 height="200"
-                 alt="morontt">
+            <picture>
+                <source srcset="{{ cdn }}/images/space_200.avif" type="image/avif"/>
+                <source srcset="{{ cdn }}/images/space_200.webp" type="image/webp"/>
+                <img src="{{ cdn }}/images/space_200.png"
+                     class="post-author-avatar"
+                     width="200"
+                     height="200"
+                     alt="morontt">
+            </picture>
             <span class="author-label">Автор</span>
             <h2><a href="{{path "info-page"}}" class="author-link-name">{{author_name}}</a></h2>
             <p>{{author_bio}}</p>

@@ -108,7 +108,9 @@ func LoadViewSet() error {
 		"flag_cnt":        flagCounterImage(true),
 		"flag_cnt_mini":   flagCounterImage(false),
 		"emojiFlag":       emojiFlag,
-		"articleStyles":   articleStyles,
+
+		"articleStyles":    articleStyles,
+		"statisticsStyles": statisticsStyles,
 	}
 
 	for key, files := range templatesMap {
@@ -147,7 +149,7 @@ func RenderTemplate(name string, data interface{}) (string, error) {
 	return buf.String(), nil
 }
 
-func WriteTemplate(w http.ResponseWriter, name string, data interface{}) error {
+func WriteTemplate(w http.ResponseWriter, name string, data any) error {
 	content, err := RenderTemplate(name, data)
 	if err != nil {
 		return err
@@ -163,9 +165,11 @@ func WriteTemplate(w http.ResponseWriter, name string, data interface{}) error {
 	return nil
 }
 
-func WriteTemplateWithContext(ctx context.Context, w http.ResponseWriter, name string, data DataWithFlashMessage) error {
-	if flashSuccessMessage, found := session.Pop[string](ctx, session.FlashSuccessKey); found {
-		data.SetSuccessFlash(flashSuccessMessage)
+func WriteTemplateWithContext(ctx context.Context, w http.ResponseWriter, name string, data any) error {
+	if flashObjectPart, ok := data.(DataWithFlashMessage); ok {
+		if flashSuccessMessage, found := session.Pop[string](ctx, session.FlashSuccessKey); found {
+			flashObjectPart.SetSuccessFlash(flashSuccessMessage)
+		}
 	}
 
 	if identityPart, ok := data.(security.IdentityAware); ok {

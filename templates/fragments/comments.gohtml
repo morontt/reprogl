@@ -18,7 +18,7 @@
             {{- end -}}
         {{- end}}
         {{if $.HasIdentity -}}
-            {{- if $.Identity.IsAdmin -}}
+            {{- if $.IsAdmin -}}
                 {{- if .IP.Valid -}}
                     [{{.IP.String}}]
                 {{- end -}}
@@ -39,7 +39,7 @@
             {{- else -}}
                 {{- raw (nl2br .Text) -}}
             {{- end -}}
-            {{if and $.Identity.IsAdmin .UserAgent.Valid -}}
+            {{if and $.IsAdmin .UserAgent.Valid -}}
                 <hr>
                 <span class="ua-note">{{.UserAgent.String}}</span>
             {{- end -}}

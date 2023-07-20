@@ -136,8 +136,8 @@ func LogoutAction(w http.ResponseWriter, r *http.Request) {
 func LoginLogoutLinks(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cacheControl(w, container.DefaultEsiTTL)
-		templateData := views.NewAuthNavigationData(session.HasIdentity(r.Context()))
-		err := views.WriteTemplate(w, "auth-navigation.gohtml", templateData)
+		templateData := views.NewAuthNavigationData()
+		err := views.WriteTemplateWithContext(r.Context(), w, "auth-navigation.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 		}
