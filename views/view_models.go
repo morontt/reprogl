@@ -40,13 +40,17 @@ type flashObjectPart struct {
 	flashSuccess string
 }
 
+type identityPart struct {
+	identity security.Identity
+}
+
 type ArticlePageData struct {
 	Meta
 	Article      *models.Article
 	CommentKey   string
-	HasIdentity  bool
 	AcceptHeader string
 	flashObjectPart
+	identityPart
 }
 
 type IndexPageData struct {
@@ -141,7 +145,19 @@ func (fo *flashObjectPart) SetSuccessFlash(msg string) {
 	fo.flashSuccess = msg
 }
 
-func NewArticlePageData(article *models.Article, commentKey, accept string, hasIdentity bool) *ArticlePageData {
+func (ip *identityPart) SetIdentity(identity security.Identity) {
+	ip.identity = identity
+}
+
+func (ip *identityPart) HasIdentity() bool {
+	return !ip.identity.IsZero()
+}
+
+func (ip *identityPart) IsAdmin() bool {
+	return ip.identity.IsAdmin()
+}
+
+func NewArticlePageData(article *models.Article, commentKey, accept string) *ArticlePageData {
 	meta := defaultMeta()
 	if article.Description.Valid {
 		meta.AppendName("description", article.Description.String)
@@ -151,7 +167,6 @@ func NewArticlePageData(article *models.Article, commentKey, accept string, hasI
 		Article:      article,
 		Meta:         meta,
 		CommentKey:   commentKey,
-		HasIdentity:  hasIdentity,
 		AcceptHeader: accept,
 	}
 }

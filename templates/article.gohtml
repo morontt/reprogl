@@ -149,7 +149,7 @@
                     <div class="small-12 columns">
                         <div class="post-header-content">
                             <section class="post-meta js-bg-check">
-                                {{if is_dev}}[ID: {{.Article.ID}}] {{end -}}
+                                {{if or is_dev .IsAdmin}}[ID: {{.Article.ID}}] {{end -}}
                                 {{time_tag .Article.CreatedAt}}
                             </section>
                             <h1 class="post-title">

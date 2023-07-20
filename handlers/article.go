@@ -10,7 +10,6 @@ import (
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
-	"xelbot.com/reprogl/session"
 	"xelbot.com/reprogl/views"
 )
 
@@ -70,7 +69,6 @@ func PageAction(app *container.Application) http.HandlerFunc {
 			article,
 			lastUpdate,
 			r.Header.Get("Accept"),
-			session.HasIdentity(r.Context()),
 		)
 		templateData.AppendTitle(article.Title)
 

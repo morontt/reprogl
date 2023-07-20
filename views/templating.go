@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/security"
 	"xelbot.com/reprogl/session"
 )
 
@@ -165,6 +166,11 @@ func WriteTemplate(w http.ResponseWriter, name string, data interface{}) error {
 func WriteTemplateWithContext(ctx context.Context, w http.ResponseWriter, name string, data DataWithFlashMessage) error {
 	if flashSuccessMessage, found := session.Pop[string](ctx, session.FlashSuccessKey); found {
 		data.SetSuccessFlash(flashSuccessMessage)
+	}
+
+	if identityPart, ok := data.(security.IdentityAware); ok {
+		identity, _ := session.GetIdentity(ctx)
+		identityPart.SetIdentity(identity)
 	}
 
 	return WriteTemplate(w, name, data)

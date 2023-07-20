@@ -12,6 +12,12 @@ type Identity struct {
 	Role     Role   `json:"r,omitempty"`
 }
 
+type IdentityAware interface {
+	SetIdentity(Identity)
+	HasIdentity() bool
+	IsAdmin() bool
+}
+
 type Role uint8
 
 const (
