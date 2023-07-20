@@ -12,11 +12,7 @@ import (
 	"xelbot.com/reprogl/container"
 )
 
-var fileHashes map[string]string
-
-func init() {
-	fileHashes = make(map[string]string)
-}
+var fileHashes = make(map[string]string)
 
 func cdnBase() string {
 	return container.GetConfig().CDNBaseURL

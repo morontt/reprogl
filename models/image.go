@@ -3,8 +3,6 @@ package models
 import (
 	"database/sql"
 	"encoding/json"
-
-	"xelbot.com/reprogl/container"
 )
 
 type FeaturedImage struct {
@@ -27,17 +25,6 @@ type SrcSetItem struct {
 
 func (i *FeaturedImage) HasImage() bool {
 	return i.PictureTag.Valid || i.ImagePath.Valid
-}
-
-func (i *FeaturedImage) ImageURL() string {
-	var url string
-	if i.ImagePath.Valid {
-		url = container.GetConfig().CDNBaseURL + "/uploads/" + i.ImagePath.String
-	} else {
-		url = ""
-	}
-
-	return url
 }
 
 func (i *FeaturedImage) HasWebp() bool {

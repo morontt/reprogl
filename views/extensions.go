@@ -8,6 +8,7 @@ import (
 
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/views/style"
 )
 
 const RegionalIndicatorOffset = 127397
@@ -191,20 +192,8 @@ func emojiFlag(countryCode string) string {
 	return string(resultBytes)
 }
 
-func imageURL(i *models.FeaturedImage, width int, format string) string {
-	var url = "notfound.png"
-
-	srcSet := i.DecodeSrcSet()
-	if srcSetItem, found := srcSet[format]; found {
-		for _, srcImage := range srcSetItem.Items {
-			if srcImage.Width <= width {
-				url = srcImage.Path
-				break
-			}
-		}
-	}
-
-	return container.GetConfig().CDNBaseURL + "/uploads/" + url
+func articleStyles(article *models.Article, acceptAvif, acceptWebp bool) template.HTML {
+	return template.HTML(style.GenerateArticleStyles(article, acceptAvif, acceptWebp))
 }
 
 func isDev() bool {

@@ -108,7 +108,7 @@ func LoadViewSet() error {
 		"flag_cnt":        flagCounterImage(true),
 		"flag_cnt_mini":   flagCounterImage(false),
 		"emojiFlag":       emojiFlag,
-		"imageURL":        imageURL,
+		"articleStyles":   articleStyles,
 	}
 
 	for key, files := range templatesMap {
