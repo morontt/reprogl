@@ -357,10 +357,13 @@
                 @media only screen and (min-width: 100em) {
                     max-width: rem-calc(1124);
                 }
-                .post-content.row:not(.statistic-row) {
-                    .column, .columns {
-                        padding-left: rem-calc(15);
-                        padding-right: rem-calc(15);
+                @media only screen and (max-width: 48em) {
+                    .post-content.row:not(.statistic-row) {
+                        .column, .columns {
+                            padding-left: rem-calc(15);
+                            padding-right: rem-calc(15);
+
+                        }
                     }
                 }
                 @include flash-messages;
