@@ -45,6 +45,10 @@ pre {
 .row {
     width: 100%;
     max-width: $row-max-width;
+    .column, .columns {
+        padding-left: rem-calc(30);
+        padding-right: rem-calc(30);
+    }
     &.row-with-header-logo {
         max-width: none;
         .column, .columns {
@@ -398,8 +402,8 @@ html.no-csstransforms3d {
     padding-top: rem-calc(30);
     padding-bottom: rem-calc(60);
     .post-row {
-        padding-left: 0;
-        padding-right: 0;
+        padding-left: rem-calc(15);
+        padding-right: rem-calc(15);
         max-width: $row-max-width;
         margin-left: auto;
         margin-right: auto;
@@ -409,8 +413,6 @@ html.no-csstransforms3d {
         }
         .post-block-grid {
             .post-block-grid-item {
-                padding-left: rem-calc(15);
-                padding-right: rem-calc(15);
                 float: left;
                 width: 100%;
                 @media only screen and (min-width: 62.5em) {
