@@ -45,10 +45,6 @@ pre {
 .row {
     width: 100%;
     max-width: $row-max-width;
-    .column, .columns {
-        padding-left: rem-calc(30);
-        padding-right: rem-calc(30);
-    }
     &.row-with-header-logo {
         max-width: none;
         .column, .columns {
@@ -297,6 +293,15 @@ html.no-csstransforms3d {
         background-repeat: no-repeat;
         background-color: $color-main-dark;
         background-image: url('/images/1500x500.jpg');
+        @supports (background-image: url('/images/1500x500.webp')) {
+            background-image: url('/images/1500x500.webp');
+        }
+        @media only screen and (max-width: 752px) {
+            background-image: url('/images/kravchik.jpg');
+            @supports (background-image: url('/images/kravchik.webp')) {
+                background-image: url('/images/kravchik.webp');
+            }
+        }
         .main-header-content {
             padding-top: rem-calc(37);
             padding-bottom: rem-calc(60);
@@ -393,8 +398,8 @@ html.no-csstransforms3d {
     padding-top: rem-calc(30);
     padding-bottom: rem-calc(60);
     .post-row {
-        padding-left: rem-calc(15);
-        padding-right: rem-calc(15);
+        padding-left: 0;
+        padding-right: 0;
         max-width: $row-max-width;
         margin-left: auto;
         margin-right: auto;
