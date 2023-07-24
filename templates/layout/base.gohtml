@@ -14,7 +14,6 @@
     <meta name="theme-color" content="#23222D">
     <link rel="preconnect" href="{{ cdn }}" crossorigin>
     <link href="//s05.flagcounter.com" rel="dns-prefetch">
-    {{asset "assets/css/reprogl.min.css"}}
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -30,6 +29,7 @@
     <link href="{{abs_path "feed-atom"}}" rel="alternate" type="application/atom+xml" title="Atom">
     <link href="/humans.txt" rel="author" type="text/plain" >
     {{template "inline_styles" .}}
+    {{asset "assets/css/reprogl.min.css"}}
 </head>
 <body class="{{template "body_class"}}">
     {{- template "svg-sprites" -}}
@@ -37,11 +37,9 @@
         {{template "body" .}}
         {{template "menu"}}
     </div>
-
     <a href="#" class="back-to-top-btn js-back-to-top-btn hidden">
         <span class="glyphicon glyphicon-chevron-up"></span>
     </a>
-
     {{asset "assets/js/reprogl.min.js"}}
     {{render_esi "fragment-war"}}
 </body>

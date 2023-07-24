@@ -46,7 +46,7 @@
     },
     {
       "text": "GTmetrix optimization #27",
-      "priority": "low",
+      "priority": "high",
       "creation": 1686424120,
       "tasks": [
         {
@@ -57,7 +57,24 @@
         {
           "text": "Критические стили сразу в html",
           "priority": "medium",
-          "creation": 1687596690
+          "creation": 1687596690,
+          "tasks": [
+            {
+              "text": "https://web.dev/critical-rendering-path-adding-interactivity-with-javascript/",
+              "priority": "medium",
+              "creation": 1690117973
+            },
+            {
+              "text": "https://web.dev/defer-non-critical-css/",
+              "priority": "medium",
+              "creation": 1690117987
+            },
+            {
+              "text": "https://web.dev/extract-critical-css/",
+              "priority": "medium",
+              "creation": 1690118002
+            }
+          ]
         },
         {
           "text": "Сокращение цепочек отложенной загрузки (шрифты, фоны)",

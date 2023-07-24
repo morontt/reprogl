@@ -200,6 +200,14 @@ func statisticsStyles() template.HTML {
 	return template.HTML(style.GenerateStatisticsStyles())
 }
 
+func indexStyles() template.HTML {
+	return template.HTML(style.GenerateIndexStyles())
+}
+
+func infoStyles() template.HTML {
+	return template.HTML(style.GenerateInfoStyles())
+}
+
 func isDev() bool {
 	return container.IsDevMode()
 }

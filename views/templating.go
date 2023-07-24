@@ -111,6 +111,8 @@ func LoadViewSet() error {
 
 		"articleStyles":    articleStyles,
 		"statisticsStyles": statisticsStyles,
+		"indexStyles":      indexStyles,
+		"infoStyles":       infoStyles,
 	}
 
 	for key, files := range templatesMap {
