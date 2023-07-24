@@ -16,11 +16,9 @@ func GenerateArticleStyles(article *models.Article, acceptAvif, acceptWebp bool)
 	} else {
 		style += defaultStyleWithoutImage() + "\n"
 	}
-
-	style = cdnReplace(style)
 	style += "    </style>"
 
-	return style
+	return cdnReplace(style)
 }
 
 func styleWithImage(image models.FeaturedImage, acceptAvif, acceptWebp bool) string {

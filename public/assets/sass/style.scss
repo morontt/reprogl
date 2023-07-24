@@ -292,20 +292,6 @@ html.no-csstransforms3d {
     .main-header {
         text-align: left;
         color: $color-main-light;
-        background-size: cover;
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
-        background-color: $color-main-dark;
-        background-image: url('/images/1500x500.jpg');
-        @supports (background-image: url('/images/1500x500.webp')) {
-            background-image: url('/images/1500x500.webp');
-        }
-        @media only screen and (max-width: 752px) {
-            background-image: url('/images/kravchik.jpg');
-            @supports (background-image: url('/images/kravchik.webp')) {
-                background-image: url('/images/kravchik.webp');
-            }
-        }
         .main-header-content {
             padding-top: rem-calc(37);
             padding-bottom: rem-calc(60);
@@ -370,10 +356,6 @@ html.no-csstransforms3d {
             }
         }
     }
-}
-
-.author-template .big-header-container .main-header {
-    background-image: url('/images/tractor.jpg');
 }
 
 .index-filters {
