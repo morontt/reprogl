@@ -20,6 +20,7 @@
 /public/assets/js/reprogl.js
 /public/assets/js/reprogl.min.js
 /public/assets/js/reprogl_temp.min.js
+/public/assets/js/foundation.js
 node_modules/
 package-lock.json
 yarn.lock

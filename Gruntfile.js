@@ -20,6 +20,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
+                    'public/assets/css/foundation.css': 'public/assets/sass/foundation.scss',
                     'public/assets/css/style.css': 'public/assets/sass/style.scss',
                     'public/assets/css/menu.css': 'public/assets/sass/menu.scss',
                     'public/assets/css/post.css': 'public/assets/sass/post.scss',
@@ -42,7 +43,7 @@ module.exports = function (grunt) {
                 },
                 src: [
                     'node_modules/normalize.css/normalize.css',
-                    'node_modules/foundation-sites/css/foundation.css',
+                    'public/assets/css/foundation.css',
                     'public/assets/css/vendors/magnific-popup.css',
                     'public/assets/css/vendors/owl.carousel.css',
                     'public/assets/css/vendors/owl.theme.default.css',
@@ -56,6 +57,12 @@ module.exports = function (grunt) {
                 ],
                 dest: 'public/assets/css/<%= pkg.name %>.css'
             },
+            foundation_js: {
+                src: [
+                    'node_modules/foundation-sites/js/foundation/foundation.js',
+                ],
+                dest: 'public/assets/js/foundation.js'
+            },
             js: {
                 options: {
                     stripBanners: {
@@ -66,7 +73,7 @@ module.exports = function (grunt) {
                 src: [
                     'node_modules/foundation-sites/js/vendor/modernizr.js',
                     'node_modules/jquery/dist/jquery.js',
-                    'node_modules/foundation-sites/js/foundation.js',
+                    '<%= concat.foundation_js.dest %>',
                     'public/assets/js/vendors/headroom.js',
                     'public/assets/js/vendors/jquery.headroom.js',
                     'public/assets/js/vendors/reading-time.js',
