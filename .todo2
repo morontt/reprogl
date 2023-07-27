@@ -79,7 +79,8 @@
         {
           "text": "Сокращение цепочек отложенной загрузки (шрифты, фоны)",
           "priority": "medium",
-          "creation": 1687596740
+          "creation": 1687596740,
+          "completion": 1690462007
         },
         {
           "text": "remove Shuffle.js",
@@ -95,7 +96,8 @@
             {
               "text": "сборка foundation.css без ненужных стилей",
               "priority": "medium",
-              "creation": 1689582284
+              "creation": 1689582284,
+              "completion": 1690462033
             },
             {
               "text": "упорядочить и проредить размеры @media в CSS",
