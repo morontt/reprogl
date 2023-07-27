@@ -86,7 +86,7 @@ func subString(input string, length int) (str string) {
 }
 
 func timeTag(t time.Time) template.HTML {
-	var s string = "<time class=\"post-date\" datetime=\"" +
+	var s = "<time class=\"post-date\" datetime=\"" +
 		t.Format(time.RFC3339) + "\">" + t.Format("2 Jan 2006, 15:04:05.000") +
 		"</time>"
 
@@ -149,10 +149,11 @@ func flagCounterImage(fullSize bool) func() template.HTML {
 
 	w = 162
 	h = 82
+	cdn := container.GetConfig().CDNBaseURL
 	if container.IsDevMode() {
-		url = "/images/flagcounter.png"
+		url = cdn + "/images/flagcounter.png"
 		if !fullSize {
-			url = "/images/flagcounter_mini.png"
+			url = cdn + "/images/flagcounter_mini.png"
 			w = 160
 			h = 20
 		}

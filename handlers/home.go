@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/container"
@@ -47,9 +48,12 @@ func IndexAction(app *container.Application) http.HandlerFunc {
 		}
 
 		templateData := views.NewIndexPageData(articlesPaginator)
+		metaDescription := indexPageDescription(app)
 		if page > 1 {
 			templateData.AppendTitle(fmt.Sprintf("Страница %d", page))
+			metaDescription += fmt.Sprintf(" Страница %d", page)
 		}
+		templateData.AppendName("description", metaDescription)
 
 		err = views.WriteTemplateWithContext(r.Context(), w, "index.gohtml", templateData)
 		if err != nil {
@@ -219,4 +223,22 @@ func paginationURLsWithSlug(slug, firstRouteName, othersRouteName string) models
 
 		return container.GenerateURL(routeName, pairs...)
 	}
+}
+
+func indexPageDescription(app *container.Application) string {
+	var metaDescription string
+
+	key := "meta_description"
+
+	cache := app.GetStringCache()
+	if value, found := cache.Get(key); found {
+		return value
+	} else {
+		sysParamsRepo := repositories.SystemParametersRepository{DB: app.DB}
+		metaDescription, _ = sysParamsRepo.FindByKey(key)
+	}
+
+	cache.Set(key, metaDescription, 30*24*3600*time.Second)
+
+	return metaDescription
 }

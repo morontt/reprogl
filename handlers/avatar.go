@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"time"
 
 	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/container"
@@ -41,7 +42,10 @@ func AvatarGenerator(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		expires := time.Now().Add(container.AvatarTTL * time.Second)
+
 		cacheControl(w, container.AvatarTTL)
+		setExpires(w, expires)
 		w.Header().Set("Content-Type", "image/png")
 
 		err = pngquantPipe(w, img, r.Header.Values("If-None-Match"))
