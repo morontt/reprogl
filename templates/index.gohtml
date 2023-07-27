@@ -29,7 +29,8 @@
                                         {{raw .PictureTag.Value}}
                                         <figcaption>
                                             <p>
-                                                <a href="{{path "article" "slug" .Slug}}">
+                                                <a href="{{path "article" "slug" .Slug}}"
+                                                   aria-label="{{ .Title }}">
                                                     <span class="glyphicon glyphicon-link"></span>
                                                 </a>
                                             </p>
