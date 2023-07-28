@@ -179,7 +179,10 @@ var anima = (function ($) {
                 image: {
                     titleSrc: function (item) {
                         if (item.img && item.img.length > 0) {
-                            return item.img.attr('alt');
+                            var alt = item.img.attr('alt');
+                            if (alt && alt !== "undefined") {
+                                return alt
+                            }
                         }
                     }
                 }
