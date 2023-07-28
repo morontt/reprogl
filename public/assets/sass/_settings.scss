@@ -69,6 +69,9 @@ $color-error: #EF3B3A;
     &:hover, &:focus, &:active {
         color: darken($color-main-contrast, 10%);
     }
+    &.anima-image-popup:after {
+        content: '';
+    }
 }
 
 @mixin avatar-style {

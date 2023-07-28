@@ -10,6 +10,7 @@
     "license": "MIT",
     "dependencies": {
         "foundation-sites": "5.5.3",
+        "magnific-popup": "1.1.0",
         "grunt": "1.6.1",
         "grunt-contrib-concat": "2.1.0",
         "grunt-contrib-cssmin": "5.0.0",

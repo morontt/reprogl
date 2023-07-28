@@ -163,7 +163,7 @@ var anima = (function ($) {
         if ($('.anima-image-popup').length) {
             var mfOptions = {
                 type: 'image',
-                removalDelay: 500,
+                removalDelay: 200,
                 midClick: true,
                 callbacks: {
                     beforeOpen: function() {
@@ -173,8 +173,15 @@ var anima = (function ($) {
                     }
                 },
                 closeOnContentClick: true,
-                gallery:{
+                gallery: {
                     enabled: true
+                },
+                image: {
+                    titleSrc: function (item) {
+                        if (item.img && item.img.length > 0) {
+                            return item.img.attr('alt');
+                        }
+                    }
                 }
             };
             $('.anima-image-popup').magnificPopup(mfOptions);
@@ -188,20 +195,6 @@ var anima = (function ($) {
                 newTab: false,
             });
         });
-    },
-
-    // gallery config - http://www.owlcarousel.owlgraphic.com/docs/started-welcome.html
-    imageCarousel = function () {
-        var $gallery = $('.anima-carousel');
-        if($gallery.length) {
-            $gallery.each(function() {
-                $(this).owlCarousel({
-                    autoPlay: 2500,
-                    stopOnHover: true,
-                    itemsScaleUp: true
-                });
-            });
-        }
     },
 
     flassMessages = function() {
@@ -225,7 +218,6 @@ var anima = (function ($) {
         niceSroll();
         niceScrollShowEvent();
         filterTagsSelector();
-        imageCarousel();
         imageLightbox();
         flassMessages();
     };

@@ -36,7 +36,8 @@
     {
       "text": "Images gallery in article #30",
       "priority": "medium",
-      "creation": 1686424057
+      "creation": 1686424057,
+      "completion": 1690540780
     },
     {
       "text": "Comments count in article list #29",
@@ -300,6 +301,7 @@
       "text": "Responsive images",
       "priority": "high",
       "creation": 1686470744,
+      "completion": 1690025136,
       "tasks": [
         {
           "text": "https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images",
