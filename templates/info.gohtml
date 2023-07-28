@@ -24,9 +24,26 @@
                     <div class="post post-block-grid-item list">
                         <div class="post-block-wrapper">
                             <figure class="effect-hera">
-                                <img src="{{ cdn }}/images/face_352.jpg"
-                                     alt=""
-                                     class="index-post-image">
+                                <picture>
+                                    <source srcset="{{ cdn }}/images/face/face_752w.avif 752w,
+                                                    {{ cdn }}/images/face/face_464w.avif 464w,
+                                                    {{ cdn }}/images/face/face_320w.avif 320w"
+                                            sizes="(min-width: 48em) calc(40vw - 1.5rem), calc(100vw - 1.875rem)"
+                                            type="image/avif"/>
+                                    <source srcset="{{ cdn }}/images/face/face_752w.webp 752w,
+                                                    {{ cdn }}/images/face/face_464w.webp 464w,
+                                                    {{ cdn }}/images/face/face_320w.webp 320w"
+                                            sizes="(min-width: 48em) calc(40vw - 1.5rem), calc(100vw - 1.875rem)"
+                                            type="image/webp"/>
+                                    <img src="{{ cdn }}/images/face/face_752w.jpg"
+                                         width="752" height="752"
+                                         srcset="{{ cdn }}/images/face/face_752w.jpg 752w,
+                                                 {{ cdn }}/images/face/face_464w.jpg 464w,
+                                                 {{ cdn }}/images/face/face_320w.jpg 320w"
+                                         sizes="(min-width: 48em) calc(40vw - 1.5rem), calc(100vw - 1.875rem)"
+                                         alt=""
+                                         class="index-post-image"/>
+                                </picture>
                             </figure>
                             <div class="post-block-grid-content with-image">
                                 <section class="post-preview">

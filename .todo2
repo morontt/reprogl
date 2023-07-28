@@ -49,6 +49,7 @@
       "text": "GTmetrix optimization #27",
       "priority": "high",
       "creation": 1686424120,
+      "completion": 1690487577,
       "tasks": [
         {
           "text": "Использовать GPRS-троттлинг при загрузке",
