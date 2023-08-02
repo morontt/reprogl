@@ -227,6 +227,7 @@
       "text": "IE and SVG use external source #16",
       "priority": "verylow",
       "creation": 1686424529,
+      "completion": 1690980407,
       "tasks": [
         {
           "text": "https://css-tricks.com/svg-use-external-source/",
