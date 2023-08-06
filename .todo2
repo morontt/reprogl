@@ -139,6 +139,7 @@
       "text": "Use SVG images #24",
       "priority": "verylow",
       "creation": 1686424190,
+      "completion": 1691321251,
       "tasks": [
         {
           "text": "use SVG symbols from sprites.svg",
