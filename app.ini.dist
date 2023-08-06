@@ -1,8 +1,8 @@
 PORT=8080
 DB=mttblog:docker@tcp(hedgehog)/mttblog?parseTime=true&loc=Europe%2FMoscow
-HOST=morontt.info
+HOST=xelbot.com
 HEADER_TEXT=Всякие разности
-CDN_BASE_URL=https://cdn.localhost.tools
+CDN_BASE_URL=https://cdn.xelbot.com
 AUTHOR=Max Mustermann
 AUTHOR_BIO=bio
 ADMIN_EMAIL=admin@example.com
