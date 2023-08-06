@@ -149,7 +149,24 @@
         {
           "text": "replace logo to SVG",
           "priority": "medium",
-          "creation": 1686424232
+          "creation": 1686424232,
+          "tasks": [
+            {
+              "text": "https://svg-art.ru/?p=5",
+              "priority": "low",
+              "creation": 1691096694
+            },
+            {
+              "text": "https://jenkov.com/tutorials/svg/svg-viewport-view-box.html",
+              "priority": "low",
+              "creation": 1691096752
+            },
+            {
+              "text": "https://www.w3.org/TR/SVG/coords.html",
+              "priority": "low",
+              "creation": 1691140469
+            }
+          ]
         },
         {
           "text": "remove fontsawesome",

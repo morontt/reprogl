@@ -1,4 +1,3 @@
-
 // in _settings.scss there are all variables used here
 @import 'settings';
 
@@ -88,10 +87,6 @@ a.button {
     background-color: $color-main-dark;
 }
 
-.anima-carousel {
-    margin-bottom: rem-calc(25);
-}
-
 .back-to-top-btn {
     display: none;
     background-color: $color-main-dark;
@@ -153,8 +148,8 @@ a.button {
         transform: translate3d(0, -100%, 0);
     }
     .headroom-logo {
-        img {
-            max-height: rem-calc(50);
+        svg {
+            vertical-align: middle;
             border-radius: rem-calc(6);
         }
     }
@@ -296,8 +291,8 @@ html.no-csstransforms3d {
             padding-top: rem-calc(37);
             padding-bottom: rem-calc(60);
             .blog-logo {
-                img {
-                    max-width: rem-calc(120);
+                svg {
+                    vertical-align: middle;
                     border-radius: rem-calc(6);
                 }
             }

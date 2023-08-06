@@ -71,9 +71,11 @@
                 line-height: rem-calc(120);
                 height: rem-calc(120);
                 .blog-logo {
-                    img {
+                    svg {
                         width: rem-calc(80);
+                        height: rem-calc(80);
                         border-radius: rem-calc(6);
+                        vertical-align:middle;
                     }
                 }
                 @media only screen and (min-width: 64em) {
@@ -86,8 +88,9 @@
                     .blog-logo {
                         display: block;
                         text-align: center;
-                        img {
+                        svg {
                             width: rem-calc(150);
+                            height: rem-calc(150);
                             border-radius: rem-calc(10);
                         }
                     }
