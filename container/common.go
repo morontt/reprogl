@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 func RealRemoteAddress(r *http.Request) string {
@@ -19,7 +20,7 @@ func RealRemoteAddress(r *http.Request) string {
 }
 
 func IsCDN(r *http.Request) bool {
-	return r.Header.Get("Via") == "BunnyCDN"
+	return strings.Contains(r.Header.Get("Via"), "BunnyCDN")
 }
 
 func MD5(s string) string {
