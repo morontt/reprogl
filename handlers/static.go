@@ -70,8 +70,7 @@ func RobotsTXTAction(w http.ResponseWriter, r *http.Request) {
 	} else {
 		cfg := container.GetConfig()
 		body = fmt.Sprintf(
-			"User-agent: *\n\nHost: %s\nSitemap: https://%s/sitemap.xml\n",
-			cfg.Host,
+			"User-agent: *\n\nSitemap: https://%s/sitemap.xml\n",
 			cfg.Host)
 	}
 
