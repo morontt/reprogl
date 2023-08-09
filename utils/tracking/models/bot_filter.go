@@ -125,6 +125,7 @@ var engines = []string{
 	"censysinspect",
 	"cpp-httplib",
 	"leakix.net",
+	"gptbot",
 }
 
 var (

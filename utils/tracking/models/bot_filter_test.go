@@ -86,6 +86,10 @@ func TestBotFilter(t *testing.T) {
 			name: "Sogou web spider/4.0(+http://www.sogou.com/docs/help/webmasters.htm#07)",
 			want: true,
 		},
+		{
+			name: "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.0; +https://openai.com/gptbot)",
+			want: true,
+		},
 	}
 
 	for idx, item := range tests {
