@@ -18,12 +18,16 @@ type Meta struct {
 	IsIndexPage  bool
 	IsAuthorPage bool
 	titleParts   []string
+	Ogp          OpenGraph
+	Canonical    string
 }
 
 type MetaName struct {
 	Name    string
 	Content string
 }
+
+type OpenGraph map[string]string
 
 type HeaderLineInfo interface {
 	HeaderLineDescription() string
@@ -109,15 +113,42 @@ type FragmentRecentPostsData struct {
 func defaultMeta() Meta {
 	cfg := container.GetConfig()
 
-	return Meta{Host: cfg.Host, HeaderText: cfg.HeaderText}
+	ogp := make(OpenGraph)
+	// og:title and og:url required for every page
+	ogp["og:type"] = "website"
+	ogp["og:image"] = cfg.CDNBaseURL + "/images/kravchik.jpg"
+	ogp["og:image:width"] = "752"
+	ogp["og:image:height"] = "376"
+	ogp["og:locale"] = "ru_RU"
+
+	return Meta{Host: cfg.Host, HeaderText: cfg.HeaderText, Ogp: ogp}
 }
 
 func (m *Meta) AppendTitle(str string) {
 	m.titleParts = append(m.titleParts, str)
+	m.SetOpenGraphProperty("og:title", str)
 }
 
 func (m *Meta) AppendName(name, content string) {
 	m.MetaParts = append(m.MetaParts, MetaName{Name: name, Content: content})
+	if name == "description" {
+		m.SetOpenGraphProperty("og:description", content)
+	}
+}
+
+func (m *Meta) SetCanonical(link string) {
+	m.Canonical = link
+	m.SetOpenGraphProperty("og:url", link)
+}
+
+func (m *Meta) SetOpenGraphProperty(property, content string) {
+	if m.Ogp != nil {
+		m.Ogp[property] = content
+	} else {
+		ogp := make(OpenGraph)
+		ogp[property] = content
+		m.Ogp = ogp
+	}
 }
 
 func (m *Meta) BrowserTitle() string {

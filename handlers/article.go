@@ -70,7 +70,24 @@ func PageAction(app *container.Application) http.HandlerFunc {
 			lastUpdate,
 			r.Header.Get("Accept"),
 		)
+		cfg := container.GetConfig()
 		templateData.AppendTitle(article.Title)
+		templateData.SetCanonical(container.GenerateAbsoluteURL("article", "slug", slug))
+		templateData.SetOpenGraphProperty("og:type", "article")
+		templateData.SetOpenGraphProperty("article:published_time", article.CreatedAt.Format(time.RFC3339))
+		templateData.SetOpenGraphProperty("article:modified_time", article.UpdatedAt.Format(time.RFC3339))
+		templateData.SetOpenGraphProperty("article:author", cfg.Author)
+		if article.HasImage() {
+			image := article.SrcImageForOpenGraph()
+			if image != nil {
+				templateData.SetOpenGraphProperty("og:image", cfg.CDNBaseURL+"/uploads/"+image.Path)
+				templateData.SetOpenGraphProperty("og:image:width", strconv.Itoa(image.Width))
+				templateData.SetOpenGraphProperty("og:image:height", strconv.Itoa(image.Height))
+			}
+			if article.Alt.Valid && len(article.Alt.String) > 0 {
+				templateData.SetOpenGraphProperty("og:image:alt", article.Alt.String)
+			}
+		}
 
 		err = views.WriteTemplateWithContext(r.Context(), w, "article.gohtml", templateData)
 		if err != nil {

@@ -1,17 +1,18 @@
 {{define "base" -}}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" prefix="{{template "html_prefix"}}">
 <head>
     <meta charset="utf-8">
     <title>{{.BrowserTitle}}</title>
-    {{ with .MetaParts -}}
-        {{- range . -}}
-            <meta name="{{.Name}}" content="{{.Content}}">
-        {{- end -}}
-    {{- end }}
+    {{- with .MetaParts -}}{{- range . }}
+    <meta name="{{.Name}}" content="{{.Content}}">
+    {{- end }}{{- end }}
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#23222D">
+    {{- with .Ogp -}}{{- range $key, $value := . }}
+    <meta property="{{ $key }}" content="{{ $value }}">
+    {{- end}}{{- end}}
     <link rel="preconnect" href="{{ cdn }}" crossorigin>
     <link href="//s05.flagcounter.com" rel="dns-prefetch">
     <link rel="icon" href="/images/svg/favicon.svg" type="image/svg+xml">
@@ -28,7 +29,8 @@
     <meta name="msapplication-config" content="/browserconfig.xml"/>
     <link href="{{abs_path "feed-rss"}}" rel="alternate" type="application/rss+xml" title="RSS">
     <link href="{{abs_path "feed-atom"}}" rel="alternate" type="application/atom+xml" title="Atom">
-    <link href="/humans.txt" rel="author" type="text/plain" >
+    <link href="/humans.txt" rel="author" type="text/plain">
+    <link href="{{ .Canonical }}" rel="canonical">
     {{template "inline_styles" .}}
     {{asset "assets/css/reprogl.min.css"}}
 </head>

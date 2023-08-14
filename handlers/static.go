@@ -13,7 +13,9 @@ import (
 
 func InfoAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := views.WriteTemplateWithContext(r.Context(), w, "info.gohtml", views.NewInfoPageData())
+		templateData := views.NewInfoPageData()
+		templateData.SetCanonical(container.GenerateAbsoluteURL("info-page"))
+		err := views.WriteTemplateWithContext(r.Context(), w, "info.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 
@@ -51,6 +53,7 @@ func StatisticsAction(app *container.Application) http.HandlerFunc {
 		templateData.Commentators = commentators
 		templateData.MonthArticles = monthArticles
 		templateData.AllTimeArticles = allTimeArticles
+		templateData.SetCanonical(container.GenerateAbsoluteURL("statistics"))
 
 		cacheControl(w, container.StatisticsTTL)
 		err = views.WriteTemplate(w, "statistics.gohtml", templateData)
@@ -90,7 +93,7 @@ func HumansTXTAction(w http.ResponseWriter, r *http.Request) {
 
 	body := fmt.Sprintf(
 		`/* TEAM */
-	Developer: Alexander Harchenko
+	Developer: Alexander Kharchenko
 	Contact: morontt [at] gmail [dot] com
 	Twitter: @morontt
 	Telegram: @morontt

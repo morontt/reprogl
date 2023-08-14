@@ -1,8 +1,8 @@
 <select class="cs-select cs-skin-slide">
     <option value="ALL" data-link="/">ALL</option>
-    {{range .Categories}}
-        <option value="{{.Slug}}"
-                data-link="{{path "category-first" "slug" .Slug}}"
-        >{{.NameWithTreePrefix}}</option>
-    {{end}}
+    {{- range .Categories}}
+    <option value="{{.Slug}}" data-link="{{path "category-first" "slug" .Slug}}">
+        {{- .NameWithTreePrefix -}}
+    </option>
+    {{- end}}
 </select>
