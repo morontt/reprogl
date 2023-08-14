@@ -4,10 +4,10 @@
     </div>
     <div class="post-recent-list-separator"></div>
     <ul>
-    {{range .RecentPosts}}
+    {{- range .RecentPosts}}
         <li>
             <a href="{{path "article" "slug" .Slug}}">{{substr .Title 32}}</a>
         </li>
-    {{end}}
+    {{- end }}
     </ul>
 </div>

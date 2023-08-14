@@ -10,6 +10,7 @@ type FeaturedImage struct {
 	Width      sql.NullInt32
 	PictureTag sql.NullString
 	SrcSet     sql.NullString
+	Alt        sql.NullString
 }
 
 type SrcImage struct {
@@ -62,4 +63,13 @@ func (i *FeaturedImage) DecodeSrcSet() map[string]SrcSetItem {
 	}
 
 	return data
+}
+
+func (i *FeaturedImage) SrcImageForOpenGraph() *SrcImage {
+	srcSet := i.DecodeSrcSet()
+	if srcSetItem, found := srcSet["origin"]; found {
+		return &srcSetItem.Items[0]
+	}
+
+	return nil
 }

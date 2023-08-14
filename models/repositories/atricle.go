@@ -24,11 +24,13 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 			p.text_post,
 			p.description,
 			p.time_created,
+			p.last_update,
 			p.comments_count,
 			p.disable_comments,
 			mf.path AS image_path,
 			mf.width AS image_width,
 			mf.src_set,
+			mf.description AS image_alt,
 			c.name AS cat_name,
 			c.url AS cat_url
 		FROM posts AS p
@@ -47,11 +49,13 @@ func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
 		&article.Text,
 		&article.Description,
 		&article.CreatedAt,
+		&article.UpdatedAt,
 		&article.CommentsCount,
 		&article.DisabledComments,
 		&article.ImagePath,
 		&article.Width,
 		&article.SrcSet,
+		&article.Alt,
 		&article.CategoryName,
 		&article.CategorySlug)
 

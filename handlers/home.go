@@ -52,6 +52,9 @@ func IndexAction(app *container.Application) http.HandlerFunc {
 		if page > 1 {
 			templateData.AppendTitle(fmt.Sprintf("Страница %d", page))
 			metaDescription += fmt.Sprintf(" Страница %d", page)
+			templateData.SetCanonical(container.GenerateAbsoluteURL("blog-page", "page", strconv.Itoa(page)))
+		} else {
+			templateData.SetCanonical("https://" + container.GetConfig().Host)
 		}
 		templateData.AppendName("description", metaDescription)
 
@@ -109,6 +112,13 @@ func CategoryAction(app *container.Application) http.HandlerFunc {
 		}
 
 		templateData := views.NewCategoryPageData(articlesPaginator, category)
+		if page > 1 {
+			templateData.SetCanonical(
+				container.GenerateAbsoluteURL("category", "slug", slug, "page", strconv.Itoa(page)),
+			)
+		} else {
+			templateData.SetCanonical(container.GenerateAbsoluteURL("category-first", "slug", slug))
+		}
 
 		err = views.WriteTemplateWithContext(r.Context(), w, "index.gohtml", templateData)
 		if err != nil {
@@ -163,6 +173,13 @@ func TagAction(app *container.Application) http.HandlerFunc {
 		}
 
 		templateData := views.NewCategoryPageData(articlesPaginator, tag)
+		if page > 1 {
+			templateData.SetCanonical(
+				container.GenerateAbsoluteURL("tag", "slug", slug, "page", strconv.Itoa(page)),
+			)
+		} else {
+			templateData.SetCanonical(container.GenerateAbsoluteURL("tag-first", "slug", slug))
+		}
 
 		err = views.WriteTemplateWithContext(r.Context(), w, "index.gohtml", templateData)
 		if err != nil {

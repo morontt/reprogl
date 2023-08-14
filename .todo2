@@ -470,6 +470,23 @@
           "text": "example: https://joppe.dev/2020/06/17/behaviour-driven-development-basics/",
           "priority": "low",
           "creation": 1687861639
+        },
+        {
+          "text": "https://ogp.me/",
+          "priority": "medium",
+          "creation": 1691399050,
+          "completion": 1692039269
+        },
+        {
+          "text": "https://json-ld.org/",
+          "priority": "medium",
+          "creation": 1691400523
+        },
+        {
+          "text": "https://okbinteractive.studio/en/insights/what-are-open-graph-metatags-and-how-to-use-them-in-web-pages",
+          "priority": "medium",
+          "creation": 1692028935,
+          "completion": 1692039271
         }
       ]
     },
