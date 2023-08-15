@@ -90,6 +90,10 @@ func TestBotFilter(t *testing.T) {
 			name: "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.0; +https://openai.com/gptbot)",
 			want: true,
 		},
+		{
+			name: "http.rb/5.1.1 (Mastodon/4.1.4; +https://mastodon.b12e.be/) Bot",
+			want: true,
+		},
 	}
 
 	for idx, item := range tests {
