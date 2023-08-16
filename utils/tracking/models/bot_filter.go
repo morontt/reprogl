@@ -127,6 +127,7 @@ var engines = []string{
 	"leakix.net",
 	"gptbot",
 	"http.rb/",
+	"headless",
 }
 
 var (
