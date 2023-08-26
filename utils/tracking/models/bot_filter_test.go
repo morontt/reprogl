@@ -94,6 +94,10 @@ func TestBotFilter(t *testing.T) {
 			name: "http.rb/5.1.1 (Mastodon/4.1.4; +https://mastodon.b12e.be/) Bot",
 			want: true,
 		},
+		{
+			name: "Scrapy/1.7.3 (+https://scrapy.org)",
+			want: true,
+		},
 	}
 
 	for idx, item := range tests {

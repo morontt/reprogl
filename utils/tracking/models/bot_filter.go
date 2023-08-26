@@ -128,6 +128,7 @@ var engines = []string{
 	"gptbot",
 	"http.rb/",
 	"headless",
+	"scrapy",
 }
 
 var (
