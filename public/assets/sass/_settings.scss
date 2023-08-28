@@ -130,6 +130,9 @@ $color-error: #EF3B3A;
     .icon.icon-rss svg:hover {
         fill: #EE802F;
     }
+    .icon.icon-mastodon svg:hover {
+        fill: #6364FF;
+    }
 
     @media screen and (-ms-high-contrast: none), (-ms-high-contrast: active) {
         .icon svg {
