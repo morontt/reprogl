@@ -156,6 +156,7 @@ func isBot(agent string) bool {
 	if strings.Contains(agent, "python") &&
 		(strings.Contains(agent, "aiohttp") ||
 			strings.Contains(agent, "requests") ||
+			strings.Contains(agent, "httpx") ||
 			strings.Contains(agent, "urllib")) {
 
 		return true
