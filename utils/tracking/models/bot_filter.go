@@ -129,6 +129,7 @@ var engines = []string{
 	"http.rb/",
 	"headless",
 	"scrapy",
+	"axios/",
 }
 
 var (
