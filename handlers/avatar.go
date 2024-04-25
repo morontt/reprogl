@@ -53,10 +53,11 @@ func AvatarGenerator(app *container.Application) http.HandlerFunc {
 		}
 
 		filename := "public/images/avatar/" + hash + ".png"
-		_, err = os.Open(filename)
+		f, err := os.Open(filename)
 		if errors.Is(err, fs.ErrNotExist) {
 			_ = os.WriteFile(filename, rawImage, 0644)
 		}
+		_ = f.Close()
 
 		_, err = w.Write(rawImage)
 		if err != nil {
