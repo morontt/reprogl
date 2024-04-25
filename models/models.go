@@ -37,6 +37,7 @@ type Article struct {
 
 	DisabledComments bool
 	RecentPostsID    string
+	Views            int
 }
 
 type ArticleListItem struct {

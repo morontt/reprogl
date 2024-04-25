@@ -27,9 +27,12 @@
                 <section class="post-content row">
                     <div class="small-12 columns">
                         <div class="post-header-content">
-                            <section class="post-meta js-bg-check">
-                                {{if or is_dev .IsAdmin}}[ID: {{.Article.ID}}] {{end -}}
-                                {{time_tag .Article.CreatedAt}}
+                            <section class="post-meta clearfix">
+                                <div class="post-created-at">{{if or is_dev .IsAdmin}}[ID: {{.Article.ID}}] {{end -}}
+                                    {{time_tag .Article.CreatedAt}}</div>
+                                <div class="post-views-cnt">
+                                    <span class="glyphicon glyphicon-eye-open"></span> {{.Article.Views}}
+                                </div>
                             </section>
                             <h1 class="post-title">
                                 <a href="{{path "category-first" "slug" .Article.CategorySlug}}">

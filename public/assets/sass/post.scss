@@ -345,6 +345,23 @@
                     }
                     .post-meta {
                         font-weight: 600;
+                        .post-created-at {
+                            float: left;
+                            @media only screen and (max-width: 40.0625em) {
+                                float: none;
+                            }
+                        }
+                        .post-views-cnt {
+                            float: right;
+                            font-weight: 200;
+                            .glyphicon {
+                                color: lighten($color-main-dark, 50%);
+                            }
+                            @media only screen and (max-width: 40.0625em) {
+                                float: none;
+                                margin: 0.25rem 0 1.25rem;
+                            }
+                        }
                     }
                 }
                 width: 100%;
