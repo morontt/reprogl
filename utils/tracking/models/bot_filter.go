@@ -130,6 +130,7 @@ var engines = []string{
 	"headless",
 	"scrapy",
 	"axios/",
+	"archive.org_bot",
 }
 
 var (

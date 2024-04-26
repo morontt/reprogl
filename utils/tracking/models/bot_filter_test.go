@@ -98,6 +98,10 @@ func TestBotFilter(t *testing.T) {
 			name: "Scrapy/1.7.3 (+https://scrapy.org)",
 			want: true,
 		},
+		{
+			name: "Mozilla/5.0 (compatible; archive.org_bot +http://archive.org/details/archive.org_bot) Zeno/0569f25 warc/v0.8.33",
+			want: true,
+		},
 	}
 
 	for idx, item := range tests {
