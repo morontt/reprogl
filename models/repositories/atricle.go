@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/doug-martin/goqu/v9"
 	"xelbot.com/reprogl/models"
 )
 
@@ -15,35 +16,56 @@ type ArticleRepository struct {
 	DB *sql.DB
 }
 
-func (ar *ArticleRepository) GetBySlug(slug string) (*models.Article, error) {
-	query := `
-		SELECT
-			p.id,
-			p.title,
-			p.url,
-			p.text_post,
-			p.description,
-			p.time_created,
-			p.last_update,
-			p.comments_count,
-			p.views_count,
-			p.disable_comments,
-			mf.path AS image_path,
-			mf.width AS image_width,
-			mf.src_set,
-			mf.description AS image_alt,
-			c.name AS cat_name,
-			c.url AS cat_url
-		FROM posts AS p
-		INNER JOIN category AS c ON c.id = p.category_id
-		LEFT JOIN media_file mf on p.id = mf.post_id
-		WHERE (p.url = ?)
-			AND (mf.id IS NULL OR mf.default_image = 1)
-			AND (p.hide = 0)`
+func (ar *ArticleRepository) GetBySlug(slug string, isAdmin bool) (*models.Article, error) {
+	ds := goqu.Dialect("mysql8").From(goqu.T("posts").As("p")).Select(
+		"p.id",
+		"p.title",
+		"p.url",
+		"p.text_post",
+		"p.description",
+		"p.time_created",
+		"p.last_update",
+		"p.comments_count",
+		"p.views_count",
+		"p.disable_comments",
+		goqu.I("mf.path").As("image_path"),
+		goqu.I("mf.width").As("image_width"),
+		"mf.src_set",
+		goqu.I("mf.description").As("image_alt"),
+		goqu.I("c.name").As("cat_name"),
+		goqu.I("c.url").As("cat_url"),
+	).InnerJoin(
+		goqu.T("category").As("c"),
+		goqu.On(goqu.Ex{
+			"c.id": goqu.I("p.category_id"),
+		}),
+	).LeftJoin(
+		goqu.T("media_file").As("mf"),
+		goqu.On(goqu.Ex{
+			"mf.post_id": goqu.I("p.id"),
+		}),
+	).Where(
+		goqu.Ex{
+			"p.url": slug,
+		},
+	).Where(
+		goqu.ExOr{
+			"mf.id":            nil,
+			"mf.default_image": goqu.L("1"),
+		},
+	)
+
+	if !isAdmin {
+		ds = ds.Where(goqu.Ex{
+			"p.hide": goqu.L("0"),
+		})
+	}
+
+	query, params, _ := ds.Prepared(true).ToSQL()
 
 	article := &models.Article{}
 
-	err := ar.DB.QueryRow(query, slug).Scan(
+	err := ar.DB.QueryRow(query, params...).Scan(
 		&article.ID,
 		&article.Title,
 		&article.Slug,

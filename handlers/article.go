@@ -10,6 +10,7 @@ import (
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
+	"xelbot.com/reprogl/session"
 	"xelbot.com/reprogl/views"
 )
 
@@ -18,8 +19,13 @@ func PageAction(app *container.Application) http.HandlerFunc {
 		vars := mux.Vars(r)
 		slug := vars["slug"]
 
+		var isAdmin bool
+		if user, ok := session.GetIdentity(r.Context()); ok {
+			isAdmin = user.IsAdmin()
+		}
+
 		repo := repositories.ArticleRepository{DB: app.DB}
-		article, err := repo.GetBySlug(slug)
+		article, err := repo.GetBySlug(slug, isAdmin)
 		if err != nil {
 			if errors.Is(err, models.RecordNotFound) {
 				app.NotFound(w)
