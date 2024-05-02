@@ -73,6 +73,7 @@ var engines = []string{
 	"wget/",
 	"parser",
 	"ruby/",
+	"libwww-perl/",
 	"guzzlehttp",
 	"http_request2",
 	"gocolly",
