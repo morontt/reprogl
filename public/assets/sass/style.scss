@@ -632,6 +632,9 @@ html.no-csstransforms3d {
                 line-height: 1.1;
                 padding-bottom: rem-calc(10);
                 padding-top: rem-calc(10);
+                &.draft-title {
+                    color: lighten($color-main-dark, 50%);
+                }
             }
             .post-title-separator {
                 width: rem-calc(70);

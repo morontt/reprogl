@@ -25,6 +25,7 @@ type ArticleBasePart struct {
 	UpdatedAt    time.Time
 	CategoryName string
 	CategorySlug string
+	Hidden       bool
 
 	CommentsCount int
 }

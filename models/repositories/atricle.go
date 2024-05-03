@@ -42,16 +42,12 @@ func (ar *ArticleRepository) GetBySlug(slug string, isAdmin bool) (*models.Artic
 	).LeftJoin(
 		goqu.T("media_file").As("mf"),
 		goqu.On(goqu.Ex{
-			"mf.post_id": goqu.I("p.id"),
+			"mf.post_id":       goqu.I("p.id"),
+			"mf.default_image": goqu.L("1"),
 		}),
 	).Where(
 		goqu.Ex{
 			"p.url": slug,
-		},
-	).Where(
-		goqu.ExOr{
-			"mf.id":            nil,
-			"mf.default_image": goqu.L("1"),
 		},
 	)
 
@@ -109,31 +105,46 @@ func (ar *ArticleRepository) GetIdBySlug(slug string) int {
 	return id
 }
 
-func (ar *ArticleRepository) GetCollection(page int) (*models.ArticlesPaginator, error) {
+func (ar *ArticleRepository) GetCollection(page int, isAdmin bool) (*models.ArticlesPaginator, error) {
 	countQuery := `
 		SELECT
 			COUNT(p.id) AS cnt
 		FROM posts AS p
 		WHERE p.hide = 0`
 
-	query := `
-		SELECT
-			p.id,
-			p.title,
-			p.url,
-			p.text_post,
-			p.preview,
-			p.time_created,
-			p.comments_count,
-			mf.picture_tag,
-			c.name AS cat_name,
-			c.url AS cat_url
-		FROM posts AS p
-		INNER JOIN category AS c ON c.id = p.category_id
-		LEFT JOIN media_file mf ON (p.id = mf.post_id AND mf.default_image = 1)
-		WHERE p.hide = 0
-		ORDER BY time_created DESC
-		LIMIT 10 OFFSET ?`
+	ds := goqu.Dialect("mysql8").From(goqu.T("posts").As("p")).Select(
+		"p.id",
+		"p.title",
+		"p.url",
+		"p.text_post",
+		"p.preview",
+		"p.time_created",
+		"p.comments_count",
+		"p.hide",
+		"mf.picture_tag",
+		goqu.I("c.name").As("cat_name"),
+		goqu.I("c.url").As("cat_url"),
+	).InnerJoin(
+		goqu.T("category").As("c"),
+		goqu.On(goqu.Ex{
+			"c.id": goqu.I("p.category_id"),
+		}),
+	).LeftJoin(
+		goqu.T("media_file").As("mf"),
+		goqu.On(goqu.Ex{
+			"mf.post_id":       goqu.I("p.id"),
+			"mf.default_image": goqu.L("1"),
+		}),
+	).Order(goqu.I("p.time_created").Desc())
+
+	if !isAdmin {
+		ds = ds.Where(goqu.Ex{
+			"p.hide": goqu.L("0"),
+		})
+	}
+
+	query, _, _ := ds.ToSQL()
+	query += " LIMIT 10 OFFSET ?"
 
 	params := make([]interface{}, 0)
 
@@ -159,6 +170,7 @@ func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, 
 			p.preview,
 			p.time_created,
 			p.comments_count,
+			p.hide,
 			mf.picture_tag,
 			c.name AS cat_name,
 			c.url AS cat_url
@@ -195,6 +207,7 @@ func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (*mod
 			p.preview,
 			p.time_created,
 			p.comments_count,
+			p.hide,
 			mf.picture_tag,
 			c.name AS cat_name,
 			c.url AS cat_url
@@ -502,6 +515,7 @@ func populateArticles(rows *sql.Rows) (models.ArticleList, error) {
 			&article.Preview,
 			&article.CreatedAt,
 			&article.CommentsCount,
+			&article.Hidden,
 			&article.PictureTag,
 			&article.CategoryName,
 			&article.CategorySlug)

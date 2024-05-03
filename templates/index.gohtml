@@ -42,7 +42,7 @@
                                 <div class="post-block-grid-content {{if .HasImage}}with-image{{else}}no-image{{end}}">
                                     <header class="post-header">
                                         {{time_tag .CreatedAt}}
-                                        <h2 class="post-title">
+                                        <h2 class="post-title {{if .Hidden}}draft-title{{end}}">
                                             <a href="{{path "category-first" "slug" .CategorySlug}}">
                                                 {{- .CategoryName -}}
                                             </a> &rarr;

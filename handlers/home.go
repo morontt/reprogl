@@ -11,6 +11,7 @@ import (
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
+	"xelbot.com/reprogl/session"
 	"xelbot.com/reprogl/views"
 )
 
@@ -25,8 +26,13 @@ func IndexAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		var isAdmin bool
+		if user, ok := session.GetIdentity(r.Context()); ok {
+			isAdmin = user.IsAdmin()
+		}
+
 		repo := repositories.ArticleRepository{DB: app.DB}
-		articlesPaginator, err := repo.GetCollection(page)
+		articlesPaginator, err := repo.GetCollection(page, isAdmin)
 		if err != nil {
 			if errors.Is(err, models.RecordNotFound) {
 				app.NotFound(w)
