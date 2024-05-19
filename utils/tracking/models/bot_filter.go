@@ -132,6 +132,7 @@ var engines = []string{
 	"scrapy",
 	"axios/",
 	"archive.org_bot",
+	"googleother",
 }
 
 var (
