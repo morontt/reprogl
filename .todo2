@@ -593,7 +593,14 @@
     {
       "text": "Self-update",
       "priority": "medium",
-      "creation": 1716815729
+      "creation": 1716815729,
+      "tasks": [
+        {
+          "text": "TODO",
+          "priority": "medium",
+          "creation": 1716817040
+        }
+      ]
     }
   ]
 }
