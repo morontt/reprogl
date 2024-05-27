@@ -589,6 +589,11 @@
           ]
         }
       ]
+    },
+    {
+      "text": "Self-update",
+      "priority": "medium",
+      "creation": 1716815729
     }
   ]
 }
