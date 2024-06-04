@@ -487,6 +487,16 @@
           "priority": "medium",
           "creation": 1692028935,
           "completion": 1692039271
+        },
+        {
+          "text": "https://www.rssboard.org/rss-specification#ltenclosuregtSubelementOfLtitemgt",
+          "priority": "high",
+          "creation": 1717519919
+        },
+        {
+          "text": "example: https://sazak.io/rss.xml",
+          "priority": "low",
+          "creation": 1717519989
         }
       ]
     },
@@ -594,6 +604,11 @@
       "text": "Self-update",
       "priority": "medium",
       "creation": 1716815729
+    },
+    {
+      "text": "Add JSON-feed",
+      "priority": "high",
+      "creation": 1717520159
     }
   ]
 }
