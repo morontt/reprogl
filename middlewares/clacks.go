@@ -3,6 +3,8 @@ package middlewares
 import (
 	"math/rand"
 	"net/http"
+
+	"xelbot.com/reprogl/utils/transliterator"
 )
 
 type ClacksSet []string
@@ -23,7 +25,20 @@ func Clacks() ClacksSet {
 	data := []string{
 		"Terry Pratchett",
 		"Clive Sinclair",
+		"Николай Заманов",
+		"Владлен Татарский",
+		"Арсен Павлов",
+		"Михаил Толстых",
+		"Олесь Бузина",
+		"Алексей Мозговой",
+		"Robert Sheckley",
+		"Robert Anson Heinlein",
 	}
 
-	return ClacksSet(data)
+	tData := make(ClacksSet, len(data))
+	for i, d := range data {
+		tData[i] = transliterator.Transliterate(d)
+	}
+
+	return tData
 }
