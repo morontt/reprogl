@@ -453,6 +453,11 @@
           "text": "Через соц-сети и т.п.",
           "priority": "medium",
           "creation": 1686772409
+        },
+        {
+          "text": "Log in with OpenID",
+          "priority": "medium",
+          "creation": 1717673795
         }
       ]
     },
@@ -505,6 +510,16 @@
           "text": "https://www.rudderstack.com/blog/implementing-graceful-shutdown-in-go/",
           "priority": "medium",
           "creation": 1687236073
+        },
+        {
+          "text": "https://github.com/GolangLessons/sso/blob/main/cmd/sso/main.go",
+          "priority": "medium",
+          "creation": 1717673156
+        },
+        {
+          "text": "https://github.com/mattermost/mattermost/blob/master/server/cmd/mattermost/commands/server.go",
+          "priority": "medium",
+          "creation": 1717673268
         }
       ]
     },
