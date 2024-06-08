@@ -31,6 +31,7 @@ type RssEntry struct {
 	URL         string         `xml:"link"`
 	Updated     RssTime        `xml:"pubDate"`
 	Description RssDescription `xml:"description"`
+	Enclosure   *RssEnclosure  `xml:"enclosure,omitempty"`
 }
 
 type RssID struct {
@@ -42,6 +43,13 @@ type RssID struct {
 type RssDescription struct {
 	XMLName xml.Name `xml:"description"`
 	Text    string   `xml:",cdata"`
+}
+
+type RssEnclosure struct {
+	XMLName  xml.Name `xml:"enclosure"`
+	Url      string   `xml:"url,attr"`
+	Length   int      `xml:"length,attr"`
+	MimeType string   `xml:"type,attr"`
 }
 
 func (a *Rss) setChannelData(data FeedChannelData) {
@@ -56,7 +64,7 @@ func (a *Rss) setChannelData(data FeedChannelData) {
 		Docs:        "http://www.rssboard.org/rss-specification",
 	}
 
-	for _, entry := range *data.FeedItems {
+	for _, entry := range data.FeedItems {
 		a.addFeedItem(entry)
 	}
 }
@@ -75,6 +83,7 @@ func (a *Rss) addFeedItem(entry *FeedItem) {
 		URL:         entry.URL,
 		Updated:     RssTime(entry.CreatedAt),
 		Description: RssDescription{Text: entry.Text},
+		Enclosure:   entry.GetRssEnclosure(),
 	})
 
 	if entry.CreatedAt.After(time.Time(a.Channel.Updated)) {

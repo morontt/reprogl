@@ -3,6 +3,8 @@ package models
 import (
 	"database/sql"
 	"encoding/json"
+
+	"xelbot.com/reprogl/container"
 )
 
 type FeaturedImage struct {
@@ -17,11 +19,12 @@ type SrcImage struct {
 	Path   string `json:"path"`
 	Width  int    `json:"width"`
 	Height int    `json:"height"`
+	Length int    `json:"length"`
 }
 
 type SrcSetItem struct {
-	Items []SrcImage `json:"items"`
-	Type  string     `json:"type"`
+	Items    []SrcImage `json:"items"`
+	MimeType string     `json:"type"`
 }
 
 func (i *FeaturedImage) HasImage() bool {
@@ -69,6 +72,19 @@ func (i *FeaturedImage) SrcImageForOpenGraph() *SrcImage {
 	srcSet := i.DecodeSrcSet()
 	if srcSetItem, found := srcSet["origin"]; found {
 		return &srcSetItem.Items[0]
+	}
+
+	return nil
+}
+
+func (i *FeaturedImage) GetRssEnclosure() *RssEnclosure {
+	srcSet := i.DecodeSrcSet()
+	if srcSetItem, found := srcSet["origin"]; found {
+		return &RssEnclosure{
+			Url:      container.GetConfig().CDNBaseURL + "/uploads/" + srcSetItem.Items[0].Path,
+			Length:   srcSetItem.Items[0].Length,
+			MimeType: srcSetItem.MimeType,
+		}
 	}
 
 	return nil

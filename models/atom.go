@@ -49,7 +49,7 @@ func (a *Atom) setChannelData(data FeedChannelData) {
 	a.Link = AtomLink{Rel: "alternate", Href: data.Link, Language: data.Language}
 	a.Author = AtomPerson{Name: data.Author, Email: data.Email}
 
-	for _, entry := range *data.FeedItems {
+	for _, entry := range data.FeedItems {
 		a.addFeedItem(entry)
 	}
 }
