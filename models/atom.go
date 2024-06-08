@@ -2,6 +2,7 @@ package models
 
 import (
 	"encoding/xml"
+	"html"
 	"time"
 
 	"xelbot.com/reprogl/container"
@@ -38,12 +39,13 @@ type AtomEntry struct {
 	URLs    []AtomLink  `xml:"link"`
 	Updated SitemapTime `xml:"updated"`
 	Created SitemapTime `xml:"published"`
-	Summary AtomSummary `xml:"summary"`
+	Content AtomContent `xml:"content"`
 }
 
-type AtomSummary struct {
-	XMLName xml.Name `xml:"summary"`
-	Text    string   `xml:",cdata"`
+type AtomContent struct {
+	XMLName xml.Name `xml:"content"`
+	Text    string   `xml:",innerxml"`
+	Type    string   `xml:"type,attr"`
 }
 
 func (a *Atom) setChannelData(data FeedChannelData) {
@@ -84,7 +86,7 @@ func (a *Atom) addFeedItem(entry *FeedItem) {
 		URLs:    links,
 		Updated: SitemapTime(entry.UpdatedAt),
 		Created: SitemapTime(entry.CreatedAt),
-		Summary: AtomSummary{Text: entry.Text},
+		Content: AtomContent{Text: html.EscapeString(entry.Text), Type: "html"},
 	})
 
 	if entry.CreatedAt.After(time.Time(a.Updated)) {
