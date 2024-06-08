@@ -262,15 +262,18 @@ func (ar *ArticleRepository) GetSitemapCollection() (*models.SitemapItemList, er
 	return &articles, nil
 }
 
-func (ar *ArticleRepository) GetFeedCollection() (*models.FeedItemList, error) {
+func (ar *ArticleRepository) GetFeedCollection() (models.FeedItemList, error) {
 	query := `
 		SELECT
-			id,
-			title,
-			url,
-			text_post,
-			time_created
-		FROM posts
+			p.id,
+			p.title,
+			p.url,
+			p.text_post,
+			mf.src_set,
+			p.updated_at,
+			p.time_created
+		FROM posts AS p
+		LEFT JOIN media_file AS mf ON (p.id = mf.post_id AND mf.default_image = 1)
 		WHERE
 			hide = 0
 		ORDER BY time_created DESC
@@ -293,6 +296,8 @@ func (ar *ArticleRepository) GetFeedCollection() (*models.FeedItemList, error) {
 			&item.Title,
 			&item.Slug,
 			&item.Text,
+			&item.SrcSet,
+			&item.UpdatedAt,
 			&item.CreatedAt)
 
 		if err != nil {
@@ -302,7 +307,7 @@ func (ar *ArticleRepository) GetFeedCollection() (*models.FeedItemList, error) {
 		articles = append(articles, &item)
 	}
 
-	return &articles, nil
+	return articles, nil
 }
 
 func (ar *ArticleRepository) GetRecentPostsCollection(articleId int) (*models.RecentPostList, error) {

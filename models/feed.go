@@ -34,6 +34,8 @@ type FeedItem struct {
 	URL       string
 	Text      string
 	CreatedAt time.Time
+	UpdatedAt time.Time
+	FeaturedImage
 }
 
 type FeedItemList []*FeedItem
@@ -47,7 +49,7 @@ type FeedChannelData struct {
 	Author      string
 	Email       string
 	Generator   string
-	FeedItems   *FeedItemList
+	FeedItems   FeedItemList
 }
 
 type Feed[F FeedInterface] struct {

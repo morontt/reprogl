@@ -71,7 +71,7 @@ func FeedAction(app *container.Application, feedType int) http.HandlerFunc {
 			return
 		}
 
-		for _, location := range *articles {
+		for _, location := range articles {
 			location.URL = container.GenerateAbsoluteURL("article", "slug", location.Slug)
 		}
 
@@ -109,7 +109,7 @@ func FeedAction(app *container.Application, feedType int) http.HandlerFunc {
 	}
 }
 
-func channelData(items *models.FeedItemList) models.FeedChannelData {
+func channelData(items models.FeedItemList) models.FeedChannelData {
 	cfg := container.GetConfig()
 
 	channel := models.FeedChannelData{

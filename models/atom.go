@@ -3,6 +3,8 @@ package models
 import (
 	"encoding/xml"
 	"time"
+
+	"xelbot.com/reprogl/container"
 )
 
 type Atom struct {
@@ -10,7 +12,7 @@ type Atom struct {
 	ID          string      `xml:"id"`
 	Title       string      `xml:"title"`
 	Description string      `xml:"subtitle"`
-	Link        AtomLink    `xml:"link"`
+	Links       []AtomLink  `xml:"link"`
 	Updated     SitemapTime `xml:"updated"`
 	Author      AtomPerson  `xml:"author"`
 	Generator   string      `xml:"generator"`
@@ -21,6 +23,8 @@ type AtomLink struct {
 	Rel      string `xml:"rel,attr,omitempty"`
 	Language string `xml:"hreflang,attr,omitempty"`
 	Href     string `xml:"href,attr"`
+	Length   int    `xml:"length,attr,omitempty"`
+	MimeType string `xml:"type,attr,omitempty"`
 }
 
 type AtomPerson struct {
@@ -31,8 +35,9 @@ type AtomPerson struct {
 type AtomEntry struct {
 	ID      string      `xml:"id"`
 	Title   string      `xml:"title"`
-	URL     AtomLink    `xml:"link"`
+	URLs    []AtomLink  `xml:"link"`
 	Updated SitemapTime `xml:"updated"`
+	Created SitemapTime `xml:"published"`
 	Summary AtomSummary `xml:"summary"`
 }
 
@@ -46,10 +51,13 @@ func (a *Atom) setChannelData(data FeedChannelData) {
 	a.Title = data.Title
 	a.Description = data.Description
 	a.Generator = data.Generator
-	a.Link = AtomLink{Rel: "alternate", Href: data.Link, Language: data.Language}
+	a.Links = []AtomLink{
+		{Rel: "alternate", Href: data.Link, Language: data.Language},
+		{Rel: "self", Href: container.GenerateAbsoluteURL("feed-atom")},
+	}
 	a.Author = AtomPerson{Name: data.Author, Email: data.Email}
 
-	for _, entry := range *data.FeedItems {
+	for _, entry := range data.FeedItems {
 		a.addFeedItem(entry)
 	}
 }
@@ -59,11 +67,23 @@ func (a *Atom) ContentType() string {
 }
 
 func (a *Atom) addFeedItem(entry *FeedItem) {
+	links := make([]AtomLink, 0, 2)
+	links = append(links, AtomLink{Rel: "alternate", Href: entry.URL})
+	if enclosure := entry.GetRssEnclosure(); enclosure != nil {
+		links = append(links, AtomLink{
+			Rel:      "enclosure",
+			Href:     enclosure.Url,
+			Length:   enclosure.Length,
+			MimeType: enclosure.MimeType,
+		})
+	}
+
 	a.Entry = append(a.Entry, AtomEntry{
 		ID:      "urn:uuid:" + entry.GIUD(),
 		Title:   entry.Title,
-		URL:     AtomLink{Rel: "alternate", Href: entry.URL},
-		Updated: SitemapTime(entry.CreatedAt),
+		URLs:    links,
+		Updated: SitemapTime(entry.UpdatedAt),
+		Created: SitemapTime(entry.CreatedAt),
 		Summary: AtomSummary{Text: entry.Text},
 	})
 
