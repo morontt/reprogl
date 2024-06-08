@@ -72,8 +72,15 @@ func (d FeedChannelData) GIUD() string {
 	return byStringGIUD(d.Link)
 }
 
-func (i FeedItem) GIUD() string {
-	return byStringGIUD(i.Slug)
+func (i FeedItem) GIUD() (result string) {
+	dt := time.Date(2024, time.June, 8, 0, 0, 0, 0, time.UTC)
+	if dt.Before(i.CreatedAt) {
+		result = byStringGIUD(fmt.Sprintf("feed%d%d", i.ID, i.ID*i.ID))
+	} else {
+		result = byStringGIUD(i.Slug)
+	}
+
+	return
 }
 
 func CreateFeed[T FeedInterface](t T, d FeedChannelData) *Feed[T] {
