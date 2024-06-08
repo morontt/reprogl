@@ -34,6 +34,7 @@ type FeedItem struct {
 	URL       string
 	Text      string
 	CreatedAt time.Time
+	UpdatedAt time.Time
 	FeaturedImage
 }
 

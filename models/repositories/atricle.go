@@ -270,6 +270,7 @@ func (ar *ArticleRepository) GetFeedCollection() (models.FeedItemList, error) {
 			p.url,
 			p.text_post,
 			mf.src_set,
+			p.updated_at,
 			p.time_created
 		FROM posts AS p
 		LEFT JOIN media_file AS mf ON (p.id = mf.post_id AND mf.default_image = 1)
@@ -296,6 +297,7 @@ func (ar *ArticleRepository) GetFeedCollection() (models.FeedItemList, error) {
 			&item.Slug,
 			&item.Text,
 			&item.SrcSet,
+			&item.UpdatedAt,
 			&item.CreatedAt)
 
 		if err != nil {

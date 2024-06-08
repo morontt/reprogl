@@ -460,6 +460,7 @@
       "text": "Default image for feeds (for example https://feedly.com)",
       "priority": "medium",
       "creation": 1686847532,
+      "completion": 1717854684,
       "tasks": [
         {
           "text": "example: https://apps.timwhitlock.info/unicode/inspect?s=%E2%99%82",
@@ -497,6 +498,11 @@
           "text": "example: https://sazak.io/rss.xml",
           "priority": "low",
           "creation": 1717519989
+        },
+        {
+          "text": "Best practises https://kevincox.ca/2022/05/06/rss-feed-best-practices/",
+          "priority": "medium",
+          "creation": 1717850917
         }
       ]
     },
@@ -607,7 +613,7 @@
     },
     {
       "text": "Add JSON-feed",
-      "priority": "high",
+      "priority": "low",
       "creation": 1717520159
     }
   ]
