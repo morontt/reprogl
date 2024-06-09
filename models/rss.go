@@ -70,7 +70,7 @@ func (a *Rss) setChannelData(data FeedChannelData) {
 }
 
 func (a *Rss) ContentType() string {
-	return "application/atom+xml; charset=utf-8"
+	return "application/rss+xml; charset=utf-8"
 }
 
 func (a *Rss) addFeedItem(entry *FeedItem) {
