@@ -1,13 +1,17 @@
 package main
 
 import (
+	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"runtime"
 	"runtime/debug"
+	"syscall"
 	"time"
 
 	"github.com/doug-martin/goqu/v9"
@@ -35,8 +39,6 @@ func main() {
 	}
 
 	goqu.SetTimeLocation(time.Local)
-
-	defer db.Close()
 
 	app := &container.Application{
 		ErrorLog: errorLog,
@@ -77,8 +79,31 @@ func main() {
 		ReadTimeout:  10 * time.Second,
 	}
 
-	infoLog.Printf("Starting server on %s port", cfg.Port)
-	handleError(server.ListenAndServe(), errorLog)
+	go func() {
+		infoLog.Printf("Starting server on %s port", cfg.Port)
+		err = server.ListenAndServe()
+		if !errors.Is(err, http.ErrServerClosed) {
+			handleError(err, errorLog)
+		}
+	}()
+
+	exit := make(chan os.Signal, 1)
+	signal.Notify(exit, os.Interrupt, syscall.SIGTERM)
+
+	<-exit
+
+	infoLog.Print("Shutting down...")
+	err = server.Shutdown(context.Background())
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+	infoLog.Print("Server stopped")
+
+	err = app.Stop()
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+	infoLog.Print("Application stopped")
 }
 
 func getDBConnection(dsn string, logger *log.Logger) (db *sql.DB, err error) {
@@ -88,6 +113,8 @@ func getDBConnection(dsn string, logger *log.Logger) (db *sql.DB, err error) {
 		logger.Print("Trying to connect to the database")
 		db, err = openDB(dsn)
 		if err == nil {
+			logger.Print("The database is connected")
+
 			return
 		} else {
 			logger.Print(err)

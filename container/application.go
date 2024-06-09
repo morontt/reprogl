@@ -101,3 +101,13 @@ func (app *Application) GetStringCache() *yetacache.Cache[string, string] {
 
 	return app.strCache
 }
+
+func (app *Application) Stop() error {
+	err := app.DB.Close()
+	if err != nil {
+		return err
+	}
+	app.InfoLog.Print("The database connection is closed")
+
+	return nil
+}

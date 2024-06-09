@@ -521,6 +521,7 @@
       "text": "Graceful shutdown",
       "priority": "medium",
       "creation": 1687236055,
+      "completion": 1717935837,
       "tasks": [
         {
           "text": "https://www.rudderstack.com/blog/implementing-graceful-shutdown-in-go/",
@@ -623,7 +624,7 @@
     },
     {
       "text": "Self-update",
-      "priority": "medium",
+      "priority": "verylow",
       "creation": 1716815729
     },
     {
