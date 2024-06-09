@@ -37,9 +37,9 @@ func (i *FeaturedImage) HasWebp() bool {
 	}
 
 	srcSet := i.DecodeSrcSet()
-	_, found := srcSet["webp"]
+	data, found := srcSet["webp"]
 
-	return found
+	return found && len(data.Items) > 0
 }
 
 func (i *FeaturedImage) HasAvif() bool {
@@ -48,9 +48,9 @@ func (i *FeaturedImage) HasAvif() bool {
 	}
 
 	srcSet := i.DecodeSrcSet()
-	_, found := srcSet["avif"]
+	data, found := srcSet["avif"]
 
-	return found
+	return found && len(data.Items) > 0
 }
 
 func (i *FeaturedImage) DecodeSrcSet() map[string]SrcSetItem {
