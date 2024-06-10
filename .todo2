@@ -267,7 +267,8 @@
     {
       "text": "Using embedded templates #14",
       "priority": "medium",
-      "creation": 1686424604
+      "creation": 1686424604,
+      "completion": 1718022029
     },
     {
       "text": "Config refactoring #13",
