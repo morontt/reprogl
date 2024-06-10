@@ -632,6 +632,11 @@
       "text": "Add JSON-feed",
       "priority": "low",
       "creation": 1717520159
+    },
+    {
+      "text": "Статические страницы в sitemap.xml",
+      "priority": "medium",
+      "creation": 1718047085
     }
   ]
 }
