@@ -3,6 +3,7 @@ package views
 import (
 	"fmt"
 	"html/template"
+	"math/rand"
 	"strings"
 	"time"
 
@@ -53,7 +54,18 @@ func authorName() string {
 }
 
 func authorBio() string {
-	return container.GetConfig().AuthorBio
+	emoij := []rune{
+		rune(0x1F41C), // ant
+		rune(0x1FAB0), // fly
+		rune(0x1F41D), // bee
+		rune(0x1F980), // crab
+		rune(0x1F997), // cricket
+		rune(0x1F577), // spider
+		rune(0x1F982), // scorpion
+		rune(0x1F990), // shrimp
+	}
+
+	return container.GetConfig().AuthorBio + " " + string(emoij[rand.Intn(len(emoij))])
 }
 
 func authorGithub() string {
