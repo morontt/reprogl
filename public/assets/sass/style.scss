@@ -368,6 +368,18 @@ html.no-csstransforms3d {
             color: lighten($color-main-dark, 10%);
         }
     }
+    ul.inline-list {
+        vertical-align: middle;
+        display: inline-block;
+        line-height: inherit;
+        a {
+            -webkit-transition: color 0.5s;
+            transition: color 0.5s;
+            &:hover {
+                color: $color-main-contrast;
+            }
+        }
+    }
 }
 
 .main-content-wrapper {
