@@ -2,13 +2,12 @@ package views
 
 import (
 	"context"
+	"embed"
 	"fmt"
 	"html/template"
 	"net/http"
 	"strings"
-	"sync"
 
-	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/security"
 	"xelbot.com/reprogl/session"
 )
@@ -16,8 +15,10 @@ import (
 const defaultPageSize = 64 * 1024
 
 var (
-	templates          map[string]*template.Template
-	templatesMapLocker sync.Mutex
+	//go:embed templates
+	sources embed.FS
+
+	templates map[string]*template.Template
 )
 
 func init() {
@@ -25,64 +26,61 @@ func init() {
 }
 
 func LoadViewSet() error {
-	templatesMapLocker.Lock()
-	defer templatesMapLocker.Unlock()
-
 	templatesMap := map[string][]string{
 		"info.gohtml": {
-			"./templates/info.gohtml",
-			"./templates/partials/menu.gohtml",
-			"./templates/partials/sticky-header.gohtml",
-			"./templates/partials/big-header.gohtml",
-			"./templates/partials/footer.gohtml",
-			"./templates/partials/social-icons.gohtml",
-			"./templates/partials/info-static.gohtml",
-			"./templates/layout/svg-sprites.gohtml",
-			"./templates/layout/base.gohtml",
+			"templates/info.gohtml",
+			"templates/partials/menu.gohtml",
+			"templates/partials/sticky-header.gohtml",
+			"templates/partials/big-header.gohtml",
+			"templates/partials/footer.gohtml",
+			"templates/partials/social-icons.gohtml",
+			"templates/partials/info-static.gohtml",
+			"templates/layout/svg-sprites.gohtml",
+			"templates/layout/base.gohtml",
 		},
 		"article.gohtml": {
-			"./templates/article.gohtml",
-			"./templates/partials/author-info.gohtml",
-			"./templates/partials/comment-form.gohtml",
-			"./templates/partials/menu.gohtml",
-			"./templates/partials/sidebar.gohtml",
-			"./templates/partials/social-icons.gohtml",
-			"./templates/layout/svg-sprites.gohtml",
-			"./templates/layout/base.gohtml",
+			"templates/article.gohtml",
+			"templates/partials/author-info.gohtml",
+			"templates/partials/comment-form.gohtml",
+			"templates/partials/menu.gohtml",
+			"templates/partials/sidebar.gohtml",
+			"templates/partials/social-icons.gohtml",
+			"templates/layout/svg-sprites.gohtml",
+			"templates/layout/base.gohtml",
 		},
 		"statistics.gohtml": {
-			"./templates/statistics.gohtml",
-			"./templates/partials/author-info.gohtml",
-			"./templates/partials/menu.gohtml",
-			"./templates/partials/sidebar.gohtml",
-			"./templates/partials/social-icons.gohtml",
-			"./templates/layout/svg-sprites.gohtml",
-			"./templates/layout/base.gohtml",
+			"templates/statistics.gohtml",
+			"templates/partials/author-info.gohtml",
+			"templates/partials/menu.gohtml",
+			"templates/partials/sidebar.gohtml",
+			"templates/partials/social-icons.gohtml",
+			"templates/layout/svg-sprites.gohtml",
+			"templates/layout/base.gohtml",
 		},
 		"index.gohtml": {
-			"./templates/index.gohtml",
-			"./templates/partials/menu.gohtml",
-			"./templates/partials/sticky-header.gohtml",
-			"./templates/partials/big-header.gohtml",
-			"./templates/partials/footer.gohtml",
-			"./templates/partials/social-icons.gohtml",
-			"./templates/layout/svg-sprites.gohtml",
-			"./templates/layout/base.gohtml",
+			"templates/index.gohtml",
+			"templates/partials/menu.gohtml",
+			"templates/partials/sticky-header.gohtml",
+			"templates/partials/big-header.gohtml",
+			"templates/partials/footer.gohtml",
+			"templates/partials/social-icons.gohtml",
+			"templates/layout/svg-sprites.gohtml",
+			"templates/layout/base.gohtml",
 		},
 		"categories.gohtml": {
-			"./templates/fragments/categories.gohtml",
+			"templates/fragments/categories.gohtml",
 		},
 		"comments.gohtml": {
-			"./templates/fragments/comments.gohtml",
+			"templates/fragments/comments.gohtml",
 		},
 		"recent-posts.gohtml": {
-			"./templates/fragments/recent-posts.gohtml",
+			"templates/fragments/recent-posts.gohtml",
 		},
 		"login.gohtml": {
-			"./templates/auth/login.gohtml",
+			"templates/auth/login.gohtml",
 		},
 		"auth-navigation.gohtml": {
-			"./templates/fragments/auth-navigation.gohtml",
+			"templates/fragments/auth-navigation.gohtml",
 		},
 	}
 
@@ -116,7 +114,7 @@ func LoadViewSet() error {
 	}
 
 	for key, files := range templatesMap {
-		tmpl, err := template.New(key).Funcs(customFunctions).ParseFiles(files...)
+		tmpl, err := template.New(key).Funcs(customFunctions).ParseFS(sources, files...)
 		if err != nil {
 			return err
 		}
@@ -128,13 +126,6 @@ func LoadViewSet() error {
 }
 
 func RenderTemplate(name string, data interface{}) (string, error) {
-	if container.IsDevMode() {
-		err := LoadViewSet()
-		if err != nil {
-			return "", err
-		}
-	}
-
 	tmpl, ok := templates[name]
 	if !ok {
 		return "", fmt.Errorf("the template %s does not exist", name)
