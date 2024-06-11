@@ -240,7 +240,7 @@ func NewInfoPageData() *InfoPageData {
 	meta := defaultMeta()
 	meta.IsAuthorPage = true
 	meta.AppendName("description", "Персональный блог Харченко Александра. Общая информация.")
-	meta.AppendTitle("Информация")
+	meta.AppendTitle("Обо мне")
 
 	return &InfoPageData{Meta: meta}
 }

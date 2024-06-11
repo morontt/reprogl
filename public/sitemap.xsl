@@ -27,7 +27,7 @@
                 <h1>XML Sitemap</h1>
                 <div id="intro">
                     Вы наблюдаете слегка облагороженный сайтмап, пусть на голый XML роботы смотрят :)<br/>
-                    Карта сайта содержит <span><xsl:value-of select="count(sitemap:urlset/sitemap:url)"/></span> ссылки.
+                    Карта сайта содержит ссылок: <span><xsl:value-of select="count(sitemap:urlset/sitemap:url)"/></span>
                 </div>
                 <div id="content">
                     <table cellpadding="5">

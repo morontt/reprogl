@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gorilla/mux"
+	"net/http"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/handlers"
 	"xelbot.com/reprogl/models"
@@ -15,7 +16,10 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/category/{slug}/{page:[0-9]+}", handlers.CategoryAction(app)).Name("category")
 	siteMux.HandleFunc("/tag/{slug}", handlers.TagAction(app)).Name("tag-first")
 	siteMux.HandleFunc("/tag/{slug}/{page:[0-9]+}", handlers.TagAction(app)).Name("tag")
-	siteMux.HandleFunc("/info", handlers.InfoAction(app)).Name("info-page")
+	siteMux.HandleFunc("/about", handlers.InfoAction(app)).Name("info-page")
+	siteMux.HandleFunc("/info", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/about", http.StatusMovedPermanently)
+	})
 	siteMux.HandleFunc("/statistika", handlers.StatisticsAction(app)).Name("statistics")
 	siteMux.HandleFunc("/robots.txt", handlers.RobotsTXTAction)
 	siteMux.HandleFunc("/humans.txt", handlers.HumansTXTAction)
