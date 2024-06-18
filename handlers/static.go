@@ -94,10 +94,9 @@ func HumansTXTAction(w http.ResponseWriter, r *http.Request) {
 	body := fmt.Sprintf(
 		`/* TEAM */
 	Developer: Alexander Kharchenko
-	Contact: morontt [at] gmail [dot] com
-	Twitter: @morontt
+	Contact: morontt [at] yandex [dot] ru
 	Telegram: @morontt
-	From: Kharkov, Ukraine
+	From: Simferopol, Republic of Crimea, Russia
 
 /* THANKS */
 	Inspirer: Alex Edwards
@@ -120,7 +119,7 @@ func HumansTXTAction(w http.ResponseWriter, r *http.Request) {
 	Language: Russian
 	Doctype: HTML5
 	IDE: GoLand, VS Code, nano
-	Server: NGINX + Varnish + Golang http.Server
+	Server: NGINX + Varnish + Golang custom application
 	Powered by: Go %s`,
 		lastUpdateStr,
 		container.GoVersionNumbers,
