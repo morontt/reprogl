@@ -5,6 +5,7 @@ import (
 	"io/fs"
 
 	"github.com/yuin/goldmark"
+	emoji "github.com/yuin/goldmark-emoji"
 )
 
 func MarkdownToHTML(fname string) ([]byte, error) {
@@ -13,7 +14,10 @@ func MarkdownToHTML(fname string) ([]byte, error) {
 		return nil, err
 	}
 
-	md := goldmark.New()
+	md := goldmark.New(
+		goldmark.WithExtensions(
+			emoji.Emoji,
+		))
 	var buf bytes.Buffer
 	if err = md.Convert(source, &buf); err != nil {
 		return nil, err

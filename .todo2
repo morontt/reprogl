@@ -642,6 +642,7 @@
           "text": "parse markdown",
           "priority": "medium",
           "creation": 1718173041,
+          "completion": 1718718031,
           "tasks": [
             {
               "text": "https://github.com/gomarkdown/markdown",
