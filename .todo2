@@ -632,6 +632,40 @@
       "text": "Add JSON-feed",
       "priority": "low",
       "creation": 1717520159
+    },
+    {
+      "text": "About page",
+      "priority": "medium",
+      "creation": 1718173013,
+      "tasks": [
+        {
+          "text": "parse markdown",
+          "priority": "medium",
+          "creation": 1718173041,
+          "tasks": [
+            {
+              "text": "https://github.com/gomarkdown/markdown",
+              "priority": "medium",
+              "creation": 1718175469
+            },
+            {
+              "text": "https://github.com/yuin/goldmark",
+              "priority": "medium",
+              "creation": 1718175485
+            },
+            {
+              "text": "https://github.com/russross/blackfriday",
+              "priority": "medium",
+              "creation": 1718175501
+            }
+          ]
+        },
+        {
+          "text": "add job history",
+          "priority": "medium",
+          "creation": 1718173054
+        }
+      ]
     }
   ]
 }

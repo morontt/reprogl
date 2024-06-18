@@ -47,6 +47,7 @@ func getRoutes(app *container.Application) *mux.Router {
 	).Name("fragment-recent-posts")
 	fragmentsMux.HandleFunc("/war-in-ukraine", handlers.DaysOfWarCounter).Name("fragment-war")
 	fragmentsMux.HandleFunc("/auth-navigation", handlers.LoginLogoutLinks(app)).Name("auth-navigation")
+	fragmentsMux.HandleFunc("/markdown/{filename}", handlers.MarkdownAction(app)).Name("fragment-markdown")
 
 	return siteMux
 }
