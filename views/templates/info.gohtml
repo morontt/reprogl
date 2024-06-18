@@ -49,9 +49,8 @@
                             </figure>
                             <div class="post-block-grid-content with-image">
                                 <section class="post-preview">
-                                    {{template "info-static" .}}
+                                    {{render_esi "fragment-markdown" "filename" "about.md"}}
                                 </section>
-                                <footer class="post-meta"></footer>
                             </div>
                         </div>
                     </div>

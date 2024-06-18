@@ -15,7 +15,7 @@ import (
 const defaultPageSize = 64 * 1024
 
 var (
-	//go:embed templates
+	//go:embed templates markdown
 	sources embed.FS
 
 	templates map[string]*template.Template
@@ -34,7 +34,6 @@ func LoadViewSet() error {
 			"templates/partials/big-header.gohtml",
 			"templates/partials/footer.gohtml",
 			"templates/partials/social-icons.gohtml",
-			"templates/partials/info-static.gohtml",
 			"templates/layout/svg-sprites.gohtml",
 			"templates/layout/base.gohtml",
 		},

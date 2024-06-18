@@ -8,6 +8,7 @@ const (
 	DefaultEsiTTL = 30
 	StatisticsTTL
 	RobotsTxtTTL
+	StaticFileTTL
 	FeedTTL
 	AvatarTTL = 300
 	devMode   = true
