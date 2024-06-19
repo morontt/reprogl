@@ -9,16 +9,11 @@ import (
 )
 
 type AppConfig struct {
+	AppData
 	CDNBaseURL        string `app_config:"CDN_BASE_URL"`
 	DatabaseDSN       string `app_config:"DB"`
-	HeaderText        string `app_config:"HEADER_TEXT"`
 	Host              string `app_config:"HOST"`
 	Port              string `app_config:"PORT"`
-	Author            string `app_config:"AUTHOR"`
-	AuthorBio         string `app_config:"AUTHOR_BIO"`
-	AuthorGithub      string `app_config:"AUTHOR_GITHUB"`
-	AuthorTelegram    string `app_config:"AUTHOR_TELEGRAM"`
-	AdminEmail        string `app_config:"ADMIN_EMAIL"`
 	BackendApiUrl     string `app_config:"BACKEND_API_URL"`
 	BackendApiUser    string `app_config:"BACKEND_API_USER"`
 	BackendApiWsseKey string `app_config:"BACKEND_API_WSSE_KEY"`
@@ -31,6 +26,8 @@ type AppConfig struct {
 var cnf AppConfig
 
 func Load(file string) error {
+	cnf = AppConfig{AppData: loadAppData()}
+
 	return cnf.load(file)
 }
 

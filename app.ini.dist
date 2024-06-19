@@ -1,13 +1,7 @@
 PORT=8080
 DB=mttblog:docker@tcp(hedgehog)/mttblog?parseTime=true&loc=Europe%2FMoscow
 HOST=xelbot.com
-HEADER_TEXT=Всякие разности
 CDN_BASE_URL=https://cdn.xelbot.com
-AUTHOR=Max Mustermann
-AUTHOR_BIO=bio
-ADMIN_EMAIL=admin@example.com
-AUTHOR_TELEGRAM=example
-AUTHOR_GITHUB=example
 BACKEND_API_URL="https://zendblog.xelbot.com"
 BACKEND_API_USER=username
 BACKEND_API_WSSE_KEY="Ef1Cgsk+GgkH9AM0FZfV+eYE"

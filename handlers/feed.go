@@ -118,8 +118,8 @@ func channelData(items models.FeedItemList) models.FeedChannelData {
 		Description: cfg.Host + " - последние записи",
 		Language:    "ru-ru",
 		Charset:     "utf-8",
-		Author:      cfg.Author,
-		Email:       cfg.AdminEmail,
+		Author:      cfg.Author.FullName,
+		Email:       cfg.Author.Email,
 		Generator: fmt.Sprintf(
 			"Reprogl/%s (%s)",
 			container.GitRevision,
