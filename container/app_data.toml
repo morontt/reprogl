@@ -1,0 +1,18 @@
+header_text = "Всякие разности"
+
+[author]
+fn = "Alexander Kharchenko"
+bio = "Физик, математик и программист"
+email = "morontt@yandex.ru"
+github = "morontt"
+telegram = "xelbotcom"
+
+[author_location]
+city    = "Симферополь"
+region  = "Республика Крым"
+country = "Россия"
+
+[author_location_en]
+city    = "Simferopol"
+region  = "Republic of Crimea"
+country = "Russia"

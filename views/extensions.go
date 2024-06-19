@@ -50,7 +50,7 @@ func nl2br(s string) string {
 }
 
 func authorName() string {
-	return container.GetConfig().Author
+	return container.GetConfig().Author.FullName
 }
 
 func authorBio() string {
@@ -65,15 +65,15 @@ func authorBio() string {
 		rune(0x1F990), // shrimp
 	}
 
-	return container.GetConfig().AuthorBio + " " + string(emoij[rand.Intn(len(emoij))])
+	return container.GetConfig().Author.Bio + " " + string(emoij[rand.Intn(len(emoij))])
 }
 
 func authorGithub() string {
-	return fmt.Sprintf("https://github.com/%s", container.GetConfig().AuthorGithub)
+	return fmt.Sprintf("https://github.com/%s", container.GetConfig().Author.GithubUser)
 }
 
 func authorTelegram() string {
-	return fmt.Sprintf("https://t.me/%s/", container.GetConfig().AuthorTelegram)
+	return fmt.Sprintf("https://t.me/%s/", container.GetConfig().Author.TelegramChannel)
 }
 
 func renderESI(routeName string, pairs ...string) template.HTML {

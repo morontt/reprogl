@@ -82,7 +82,7 @@ func PageAction(app *container.Application) http.HandlerFunc {
 		templateData.SetOpenGraphProperty("og:type", "article")
 		templateData.SetOpenGraphProperty("article:published_time", article.CreatedAt.Format(time.RFC3339))
 		templateData.SetOpenGraphProperty("article:modified_time", article.UpdatedAt.Format(time.RFC3339))
-		templateData.SetOpenGraphProperty("article:author", cfg.Author)
+		templateData.SetOpenGraphProperty("article:author", cfg.Author.FullName)
 		if article.HasImage() {
 			image := article.SrcImageForOpenGraph()
 			if image != nil {
