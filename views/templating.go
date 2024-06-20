@@ -94,6 +94,7 @@ func LoadViewSet() error {
 		"nl2br":         nl2br,
 		"author_bio":    authorBio,
 		"author_data":   authorDataPart,
+		"author_adr":    authorLocation,
 		"substr":        subString,
 		"time_tag":      timeTag,
 		"asset":         assetTag,

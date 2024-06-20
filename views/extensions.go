@@ -83,6 +83,23 @@ func authorDataPart(item string) (str string) {
 	return
 }
 
+func authorLocation() template.HTML {
+	location := container.GetConfig().AuthorLocationRu
+	s := make([]string, 0, 3)
+
+	if location.City != "" {
+		s = append(s, "<span class=\"locality\">"+location.City+"</span>")
+	}
+	if location.Region != "" {
+		s = append(s, "<span class=\"region\">"+location.Region+"</span>")
+	}
+	if location.Country != "" {
+		s = append(s, "<span class=\"country-name\">"+location.Country+"</span>")
+	}
+
+	return template.HTML(strings.Join(s, ", "))
+}
+
 func renderESI(routeName string, pairs ...string) template.HTML {
 	s := fmt.Sprintf(
 		"<esi:include src=\"%s\" onerror=\"continue\"/>",
