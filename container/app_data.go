@@ -2,6 +2,7 @@ package container
 
 import (
 	_ "embed"
+	"strings"
 
 	"github.com/BurntSushi/toml"
 )
@@ -43,4 +44,20 @@ func loadAppData() AppData {
 	}
 
 	return data
+}
+
+func (l Location) String() string {
+	s := make([]string, 0, 3)
+
+	if l.City != "" {
+		s = append(s, l.City)
+	}
+	if l.Region != "" {
+		s = append(s, l.Region)
+	}
+	if l.Country != "" {
+		s = append(s, l.Country)
+	}
+
+	return strings.Join(s, ", ")
 }

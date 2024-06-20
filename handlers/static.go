@@ -91,12 +91,14 @@ func HumansTXTAction(w http.ResponseWriter, r *http.Request) {
 		lastUpdateStr = lastUpdate.Format("2006/01/02")
 	}
 
+	cfg := container.GetConfig()
+
 	body := fmt.Sprintf(
 		`/* TEAM */
-	Developer: Alexander Kharchenko
-	Contact: morontt [at] yandex [dot] ru
+	Developer: %s
+	Contact: %s
 	Telegram: @morontt
-	From: Simferopol, Republic of Crimea, Russia
+	From: %s
 
 /* THANKS */
 	Inspirer: Alex Edwards
@@ -121,12 +123,15 @@ func HumansTXTAction(w http.ResponseWriter, r *http.Request) {
 	IDE: GoLand, VS Code, nano
 	Server: NGINX + Varnish + Golang custom application
 	Powered by: Go %s`,
+		cfg.Author.FullName,
+		cfg.Author.Email,
+		cfg.AuthorLocationEn,
 		lastUpdateStr,
 		container.GoVersionNumbers,
 	)
 
 	cacheControl(w, container.StatisticsTTL)
-	w.Header().Set("Content-Type", "text/plain")
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Write([]byte(body + "\n"))
 }
 
