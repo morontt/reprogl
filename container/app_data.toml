@@ -6,6 +6,7 @@ bio = "Физик, математик и программист"
 email = "morontt@yandex.ru"
 github = "morontt"
 telegram = "xelbotcom"
+mastodon = "https://mastodon.online/@morontt"
 
 [author_location]
 city    = "Симферополь"
