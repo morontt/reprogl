@@ -27,8 +27,8 @@ func init() {
 
 func LoadViewSet() error {
 	templatesMap := map[string][]string{
-		"info.gohtml": {
-			"templates/info.gohtml",
+		"about.gohtml": {
+			"templates/about.gohtml",
 			"templates/partials/menu.gohtml",
 			"templates/partials/sticky-header.gohtml",
 			"templates/partials/big-header.gohtml",
@@ -95,6 +95,7 @@ func LoadViewSet() error {
 		"author_bio":    authorBio,
 		"author_data":   authorDataPart,
 		"author_adr":    authorLocation,
+		"author_job":    authorJob,
 		"substr":        subString,
 		"time_tag":      timeTag,
 		"asset":         assetTag,

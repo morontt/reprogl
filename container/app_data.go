@@ -13,6 +13,8 @@ type AppData struct {
 
 	AuthorLocationRu Location `toml:"author_location"`
 	AuthorLocationEn Location `toml:"author_location_en"`
+
+	Jobs JobHistory `toml:"jobs"`
 }
 
 type Author struct {

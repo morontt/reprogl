@@ -15,7 +15,7 @@ func InfoAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		templateData := views.NewInfoPageData()
 		templateData.SetCanonical(container.GenerateAbsoluteURL("info-page"))
-		err := views.WriteTemplateWithContext(r.Context(), w, "info.gohtml", templateData)
+		err := views.WriteTemplateWithContext(r.Context(), w, "about.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 

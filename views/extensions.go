@@ -100,6 +100,19 @@ func authorLocation() template.HTML {
 	return template.HTML(strings.Join(s, ", "))
 }
 
+func authorJob() template.HTML {
+	jobs := container.GetConfig().Jobs
+	job := jobs.Last()
+	s := fmt.Sprintf(
+		"<span class=\"title\">%s</span> в <a class=\"org\" href=\"%s\">%s</a>",
+		job.Title,
+		job.Link,
+		job.Company,
+	)
+
+	return template.HTML(s)
+}
+
 func renderESI(routeName string, pairs ...string) template.HTML {
 	s := fmt.Sprintf(
 		"<esi:include src=\"%s\" onerror=\"continue\"/>",

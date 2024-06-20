@@ -17,3 +17,31 @@ country = "Россия"
 city    = "Simferopol"
 region  = "Republic of Crimea"
 country = "Russia"
+
+[[jobs]]
+company = "Lazy-Ants"
+link = "https://lazy-ants.de/"
+title = "Senior PHP Developer"
+start = 2011-07-01
+end = 2016-08-31
+
+[[jobs]]
+company = "Zfort Group"
+link = "https://zfort.com/"
+title = "Software Developer"
+start = 2016-09-01
+end = 2019-07-01
+
+[[jobs]]
+company = "Brander"
+link = "https://brander.ua/"
+title = "Senior PHP Developer"
+start = 2019-09-01
+end = 2020-06-01
+
+[[jobs]]
+company = "AutoDoc"
+link = "https://www.autodoc.eu/"
+title = "Senior PHP Developer"
+start = 2020-07-01
+end = 2022-12-12
