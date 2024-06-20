@@ -694,6 +694,19 @@ html.no-csstransforms3d {
                     }
                 }
             }
+            .job-item {
+                margin-bottom: rem-calc(30);
+                .job-emoji {
+                    float: left;
+                    font-size: rem-calc(42);
+                    margin-right: rem-calc(20);
+                }
+                .job-dates {
+                    color: lighten($color-main-dark, 50%);
+                    font-size: 75%;
+                    margin-top: rem-calc(6);
+                }
+            }
         }
         .post-read-more-btn {
             @include read-more-button;

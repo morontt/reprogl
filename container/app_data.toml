@@ -45,3 +45,17 @@ link = "https://www.autodoc.eu/"
 title = "Senior PHP Developer"
 start = 2020-07-01
 end = 2022-12-12
+
+[[jobs]]
+company = "Элакс"
+title = "Electrical Engineer"
+start = 2007-12-01
+end = 2009-09-01
+emoji = "electrical"
+
+[[jobs]]
+company = "VK"
+link = "https://team.vk.company/"
+title = "Разработчик"
+start = 2024-06-25
+end = 2099-01-01

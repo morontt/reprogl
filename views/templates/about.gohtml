@@ -55,6 +55,36 @@
                             </div>
                         </div>
                     </div>
+                    <div class="post post-block-grid-item list">
+                        <div class="post-block-wrapper">
+                            <div class="post-block-grid-content no-image">
+                                <header class="post-header">
+                                    <h3 class="post-title">
+                                        История программистской трудовой деятельности
+                                    </h3>
+                                    <div class="post-title-separator"></div>
+                                </header>
+                                <section class="post-preview">
+                                    <div class="row">
+                                        {{range .Jobs}}
+                                            <div class="small-12 medium-6 columns job-item clearfix">
+                                                <div class="job-emoji">{{.Emoji}}</div>
+                                                <div>
+                                                    <strong>{{.Company}}</strong>
+                                                    {{if .Link}}(<a href="{{.Link}}">{{.LinkShort}}</a>){{end}}<br/>
+                                                    {{.Title}}
+                                                </div>
+                                                <div class="job-dates">
+                                                    {{.Start}} &#8211; {{.End}} &#183; {{.Duration}}
+                                                </div>
+                                            </div>
+                                        {{end}}
+                                    </div>
+                                    {{render_esi "fragment-markdown" "filename" "job-history.md"}}
+                                </section>
+                            </div>
+                        </div>
+                    </div>
                 </article>
             </div>
             <div class="row"></div>

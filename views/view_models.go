@@ -68,6 +68,7 @@ type InfoPageData struct {
 	Meta
 	HeaderInfo HeaderLineInfo
 	flashObjectPart
+	Jobs container.JobHistory
 }
 
 type SidebarDummyArticle struct {
@@ -242,7 +243,10 @@ func NewInfoPageData() *InfoPageData {
 	meta.AppendName("description", "Персональный блог Харченко Александра. Общая информация.")
 	meta.AppendTitle("Обо мне")
 
-	return &InfoPageData{Meta: meta}
+	return &InfoPageData{
+		Meta: meta,
+		Jobs: container.GetConfig().Jobs.Sort(),
+	}
 }
 
 func NewStatisticsPageData() *StatisticsPageData {
