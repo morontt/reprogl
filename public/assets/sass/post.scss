@@ -412,16 +412,13 @@ html[data-useragent*='MSIE 9.0'] .post-view .post-view-sidebar .post-view-elems 
 
 // author info box in post view page
 .author-info {
-    padding: 0;
     position: relative;
-    padding-top: rem-calc(60);
-    padding-bottom: rem-calc(60);
+    padding: rem-calc(60) 0;
     margin: rem-calc(60) rem-calc(15) rem-calc(40);
     background: darken($color-main-light, 3%);
     border-radius: rem-calc(5);
     .post-author {
-        padding-left: rem-calc(30);
-        padding-right: rem-calc(30);
+        padding: 0 rem-calc(30);
         text-align: center;
         .author-label {
             display: block;
@@ -450,9 +447,11 @@ html[data-useragent*='MSIE 9.0'] .post-view .post-view-sidebar .post-view-elems 
         }
         > p {
             font-size: rem-calc(18);
+            margin-bottom: 0.5rem;
             a {
                 color: $color-main-contrast;
                 font-weight: 400;
+                @include corner-link;
             }
         }
         .post-author-avatar {
@@ -473,6 +472,18 @@ html[data-useragent*='MSIE 9.0'] .post-view .post-view-sidebar .post-view-elems 
         }
         @media only screen and (min-width: 40.063em) {
             text-align: left;
+        }
+        .adr {
+            font-size: rem-calc(14);
+        }
+        &.vcard {
+            border: none;
+            display: block;
+            margin: 0;
+            .fn {
+                font-weight: inherit;
+                font-size: inherit;
+            }
         }
     }
 }

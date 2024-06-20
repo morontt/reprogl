@@ -49,10 +49,6 @@ func nl2br(s string) string {
 	return strings.Replace(s, "\n", "<br/>", -1)
 }
 
-func authorName() string {
-	return container.GetConfig().Author.FullName
-}
-
 func authorBio() string {
 	emoij := []rune{
 		rune(0x1F41C), // ant
@@ -68,12 +64,21 @@ func authorBio() string {
 	return container.GetConfig().Author.Bio + " " + string(emoij[rand.Intn(len(emoij))])
 }
 
-func authorGithub() string {
-	return fmt.Sprintf("https://github.com/%s", container.GetConfig().Author.GithubUser)
-}
+func authorDataPart(item string) (str string) {
+	author := container.GetConfig().Author
 
-func authorTelegram() string {
-	return fmt.Sprintf("https://t.me/%s/", container.GetConfig().Author.TelegramChannel)
+	switch item {
+	case "name":
+		str = author.FullName
+	case "github":
+		str = fmt.Sprintf("https://github.com/%s", author.GithubUser)
+	case "telegram":
+		str = fmt.Sprintf("https://t.me/%s/", author.TelegramChannel)
+	default:
+		str = "N/A"
+	}
+
+	return
 }
 
 func renderESI(routeName string, pairs ...string) template.HTML {

@@ -1,7 +1,7 @@
 {{define "author-info"}}
 <section class="author-info">
     <div class="row">
-        <section class="post-author small-12 columns">
+        <section class="post-author small-12 columns vcard">
             <picture>
                 <source srcset="{{ cdn }}/images/space_200.avif" type="image/avif"/>
                 <source srcset="{{ cdn }}/images/space_200.webp" type="image/webp"/>
@@ -9,11 +9,22 @@
                      class="post-author-avatar"
                      width="200"
                      height="200"
-                     alt="{{author_name}}">
+                     alt="{{author_data "name"}}">
             </picture>
             <span class="author-label">Автор</span>
-            <h2><a href="{{path "info-page"}}" class="author-link-name">{{author_name}}</a></h2>
-            <p>{{author_bio}}</p>
+            <h2><a href="{{path "info-page"}}" class="author-link-name fn">{{author_data "name"}}</a></h2>
+            <p>
+                {{author_bio}}
+                <br/><br/>
+                <span class="title">Разработчик</span> в
+                <a class="org" href="https://team.vk.company/">VK</a>
+            </p>
+            <div class="adr">
+                <span class="glyphicon glyphicon-map-marker"></span>
+                <span class="locality">Симферополь</span>,
+                <span class="region">Республика Крым</span>,
+                <span class="country-name">Россия</span>
+            </div>
         </section>
     </div>
 </section>
