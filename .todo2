@@ -642,6 +642,7 @@
       "text": "About page",
       "priority": "medium",
       "creation": 1718173013,
+      "completion": 1718918135,
       "tasks": [
         {
           "text": "parse markdown",
