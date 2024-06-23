@@ -53,7 +53,7 @@ func (j *Job) LinkShort() (result string) {
 }
 
 func (j *Job) Start() string {
-	return j.StartDate.Format("Jan 2006")
+	return ruMonthName(j.StartDate.Month()) + " " + j.StartDate.Format("2006")
 }
 
 func (j *Job) End() string {
@@ -62,7 +62,7 @@ func (j *Job) End() string {
 		return "текущее"
 	}
 
-	return j.EndDate.Format("Jan 2006")
+	return ruMonthName(j.EndDate.Month()) + " " + j.EndDate.Format("2006")
 }
 
 func (j *Job) Duration() string {
@@ -138,4 +138,23 @@ func durationString(delta int) string {
 	}
 
 	return fmt.Sprintf("%d года", y) + monthPart
+}
+
+func ruMonthName(m time.Month) (res string) {
+	months := []string{
+		"Янв",
+		"Февр",
+		"Март",
+		"Апр",
+		"Май",
+		"Июнь",
+		"Июль",
+		"Авг",
+		"Сент",
+		"Окт",
+		"Нояб",
+		"Дек",
+	}
+
+	return months[int(m)-1]
 }
