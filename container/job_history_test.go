@@ -1,6 +1,10 @@
 package container
 
-import "testing"
+import (
+	"strconv"
+	"testing"
+	"time"
+)
 
 func TestDurationStrings(t *testing.T) {
 	cases := map[int]string{
@@ -36,5 +40,62 @@ func TestDurationStrings(t *testing.T) {
 		if actual != expected {
 			t.Errorf("durationString error: got %s; want %s", actual, expected)
 		}
+	}
+}
+
+func TestDuration(t *testing.T) {
+	cases := []struct {
+		job  Job
+		want string
+	}{
+		{
+			job: Job{
+				Company:   "Company_1",
+				StartDate: time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC),
+				EndDate:   time.Date(2020, time.February, 1, 0, 0, 0, 0, time.UTC),
+			},
+			want: "1 мес.",
+		},
+		{
+			job: Job{
+				Company:   "Company_2",
+				StartDate: time.Date(2019, time.March, 10, 0, 0, 0, 0, time.UTC),
+				EndDate:   time.Date(2020, time.April, 2, 0, 0, 0, 0, time.UTC),
+			},
+			want: "1 год 1 мес.",
+		},
+		{
+			job: Job{
+				Company:   "Company_3",
+				StartDate: time.Date(2023, time.June, 4, 0, 0, 0, 0, time.UTC),
+				EndDate:   time.Date(2023, time.June, 18, 0, 0, 0, 0, time.UTC),
+			},
+			want: "0 мес.",
+		},
+		{
+			job: Job{
+				Company:   "Company_4",
+				StartDate: time.Date(2023, time.June, 6, 0, 0, 0, 0, time.UTC),
+				EndDate:   time.Date(2023, time.June, 21, 0, 0, 0, 0, time.UTC),
+			},
+			want: "1 мес.",
+		},
+		{
+			job: Job{
+				Company:   "Company_5",
+				StartDate: time.Date(2021, time.May, 6, 0, 0, 0, 0, time.UTC),
+				EndDate:   time.Date(2022, time.July, 16, 0, 0, 0, 0, time.UTC),
+			},
+			want: "1 год 2 мес.",
+		},
+	}
+
+	for idx, item := range cases {
+		t.Run(strconv.Itoa(idx), func(t *testing.T) {
+			res := item.job.Duration()
+			if res != item.want {
+				t.Errorf("%s : got %s; want %s", item.job.Company, res, item.want)
+			}
+		})
 	}
 }

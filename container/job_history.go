@@ -80,7 +80,10 @@ func (j *Job) Duration() string {
 	m0 := int(j.StartDate.Month())
 	m1 := int(end.Month())
 
-	return durationString(12*(y1-y0) + (m1 - m0) + 1)
+	d0 := j.StartDate.Day()
+	d1 := end.Day()
+
+	return durationString(12*(y1-y0) + (m1 - m0) + int(0.5+float32(d1-d0)/30.0))
 }
 
 func (j *Job) Emoji() string {
