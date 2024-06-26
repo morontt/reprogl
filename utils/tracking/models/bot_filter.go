@@ -133,6 +133,12 @@ var engines = []string{
 	"axios/",
 	"archive.org_bot",
 	"googleother",
+	"summalybot",
+	"friendica",
+	"pleroma",
+	"akkoma",
+	"gaisbot",
+	"stractbot",
 }
 
 var (
