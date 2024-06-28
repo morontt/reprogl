@@ -674,6 +674,40 @@
           "creation": 1718173054
         }
       ]
+    },
+    {
+      "text": "Раздел проекты",
+      "priority": "medium",
+      "creation": 1719561865,
+      "tasks": [
+        {
+          "text": "Список проектов",
+          "priority": "medium",
+          "creation": 1719561913
+        },
+        {
+          "text": "Страницы проектов",
+          "priority": "medium",
+          "creation": 1719561925,
+          "tasks": [
+            {
+              "text": "Markdown + meta-info",
+              "priority": "medium",
+              "creation": 1719561967
+            },
+            {
+              "text": "golang import info (if necessary)",
+              "priority": "medium",
+              "creation": 1719562055
+            },
+            {
+              "text": "golang doc generation (if necessary)",
+              "priority": "medium",
+              "creation": 1719562119
+            }
+          ]
+        }
+      ]
     }
   ]
 }
