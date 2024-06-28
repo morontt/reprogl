@@ -139,6 +139,7 @@ var engines = []string{
 	"akkoma",
 	"gaisbot",
 	"stractbot",
+	"flipboardproxy",
 }
 
 var (

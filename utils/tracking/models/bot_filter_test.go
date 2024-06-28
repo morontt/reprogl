@@ -102,6 +102,10 @@ func TestBotFilter(t *testing.T) {
 			name: "Mozilla/5.0 (compatible; archive.org_bot +http://archive.org/details/archive.org_bot) Zeno/0569f25 warc/v0.8.33",
 			want: true,
 		},
+		{
+			name: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0 (FlipboardProxy/1.2; +http://flipboard.com/browserproxy)",
+			want: true,
+		},
 	}
 
 	for idx, item := range tests {
