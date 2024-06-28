@@ -11,9 +11,9 @@ import (
 )
 
 func (app *Application) SetupDatabase() error {
-	db, err := getDBConnection(cnf.DatabaseDSN, app.InfoLog)
+	db, err := getDBConnection(app.InfoLog)
 	if err != nil {
-		app.ErrorLog.Fatal(err)
+		return err
 	}
 
 	app.DB = db
@@ -22,12 +22,12 @@ func (app *Application) SetupDatabase() error {
 	return nil
 }
 
-func getDBConnection(dsn string, logger *log.Logger) (db *sql.DB, err error) {
+func getDBConnection(logger *log.Logger) (db *sql.DB, err error) {
 	var i int
 
 	for i < 5 {
 		logger.Print("Trying to connect to the database")
-		db, err = openDB(dsn)
+		db, err = openDB(cnf.DatabaseDSN)
 		if err == nil {
 			logger.Print("The database is connected")
 
