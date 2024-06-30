@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime"
+	"time"
 
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
@@ -30,9 +31,23 @@ func SitemapAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		for _, location := range *articles {
+		for _, location := range articles {
 			location.URL = container.GenerateAbsoluteURL("article", "slug", location.Slug)
 		}
+
+		var dt1 time.Time
+		dt1, _ = time.Parse("02 Jan 2006 15:04:05 -0700", "25 Jun 2024 22:51:33 +0300")
+		articles = append(articles, &models.SitemapItem{
+			URL:       container.GenerateAbsoluteURL("info-page"),
+			UpdatedAt: models.SitemapTime(dt1),
+			Changfreq: "monthly",
+		})
+		dt1, _ = time.Parse("02 Jan 2006 15:04:05 -0700", "25 Apr 2024 17:24:39 +0300")
+		articles = append(articles, &models.SitemapItem{
+			URL:       container.GenerateAbsoluteURL("statistics"),
+			UpdatedAt: models.SitemapTime(dt1),
+			Changfreq: "monthly",
+		})
 
 		urlSet := models.SitemapURLSet{Items: articles}
 

@@ -226,7 +226,7 @@ func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (*mod
 	return ar.newPaginator(countQuery, query, page, params...)
 }
 
-func (ar *ArticleRepository) GetSitemapCollection() (*models.SitemapItemList, error) {
+func (ar *ArticleRepository) GetSitemapCollection() (models.SitemapItemList, error) {
 	query := `
 		SELECT
 			url,
@@ -259,7 +259,7 @@ func (ar *ArticleRepository) GetSitemapCollection() (*models.SitemapItemList, er
 		articles = append(articles, &item)
 	}
 
-	return &articles, nil
+	return articles, nil
 }
 
 func (ar *ArticleRepository) GetFeedCollection() (models.FeedItemList, error) {

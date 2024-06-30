@@ -637,7 +637,8 @@
     {
       "text": "Статические страницы в sitemap.xml",
       "priority": "medium",
-      "creation": 1718047085
+      "creation": 1718047085,
+      "completion": 1719737452
     },
     {
       "text": "About page",
