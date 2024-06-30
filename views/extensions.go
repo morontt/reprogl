@@ -76,6 +76,8 @@ func authorDataPart(item string) (str string) {
 		str = fmt.Sprintf("https://t.me/%s/", author.TelegramChannel)
 	case "mastodon":
 		str = author.MastodonLink
+	case "gitverse":
+		str = fmt.Sprintf("https://gitverse.ru/%s", author.GitVerseUser)
 	default:
 		str = "N/A"
 	}

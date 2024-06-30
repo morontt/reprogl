@@ -133,6 +133,9 @@ $color-error: #EF3B3A;
     .icon.icon-mastodon svg:hover {
         fill: #6364FF;
     }
+    .icon.icon-gitverse svg:hover {
+        fill: #525EE1;
+    }
 
     @media screen and (-ms-high-contrast: none), (-ms-high-contrast: active) {
         .icon svg {
