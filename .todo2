@@ -709,6 +709,12 @@
           ]
         }
       ]
+    },
+    {
+      "text": "Сгенерировать новые иконки, вроде apple-icon-72x72.png",
+      "priority": "medium",
+      "creation": 1720156455,
+      "completion": 1720376414
     }
   ]
 }
