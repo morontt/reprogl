@@ -3,6 +3,9 @@
 <html lang="ru" prefix="{{template "html_prefix"}}">
 <head>
     <meta charset="utf-8">
+    <link rel="dns-prefetch" href="{{ cdn }}">
+    <link rel="dns-prefetch" href="//s05.flagcounter.com">
+    <link rel="preconnect" href="{{ cdn }}" crossorigin>
     <title>{{.BrowserTitle}}</title>
     {{- with .MetaParts -}}{{- range . }}
     <meta name="{{.Name}}" content="{{.Content}}">
@@ -13,9 +16,6 @@
     {{- with .Ogp -}}{{- range $key, $value := . }}
     <meta property="{{ $key }}" content="{{ $value }}">
     {{- end}}{{- end}}
-    <link rel="preconnect" href="{{ cdn }}" crossorigin>
-    <link href="//s05.flagcounter.com" rel="dns-prefetch">
-    <link rel="icon" href="/images/svg/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
