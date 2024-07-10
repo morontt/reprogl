@@ -715,6 +715,11 @@
       "priority": "medium",
       "creation": 1720156455,
       "completion": 1720376414
+    },
+    {
+      "text": "5 неудачных попыток ввода пароля и блокировка на полчаса",
+      "priority": "medium",
+      "creation": 1720600352
     }
   ]
 }
