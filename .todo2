@@ -720,6 +720,33 @@
       "text": "5 неудачных попыток ввода пароля и блокировка на полчаса",
       "priority": "medium",
       "creation": 1720600352
+    },
+    {
+      "text": "New favicons",
+      "priority": "medium",
+      "creation": 1720767768,
+      "tasks": [
+        {
+          "text": "Multiple sizes in .ico file",
+          "priority": "medium",
+          "creation": 1720767810
+        },
+        {
+          "text": "https://stackoverflow.com/questions/9150691/how-to-have-multiple-favicon-sizes-yet-serve-only-a-16x16-by-default",
+          "priority": "low",
+          "creation": 1720767840
+        },
+        {
+          "text": "https://jec.fish/blog/favicons-manifest",
+          "priority": "low",
+          "creation": 1720767857
+        },
+        {
+          "text": "https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs",
+          "priority": "low",
+          "creation": 1720767875
+        }
+      ]
     }
   ]
 }
