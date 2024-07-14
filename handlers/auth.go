@@ -91,7 +91,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 			deleteCsrfCookie(w)
 			if authError, found := err.(auth.Error); found {
 				session.Put(r.Context(), session.FlashErrorKey, err.Error())
-				app.InfoLog.Println(authError.InfoLogMessage())
+				app.InfoLog.Println("[AUTH] " + authError.InfoLogMessage())
 				http.Redirect(w, r, container.GenerateURL("login"), http.StatusSeeOther)
 			} else {
 				app.ServerError(w, err)
