@@ -3,9 +3,7 @@ package handlers
 import (
 	"context"
 	"crypto/rand"
-	"crypto/subtle"
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -17,6 +15,7 @@ import (
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/security"
+	"xelbot.com/reprogl/services/auth"
 	"xelbot.com/reprogl/session"
 	"xelbot.com/reprogl/views"
 )
@@ -87,16 +86,12 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		username := r.PostForm.Get("username")
-		password := r.PostForm.Get("password")
-
-		repo := repositories.UserRepository{DB: app.DB}
-		user, err := repo.GetLoggedUserByUsername(username)
+		user, err := auth.HandleLoginPassword(app, r.PostForm.Get("username"), r.PostForm.Get("password"))
 		if err != nil {
 			deleteCsrfCookie(w)
-			if errors.Is(err, models.RecordNotFound) {
-				session.Put(r.Context(), session.FlashErrorKey, "Недействительные логин/пароль")
-				app.InfoLog.Printf("[AUTH] user \"%s\" not found\n", username)
+			if authError, found := err.(auth.Error); found {
+				session.Put(r.Context(), session.FlashErrorKey, err.Error())
+				app.InfoLog.Println(authError.InfoLogMessage())
 				http.Redirect(w, r, container.GenerateURL("login"), http.StatusSeeOther)
 			} else {
 				app.ServerError(w, err)
@@ -105,15 +100,9 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		passwordHash := security.EncodePassword(password, user.Salt)
-		if subtle.ConstantTimeCompare([]byte(passwordHash), []byte(user.PasswordHash)) == 0 {
-			session.Put(r.Context(), session.FlashErrorKey, "Недействительные логин/пароль")
-			app.InfoLog.Printf("[AUTH] invalid password for \"%s\"\n", username)
-		} else {
-			session.Put(r.Context(), session.FlashSuccessKey, fmt.Sprintf("Привет, %s :)", username))
-			app.InfoLog.Printf("[AUTH] success for \"%s\"\n", username)
-			authSuccess(user, app, container.RealRemoteAddress(r), r.Context())
-		}
+		session.Put(r.Context(), session.FlashSuccessKey, fmt.Sprintf("Привет, %s :)", user.Username))
+		app.InfoLog.Printf("[AUTH] success for \"%s\"\n", user.Username)
+		authSuccess(user, app, container.RealRemoteAddress(r), r.Context())
 
 		var redirectUrl string
 		if cookie, errNoCookie := r.Cookie(session.RefererCookie); errNoCookie == nil {
