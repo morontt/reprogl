@@ -1,11 +1,9 @@
-version: "3.5"
 services:
     gopher:
         build:
             context: .
             dockerfile: "docker/app/Dockerfile"
-            args:
-                HOST_UID: ${HOST_UID}
+        platform: linux/amd64
         container_name: "gopher"
         volumes:
             - ./:/var/www/app
@@ -19,6 +17,7 @@ services:
 
     varnish:
         image: varnish:7.2-alpine
+        platform: linux/amd64
         container_name: "reprogl_varnish"
         environment:
             BAN_TOKEN: ${BAN_TOKEN}

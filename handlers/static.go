@@ -84,7 +84,7 @@ func RobotsTXTAction(w http.ResponseWriter, r *http.Request) {
 
 func HumansTXTAction(w http.ResponseWriter, r *http.Request) {
 	var lastUpdateStr string
-	lastUpdate, err := time.Parse(time.RFC1123, container.BuildTime)
+	lastUpdate, err := time.Parse(time.RFC3339, container.BuildTime)
 	if err != nil {
 		lastUpdateStr = container.BuildTime
 	} else {

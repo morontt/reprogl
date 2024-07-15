@@ -46,10 +46,16 @@ func checkBuildFlags() {
 		panic("ldflags: xelbot.com/reprogl/container.GitRevision is empty")
 	}
 
-	_, err := time.Parse(time.RFC1123, BuildTime)
+	_, err := time.Parse(time.RFC3339, BuildTime)
 	if err != nil {
 		panic("ldflags: xelbot.com/reprogl/container.BuildTime wrong format")
 	}
+}
+
+func BuildTimeRFC1123() string {
+	t, _ := time.Parse(time.RFC3339, BuildTime)
+
+	return t.Format(time.RFC1123)
 }
 
 func SetURLGenerator(u URLGenerator) {

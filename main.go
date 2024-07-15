@@ -24,7 +24,7 @@ func main() {
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	infoLog.Printf("Version: %s (tag: %s)", container.Version, container.GetBuildTag())
-	infoLog.Printf("Build time: %s", container.BuildTime)
+	infoLog.Printf("Build time: %s", container.BuildTimeRFC1123())
 	infoLog.Printf("Go version: %s", runtime.Version())
 
 	handleError(container.Load("app.ini"), errorLog)
