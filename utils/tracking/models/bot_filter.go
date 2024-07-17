@@ -173,5 +173,9 @@ func isBot(agent string) bool {
 		return true
 	}
 
+	if strings.Contains(agent, "facebook") && strings.Contains(agent, "externalhit") {
+		return true
+	}
+
 	return false
 }

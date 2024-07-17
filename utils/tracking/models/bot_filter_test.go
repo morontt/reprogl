@@ -35,6 +35,10 @@ func TestBotFilter(t *testing.T) {
 			want: false,
 		},
 		{
+			name: "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php),gzip(gfe)",
+			want: true,
+		},
+		{
 			name: "Java/1.8.0_144",
 			want: true,
 		},
