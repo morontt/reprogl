@@ -29,3 +29,9 @@ func glyphiconsFont() string {
       url(%cdn%/assets/fonts/glyphicons-halflings-regular.ttf) format("truetype"),url(%cdn%/assets/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format("svg");
       font-display: swap}`
 }
+
+func commonStyle() string {
+	st := glyphiconsFont()
+
+	return st
+}

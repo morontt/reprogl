@@ -2,7 +2,7 @@ package style
 
 func GenerateStatisticsStyles() string {
 	style := "<style>\n"
-	style += glyphiconsFont() + "\n"
+	style += commonStyle() + "\n"
 	style += defaultStyleWithoutImage() + "\n"
 	style += "    </style>"
 
