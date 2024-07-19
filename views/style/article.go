@@ -10,7 +10,7 @@ import (
 func GenerateArticleStyles(article *models.Article, acceptAvif, acceptWebp bool) string {
 	style := "<style>\n"
 
-	style += glyphiconsFont() + "\n"
+	style += commonStyle() + "\n"
 	if article.HasImage() {
 		style += styleWithImage(article.FeaturedImage, acceptAvif, acceptWebp)
 	} else {

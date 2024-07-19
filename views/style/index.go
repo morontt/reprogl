@@ -2,7 +2,7 @@ package style
 
 func GenerateIndexStyles() string {
 	style := "<style>\n"
-	style += glyphiconsFont() + "\n"
+	style += commonStyle() + "\n"
 	style += indexBackground() + "\n"
 	style += "    </style>"
 

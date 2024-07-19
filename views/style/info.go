@@ -2,7 +2,7 @@ package style
 
 func GenerateInfoStyles() string {
 	style := "<style>\n"
-	style += glyphiconsFont() + "\n"
+	style += commonStyle() + "\n"
 	style += infoBackground() + "\n"
 	style += "    </style>"
 
