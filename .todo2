@@ -751,7 +751,19 @@
     {
       "text": "Slow server processing",
       "priority": "medium",
-      "creation": 1721379002
+      "creation": 1721379002,
+      "tasks": [
+        {
+          "text": "https://docs.nginx.com/nginx/admin-guide/monitoring/logging/",
+          "priority": "low",
+          "creation": 1721416205
+        },
+        {
+          "text": "https://nginx.org/en/docs/http/ngx_http_log_module.html",
+          "priority": "low",
+          "creation": 1721416242
+        }
+      ]
     }
   ]
 }
