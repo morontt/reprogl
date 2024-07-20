@@ -14,6 +14,8 @@ type Activity struct {
 	Status       int
 	FingerPrint  string
 	LocationID   int
+	Duration     time.Duration
+	Method       string
 }
 
 func (a *Activity) IsBot() bool {

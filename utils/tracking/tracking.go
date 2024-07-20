@@ -38,6 +38,7 @@ func CreateActivity(req *http.Request) *trackmodels.Activity {
 		Addr:         ip,
 		UserAgent:    req.UserAgent(),
 		RequestedURI: req.URL.RequestURI(),
+		Method:       req.Method,
 	}
 
 	setupBrowserPassiveFingerprint(req, activity)
@@ -82,7 +83,9 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		articleId = articleRepo.GetIdBySlug(matches[slugIndex])
 	}
 
-	if !trackingCache.Has(activity.FingerPrint) || activity.Status != http.StatusOK {
+	if !trackingCache.Has(activity.FingerPrint) ||
+		activity.Status != http.StatusOK ||
+		activity.Method != "GET" {
 		err = repo.SaveTracking(activity, userAgentId, articleId)
 		if err != nil {
 			app.LogError(err)

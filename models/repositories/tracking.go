@@ -74,6 +74,7 @@ func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agent
 		"ip_addr":     activity.Addr.String(),
 		"is_cdn":      activity.IsCDN,
 		"status_code": activity.Status,
+		"duration":    activity.Duration.Microseconds(),
 
 		"time_created": activity.Time.Format("2006-01-02 15:04:05.000"),
 	}
@@ -89,6 +90,10 @@ func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agent
 
 	if activity.LocationID > 0 {
 		data["ip_long"] = activity.LocationID
+	}
+
+	if activity.Method != "GET" {
+		data["method"] = activity.Method
 	}
 
 	ds := goqu.Dialect("mysql8").Insert("tracking").Rows(data)

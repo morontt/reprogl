@@ -17,6 +17,7 @@ func Track(next http.Handler, app *container.Application) http.Handler {
 			lrw, ok := w.(pkghttp.LogResponseWriter)
 			if ok {
 				activity.Status = lrw.Status()
+				activity.Duration = lrw.Duration()
 			}
 
 			go tracking.SaveActivity(activity, app)

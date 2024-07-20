@@ -203,6 +203,7 @@
       "text": "Tracking #17",
       "priority": "low",
       "creation": 1686424373,
+      "completion": 1721496271,
       "tasks": [
         {
           "text": "first step - implement tracking like the tracking system in the old blog",
