@@ -8,7 +8,7 @@ import (
 
 func ResponseWrapper(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		lrw := &pkghttp.Response{ResponseWriter: w}
+		lrw := pkghttp.CreateLogResponse(w)
 
 		next.ServeHTTP(lrw, r)
 	})

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	base "net/http"
 	"runtime"
+	"time"
 
 	"xelbot.com/reprogl/container"
 )
@@ -11,11 +12,21 @@ import (
 type LogResponseWriter interface {
 	base.ResponseWriter
 	Status() int
+	Duration() time.Duration
 }
 
 type Response struct {
 	base.ResponseWriter
 	StatusCode int
+
+	start time.Time
+}
+
+func CreateLogResponse(w base.ResponseWriter) *Response {
+	return &Response{
+		ResponseWriter: w,
+		start:          time.Now(),
+	}
 }
 
 func (lrw *Response) WriteHeader(statusCode int) {
@@ -42,4 +53,8 @@ func (lrw *Response) Status() int {
 	}
 
 	return lrw.StatusCode
+}
+
+func (lrw *Response) Duration() time.Duration {
+	return time.Since(lrw.start)
 }
