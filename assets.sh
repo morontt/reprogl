@@ -36,5 +36,3 @@ replace_old_asset public/assets/css/reprogl_temp.min.css public/assets/css/repro
 if [[ "$GRUNTCMD" == "grunt" ]]; then
   replace_old_asset public/assets/js/reprogl_temp.min.js public/assets/js/reprogl.min.js
 fi
-
-docker exec gopher bash -c "chown -R www-data:www-data ."
