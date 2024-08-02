@@ -455,7 +455,26 @@
         {
           "text": "Через соц-сети и т.п.",
           "priority": "medium",
-          "creation": 1686772409
+          "creation": 1686772409,
+          "tasks": [
+            {
+              "text": "Yandex",
+              "priority": "medium",
+              "creation": 1722616679,
+              "tasks": [
+                {
+                  "text": "https://yandex.ru/id/business",
+                  "priority": "medium",
+                  "creation": 1722616719
+                },
+                {
+                  "text": "https://yandex.ru/dev/id/doc/ru/",
+                  "priority": "medium",
+                  "creation": 1722616732
+                }
+              ]
+            }
+          ]
         },
         {
           "text": "Log in with OpenID",
@@ -488,6 +507,11 @@
           "text": "Разделить админские права и обычных пользователей",
           "priority": "medium",
           "creation": 1722579824
+        },
+        {
+          "text": "Аватар в сайдбаре навигации",
+          "priority": "medium",
+          "creation": 1722629150
         }
       ]
     },
