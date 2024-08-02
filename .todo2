@@ -461,6 +461,33 @@
           "text": "Log in with OpenID",
           "priority": "medium",
           "creation": 1717673795
+        },
+        {
+          "text": "Страница профиля",
+          "priority": "medium",
+          "creation": 1722579787,
+          "tasks": [
+            {
+              "text": "Загрузка аватара",
+              "priority": "medium",
+              "creation": 1722579856
+            },
+            {
+              "text": "Емейл и подтверждение",
+              "priority": "medium",
+              "creation": 1722579887
+            },
+            {
+              "text": "Сбросить пароль",
+              "priority": "medium",
+              "creation": 1722579923
+            }
+          ]
+        },
+        {
+          "text": "Разделить админские права и обычных пользователей",
+          "priority": "medium",
+          "creation": 1722579824
         }
       ]
     },
