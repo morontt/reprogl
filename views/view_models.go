@@ -264,6 +264,7 @@ func NewStatisticsPageData() *StatisticsPageData {
 func NewLoginPageData(token, errorMessage string, hasError bool) *LoginPageData {
 	meta := defaultMeta()
 	meta.AppendTitle("Вход")
+	meta.AppendName("description", "Страница логина. Описание тут не особо-то и нужно, но Yandex Webmaster настаивает")
 
 	return &LoginPageData{
 		Meta:         meta,

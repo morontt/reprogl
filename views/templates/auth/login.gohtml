@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>{{.BrowserTitle}}</title>
+    {{- with .MetaParts -}}{{- range . }}
+    <meta name="{{.Name}}" content="{{.Content}}">
+    {{- end }}{{- end }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{asset "assets/css/login.css"}}
 </head>

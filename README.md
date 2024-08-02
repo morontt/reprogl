@@ -16,7 +16,9 @@ Copy config file from dist and build application
   cp app.ini{.dist,}
 
   docker compose build
-  docker compose run --rm nodejs bash -c "yarn install"
+  docker compose up
+
+  docker exec gopher bash -c "yarn install"
 
   ./assets.sh
   ./build.sh
