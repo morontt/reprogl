@@ -5,7 +5,8 @@
               action="{{path "add-comment-dummy"}}">
             <input type="hidden" name="topicId" value="{{.Article.ID}}" id="topicId">
             <input type="hidden" name="parentId" value="0" id="parentId">
-            {{if not .HasIdentity -}}
+            {{- if not .HasIdentity -}}
+            {{- template "svg-auth" -}}
             <div class="row">
                 <div class="large-3 columns">
                     <label for="name" class="inline required-field">Имя:</label>
@@ -41,6 +42,21 @@
                            id="website"
                            value=""
                            placeholder="http://example.org">
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-3 columns">
+                </div>
+                <div class="large-9 columns">
+                    <a href="/">
+                        <i class="auth-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" role="img"
+                                 aria-label="Yandex"
+                                 width="36" height="36">
+                                <use xlink:href="#auth-yandex"></use>
+                            </svg>
+                        </i>
+                    </a>
                 </div>
             </div>
             {{- end}}

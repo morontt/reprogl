@@ -44,6 +44,7 @@ func LoadViewSet() error {
 			"templates/partials/menu.gohtml",
 			"templates/partials/sidebar.gohtml",
 			"templates/partials/social-icons.gohtml",
+			"templates/layout/svg-auth.gohtml",
 			"templates/layout/svg-sprites.gohtml",
 			"templates/layout/base.gohtml",
 		},
