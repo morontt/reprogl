@@ -1,5 +1,10 @@
 @import "settings";
 
+@mixin note-font {
+    color: lighten($color-main-dark, 35%);
+    font-size: 75%;
+}
+
 section.comments {
     background: darken($color-main-light, 3%);
     padding: 0;
@@ -197,11 +202,19 @@ section.comments {
             }
         }
 
+        .auth_note {
+            @include note-font;
+            float: left;
+        }
+
         .form_note {
-            color: lighten($color-main-dark, 35%);
-            font-size: 75%;
+            @include note-font;
             text-align: center;
             padding-top: 0.5em;
+        }
+
+        .auth-icon svg {
+            border-radius: rem-calc(5);
         }
 
         small.error {
