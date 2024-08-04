@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -14,7 +16,7 @@ func OAuthLogin(app *container.Application) http.HandlerFunc {
 		vars := mux.Vars(r)
 		providerName := vars["provider"]
 
-		app.InfoLog.Println("[OAUTH] start authorization by " + providerName)
+		app.InfoLog.Println("[OAUTH] start authorization by: " + providerName)
 		oauthConfig, err := oauth.ConfigByProvider(providerName)
 		if err != nil {
 			app.NotFound(w)
@@ -24,12 +26,50 @@ func OAuthLogin(app *container.Application) http.HandlerFunc {
 
 		state := generateRandomToken()
 		session.Put(r.Context(), session.OAuthStateKey, state)
-		app.InfoLog.Println("[OAUTH] generate state: " + state)
 
-		url := oauthConfig.AuthCodeURL(state)
+		http.Redirect(w, r, oauthConfig.AuthCodeURL(state), http.StatusTemporaryRedirect)
+	}
+}
 
-		// http.Redirect(w, r, u, http.StatusTemporaryRedirect)
+func OAuthCallback(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		providerName := vars["provider"]
+
+		app.InfoLog.Println("[OAUTH] callback from: " + providerName)
+		oauthConfig, err := oauth.ConfigByProvider(providerName)
+		if err != nil {
+			app.NotFound(w)
+
+			return
+		}
+
+		state, _ := session.Pop[string](r.Context(), session.OAuthStateKey)
+		stateFromRequest := r.FormValue("state")
+
+		if len(state) == 0 || len(stateFromRequest) == 0 || stateFromRequest != state {
+			app.InfoLog.Println("[OAUTH] Invalid state")
+			app.ClientError(w, http.StatusBadRequest)
+
+			return
+		}
+
+		code := r.FormValue("code")
+		if len(code) == 0 {
+			app.InfoLog.Println("[OAUTH] Empty code")
+			app.ClientError(w, http.StatusBadRequest)
+
+			return
+		}
+
+		token, err := oauthConfig.Exchange(context.Background(), code)
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+
 		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("URL: " + url))
+		w.Write([]byte(fmt.Sprintf("%+v\n", token)))
 	}
 }

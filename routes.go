@@ -37,7 +37,7 @@ func getRoutes(app *container.Application) *mux.Router {
 
 	oauthMux := siteMux.PathPrefix("/oauth").Subrouter()
 	oauthMux.HandleFunc("/authorize/{provider}", handlers.OAuthLogin(app)).Name("oauth-authorize")
-	oauthMux.HandleFunc("/verification/{provider}", handlers.AddCommentDummy).Name("oauth-verification")
+	oauthMux.HandleFunc("/verification/{provider}", handlers.OAuthCallback(app)).Name("oauth-verification")
 
 	fragmentsMux := siteMux.PathPrefix("/_fragment").Subrouter()
 	fragmentsMux.HandleFunc("/categories", handlers.CategoriesFragment(app)).Name("fragment-categories")
