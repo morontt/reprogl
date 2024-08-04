@@ -13,6 +13,7 @@ require (
 	github.com/yuin/goldmark v1.7.4
 	github.com/yuin/goldmark-emoji v1.0.3
 	golang.org/x/image v0.17.0
+	golang.org/x/oauth2 v0.21.0
 )
 
 require (

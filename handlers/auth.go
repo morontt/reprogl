@@ -2,8 +2,6 @@ package handlers
 
 import (
 	"context"
-	"crypto/rand"
-	"encoding/base64"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -143,8 +141,8 @@ func authSuccess(user *models.LoggedUser, app *container.Application, ip string,
 }
 
 func generateCsrfPair(w http.ResponseWriter, cache *yetacache.Cache[string, string]) string {
-	csrfToken := generateToken()
-	csrfTokenKey := generateToken()
+	csrfToken := generateRandomToken()
+	csrfTokenKey := generateRandomToken()
 
 	cache.Set(csrfTokenKey, csrfToken, 30*time.Minute)
 	session.WriteSessionCookie(w, session.CsrfCookie, csrfTokenKey, "/login")
@@ -154,16 +152,6 @@ func generateCsrfPair(w http.ResponseWriter, cache *yetacache.Cache[string, stri
 
 func deleteCsrfCookie(w http.ResponseWriter) {
 	session.DeleteCookie(w, session.CsrfCookie, "/login")
-}
-
-func generateToken() string {
-	nonce := make([]byte, 18)
-	_, err := rand.Read(nonce)
-	if err != nil {
-		panic(err)
-	}
-
-	return base64.URLEncoding.EncodeToString(nonce)
 }
 
 func saveReferer(w http.ResponseWriter, referer string) {

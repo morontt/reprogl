@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -44,4 +46,14 @@ func jsonResponse(w http.ResponseWriter, statusCode int, data any) {
 
 	jsonResult, _ := json.Marshal(data)
 	w.Write(jsonResult)
+}
+
+func generateRandomToken() string {
+	nonce := make([]byte, 18)
+	_, err := rand.Read(nonce)
+	if err != nil {
+		panic(err)
+	}
+
+	return base64.URLEncoding.EncodeToString(nonce)
 }
