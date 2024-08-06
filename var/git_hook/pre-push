@@ -2,10 +2,6 @@
 
 echo -e "\033[36mStart pre-push hook\033[0m\n"
 
-LDFLAGS="-X 'xelbot.com/reprogl/container.BuildTime=$(date -u +"%a, %d %b %Y %H:%M:%S %Z")'"
-LDFLAGS="$LDFLAGS -X 'xelbot.com/reprogl/container.Version=9.9.9'"
-LDFLAGS="$LDFLAGS -X 'xelbot.com/reprogl/container.GitRevision=f0f0f0'"
-
 ./test.sh
 
 retVal=$?
