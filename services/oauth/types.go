@@ -27,6 +27,8 @@ type UserData struct {
 	Email       string
 	Avatar      string
 	Provider    string
+
+	RawData string
 }
 
 func (a *Gender) UnmarshalJSON(b []byte) error {

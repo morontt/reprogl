@@ -73,7 +73,7 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		w.Header().Set("Content-Type", "text/plain")
+		w.Header().Set("Content-Type", "text/plain;charset=utf-8")
 		w.Write([]byte(fmt.Sprintf("%+v\n", userData)))
 	}
 }

@@ -2,6 +2,7 @@ package oauth
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"io"
@@ -15,14 +16,13 @@ type yandexResourceOwner struct {
 }
 
 func (yro *yandexResourceOwner) GetUserData() (*UserData, error) {
-	userData := &UserData{Provider: yandexProvider}
-
-	request, err := http.NewRequest(http.MethodGet, "/api/comments/external", bytes.NewReader(nil))
+	request, err := http.NewRequest(http.MethodGet, "https://login.yandex.ru/info", bytes.NewReader(nil))
 	if err != nil {
 		return nil, err
 	}
 
 	request.Header.Set("Accept", "application/json")
+	request.Header.Set("Authorization", "OAuth "+yro.accessToken)
 	client := http.Client{
 		Timeout: 5 * time.Second,
 	}
@@ -47,21 +47,38 @@ func (yro *yandexResourceOwner) GetUserData() (*UserData, error) {
 	}
 
 	result := struct {
-		ID          string `json:"id"`
-		Username    string `json:"login"`
-		DisplayName string `json:"display_name"`
-		FirstName   string `json:"first_name"`
-		LastName    string `json:"last_name"`
-		Gender      string `json:"sex"` // check is NULL
-		Email       string `json:"default_email"`
-		Avatar      string `json:"default_avatar_id"`
-
-		IsAvatarEmpty bool `json:"is_avatar_empty"`
-	}{}
+		ID            string `json:"id"`
+		Username      string `json:"login"`
+		DisplayName   string `json:"display_name"`
+		FirstName     string `json:"first_name"`
+		LastName      string `json:"last_name"`
+		Gender        Gender `json:"sex"`
+		Email         string `json:"default_email"`
+		Avatar        string `json:"default_avatar_id"`
+		IsAvatarEmpty bool   `json:"is_avatar_empty"`
+	}{
+		Gender: Unknown,
+	}
 
 	err = json.Unmarshal(buf, &result)
 	if err != nil {
 		return nil, err
+	}
+
+	userData := &UserData{
+		ID:          result.ID,
+		Username:    result.Username,
+		DisplayName: result.DisplayName,
+		FirstName:   result.FirstName,
+		LastName:    result.LastName,
+		Gender:      result.Gender,
+		Email:       result.Email,
+		RawData:     base64.URLEncoding.EncodeToString(buf),
+		Provider:    yandexProvider,
+	}
+
+	if !result.IsAvatarEmpty {
+		userData.Avatar = result.Avatar
 	}
 
 	return userData, nil
