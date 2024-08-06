@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 
@@ -27,7 +26,7 @@ func OAuthLogin(app *container.Application) http.HandlerFunc {
 		state := generateRandomToken()
 		session.Put(r.Context(), session.OAuthStateKey, state)
 
-		http.Redirect(w, r, oauthConfig.AuthCodeURL(state), http.StatusTemporaryRedirect)
+		http.Redirect(w, r, oauthConfig.AuthCodeURL(state), http.StatusFound)
 	}
 }
 
@@ -37,8 +36,7 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 		providerName := vars["provider"]
 
 		app.InfoLog.Println("[OAUTH] callback from: " + providerName)
-		oauthConfig, err := oauth.ConfigByProvider(providerName)
-		if err != nil {
+		if !oauth.SupportedProvider(providerName) {
 			app.NotFound(w)
 
 			return
@@ -56,13 +54,19 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 
 		code := r.FormValue("code")
 		if len(code) == 0 {
-			app.InfoLog.Println("[OAUTH] Empty code")
+			errorCode := r.FormValue("error")
+			errorDescription := r.FormValue("error_description")
+			if len(errorCode) > 0 {
+				app.InfoLog.Printf("[OAUTH] Error code: %s, description: %s\n", errorCode, errorDescription)
+			} else {
+				app.InfoLog.Println("[OAUTH] Error: empty code")
+			}
 			app.ClientError(w, http.StatusBadRequest)
 
 			return
 		}
 
-		token, err := oauthConfig.Exchange(context.Background(), code)
+		userData, err := oauth.UserDataByCode(providerName, code)
 		if err != nil {
 			app.ServerError(w, err)
 
@@ -70,6 +74,6 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 		}
 
 		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte(fmt.Sprintf("%+v\n", token)))
+		w.Write([]byte(fmt.Sprintf("%+v\n", userData)))
 	}
 }

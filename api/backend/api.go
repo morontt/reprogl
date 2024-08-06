@@ -100,6 +100,7 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 		return nil, NotAllowedComment
 	}
 
+	defer response.Body.Close()
 	buf, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
@@ -141,6 +142,7 @@ func RefreshComment(id int) (*CreatedCommentDTO, error) {
 		return nil, errors.New("status not OK")
 	}
 
+	defer response.Body.Close()
 	buf, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err

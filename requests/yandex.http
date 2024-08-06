@@ -3,3 +3,8 @@ GET https://reprogl.xelbot.com/oauth/authorize/yandex
 
 ###
 GET https://reprogl.xelbot.com/oauth/verification/yandex?state=sFZ_WAdDAVPqFtRg3cxqofL8&code=3856129&cid=hg4g3kj3gkg5hg5g
+
+###
+GET https://login.yandex.ru/info
+Accept: application/json
+Authorization: OAuth klkjljlk4jkh456jkh3kjh4kj3h43

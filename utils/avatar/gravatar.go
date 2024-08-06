@@ -55,6 +55,7 @@ func tryGravatar(commentator *models.CommentatorForGravatar) (image.Image, error
 		return nil, GravatarNotFound
 	}
 
+	defer resp.Body.Close()
 	img, _, err := image.Decode(resp.Body)
 	if err != nil {
 		return nil, err

@@ -473,6 +473,11 @@
                   "creation": 1722616732
                 }
               ]
+            },
+            {
+              "text": "VK",
+              "priority": "medium",
+              "creation": 1722886491
             }
           ]
         },
@@ -511,7 +516,14 @@
         {
           "text": "Аватар в сайдбаре навигации",
           "priority": "medium",
-          "creation": 1722629150
+          "creation": 1722629150,
+          "tasks": [
+            {
+              "text": "Проверить Gravatar, если аватара нет",
+              "priority": "medium",
+              "creation": 1722886402
+            }
+          ]
         }
       ]
     },

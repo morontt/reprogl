@@ -56,6 +56,7 @@ func SendNotification(
 		return
 	}
 
+	defer resp.Body.Close()
 	buf, err := io.ReadAll(resp.Body)
 	if err != nil {
 		app.LogError(err)
