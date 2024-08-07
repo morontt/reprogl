@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/services/oauth"
 	"xelbot.com/reprogl/session"
@@ -72,6 +73,14 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 
 			return
 		}
+
+		userDataDTO := backend.ExternalUserDTO{
+			UserData:  userData,
+			UserAgent: r.UserAgent(),
+			IP:        container.RealRemoteAddress(r),
+		}
+
+		backend.SendUserData(userDataDTO)
 
 		w.Header().Set("Content-Type", "text/plain;charset=utf-8")
 		w.Write([]byte(fmt.Sprintf("%+v\n", userData)))

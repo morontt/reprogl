@@ -167,6 +167,8 @@ func send(req *http.Request) (*http.Response, error) {
 	backendLocker.Lock()
 	defer backendLocker.Unlock()
 
+	req.Header.Set("Authorization", "WSSE profile=\"UsernameToken\"")
+
 	wsseHeader, wsseToken := security.GetWSSEHeader()
 	req.Header.Set(wsseHeader, wsseToken)
 

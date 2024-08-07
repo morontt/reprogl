@@ -18,17 +18,17 @@ const (
 )
 
 type UserData struct {
-	ID          string
-	Username    string
-	DisplayName string
-	FirstName   string
-	LastName    string
-	Gender      Gender
-	Email       string
-	Avatar      string
-	Provider    string
+	ID          string `json:"id"`
+	Username    string `json:"username,omitempty"`
+	DisplayName string `json:"displayName,omitempty"`
+	FirstName   string `json:"firstName,omitempty"`
+	LastName    string `json:"lastName,omitempty"`
+	Gender      Gender `json:"gender,omitempty"`
+	Email       string `json:"email,omitempty"`
+	Avatar      string `json:"avatar,omitempty"`
+	Provider    string `json:"dataProvider"`
 
-	RawData string
+	RawData string `json:"rawData"`
 }
 
 func (a *Gender) UnmarshalJSON(b []byte) error {
