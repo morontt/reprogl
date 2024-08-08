@@ -22,7 +22,7 @@ type CreatedUserDTO struct {
 
 type CreateUserResponse struct {
 	Violations []FormError     `json:"errors,omitempty"`
-	User       *CreatedUserDTO `json:"comment,omitempty"`
+	User       *CreatedUserDTO `json:"user,omitempty"`
 }
 
 func SendUserData(userData ExternalUserDTO) (*CreateUserResponse, error) {
