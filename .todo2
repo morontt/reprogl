@@ -775,6 +775,11 @@
       "text": "Change project structure",
       "priority": "medium",
       "creation": 1722945494
+    },
+    {
+      "text": "Replace router library to github.com/go-chi/chi",
+      "priority": "medium",
+      "creation": 1723123796
     }
   ]
 }
