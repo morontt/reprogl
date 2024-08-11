@@ -449,7 +449,7 @@
     },
     {
       "text": "Регистрация пользователей для комментариев",
-      "priority": "medium",
+      "priority": "high",
       "creation": 1686772368,
       "tasks": [
         {
@@ -494,7 +494,26 @@
             {
               "text": "Загрузка аватара",
               "priority": "medium",
-              "creation": 1722579856
+              "creation": 1722579856,
+              "tasks": [
+                {
+                  "text": "Avatar for techbot",
+                  "priority": "medium",
+                  "creation": 1723368044,
+                  "tasks": [
+                    {
+                      "text": "https://lexica.art/prompt/537c8c95-2bb5-4730-9cbc-fff04cc26aee",
+                      "priority": "low",
+                      "creation": 1723368066
+                    },
+                    {
+                      "text": "https://lexica.art/prompt/50c096de-8ea3-4dc3-981a-67f1fff4d1fd",
+                      "priority": "low",
+                      "creation": 1723368445
+                    }
+                  ]
+                }
+              ]
             },
             {
               "text": "Емейл и подтверждение",
@@ -522,8 +541,18 @@
               "text": "Проверить Gravatar, если аватара нет",
               "priority": "medium",
               "creation": 1722886402
+            },
+            {
+              "text": "Учёт пола для аватара и в админке",
+              "priority": "medium",
+              "creation": 1723232746
             }
           ]
+        },
+        {
+          "text": "Redirect to referer",
+          "priority": "medium",
+          "creation": 1723407736
         }
       ]
     },

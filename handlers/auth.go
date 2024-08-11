@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"regexp"
@@ -10,9 +9,6 @@ import (
 
 	"github.com/xelbot/yetacache"
 	"xelbot.com/reprogl/container"
-	"xelbot.com/reprogl/models"
-	"xelbot.com/reprogl/models/repositories"
-	"xelbot.com/reprogl/security"
 	"xelbot.com/reprogl/services/auth"
 	"xelbot.com/reprogl/session"
 	"xelbot.com/reprogl/views"
@@ -128,15 +124,6 @@ func LoginLogoutLinks(app *container.Application) http.HandlerFunc {
 		if err != nil {
 			app.ServerError(w, err)
 		}
-	}
-}
-
-func authSuccess(user *models.LoggedUser, app *container.Application, ip string, ctx context.Context) {
-	session.SetIdentity(ctx, security.CreateIdentity(user))
-
-	repo := repositories.UserRepository{DB: app.DB}
-	if err := repo.SaveLoginEvent(user.ID, ip); err != nil {
-		app.LogError(err)
 	}
 }
 

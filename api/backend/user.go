@@ -3,6 +3,8 @@ package backend
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"io"
 	"net/http"
 
 	"xelbot.com/reprogl/services/oauth"
@@ -15,10 +17,11 @@ type ExternalUserDTO struct {
 }
 
 type CreatedUserDTO struct {
-	ID       int    `json:"id"`
-	Username string `json:"username"`
-	Email    string `json:"email"`
-	Role     string `json:"role"`
+	ID          int    `json:"id"`
+	Username    string `json:"username"`
+	Email       string `json:"email"`
+	Role        string `json:"role"`
+	DisplayName string `json:"displayName,omitempty"`
 }
 
 type CreateUserResponse struct {
@@ -39,10 +42,40 @@ func SendUserData(userData ExternalUserDTO) (*CreateUserResponse, error) {
 
 	request.Header.Set("Content-Type", "application/json")
 
-	_, err = send(request)
+	response, err := send(request)
 	if err != nil {
 		return nil, err
 	}
 
-	return nil, nil
+	if !(response.StatusCode == http.StatusOK ||
+		response.StatusCode == http.StatusCreated ||
+		response.StatusCode == http.StatusUnprocessableEntity) {
+		return nil, errors.New("backend: unexpected HTTP status " + response.Status)
+	}
+
+	defer response.Body.Close()
+	buf, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if !json.Valid(buf) {
+		return nil, errors.New("invalid JSON string")
+	}
+
+	var result CreateUserResponse
+	err = json.Unmarshal(buf, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
+func (u *CreatedUserDTO) Nickname() string {
+	if len(u.DisplayName) > 0 {
+		return u.DisplayName
+	}
+
+	return u.Username
 }

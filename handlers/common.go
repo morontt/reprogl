@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
@@ -8,6 +9,12 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
+	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/models/repositories"
+	"xelbot.com/reprogl/security"
+	"xelbot.com/reprogl/session"
 )
 
 func pageOrRedirect(params map[string]string) (int, bool) {
@@ -56,4 +63,13 @@ func generateRandomToken() string {
 	}
 
 	return base64.URLEncoding.EncodeToString(nonce)
+}
+
+func authSuccess(user *models.LoggedUser, app *container.Application, ip string, ctx context.Context) {
+	session.SetIdentity(ctx, security.CreateIdentity(user))
+
+	repo := repositories.UserRepository{DB: app.DB}
+	if err := repo.SaveLoginEvent(user.ID, ip); err != nil {
+		app.LogError(err)
+	}
 }

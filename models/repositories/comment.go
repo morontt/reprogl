@@ -34,7 +34,7 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 			COALESCE(t.name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
-			COALESCE(t.gender, 1) AS gender,
+			COALESCE(t.gender, u.gender) AS gender,
 			c.commentator_id,
 			c.user_id,
 			c.text,
@@ -96,15 +96,15 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 	return &comments, nil
 }
 
-// GetCollectionForUsersByArticleId TODO use query builder with GetCollectionByArticleId
-func (cr *CommentRepository) GetCollectionForUsersByArticleId(articleId int) (*models.CommentList, error) {
+// GetCollectionWithExtraDataByArticleId TODO use query builder with GetCollectionByArticleId
+func (cr *CommentRepository) GetCollectionWithExtraDataByArticleId(articleId int) (*models.CommentList, error) {
 	query := `
 		SELECT
 			c.id,
 			COALESCE(t.name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
-			COALESCE(t.gender, 1) AS gender,
+			COALESCE(t.gender, u.gender) AS gender,
 			c.commentator_id,
 			c.user_id,
 			c.text,

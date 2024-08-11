@@ -1,12 +1,14 @@
 package handlers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/services/oauth"
 	"xelbot.com/reprogl/session"
 )
@@ -80,9 +82,40 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 			IP:        container.RealRemoteAddress(r),
 		}
 
-		backend.SendUserData(userDataDTO)
+		apiResponse, err := backend.SendUserData(userDataDTO)
+		if err != nil {
+			app.ServerError(w, err)
 
-		w.Header().Set("Content-Type", "text/plain;charset=utf-8")
-		w.Write([]byte(fmt.Sprintf("%+v\n", userData)))
+			return
+		}
+
+		if apiResponse.Violations != nil && len(apiResponse.Violations) > 0 {
+			errorMessage := "[OAUTH] user validation error:\n"
+			for _, formError := range apiResponse.Violations {
+				app.InfoLog.Printf("[OAUTH] validation error: %s - %s\n", formError.Path, formError.Message)
+				errorMessage += fmt.Sprintf("%s: %s\n", formError.Path, formError.Message)
+			}
+
+			app.ServerError(w, errors.New(errorMessage))
+
+			return
+		}
+
+		if apiResponse.User != nil {
+			session.Put(r.Context(), session.FlashSuccessKey, fmt.Sprintf("Привет, %s :)", apiResponse.User.Nickname()))
+
+			repo := repositories.UserRepository{DB: app.DB}
+			user, err := repo.GetLoggedUserByUsername(apiResponse.User.Username)
+			if err != nil {
+				app.ServerError(w, err)
+
+				return
+			}
+
+			app.InfoLog.Printf("[OAUTH] success for \"%s\"\n", user.Username)
+			authSuccess(user, app, container.RealRemoteAddress(r), r.Context())
+		}
+
+		http.Redirect(w, r, "/", http.StatusFound)
 	}
 }
