@@ -545,14 +545,16 @@
             {
               "text": "Учёт пола для аватара и в админке",
               "priority": "medium",
-              "creation": 1723232746
+              "creation": 1723232746,
+              "completion": 1723491203
             }
           ]
         },
         {
           "text": "Redirect to referer",
           "priority": "medium",
-          "creation": 1723407736
+          "creation": 1723407736,
+          "completion": 1723491219
         }
       ]
     },

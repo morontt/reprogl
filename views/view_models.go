@@ -97,6 +97,10 @@ type AuthNavigation struct {
 	identityPart
 }
 
+type MenuAuthData struct {
+	identityPart
+}
+
 type FragmentCategoriesData struct {
 	Categories *models.CategoryList
 }
@@ -276,6 +280,10 @@ func NewLoginPageData(token, errorMessage string, hasError bool) *LoginPageData 
 
 func NewAuthNavigationData() *AuthNavigation {
 	return &AuthNavigation{}
+}
+
+func NewMenuAuthData() *MenuAuthData {
+	return &MenuAuthData{}
 }
 
 func (apd *ArticlePageData) AcceptWebp() bool {
