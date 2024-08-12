@@ -31,7 +31,7 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 	query := `
 		SELECT
 			c.id,
-			COALESCE(t.name, u.username) AS username,
+			COALESCE(t.name, u.display_name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
 			COALESCE(t.gender, u.gender) AS gender,
@@ -101,7 +101,7 @@ func (cr *CommentRepository) GetCollectionWithExtraDataByArticleId(articleId int
 	query := `
 		SELECT
 			c.id,
-			COALESCE(t.name, u.username) AS username,
+			COALESCE(t.name, u.display_name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
 			COALESCE(t.gender, u.gender) AS gender,
@@ -180,7 +180,7 @@ func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorLis
 	query := `
 		SELECT
 			src.cnt,
-			COALESCE(t.name, u.username) AS username,
+			COALESCE(t.name, u.display_name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
 			COALESCE(t.gender, 1) AS gender,

@@ -21,7 +21,7 @@ sub vcl_recv {
             set req.http.X-Varnish-Session = regsub(req.http.Cookie, ".*(^|;| )?session=([a-zA-Z0-9\-_=]+)( |;|$)?.*", "\2");
         }
 
-        if (!(req.url ~ "^/login")) {
+        if (!(req.url ~ "^/login" || req.url ~ "^/oauth")) {
             unset req.http.Cookie;
         }
     }

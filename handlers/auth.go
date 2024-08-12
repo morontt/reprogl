@@ -3,8 +3,6 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-	"regexp"
-	"strings"
 	"time"
 
 	"github.com/xelbot/yetacache"
@@ -30,7 +28,7 @@ func LoginAction(app *container.Application) http.HandlerFunc {
 			}
 		}
 
-		saveReferer(w, r.Referer())
+		saveLoginReferer(w, r.Referer())
 		errorMessage, hasError := session.Pop[string](r.Context(), session.FlashErrorKey)
 
 		templateData := views.NewLoginPageData(csrfToken, errorMessage, hasError)
@@ -99,10 +97,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 		authSuccess(user, app, container.RealRemoteAddress(r), r.Context())
 
 		var redirectUrl string
-		if cookie, errNoCookie := r.Cookie(session.RefererCookie); errNoCookie == nil {
-			redirectUrl = cookie.Value
-			deleteRefererCookie(w)
-		} else {
+		if redirectUrl, found = popLoginReferer(w, r); !found {
 			redirectUrl = "/"
 		}
 
@@ -139,17 +134,4 @@ func generateCsrfPair(w http.ResponseWriter, cache *yetacache.Cache[string, stri
 
 func deleteCsrfCookie(w http.ResponseWriter) {
 	session.DeleteCookie(w, session.CsrfCookie, "/login")
-}
-
-func saveReferer(w http.ResponseWriter, referer string) {
-	host := container.GetConfig().Host
-	host = strings.ReplaceAll(host, ".", "\\.")
-	matches := regexp.MustCompile(`^https?:\/\/` + host + `(.*)$`).FindStringSubmatch(referer)
-	if matches != nil && matches[1] != "/login" {
-		session.WriteSessionCookie(w, session.RefererCookie, matches[1], "/login")
-	}
-}
-
-func deleteRefererCookie(w http.ResponseWriter) {
-	session.DeleteCookie(w, session.RefererCookie, "/login")
 }

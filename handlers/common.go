@@ -7,7 +7,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"regexp"
 	"strconv"
+	"strings"
 	"time"
 
 	"xelbot.com/reprogl/container"
@@ -72,4 +74,28 @@ func authSuccess(user *models.LoggedUser, app *container.Application, ip string,
 	if err := repo.SaveLoginEvent(user.ID, ip); err != nil {
 		app.LogError(err)
 	}
+}
+
+func saveLoginReferer(w http.ResponseWriter, referer string) {
+	host := container.GetConfig().Host
+	host = strings.ReplaceAll(host, ".", "\\.")
+	matches := regexp.MustCompile(`^https?:\/\/` + host + `(.*)$`).FindStringSubmatch(referer)
+	if matches != nil && matches[1] != "/login" && !strings.HasPrefix(matches[1], "/oauth") {
+		session.WriteSessionCookie(w, session.RefererCookie, matches[1], "/")
+	}
+}
+
+func popLoginReferer(w http.ResponseWriter, r *http.Request) (redirectUrl string, found bool) {
+	if cookie, errNoCookie := r.Cookie(session.RefererCookie); errNoCookie == nil {
+		redirectUrl = cookie.Value
+		found = true
+
+		deleteRefererCookie(w)
+	}
+
+	return
+}
+
+func deleteRefererCookie(w http.ResponseWriter) {
+	session.DeleteCookie(w, session.RefererCookie, "/")
 }

@@ -26,6 +26,8 @@ func OAuthLogin(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		saveLoginReferer(w, r.Referer())
+
 		state := generateRandomToken()
 		session.Put(r.Context(), session.OAuthStateKey, state)
 
@@ -116,6 +118,12 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 			authSuccess(user, app, container.RealRemoteAddress(r), r.Context())
 		}
 
-		http.Redirect(w, r, "/", http.StatusFound)
+		var redirectUrl string
+		var found bool
+		if redirectUrl, found = popLoginReferer(w, r); !found {
+			redirectUrl = "/"
+		}
+
+		http.Redirect(w, r, redirectUrl, http.StatusFound)
 	}
 }
