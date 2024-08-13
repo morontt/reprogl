@@ -24,13 +24,44 @@ func (ur *UserRepository) GetLoggedUserByUsername(username string) (*models.Logg
 		WHERE (u.username = ?)`
 
 	user := models.LoggedUser{}
-
 	err := ur.DB.QueryRow(query, username).Scan(
 		&user.ID,
 		&user.Username,
 		&user.Type,
 		&user.PasswordHash,
 		&user.Salt)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, models.RecordNotFound
+		} else {
+			return nil, err
+		}
+	}
+
+	return &user, nil
+}
+
+func (ur *UserRepository) Find(id int) (*models.User, error) {
+	query := `
+		SELECT
+			u.id,
+			u.username,
+			u.mail,
+			u.user_type,
+			u.display_name,
+			u.gender
+		FROM users AS u
+		WHERE (u.id = ?)`
+
+	user := models.User{}
+	err := ur.DB.QueryRow(query, id).Scan(
+		&user.ID,
+		&user.Username,
+		&user.Email,
+		&user.Type,
+		&user.DisplayName,
+		&user.Gender)
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {

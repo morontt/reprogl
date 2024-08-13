@@ -52,7 +52,7 @@ func (c *Comment) Avatar() (src string) {
 	return c.Commentator.Avatar()
 }
 
-func (ctt *Commentator) Avatar() (src string) {
+func (ctt *Commentator) Avatar() string {
 	var id int
 	var options hashid.Option
 
@@ -71,5 +71,5 @@ func (ctt *Commentator) Avatar() (src string) {
 		options |= hashid.Female
 	}
 
-	return container.GetConfig().CDNBaseURL + "/images/avatar/" + hashid.Encode(id, options) + ".png"
+	return avatarLink(id, options)
 }

@@ -98,6 +98,7 @@ type AuthNavigation struct {
 }
 
 type MenuAuthData struct {
+	user *models.User
 	identityPart
 }
 
@@ -106,7 +107,7 @@ type FragmentCategoriesData struct {
 }
 
 type FragmentCommentsData struct {
-	Comments        *models.CommentList
+	Comments        models.CommentList
 	EnabledComments bool
 	identityPart
 }
@@ -190,6 +191,14 @@ func (ip *identityPart) HasIdentity() bool {
 
 func (ip *identityPart) IsAdmin() bool {
 	return ip.identity.IsAdmin()
+}
+
+func (m *MenuAuthData) Avatar() (url string) {
+	if m.user != nil {
+		url = m.user.Avatar()
+	}
+
+	return
 }
 
 func NewArticlePageData(article *models.Article, commentKey, accept string) *ArticlePageData {
@@ -282,8 +291,8 @@ func NewAuthNavigationData() *AuthNavigation {
 	return &AuthNavigation{}
 }
 
-func NewMenuAuthData() *MenuAuthData {
-	return &MenuAuthData{}
+func NewMenuAuthData(user *models.User) *MenuAuthData {
+	return &MenuAuthData{user: user}
 }
 
 func (apd *ArticlePageData) AcceptWebp() bool {

@@ -137,7 +137,7 @@ func CommentsFragment(app *container.Application) http.HandlerFunc {
 
 		repo := repositories.CommentRepository{DB: app.DB}
 
-		var comments *models.CommentList
+		var comments models.CommentList
 		identity, found := session.GetIdentity(r.Context())
 		if found && identity.IsAdmin() {
 			comments, err = repo.GetCollectionWithExtraDataByArticleId(articleId)

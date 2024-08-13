@@ -27,7 +27,7 @@ func (cr *CommentRepository) GetLastUpdate(articleId int) (string, error) {
 	return last, err
 }
 
-func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.CommentList, error) {
+func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (models.CommentList, error) {
 	query := `
 		SELECT
 			c.id,
@@ -93,11 +93,11 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 		comments = append(comments, &comment)
 	}
 
-	return &comments, nil
+	return comments, nil
 }
 
 // GetCollectionWithExtraDataByArticleId TODO use query builder with GetCollectionByArticleId
-func (cr *CommentRepository) GetCollectionWithExtraDataByArticleId(articleId int) (*models.CommentList, error) {
+func (cr *CommentRepository) GetCollectionWithExtraDataByArticleId(articleId int) (models.CommentList, error) {
 	query := `
 		SELECT
 			c.id,
@@ -173,7 +173,7 @@ func (cr *CommentRepository) GetCollectionWithExtraDataByArticleId(articleId int
 		comments = append(comments, &comment)
 	}
 
-	return &comments, nil
+	return comments, nil
 }
 
 func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorList, error) {

@@ -555,6 +555,28 @@
           "priority": "medium",
           "creation": 1723407736,
           "completion": 1723491219
+        },
+        {
+          "text": "Страница пользователя",
+          "priority": "medium",
+          "creation": 1723528272,
+          "tasks": [
+            {
+              "text": "Дата регистрации",
+              "priority": "medium",
+              "creation": 1723528301
+            },
+            {
+              "text": "Список комментариев",
+              "priority": "medium",
+              "creation": 1723528312
+            },
+            {
+              "text": "RSS комментариев пользователя",
+              "priority": "medium",
+              "creation": 1723528387
+            }
+          ]
         }
       ]
     },

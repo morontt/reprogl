@@ -7,6 +7,8 @@ import (
 
 	"github.com/xelbot/yetacache"
 	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/services/auth"
 	"xelbot.com/reprogl/session"
 	"xelbot.com/reprogl/views"
@@ -124,8 +126,15 @@ func AuthNavigation(app *container.Application) http.HandlerFunc {
 
 func MenuAuth(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		var user *models.User
+		if identity, ok := session.GetIdentity(r.Context()); ok {
+			repo := repositories.UserRepository{DB: app.DB}
+			user, _ = repo.Find(identity.ID)
+		}
+
+		templateData := views.NewMenuAuthData(user)
 		cacheControl(w, container.DefaultEsiTTL)
-		templateData := views.NewMenuAuthData()
+
 		err := views.WriteTemplateWithContext(r.Context(), w, "menu-auth.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
