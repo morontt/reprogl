@@ -24,7 +24,8 @@ func init() {
 	chanBuf = make(chan struct{}, (runtime.NumCPU()/2)+1)
 }
 
-func tryGravatar(commentator *models.CommentatorForGravatar) (image.Image, error) {
+// TODO use interface for check gravatar (commentator or user)
+func tryGravatar(commentator *models.CommentatorForGravatar, size int) (image.Image, error) {
 	if !commentator.Email.Valid || !commentator.FakeEmail.Valid || commentator.FakeEmail.Bool {
 		return nil, GravatarNotFound
 	}
@@ -32,8 +33,9 @@ func tryGravatar(commentator *models.CommentatorForGravatar) (image.Image, error
 	request, err := http.NewRequest(
 		http.MethodGet,
 		fmt.Sprintf(
-			"https://www.gravatar.com/avatar/%s?s=80&d=404",
+			"https://www.gravatar.com/avatar/%s?s=%d&d=404",
 			gravatarHash(commentator.Email.String),
+			size,
 		),
 		nil)
 

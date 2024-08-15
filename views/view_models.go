@@ -193,9 +193,9 @@ func (ip *identityPart) IsAdmin() bool {
 	return ip.identity.IsAdmin()
 }
 
-func (m *MenuAuthData) Avatar() (url string) {
+func (m *MenuAuthData) Avatar(size int) (url string) {
 	if m.user != nil {
-		url = m.user.Avatar()
+		url = m.user.Avatar(size)
 	}
 
 	return

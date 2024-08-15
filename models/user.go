@@ -23,7 +23,7 @@ type User struct {
 	Gender      int
 }
 
-func (u *User) Avatar() string {
+func (u *User) Avatar(size int) string {
 	options := hashid.User
 	if u.Gender == 1 {
 		options |= hashid.Male
@@ -31,5 +31,5 @@ func (u *User) Avatar() string {
 		options |= hashid.Female
 	}
 
-	return avatarLink(u.ID, options)
+	return avatarLink(u.ID, options, size)
 }

@@ -2,6 +2,7 @@ package avatar
 
 import (
 	"crypto/md5"
+	"errors"
 	"fmt"
 	"image"
 	"image/draw"
@@ -16,28 +17,41 @@ import (
 	"xelbot.com/reprogl/utils/hashid"
 )
 
-var iconsConfig = map[string]map[string]int{
-	"male": {
-		"eye":        33,
-		"hair":       36,
-		"mouth":      26,
-		"clothes":    64,
-		"face":       4,
-		"background": 5,
-	},
-	"female": {
-		"eye":        53,
-		"head":       34,
-		"mouth":      17,
-		"clothes":    59,
-		"face":       4,
-		"background": 5,
-	},
-}
+var (
+	iconsConfig = map[string]map[string]int{
+		"male": {
+			"eye":        33,
+			"hair":       36,
+			"mouth":      26,
+			"clothes":    64,
+			"face":       4,
+			"background": 5,
+		},
+		"female": {
+			"eye":        53,
+			"head":       34,
+			"mouth":      17,
+			"clothes":    59,
+			"face":       4,
+			"background": 5,
+		},
+	}
+	validSizes = map[int]bool{
+		32:  true,
+		80:  true,
+		200: true,
+	}
+
+	InvalidSize = errors.New("avatar: invalid size")
+)
 
 type dataDict map[string]string
 
-func GenerateAvatar(hashData hashid.HashData, app *container.Application) (image.Image, error) {
+func GenerateAvatar(hashData hashid.HashData, app *container.Application, size int) (image.Image, error) {
+	if _, ok := validSizes[size]; !ok {
+		return nil, InvalidSize
+	}
+
 	app.InfoLog.Printf("[IMG] avatar generation by %+v\n", hashData)
 	if !hashData.IsUser() {
 		repository := repositories.CommentRepository{DB: app.DB}
@@ -46,7 +60,7 @@ func GenerateAvatar(hashData hashid.HashData, app *container.Application) (image
 			return nil, err
 		}
 
-		gravatar, err := tryGravatar(commentator)
+		gravatar, err := tryGravatar(commentator, size)
 		if err == nil {
 			app.InfoLog.Printf("[IMG] avatar %s found on gravatar.com\n", hashData.Hash)
 
@@ -54,10 +68,10 @@ func GenerateAvatar(hashData hashid.HashData, app *container.Application) (image
 		}
 	}
 
-	return generate8BitIconAvatar(hashData.Hash, hashData.IsMale(), app.InfoLog)
+	return generate8BitIconAvatar(hashData.Hash, hashData.IsMale(), size, app.InfoLog)
 }
 
-func generate8BitIconAvatar(hash string, male bool, logger *log.Logger) (image.Image, error) {
+func generate8BitIconAvatar(hash string, male bool, size int, logger *log.Logger) (image.Image, error) {
 	dict := dataByHash(hash, male)
 	logger.Printf("[IMG] details for %s: %+v\n", hash, dict)
 
@@ -105,10 +119,10 @@ func generate8BitIconAvatar(hash string, male bool, logger *log.Logger) (image.I
 	draw.Draw(baseImage, hairImage.Bounds(), hairImage, image.Point{}, draw.Over)
 	draw.Draw(baseImage, eyeImage.Bounds(), eyeImage, image.Point{}, draw.Over)
 
-	image80x80 := image.NewRGBA(image.Rect(0, 0, 80, 80))
-	xdraw.NearestNeighbor.Scale(image80x80, image80x80.Bounds(), baseImage, baseImage.Bounds(), draw.Src, nil)
+	imageResult := image.NewRGBA(image.Rect(0, 0, size, size))
+	xdraw.NearestNeighbor.Scale(imageResult, imageResult.Bounds(), baseImage, baseImage.Bounds(), draw.Src, nil)
 
-	return image80x80, nil
+	return imageResult, nil
 }
 
 func dataByHash(hash string, male bool) dataDict {
