@@ -1,0 +1,51 @@
+{{template "base" . -}}
+
+{{- define "inline_styles" -}}
+{{statisticsStyles}}
+{{- end -}}
+
+{{- define "html_prefix"}}og: https://ogp.me/ns#{{end -}}
+
+{{- define "body_class"}}post-template{{end -}}
+
+{{- define "body"}}
+<div class="post-view-menu-bars js-open-main-menu">
+    <span class="glyphicon glyphicon-menu-hamburger"></span>
+</div>
+<div class="post-view">
+    {{template "sidebar" .DummyArticle}}
+    <main class="post-view-content scene-element fade-in-right" role="main">
+        <div class="post-view-right-container">
+            <article class="post-view-article post">
+                <section class="post-content row statistic-row">
+                    <div class="small-12 columns">
+                        <div class="post-header-content">
+                            <section class="post-meta">
+                                На сайте с {{time_tag .User.CreatedAt}}
+                            </section>
+                            <h1 class="post-title">
+                                Профиль
+                            </h1>
+                            <div class="post-title-separator"></div>
+                        </div>
+                        <div class="post-article-content">
+
+                        </div>
+                    </div>
+                </section>
+                <section class="author-info">
+                    <div class="row">
+                        <section class="post-author small-12 columns">
+                            <img src="{{.User.Avatar 200}}" class="post-author-avatar" alt="avatar"/>
+                            <h2>{{.User.Username}}</h2>
+                            <p>
+                                {{.User.Email}}
+                            </p>
+                        </section>
+                    </div>
+                </section>
+            </article>
+        </div>
+    </main>
+</div>
+{{- end -}}

@@ -102,6 +102,12 @@ type MenuAuthData struct {
 	identityPart
 }
 
+type ProfilePageData struct {
+	Meta
+	User         *models.User
+	DummyArticle SidebarDummyArticle
+}
+
 type FragmentCategoriesData struct {
 	Categories *models.CategoryList
 }
@@ -293,6 +299,17 @@ func NewAuthNavigationData() *AuthNavigation {
 
 func NewMenuAuthData(user *models.User) *MenuAuthData {
 	return &MenuAuthData{user: user}
+}
+
+func NewProfilePageData(user *models.User) *ProfilePageData {
+	meta := defaultMeta()
+	meta.AppendTitle("Профиль")
+
+	return &ProfilePageData{
+		Meta:         meta,
+		User:         user,
+		DummyArticle: SidebarDummyArticle{RecentPostsID: "0"},
+	}
 }
 
 func (apd *ArticlePageData) AcceptWebp() bool {

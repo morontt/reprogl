@@ -57,6 +57,15 @@ func LoadViewSet() error {
 			"templates/layout/svg-sprites.gohtml",
 			"templates/layout/base.gohtml",
 		},
+		"profile.gohtml": {
+			"templates/profile.gohtml",
+			"templates/partials/author-info.gohtml",
+			"templates/partials/menu.gohtml",
+			"templates/partials/sidebar.gohtml",
+			"templates/partials/social-icons.gohtml",
+			"templates/layout/svg-sprites.gohtml",
+			"templates/layout/base.gohtml",
+		},
 		"index.gohtml": {
 			"templates/index.gohtml",
 			"templates/partials/menu.gohtml",

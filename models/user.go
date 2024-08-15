@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"time"
 
 	"xelbot.com/reprogl/utils/hashid"
 )
@@ -21,6 +22,7 @@ type User struct {
 	Type        string
 	DisplayName sql.NullString
 	Gender      int
+	CreatedAt   time.Time
 }
 
 func (u *User) Avatar(size int) string {

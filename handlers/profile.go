@@ -8,6 +8,7 @@ import (
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/session"
+	"xelbot.com/reprogl/views"
 )
 
 func ProfileAction(app *container.Application) http.HandlerFunc {
@@ -29,7 +30,12 @@ func ProfileAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte("Hi " + user.Username))
+		templateData := views.NewProfilePageData(user)
+		err := views.WriteTemplate(w, "profile.gohtml", templateData)
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
 	}
 }
