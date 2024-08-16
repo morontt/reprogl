@@ -59,7 +59,6 @@ func LoadViewSet() error {
 		},
 		"profile.gohtml": {
 			"templates/profile.gohtml",
-			"templates/partials/author-info.gohtml",
 			"templates/partials/menu.gohtml",
 			"templates/partials/sidebar.gohtml",
 			"templates/partials/social-icons.gohtml",

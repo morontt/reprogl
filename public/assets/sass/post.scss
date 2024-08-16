@@ -486,6 +486,9 @@ html[data-useragent*='MSIE 9.0'] .post-view .post-view-sidebar .post-view-elems 
             }
         }
     }
+    &.profile-info {
+        margin: rem-calc(15);
+    }
 }
 
 // prev next posts

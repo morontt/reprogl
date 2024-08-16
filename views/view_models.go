@@ -98,7 +98,7 @@ type AuthNavigation struct {
 }
 
 type MenuAuthData struct {
-	user *models.User
+	User *models.User
 	identityPart
 }
 
@@ -199,14 +199,6 @@ func (ip *identityPart) IsAdmin() bool {
 	return ip.identity.IsAdmin()
 }
 
-func (m *MenuAuthData) Avatar(size int) (url string) {
-	if m.user != nil {
-		url = m.user.Avatar(size)
-	}
-
-	return
-}
-
 func NewArticlePageData(article *models.Article, commentKey, accept string) *ArticlePageData {
 	meta := defaultMeta()
 	if article.Description.Valid {
@@ -298,7 +290,7 @@ func NewAuthNavigationData() *AuthNavigation {
 }
 
 func NewMenuAuthData(user *models.User) *MenuAuthData {
-	return &MenuAuthData{user: user}
+	return &MenuAuthData{User: user}
 }
 
 func NewProfilePageData(user *models.User) *ProfilePageData {

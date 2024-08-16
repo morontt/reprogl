@@ -35,3 +35,15 @@ func (u *User) Avatar(size int) string {
 
 	return avatarLink(u.ID, options, size)
 }
+
+func (u *User) Nickname() string {
+	if u.DisplayName.Valid && len(u.DisplayName.String) > 0 {
+		return u.DisplayName.String
+	}
+
+	return u.Username
+}
+
+func (u *User) HasDisplayName() bool {
+	return u.DisplayName.Valid && len(u.DisplayName.String) > 0
+}
