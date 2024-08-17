@@ -780,6 +780,12 @@
       "text": "Replace router library to github.com/go-chi/chi",
       "priority": "medium",
       "creation": 1723123796
+    },
+    {
+      "text": "месяцы на русском в статьях, статистике и т.п.",
+      "priority": "medium",
+      "creation": 1723749545,
+      "completion": 1723882299
     }
   ]
 }

@@ -6,6 +6,8 @@ import (
 	"regexp"
 	"slices"
 	"time"
+
+	"xelbot.com/reprogl/utils"
 )
 
 type JobHistory []Job
@@ -53,7 +55,7 @@ func (j *Job) LinkShort() (result string) {
 }
 
 func (j *Job) Start() string {
-	return ruMonthName(j.StartDate.Month()) + " " + j.StartDate.Format("2006")
+	return utils.RuMonthName(j.StartDate.Month(), false) + " " + j.StartDate.Format("2006")
 }
 
 func (j *Job) End() string {
@@ -62,7 +64,7 @@ func (j *Job) End() string {
 		return "текущее"
 	}
 
-	return ruMonthName(j.EndDate.Month()) + " " + j.EndDate.Format("2006")
+	return utils.RuMonthName(j.EndDate.Month(), false) + " " + j.EndDate.Format("2006")
 }
 
 func (j *Job) Duration() string {
@@ -141,23 +143,4 @@ func durationString(delta int) string {
 	}
 
 	return fmt.Sprintf("%d года", y) + monthPart
-}
-
-func ruMonthName(m time.Month) (res string) {
-	months := []string{
-		"Янв",
-		"Февр",
-		"Март",
-		"Апр",
-		"Май",
-		"Июнь",
-		"Июль",
-		"Авг",
-		"Сент",
-		"Окт",
-		"Нояб",
-		"Дек",
-	}
-
-	return months[int(m)-1]
 }

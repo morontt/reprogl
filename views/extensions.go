@@ -9,6 +9,7 @@ import (
 
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/utils"
 	"xelbot.com/reprogl/views/style"
 )
 
@@ -138,7 +139,10 @@ func subString(input string, length int) (str string) {
 
 func timeTag(t time.Time) template.HTML {
 	var s = "<time class=\"post-date\" datetime=\"" +
-		t.Format(time.RFC3339) + "\">" + t.Format("2 Jan 2006, 15:04:05.000") +
+		t.Format(time.RFC3339) + "\">" +
+		t.Format("2 ") +
+		utils.RuMonthName(t.Month(), true) +
+		t.Format(" 2006, 15:04:05.000") +
 		"</time>"
 
 	return template.HTML(s)
