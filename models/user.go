@@ -47,3 +47,11 @@ func (u *User) Nickname() string {
 func (u *User) HasDisplayName() bool {
 	return u.DisplayName.Valid && len(u.DisplayName.String) > 0
 }
+
+func (u *User) DisplayNameValue() (name string) {
+	if u.DisplayName.Valid && len(u.DisplayName.String) > 0 {
+		name = u.DisplayName.String
+	}
+
+	return
+}

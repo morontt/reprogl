@@ -164,10 +164,6 @@ section.comments {
         margin-bottom: 1em;
 
         form {
-            .row:last-child {
-                border-bottom: 2px $color-main-light dashed;
-            }
-
             button {
                 background: $color-main-contrast;
                 font-weight: 400;
@@ -211,6 +207,7 @@ section.comments {
             @include note-font;
             text-align: center;
             padding-top: 0.5em;
+            border-top: 2px $color-main-light dashed;
         }
 
         .auth-icon svg {

@@ -26,6 +26,7 @@ module.exports = function (grunt) {
                     'public/assets/css/post.css': 'public/assets/sass/post.scss',
                     'public/assets/css/select.css': 'public/assets/sass/select.scss',
                     'public/assets/css/comments.css': 'public/assets/sass/comments.scss',
+                    'public/assets/css/profile.css': 'public/assets/sass/profile.scss',
                     'public/assets/css/pygments.css': 'public/assets/sass/pygments.scss',
                     'public/assets/css/errors.css': 'public/assets/sass/errors.scss',
                     'public/assets/css/glyphicons.css': 'public/assets/sass/glyphicons.scss',
@@ -52,6 +53,7 @@ module.exports = function (grunt) {
                     'public/assets/css/select.css',
                     'public/assets/css/post.css',
                     'public/assets/css/comments.css',
+                    'public/assets/css/profile.css',
                 ],
                 dest: 'public/assets/css/<%= pkg.name %>.css'
             },

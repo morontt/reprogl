@@ -260,6 +260,10 @@ func infoStyles() template.HTML {
 	return template.HTML(style.GenerateInfoStyles())
 }
 
+func profileStyles() template.HTML {
+	return template.HTML(style.GenerateProfileStyles())
+}
+
 func isDev() bool {
 	return container.IsDevMode()
 }

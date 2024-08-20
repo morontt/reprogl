@@ -83,11 +83,13 @@
                 </div>
             </div>
         </form>
+        {{- if not .HasIdentity -}}
         <div class="form_note row">
             <div class="columns">
                 Адрес электронной почты нигде не отображается, необходим только для обратной связи.
             </div>
         </div>
+        {{- end -}}
         <div class="ajax-loader"></div>
     </div>
 {{end}}

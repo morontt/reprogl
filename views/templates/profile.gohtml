@@ -1,7 +1,7 @@
 {{template "base" . -}}
 
 {{- define "inline_styles" -}}
-{{statisticsStyles}}
+{{profileStyles}}
 {{- end -}}
 
 {{- define "html_prefix"}}og: https://ogp.me/ns#{{end -}}
@@ -47,6 +47,7 @@
                         </section>
                     </div>
                 </section>
+                {{template "profile-form" .}}
             </article>
         </div>
     </main>

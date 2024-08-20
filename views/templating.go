@@ -59,6 +59,7 @@ func LoadViewSet() error {
 		},
 		"profile.gohtml": {
 			"templates/profile.gohtml",
+			"templates/partials/profile-form.gohtml",
 			"templates/partials/menu.gohtml",
 			"templates/partials/sidebar.gohtml",
 			"templates/partials/social-icons.gohtml",
@@ -122,6 +123,7 @@ func LoadViewSet() error {
 		"statisticsStyles": statisticsStyles,
 		"indexStyles":      indexStyles,
 		"infoStyles":       infoStyles,
+		"profileStyles":    profileStyles,
 	}
 
 	for key, files := range templatesMap {
