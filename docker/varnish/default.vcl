@@ -43,6 +43,13 @@ sub vcl_hash {
         hash_data(req.http.X-Varnish-Session);
     }
 
+    if (req.http.Via && (
+        req.url == "/robots.txt" ||
+        req.url == "/sitemap.xml")
+    ) {
+        hash_data(req.http.Via);
+    }
+
     return (lookup);
 }
 
