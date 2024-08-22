@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"encoding/base64"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"xelbot.com/reprogl/container"
@@ -136,17 +136,9 @@ func HumansTXTAction(w http.ResponseWriter, r *http.Request) {
 }
 
 func FavIconAction(w http.ResponseWriter, _ *http.Request) {
-	var icon string
-	icon = "AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
-		"AAAAAAAAAAAA////AACAAAAAgIAAgAAAAIAAgACAgAAAgICAAOPj4wAAAP8AAP8AAAD//wD/AAAA" +
-		"/wD/AP//tQD///8AAqKgAAAAoqIAKgiIiIgKKgAAiACIiICiAAiIiACIiAoAAAiIiIiIAgAe4IiI" +
-		"iIgAABHgiAAIiIAAERCAHuCIgAAACIAR4IiAAAiIgBEQiIAACAiIAAiIAAAAgIiIiIgAAAgIiIiI" +
-		"iAAAAICAgIiAAAAAAICAiAAAAAAAAAAAAACAAAAAwAAAAOAAAADAAAAAwAAAAIABAACAAAAAgAAA" +
-		"AMAAAADAAAAAwAEAAMABAADAAQAA4AMAAPAHAAD4DwAA"
-
-	body, err := base64.StdEncoding.DecodeString(icon)
+	body, err := os.ReadFile("./public/favicon.ico")
 	if err != nil {
-		panic(err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 	}
 
 	cacheControl(w, container.RobotsTxtTTL)
