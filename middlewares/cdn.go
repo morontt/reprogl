@@ -17,6 +17,7 @@ func CDN(next http.Handler) http.Handler {
 				return
 			} else if r.URL.Path != "/robots.txt" &&
 				r.URL.Path != "/sitemap.xml" &&
+				r.URL.Path != "/headers" &&
 				!strings.HasPrefix(r.URL.Path, "/images/avatar/") {
 				http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 
