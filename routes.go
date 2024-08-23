@@ -34,6 +34,7 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/images/avatar/{hash:[0-9A-Z]+}.png", handlers.AvatarGenerator(app))
 	siteMux.HandleFunc("/images/avatar/{hash:[0-9A-Z]+}.w{size:[0-9]+}.png", handlers.AvatarGeneratorWithSize(app))
 	siteMux.HandleFunc("/profile", handlers.ProfileAction(app)).Methods("GET").Name("profile")
+	siteMux.HandleFunc("/profile", handlers.UpdateProfile(app)).Methods("POST")
 	siteMux.HandleFunc("/login", handlers.LoginAction(app)).Methods("GET").Name("login")
 	siteMux.HandleFunc("/login", handlers.LoginCheck(app)).Methods("POST")
 	siteMux.HandleFunc("/logout", handlers.LogoutAction).Name("logout")

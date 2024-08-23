@@ -518,12 +518,29 @@
             {
               "text": "Емейл и подтверждение",
               "priority": "medium",
-              "creation": 1722579887
+              "creation": 1722579887,
+              "tasks": [
+                {
+                  "text": "Возможность отписаться от писем",
+                  "priority": "medium",
+                  "creation": 1724224680
+                },
+                {
+                  "text": "Скрывать фейковый емейл",
+                  "priority": "medium",
+                  "creation": 1724267774
+                }
+              ]
             },
             {
               "text": "Сбросить пароль",
               "priority": "medium",
               "creation": 1722579923
+            },
+            {
+              "text": "Обновить комментарии после редактирования профиля",
+              "priority": "medium",
+              "creation": 1724224640
             }
           ]
         },

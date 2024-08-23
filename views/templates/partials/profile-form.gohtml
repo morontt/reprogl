@@ -1,6 +1,6 @@
 {{define "profile-form"}}
     <div id="profile_edit">
-        <form id="comment_form" class="ym-form ym-columnar" method="POST"
+        <form id="profile_form" class="ym-form ym-columnar" method="POST"
               action="{{path "profile"}}">
             <div class="row">
                 <div class="large-4 columns">
@@ -10,12 +10,13 @@
                     <input type="text"
                            name="displayName"
                            id="displayName"
+                           placeholder="Вместо юзернейма"
                            value="{{.User.DisplayNameValue}}">
                 </div>
             </div>
             <div class="row">
                 <div class="large-4 columns">
-                    <label for="username" class="inline required-field">username:</label>
+                    <label for="username" class="inline required-field">Юзернейм:</label>
                 </div>
                 <div class="large-8 columns">
                     <input type="text"
@@ -40,9 +41,9 @@
             </div>
             <div class="row">
                 <div class="large-offset-4 large-8 columns">
-                    <input id="is_male1" type="radio" name="is_male">
+                    <input id="is_male1" type="radio" name="gender" value="male" {{if .User.IsMale}}checked{{end}}>
                     <label for="is_male1"><i class="glyphicon mars"></i></label>
-                    <input id="is_male2" type="radio" name="is_male">
+                    <input id="is_male2" type="radio" name="gender" value="female" {{if not .User.IsMale}}checked{{end}}>
                     <label for="is_male2"><i class="glyphicon venus"></i></label>
                 </div>
             </div>

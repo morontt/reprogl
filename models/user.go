@@ -12,14 +12,14 @@ type LoggedUser struct {
 	Username     string
 	PasswordHash string
 	Salt         string
-	Type         string
+	Role         string
 }
 
 type User struct {
 	ID          int
 	Username    string
 	Email       string
-	Type        string
+	Role        string
 	DisplayName sql.NullString
 	Gender      int
 	CreatedAt   time.Time
@@ -54,4 +54,8 @@ func (u *User) DisplayNameValue() (name string) {
 	}
 
 	return
+}
+
+func (u *User) IsMale() bool {
+	return u.Gender == 1
 }

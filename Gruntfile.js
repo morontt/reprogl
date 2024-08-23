@@ -85,6 +85,7 @@ module.exports = function (grunt) {
                     'public/assets/js/vendors/velocity.js',
                     'public/assets/js/anima.js',
                     'public/assets/js/comments.js',
+                    'public/assets/js/profile.js',
                 ],
                 dest: 'public/assets/js/<%= pkg.name %>.js'
             }

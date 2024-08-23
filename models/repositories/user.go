@@ -27,7 +27,7 @@ func (ur *UserRepository) GetLoggedUserByUsername(username string) (*models.Logg
 	err := ur.DB.QueryRow(query, username).Scan(
 		&user.ID,
 		&user.Username,
-		&user.Type,
+		&user.Role,
 		&user.PasswordHash,
 		&user.Salt)
 
@@ -60,7 +60,7 @@ func (ur *UserRepository) Find(id int) (*models.User, error) {
 		&user.ID,
 		&user.Username,
 		&user.Email,
-		&user.Type,
+		&user.Role,
 		&user.DisplayName,
 		&user.CreatedAt,
 		&user.Gender)
