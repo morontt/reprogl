@@ -54,26 +54,36 @@ func GenerateAvatar(hashData hashid.HashData, app *container.Application, size i
 	}
 
 	app.InfoLog.Printf("[IMG] avatar generation by %+v\n", hashData)
-	if !hashData.IsUser() {
-		repository := repositories.CommentRepository{DB: app.DB}
-		commentator, err := repository.FindForGravatar(hashData.ID)
-		if err != nil {
-			return nil, err
-		}
-
-		gravatar, err := tryGravatar(commentator, size)
-		if err == nil {
-			app.InfoLog.Printf("[IMG] avatar %s found on gravatar.com\n", hashData.Hash)
-
-			return gravatar, nil
-		}
-	} else {
+	if hashData.IsUser() {
 		imageSrc, err := tryUserSource(hashData.ID, size)
-		if err == nil {
+		if err == nil && imageSrc != nil {
 			app.InfoLog.Printf("[IMG] avatar %s found on var/data/pictures\n", hashData.Hash)
 
 			return imageSrc, nil
 		}
+	}
+
+	var object MaybeGravatar
+	var err error
+	if !hashData.IsUser() {
+		repository := repositories.CommentRepository{DB: app.DB}
+		object, err = repository.FindForGravatar(hashData.ID)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		repository := repositories.UserRepository{DB: app.DB}
+		object, err = repository.Find(hashData.ID)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	gravatar, err := tryGravatar(object, size, app.InfoLog)
+	if err == nil {
+		app.InfoLog.Printf("[IMG] avatar %s found on gravatar.com\n", hashData.Hash)
+
+		return gravatar, nil
 	}
 
 	return generate8BitIconAvatar(hashData.Hash, hashData.IsMale(), size, app.InfoLog)

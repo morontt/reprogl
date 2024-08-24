@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"strings"
 	"time"
 
 	"xelbot.com/reprogl/utils/hashid"
@@ -58,4 +59,12 @@ func (u *User) DisplayNameValue() (name string) {
 
 func (u *User) IsMale() bool {
 	return u.Gender == 1
+}
+
+func (u *User) NeedToCheckGravatar() bool {
+	return !strings.Contains(u.Email, "@xelbot.fake")
+}
+
+func (u *User) GetEmail() string {
+	return u.Email
 }

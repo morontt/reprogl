@@ -4,13 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"log"
 	"net/http"
 	"runtime"
 	"strings"
 	"time"
 
 	"xelbot.com/reprogl/container"
-	"xelbot.com/reprogl/models"
 )
 
 var (
@@ -22,17 +22,22 @@ func init() {
 	chanBuf = make(chan struct{}, (runtime.NumCPU()/2)+1)
 }
 
-// TODO use interface for check gravatar (commentator or user)
-func tryGravatar(commentator *models.CommentatorForGravatar, size int) (image.Image, error) {
-	if !commentator.Email.Valid || !commentator.FakeEmail.Valid || commentator.FakeEmail.Bool {
+type MaybeGravatar interface {
+	NeedToCheckGravatar() bool
+	GetEmail() string
+}
+
+func tryGravatar(object MaybeGravatar, size int, logger *log.Logger) (image.Image, error) {
+	if !object.NeedToCheckGravatar() {
 		return nil, GravatarNotFound
 	}
 
+	hash := gravatarHash(object.GetEmail())
 	request, err := http.NewRequest(
 		http.MethodGet,
 		fmt.Sprintf(
 			"https://www.gravatar.com/avatar/%s?s=%d&d=404",
-			gravatarHash(commentator.Email.String),
+			hash,
 			size,
 		),
 		nil)
@@ -41,6 +46,7 @@ func tryGravatar(commentator *models.CommentatorForGravatar, size int) (image.Im
 		return nil, err
 	}
 
+	logger.Printf("[IMG] check gravatar hash %s on gravatar.com\n", hash)
 	resp, err := sendRequest(request)
 	if err != nil {
 		return nil, err

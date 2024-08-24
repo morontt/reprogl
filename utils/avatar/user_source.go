@@ -24,5 +24,5 @@ func tryUserSource(id, size int) (image.Image, error) {
 		return imageResult, nil
 	}
 
-	return nil, errors.New("")
+	return nil, errors.New("avatar: not found on var/data/pictures")
 }

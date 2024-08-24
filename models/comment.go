@@ -73,3 +73,11 @@ func (ctt *Commentator) Avatar() string {
 
 	return avatarLink(id, options)
 }
+
+func (c *CommentatorForGravatar) NeedToCheckGravatar() bool {
+	return c.Email.Valid && c.FakeEmail.Valid && !c.FakeEmail.Bool
+}
+
+func (c *CommentatorForGravatar) GetEmail() string {
+	return c.Email.String
+}
