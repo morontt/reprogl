@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"image"
 	"image/draw"
+	_ "image/jpeg"
 	_ "image/png"
 	"log"
 	"os"
@@ -65,6 +66,13 @@ func GenerateAvatar(hashData hashid.HashData, app *container.Application, size i
 			app.InfoLog.Printf("[IMG] avatar %s found on gravatar.com\n", hashData.Hash)
 
 			return gravatar, nil
+		}
+	} else {
+		imageSrc, err := tryUserSource(hashData.ID, size)
+		if err == nil {
+			app.InfoLog.Printf("[IMG] avatar %s found on var/data/pictures\n", hashData.Hash)
+
+			return imageSrc, nil
 		}
 	}
 

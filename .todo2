@@ -500,6 +500,7 @@
                   "text": "Avatar for techbot",
                   "priority": "medium",
                   "creation": 1723368044,
+                  "completion": 1724496039,
                   "tasks": [
                     {
                       "text": "https://lexica.art/prompt/537c8c95-2bb5-4730-9cbc-fff04cc26aee",
@@ -512,6 +513,11 @@
                       "creation": 1723368445
                     }
                   ]
+                },
+                {
+                  "text": "Бекап картинок",
+                  "priority": "medium",
+                  "creation": 1724496203
                 }
               ]
             },
@@ -886,6 +892,7 @@
       "text": "Slow server processing",
       "priority": "medium",
       "creation": 1721379002,
+      "completion": 1724483589,
       "tasks": [
         {
           "text": "https://docs.nginx.com/nginx/admin-guide/monitoring/logging/",

@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"image"
-	_ "image/jpeg"
-	_ "image/png"
 	"net/http"
 	"runtime"
 	"strings"
