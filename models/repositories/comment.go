@@ -41,6 +41,7 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (models.Com
 			c.tree_depth,
 			c.time_created,
 			COALESCE(t.rotten_link, 0) AS rotten_link,
+			COALESCE(u.avatar_variant, 0) AS avatar_variant,
 			c.deleted
 		FROM comments AS c
 		LEFT JOIN commentators AS t ON c.commentator_id = t.id
@@ -84,6 +85,7 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (models.Com
 			&comment.Depth,
 			&comment.CreatedAt,
 			&comment.RottenLink,
+			&comment.AvatarVariant,
 			&comment.Deleted)
 
 		if err != nil {
@@ -114,6 +116,7 @@ func (cr *CommentRepository) GetCollectionWithExtraDataByArticleId(articleId int
 			COALESCE(gco.country_code, '-') AS country_code,
 			ta.user_agent,
 			COALESCE(t.rotten_link, 0) AS rotten_link,
+			COALESCE(u.avatar_variant, 0) AS avatar_variant,
 			c.deleted
 		FROM comments AS c
 		LEFT JOIN commentators AS t ON c.commentator_id = t.id
@@ -164,6 +167,7 @@ func (cr *CommentRepository) GetCollectionWithExtraDataByArticleId(articleId int
 			&comment.CountryCode,
 			&comment.UserAgent,
 			&comment.RottenLink,
+			&comment.AvatarVariant,
 			&comment.Deleted)
 
 		if err != nil {
@@ -183,8 +187,9 @@ func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorLis
 			COALESCE(t.name, u.display_name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
-			COALESCE(t.gender, 1) AS gender,
+			COALESCE(t.gender, u.gender) AS gender,
 			COALESCE(t.rotten_link, 0) AS rotten_link,
+			COALESCE(u.avatar_variant, 0) AS avatar_variant,
 			src.commentator_id,
 			src.user_id
 		FROM (
@@ -220,6 +225,7 @@ func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorLis
 			&commentator.Website,
 			&commentator.Gender,
 			&commentator.RottenLink,
+			&commentator.AvatarVariant,
 			&commentator.CommentatorID,
 			&commentator.AuthorID)
 

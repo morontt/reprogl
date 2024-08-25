@@ -57,7 +57,7 @@ func GenerateAvatar(hashData hashid.HashData, app *container.Application, size i
 	if hashData.IsUser() {
 		imageSrc, err := tryUserSource(hashData.ID, size)
 		if err == nil && imageSrc != nil {
-			app.InfoLog.Printf("[IMG] avatar %s found on var/data/pictures\n", hashData.Hash)
+			app.InfoLog.Printf("[IMG] avatar %s found on public/data/pictures\n", hashData.Hash)
 
 			return imageSrc, nil
 		}

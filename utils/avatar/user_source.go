@@ -12,7 +12,7 @@ import (
 func tryUserSource(id, size int) (image.Image, error) {
 	extensions := []string{".png", ".jpg"}
 	for _, ext := range extensions {
-		filename := "var/data/pictures/user." + strconv.Itoa(id) + ext
+		filename := "public/data/pictures/user." + strconv.Itoa(id) + ext
 		img, err := loadImage(filename)
 		if err != nil {
 			continue
@@ -24,5 +24,5 @@ func tryUserSource(id, size int) (image.Image, error) {
 		return imageResult, nil
 	}
 
-	return nil, errors.New("avatar: not found on var/data/pictures")
+	return nil, errors.New("avatar: not found on public/data/pictures")
 }

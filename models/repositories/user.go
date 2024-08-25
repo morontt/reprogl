@@ -50,6 +50,7 @@ func (ur *UserRepository) Find(id int) (*models.User, error) {
 			u.mail,
 			u.user_type,
 			u.display_name,
+			u.avatar_variant,
 			u.time_created,
 			u.gender
 		FROM users AS u
@@ -62,6 +63,7 @@ func (ur *UserRepository) Find(id int) (*models.User, error) {
 		&user.Email,
 		&user.Role,
 		&user.DisplayName,
+		&user.AvatarVariant,
 		&user.CreatedAt,
 		&user.Gender)
 

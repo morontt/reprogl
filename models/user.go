@@ -17,13 +17,14 @@ type LoggedUser struct {
 }
 
 type User struct {
-	ID          int
-	Username    string
-	Email       string
-	Role        string
-	DisplayName sql.NullString
-	Gender      int
-	CreatedAt   time.Time
+	ID            int
+	Username      string
+	Email         string
+	Role          string
+	DisplayName   sql.NullString
+	Gender        int
+	AvatarVariant int
+	CreatedAt     time.Time
 }
 
 func (u *User) Avatar(size int) string {
@@ -32,6 +33,10 @@ func (u *User) Avatar(size int) string {
 		options |= hashid.Male
 	} else {
 		options |= hashid.Female
+	}
+
+	if u.AvatarVariant > 0 {
+		options += hashid.Option(u.AvatarVariant << 4)
 	}
 
 	return avatarLink(u.ID, options, size)

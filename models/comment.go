@@ -17,6 +17,7 @@ type Commentator struct {
 	CommentsCount int
 	Gender        int
 	RottenLink    bool
+	AvatarVariant int
 }
 
 type Comment struct {
@@ -69,6 +70,10 @@ func (ctt *Commentator) Avatar() string {
 		options |= hashid.Male
 	} else {
 		options |= hashid.Female
+	}
+
+	if ctt.AvatarVariant > 0 {
+		options += hashid.Option(ctt.AvatarVariant << 4)
 	}
 
 	return avatarLink(id, options)
