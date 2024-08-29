@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>{{.BrowserTitle}}</title>
+    {{- with .MetaParts -}}{{- range . }}
+    <meta name="{{.Name}}" content="{{.Content}}">
+    {{- end }}{{- end }}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{asset "assets/css/login.css"}}
+</head>
+<body>
+<div class="login-page">
+    <div class="form">
+        <form class="unsubscribe-form" enctype="application/x-www-form-urlencoded" method="POST">
+            {{if .Success}}
+            <p>
+                <img src="{{.Avatar}}" alt="avatar" width="160" height="auto">
+                Жаль, мой хозяин будет скучать, но я понимаю 😔
+                И вы всегда можете включить уведомления снова в настройках профиля
+            </p>
+            {{else}}
+            <p>
+                <img src="{{.Avatar}}" alt="avatar" width="160" height="auto">
+                Подтвердите, что не хотите получать уведомления на почту <i>"{{.Settings.Email}}"</i>, а не просто
+                нажали на ссылку из любопытства
+            </p>
+            <button type="submit">отписаться</button>
+            {{end}}
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -94,6 +94,9 @@ func LoadViewSet() error {
 		"menu-auth.gohtml": {
 			"templates/fragments/menu-auth.gohtml",
 		},
+		"unsubscribe.gohtml": {
+			"templates/unsubscribe.gohtml",
+		},
 	}
 
 	customFunctions := template.FuncMap{

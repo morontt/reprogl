@@ -76,7 +76,7 @@ func (ctt *Commentator) Avatar() string {
 		options += hashid.Option(ctt.AvatarVariant << 4)
 	}
 
-	return avatarLink(id, options)
+	return AvatarLink(id, options)
 }
 
 func (c *CommentatorForGravatar) NeedToCheckGravatar() bool {

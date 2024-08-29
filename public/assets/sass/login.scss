@@ -76,9 +76,25 @@ body {
         margin: 0 0 15px;
         background-color: lighten($color-error, 35%);
     }
-}
-.form .register-form {
-    display: none;
+
+    .register-form {
+        display: none;
+    }
+
+    .unsubscribe-form {
+        img {
+            position: absolute;
+            top: -30px;
+            right: -88px;
+            border: white solid 8px;
+        }
+
+        p {
+            margin-top: 0;
+            margin-right: 43px;
+            margin-bottom: 24px;
+        }
+    }
 }
 
 .container {

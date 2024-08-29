@@ -39,7 +39,7 @@ func (u *User) Avatar(size int) string {
 		options += hashid.Option(u.AvatarVariant << 4)
 	}
 
-	return avatarLink(u.ID, options, size)
+	return AvatarLink(u.ID, options, size)
 }
 
 func (u *User) Nickname() string {

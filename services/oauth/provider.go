@@ -26,6 +26,7 @@ func SupportedProvider(name string) (found bool) {
 
 func ConfigByProvider(name string) (*oauth2.Config, error) {
 	cnf := container.GetConfig()
+	url := container.GenerateAbsoluteURL("oauth-verification", "provider", name)
 
 	switch name {
 	case yandexProvider:
@@ -33,6 +34,7 @@ func ConfigByProvider(name string) (*oauth2.Config, error) {
 			ClientID:     cnf.OAuthYandexID,
 			ClientSecret: cnf.OAuthYandexSecret,
 			Endpoint:     yandex.Endpoint,
+			RedirectURL:  url,
 		}, nil
 	}
 

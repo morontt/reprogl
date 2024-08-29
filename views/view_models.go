@@ -93,6 +93,13 @@ type LoginPageData struct {
 	HasError     bool
 }
 
+type UnsubscribePageData struct {
+	Meta
+	Settings *models.EmailSubscription
+	Avatar   string
+	Success  bool
+}
+
 type AuthNavigation struct {
 	identityPart
 }
@@ -282,6 +289,18 @@ func NewLoginPageData(token, errorMessage string, hasError bool) *LoginPageData 
 		CsrfToken:    token,
 		ErrorMessage: errorMessage,
 		HasError:     hasError,
+	}
+}
+
+func NewUnsubscribePageData(settings *models.EmailSubscription, avatarLink string, success bool) *UnsubscribePageData {
+	meta := defaultMeta()
+	meta.AppendTitle("Отписка от email-уведомлений")
+
+	return &UnsubscribePageData{
+		Meta:     meta,
+		Settings: settings,
+		Avatar:   avatarLink,
+		Success:  success,
 	}
 }
 

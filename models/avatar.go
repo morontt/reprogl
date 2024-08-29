@@ -7,7 +7,7 @@ import (
 	"xelbot.com/reprogl/utils/hashid"
 )
 
-func avatarLink(id int, options hashid.Option, size ...int) string {
+func AvatarLink(id int, options hashid.Option, size ...int) string {
 	s := 80
 	if len(size) > 0 {
 		s = size[0]

@@ -46,7 +46,7 @@ func AvatarGeneratorWithSize(app *container.Application) http.HandlerFunc {
 }
 
 func writeAvatar(w http.ResponseWriter, app *container.Application, hash string, size int) {
-	hashModel, err := hashid.Decode(hash)
+	hashModel, err := hashid.Decode(hash, true)
 	if err != nil {
 		app.NotFound(w)
 		return
