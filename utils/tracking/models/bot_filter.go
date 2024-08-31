@@ -140,6 +140,7 @@ var engines = []string{
 	"gaisbot",
 	"stractbot",
 	"flipboardproxy",
+	"anyevent-http",
 }
 
 var (

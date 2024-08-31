@@ -110,6 +110,10 @@ func TestBotFilter(t *testing.T) {
 			name: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0 (FlipboardProxy/1.2; +http://flipboard.com/browserproxy)",
 			want: true,
 		},
+		{
+			name: "Mozilla/5.0 (compatible; U; AnyEvent-HTTP/2.241; +http://software.schmorp.de/pkg/AnyEvent",
+			want: true,
+		},
 	}
 
 	for idx, item := range tests {

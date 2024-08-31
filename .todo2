@@ -472,13 +472,35 @@
                   "text": "https://yandex.ru/dev/id/doc/ru/",
                   "priority": "medium",
                   "creation": 1722616732
+                },
+                {
+                  "text": "https://github.com/rakeev/oauth2-yandex",
+                  "priority": "low",
+                  "creation": 1725168084
                 }
               ]
             },
             {
               "text": "VK",
               "priority": "medium",
-              "creation": 1722886491
+              "creation": 1722886491,
+              "tasks": [
+                {
+                  "text": "https://dev.vk.com/ru/vkid",
+                  "priority": "low",
+                  "creation": 1725132927
+                },
+                {
+                  "text": "https://id.vk.com/about/business/go/docs/ru/vkid/latest/vk-id/connection/start-integration/auth-without-sdk-web",
+                  "priority": "low",
+                  "creation": 1725133380
+                },
+                {
+                  "text": "https://github.com/j4k/oauth2-vkontakte",
+                  "priority": "low",
+                  "creation": 1725168158
+                }
+              ]
             }
           ]
         },
