@@ -44,12 +44,22 @@ func LoadViewSet() error {
 			"templates/partials/menu.gohtml",
 			"templates/partials/sidebar.gohtml",
 			"templates/partials/social-icons.gohtml",
+			"templates/layout/svg-auth.gohtml",
 			"templates/layout/svg-sprites.gohtml",
 			"templates/layout/base.gohtml",
 		},
 		"statistics.gohtml": {
 			"templates/statistics.gohtml",
 			"templates/partials/author-info.gohtml",
+			"templates/partials/menu.gohtml",
+			"templates/partials/sidebar.gohtml",
+			"templates/partials/social-icons.gohtml",
+			"templates/layout/svg-sprites.gohtml",
+			"templates/layout/base.gohtml",
+		},
+		"profile.gohtml": {
+			"templates/profile.gohtml",
+			"templates/partials/profile-form.gohtml",
 			"templates/partials/menu.gohtml",
 			"templates/partials/sidebar.gohtml",
 			"templates/partials/social-icons.gohtml",
@@ -81,6 +91,12 @@ func LoadViewSet() error {
 		"auth-navigation.gohtml": {
 			"templates/fragments/auth-navigation.gohtml",
 		},
+		"menu-auth.gohtml": {
+			"templates/fragments/menu-auth.gohtml",
+		},
+		"unsubscribe.gohtml": {
+			"templates/unsubscribe.gohtml",
+		},
 	}
 
 	customFunctions := template.FuncMap{
@@ -110,6 +126,7 @@ func LoadViewSet() error {
 		"statisticsStyles": statisticsStyles,
 		"indexStyles":      indexStyles,
 		"infoStyles":       infoStyles,
+		"profileStyles":    profileStyles,
 	}
 
 	for key, files := range templatesMap {

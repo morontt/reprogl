@@ -1,20 +1,14 @@
 package handlers
 
 import (
-	"context"
-	"crypto/rand"
-	"encoding/base64"
 	"fmt"
 	"net/http"
-	"regexp"
-	"strings"
 	"time"
 
 	"github.com/xelbot/yetacache"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
-	"xelbot.com/reprogl/security"
 	"xelbot.com/reprogl/services/auth"
 	"xelbot.com/reprogl/session"
 	"xelbot.com/reprogl/views"
@@ -36,7 +30,7 @@ func LoginAction(app *container.Application) http.HandlerFunc {
 			}
 		}
 
-		saveReferer(w, r.Referer())
+		saveLoginReferer(w, r.Referer())
 		errorMessage, hasError := session.Pop[string](r.Context(), session.FlashErrorKey)
 
 		templateData := views.NewLoginPageData(csrfToken, errorMessage, hasError)
@@ -105,10 +99,7 @@ func LoginCheck(app *container.Application) http.HandlerFunc {
 		authSuccess(user, app, container.RealRemoteAddress(r), r.Context())
 
 		var redirectUrl string
-		if cookie, errNoCookie := r.Cookie(session.RefererCookie); errNoCookie == nil {
-			redirectUrl = cookie.Value
-			deleteRefererCookie(w)
-		} else {
+		if redirectUrl, found = popLoginReferer(w, r); !found {
 			redirectUrl = "/"
 		}
 
@@ -122,7 +113,7 @@ func LogoutAction(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func LoginLogoutLinks(app *container.Application) http.HandlerFunc {
+func AuthNavigation(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cacheControl(w, container.DefaultEsiTTL)
 		templateData := views.NewAuthNavigationData()
@@ -133,18 +124,27 @@ func LoginLogoutLinks(app *container.Application) http.HandlerFunc {
 	}
 }
 
-func authSuccess(user *models.LoggedUser, app *container.Application, ip string, ctx context.Context) {
-	session.SetIdentity(ctx, security.CreateIdentity(user))
+func MenuAuth(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var user *models.User
+		if identity, ok := session.GetIdentity(r.Context()); ok {
+			repo := repositories.UserRepository{DB: app.DB}
+			user, _ = repo.Find(identity.ID)
+		}
 
-	repo := repositories.UserRepository{DB: app.DB}
-	if err := repo.SaveLoginEvent(user.ID, ip); err != nil {
-		app.LogError(err)
+		templateData := views.NewMenuAuthData(user)
+		cacheControl(w, container.DefaultEsiTTL)
+
+		err := views.WriteTemplateWithContext(r.Context(), w, "menu-auth.gohtml", templateData)
+		if err != nil {
+			app.ServerError(w, err)
+		}
 	}
 }
 
 func generateCsrfPair(w http.ResponseWriter, cache *yetacache.Cache[string, string]) string {
-	csrfToken := generateToken()
-	csrfTokenKey := generateToken()
+	csrfToken := generateRandomToken()
+	csrfTokenKey := generateRandomToken()
 
 	cache.Set(csrfTokenKey, csrfToken, 30*time.Minute)
 	session.WriteSessionCookie(w, session.CsrfCookie, csrfTokenKey, "/login")
@@ -154,27 +154,4 @@ func generateCsrfPair(w http.ResponseWriter, cache *yetacache.Cache[string, stri
 
 func deleteCsrfCookie(w http.ResponseWriter) {
 	session.DeleteCookie(w, session.CsrfCookie, "/login")
-}
-
-func generateToken() string {
-	nonce := make([]byte, 18)
-	_, err := rand.Read(nonce)
-	if err != nil {
-		panic(err)
-	}
-
-	return base64.URLEncoding.EncodeToString(nonce)
-}
-
-func saveReferer(w http.ResponseWriter, referer string) {
-	host := container.GetConfig().Host
-	host = strings.ReplaceAll(host, ".", "\\.")
-	matches := regexp.MustCompile(`^https?:\/\/` + host + `(.*)$`).FindStringSubmatch(referer)
-	if matches != nil && matches[1] != "/login" {
-		session.WriteSessionCookie(w, session.RefererCookie, matches[1], "/login")
-	}
-}
-
-func deleteRefererCookie(w http.ResponseWriter) {
-	session.DeleteCookie(w, session.RefererCookie, "/login")
 }

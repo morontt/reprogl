@@ -17,6 +17,7 @@ type Commentator struct {
 	CommentsCount int
 	Gender        int
 	RottenLink    bool
+	AvatarVariant int
 }
 
 type Comment struct {
@@ -52,7 +53,7 @@ func (c *Comment) Avatar() (src string) {
 	return c.Commentator.Avatar()
 }
 
-func (ctt *Commentator) Avatar() (src string) {
+func (ctt *Commentator) Avatar() string {
 	var id int
 	var options hashid.Option
 
@@ -71,5 +72,17 @@ func (ctt *Commentator) Avatar() (src string) {
 		options |= hashid.Female
 	}
 
-	return container.GetConfig().CDNBaseURL + "/images/avatar/" + hashid.Encode(id, options) + ".png"
+	if ctt.AvatarVariant > 0 {
+		options += hashid.Option(ctt.AvatarVariant << 4)
+	}
+
+	return AvatarLink(id, options)
+}
+
+func (c *CommentatorForGravatar) NeedToCheckGravatar() bool {
+	return c.Email.Valid && c.FakeEmail.Valid && !c.FakeEmail.Bool
+}
+
+func (c *CommentatorForGravatar) GetEmail() string {
+	return c.Email.String
 }

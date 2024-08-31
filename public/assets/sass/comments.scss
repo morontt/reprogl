@@ -1,5 +1,10 @@
 @import "settings";
 
+@mixin note-font {
+    color: lighten($color-main-dark, 35%);
+    font-size: 75%;
+}
+
 section.comments {
     background: darken($color-main-light, 3%);
     padding: 0;
@@ -159,10 +164,6 @@ section.comments {
         margin-bottom: 1em;
 
         form {
-            .row:last-child {
-                border-bottom: 2px $color-main-light dashed;
-            }
-
             button {
                 background: $color-main-contrast;
                 font-weight: 400;
@@ -197,11 +198,28 @@ section.comments {
             }
         }
 
+        .auth_note {
+            @include note-font;
+            float: left;
+        }
+
+        .columns:has(.auth_note) {
+            padding-bottom: rem-calc(7);
+        }
+
         .form_note {
-            color: lighten($color-main-dark, 35%);
-            font-size: 75%;
+            @include note-font;
             text-align: center;
             padding-top: 0.5em;
+            border-top: 2px $color-main-light dashed;
+        }
+
+        .auth-icon {
+            display: inline-block;
+            margin-top: -4px;
+            svg {
+                border-radius: rem-calc(5);
+            }
         }
 
         small.error {

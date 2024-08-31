@@ -378,6 +378,13 @@ html.no-csstransforms3d {
             &:hover {
                 color: $color-main-contrast;
             }
+            img {
+                position: relative;
+                top: -2px;
+                border-radius: 6px;
+                height: 32px;
+                width: auto;
+            }
         }
     }
 }

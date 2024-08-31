@@ -1,0 +1,8 @@
+{{if .HasIdentity -}}
+<li>
+    <a href="{{path "profile"}}">
+        <img src="{{.User.Avatar 32}}" alt="avatar"/>
+        <span>Профиль</span>
+    </a>
+</li>
+{{- end}}

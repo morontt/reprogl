@@ -27,19 +27,13 @@ func AddCommentDummy(w http.ResponseWriter, r *http.Request) {
 
 func AddComment(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := r.ParseForm()
+		topicId, err := strconv.Atoi(r.PostFormValue("topicId"))
 		if err != nil {
 			app.ClientError(w, http.StatusBadRequest)
 			return
 		}
 
-		topicId, err := strconv.Atoi(r.PostForm.Get("topicId"))
-		if err != nil {
-			app.ClientError(w, http.StatusBadRequest)
-			return
-		}
-
-		parentId, err := strconv.Atoi(r.PostForm.Get("parentId"))
+		parentId, err := strconv.Atoi(r.PostFormValue("parentId"))
 		if err != nil {
 			app.ClientError(w, http.StatusBadRequest)
 			return
@@ -58,23 +52,23 @@ func AddComment(app *container.Application) http.HandlerFunc {
 		}
 
 		var commentator *backend.CommentatorDTO
-		var user *backend.UserDTO
+		var user *backend.CommentUserDTO
 		if identity, hasIdentity := session.GetIdentity(r.Context()); hasIdentity {
-			user = &backend.UserDTO{
+			user = &backend.CommentUserDTO{
 				ID: identity.ID,
 			}
 		} else {
 			commentator = &backend.CommentatorDTO{
-				Name:    r.PostForm.Get("name"),
-				Email:   r.PostForm.Get("mail"),
-				Website: r.PostForm.Get("website"),
+				Name:    r.PostFormValue("name"),
+				Email:   r.PostFormValue("mail"),
+				Website: r.PostFormValue("website"),
 			}
 		}
 
 		commentData := backend.CommentDTO{
 			Commentator: commentator,
 			User:        user,
-			Text:        r.PostForm.Get("comment_text"),
+			Text:        r.PostFormValue("comment_text"),
 			TopicID:     topicId,
 			ParentID:    parentId,
 			UserAgent:   r.UserAgent(),
@@ -137,9 +131,10 @@ func CommentsFragment(app *container.Application) http.HandlerFunc {
 
 		repo := repositories.CommentRepository{DB: app.DB}
 
-		var comments *models.CommentList
-		if session.HasIdentity(r.Context()) {
-			comments, err = repo.GetCollectionForUsersByArticleId(articleId)
+		var comments models.CommentList
+		identity, found := session.GetIdentity(r.Context())
+		if found && identity.IsAdmin() {
+			comments, err = repo.GetCollectionWithExtraDataByArticleId(articleId)
 		} else {
 			comments, err = repo.GetCollectionByArticleId(articleId)
 		}

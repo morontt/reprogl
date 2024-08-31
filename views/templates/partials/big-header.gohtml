@@ -30,6 +30,7 @@
                 <div class="medium-8 large-9 columns show-for-medium-up clearfix">
                     <div class="right">
                         <ul class="inline-list">
+                            {{render_esi "menu-auth"}}
                             <li>
                                 <a href="{{path "statistics"}}">
                                     <span class="glyphicon glyph-fw glyphicon-stats"></span>
@@ -38,7 +39,7 @@
                             </li>
                             <li>
                                 <a href="{{path "info-page"}}">
-                                    <span class="glyphicon glyph-fw glyphicon-user"></span>
+                                    <span class="glyphicon glyph-fw glyphicon-info-sign"></span>
                                     <span>Обо мне</span>
                                 </a>
                             </li>

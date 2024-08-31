@@ -1,0 +1,69 @@
+{{define "profile-form"}}
+    <div id="profile_edit">
+        <form id="profile_form" class="ym-form ym-columnar" method="POST"
+              action="{{path "profile"}}">
+            <div class="row">
+                <div class="large-4 columns">
+                    <label for="displayName" class="inline">Отображаемое имя:</label>
+                </div>
+                <div class="large-8 columns">
+                    <input type="text"
+                           name="displayName"
+                           id="displayName"
+                           placeholder="Вместо юзернейма"
+                           value="{{.User.DisplayNameValue}}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-4 columns">
+                    <label for="username" class="inline required-field">Юзернейм:</label>
+                </div>
+                <div class="large-8 columns">
+                    <input type="text"
+                           name="username"
+                           id="username"
+                           value="{{.User.Username}}"
+                           placeholder="username"
+                           required="required">
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-4 columns">
+                    <label for="email" class="inline">E-mail:</label>
+                </div>
+                <div class="large-8 columns">
+                    <input type="email"
+                           name="email"
+                           id="email"
+                           value="{{.User.Email}}"
+                           placeholder="mail@example.org">
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-offset-4 large-8 columns">
+                    <input id="is_male1" type="radio" name="gender" value="male" {{if .User.IsMale}}checked{{end}}>
+                    <label for="is_male1"><i class="glyphicon mars"></i></label>
+                    <input id="is_male2" type="radio" name="gender" value="female" {{if not .User.IsMale}}checked{{end}}>
+                    <label for="is_male2"><i class="glyphicon venus"></i></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-offset-4 large-8 columns subscriptions">
+                    <input id="reply_subscribe"
+                           type="checkbox"
+                           name="reply_subscribe" {{if not .SubscriptionsSettings.BlockSending}}checked{{end}}>
+                    <label for="reply_subscribe">Уведомления на почту об ответах на ваши комментарии</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-offset-4 large-8 columns">
+                    <button type="submit"
+                            class="ym-button ym-add"
+                            id="submit"
+                            name="submit">Сохранить</button>
+                </div>
+            </div>
+        </form>
+        <div class="ajax-loader"></div>
+    </div>
+{{end}}

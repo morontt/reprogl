@@ -5,7 +5,8 @@
               action="{{path "add-comment-dummy"}}">
             <input type="hidden" name="topicId" value="{{.Article.ID}}" id="topicId">
             <input type="hidden" name="parentId" value="0" id="parentId">
-            {{if not .HasIdentity -}}
+            {{- if not .HasIdentity -}}
+            {{- template "svg-auth" -}}
             <div class="row">
                 <div class="large-3 columns">
                     <label for="name" class="inline required-field">Имя:</label>
@@ -26,7 +27,7 @@
                 <div class="large-9 columns">
                     <input type="email"
                            name="mail"
-                           id="mail"
+                           id="email"
                            value=""
                            placeholder="mail@example.org">
                 </div>
@@ -41,6 +42,24 @@
                            id="website"
                            value=""
                            placeholder="http://example.org">
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-offset-3 large-9 columns">
+                    <div class="auth_note">
+                        Или войдите, чтобы не заполнять форму:
+                    </div>
+                    <div class="right">
+                        <a href="{{path "oauth-authorize" "provider" "yandex"}}" rel="nofollow">
+                            <i class="auth-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 44" role="img"
+                                    aria-label="Yandex"
+                                    width="28" height="28">
+                                    <use xlink:href="#auth-yandex"></use>
+                                </svg>
+                            </i>
+                        </a>
+                    </div>
                 </div>
             </div>
             {{- end}}
@@ -64,11 +83,13 @@
                 </div>
             </div>
         </form>
+        {{- if not .HasIdentity -}}
         <div class="form_note row">
             <div class="columns">
                 Адрес электронной почты нигде не отображается, необходим только для обратной связи.
             </div>
         </div>
+        {{- end -}}
         <div class="ajax-loader"></div>
     </div>
 {{end}}

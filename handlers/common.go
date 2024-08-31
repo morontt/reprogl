@@ -1,11 +1,22 @@
 package handlers
 
 import (
+	"context"
+	"crypto/rand"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"regexp"
 	"strconv"
+	"strings"
 	"time"
+
+	"xelbot.com/reprogl/container"
+	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/models/repositories"
+	"xelbot.com/reprogl/security"
+	"xelbot.com/reprogl/session"
 )
 
 func pageOrRedirect(params map[string]string) (int, bool) {
@@ -44,4 +55,47 @@ func jsonResponse(w http.ResponseWriter, statusCode int, data any) {
 
 	jsonResult, _ := json.Marshal(data)
 	w.Write(jsonResult)
+}
+
+func generateRandomToken() string {
+	nonce := make([]byte, 18)
+	_, err := rand.Read(nonce)
+	if err != nil {
+		panic(err)
+	}
+
+	return base64.URLEncoding.EncodeToString(nonce)
+}
+
+func authSuccess(user *models.LoggedUser, app *container.Application, ip string, ctx context.Context) {
+	session.SetIdentity(ctx, security.CreateIdentity(user))
+
+	repo := repositories.UserRepository{DB: app.DB}
+	if err := repo.SaveLoginEvent(user.ID, ip); err != nil {
+		app.LogError(err)
+	}
+}
+
+func saveLoginReferer(w http.ResponseWriter, referer string) {
+	host := container.GetConfig().Host
+	host = strings.ReplaceAll(host, ".", "\\.")
+	matches := regexp.MustCompile(`^https?:\/\/` + host + `(.*)$`).FindStringSubmatch(referer)
+	if matches != nil && matches[1] != "/login" && !strings.HasPrefix(matches[1], "/oauth") {
+		session.WriteSessionCookie(w, session.RefererCookie, matches[1], "/")
+	}
+}
+
+func popLoginReferer(w http.ResponseWriter, r *http.Request) (redirectUrl string, found bool) {
+	if cookie, errNoCookie := r.Cookie(session.RefererCookie); errNoCookie == nil {
+		redirectUrl = cookie.Value
+		found = true
+
+		deleteRefererCookie(w)
+	}
+
+	return
+}
+
+func deleteRefererCookie(w http.ResponseWriter) {
+	session.DeleteCookie(w, session.RefererCookie, "/")
 }

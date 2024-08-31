@@ -2,6 +2,8 @@ package hashid
 
 import (
 	"errors"
+	"fmt"
+
 	"github.com/speps/go-hashids/v2"
 )
 
@@ -39,7 +41,7 @@ func Encode(id int, options Option) (hashString string) {
 	return
 }
 
-func Decode(str string) (HashData, error) {
+func Decode(str string, isAvatar bool) (HashData, error) {
 	var data = HashData{Hash: str}
 
 	ids, err := decode(str)
@@ -47,13 +49,13 @@ func Decode(str string) (HashData, error) {
 		return data, err
 	}
 	if len(ids) != 2 {
-		return data, errors.New("hashid: incorrect result length")
+		return data, errors.New(fmt.Sprintf("hashid: incorrect result length: %d", len(ids)))
 	}
 
 	data.ID = ids[0]
 	data.options = Option(ids[1])
 
-	if !data.validOptions() {
+	if isAvatar && !data.validOptions() {
 		return data, WrongOptions
 	}
 

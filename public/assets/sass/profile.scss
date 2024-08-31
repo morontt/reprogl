@@ -1,0 +1,71 @@
+@import "settings";
+
+#profile_edit {
+    position: relative;
+    border-radius: rem-calc(5);
+    background: darken($color-main-light, 3%);
+    padding: 1em 0.5em;
+    margin: 0 rem-calc(15) 1em;
+
+    form {
+        .row:last-child {
+            margin-top: 1em;
+        }
+
+        button {
+            background: $color-main-contrast;
+            font-weight: 400;
+            border-radius: rem-calc(3);
+
+            &:hover {
+                color: $color-main-light;
+                background: lighten($color-main-contrast, 5%);
+            }
+        }
+
+        label.required-field:after {
+            content: '*';
+            color: $color-error;
+            padding-left: 0.2em;
+        }
+
+        .subscriptions {
+            margin: 1rem 0;
+            label {
+                text-align: left;
+                display: inline;
+                font-size: 80%;
+            }
+        }
+
+        @media only screen and (min-width: 64em) {
+            .columns:has(label) {
+                padding-right: 0;
+            }
+
+            label {
+                text-align: right;
+            }
+        }
+
+        @media only screen and (max-width: 64em) {
+            label.inline {
+                margin: 0;
+            }
+        }
+    }
+
+    i.glyphicon.mars:before {
+        content: '\2642';
+        font-family: Symbola;
+        font-size: 1.8em;
+        font-weight: normal
+    }
+
+    i.glyphicon.venus:before {
+        content: '\2640';
+        font-family: Symbola;
+        font-size: 1.8em;
+        font-weight: normal
+    }
+}

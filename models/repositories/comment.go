@@ -27,20 +27,21 @@ func (cr *CommentRepository) GetLastUpdate(articleId int) (string, error) {
 	return last, err
 }
 
-func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.CommentList, error) {
+func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (models.CommentList, error) {
 	query := `
 		SELECT
 			c.id,
-			COALESCE(t.name, u.username) AS username,
+			COALESCE(t.name, u.display_name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
-			COALESCE(t.gender, 1) AS gender,
+			COALESCE(t.gender, u.gender) AS gender,
 			c.commentator_id,
 			c.user_id,
 			c.text,
 			c.tree_depth,
 			c.time_created,
 			COALESCE(t.rotten_link, 0) AS rotten_link,
+			COALESCE(u.avatar_variant, 0) AS avatar_variant,
 			c.deleted
 		FROM comments AS c
 		LEFT JOIN commentators AS t ON c.commentator_id = t.id
@@ -84,6 +85,7 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 			&comment.Depth,
 			&comment.CreatedAt,
 			&comment.RottenLink,
+			&comment.AvatarVariant,
 			&comment.Deleted)
 
 		if err != nil {
@@ -93,18 +95,18 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (*models.Co
 		comments = append(comments, &comment)
 	}
 
-	return &comments, nil
+	return comments, nil
 }
 
-// GetCollectionForUsersByArticleId TODO use query builder with GetCollectionByArticleId
-func (cr *CommentRepository) GetCollectionForUsersByArticleId(articleId int) (*models.CommentList, error) {
+// GetCollectionWithExtraDataByArticleId TODO use query builder with GetCollectionByArticleId
+func (cr *CommentRepository) GetCollectionWithExtraDataByArticleId(articleId int) (models.CommentList, error) {
 	query := `
 		SELECT
 			c.id,
-			COALESCE(t.name, u.username) AS username,
+			COALESCE(t.name, u.display_name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
-			COALESCE(t.gender, 1) AS gender,
+			COALESCE(t.gender, u.gender) AS gender,
 			c.commentator_id,
 			c.user_id,
 			c.text,
@@ -114,6 +116,7 @@ func (cr *CommentRepository) GetCollectionForUsersByArticleId(articleId int) (*m
 			COALESCE(gco.country_code, '-') AS country_code,
 			ta.user_agent,
 			COALESCE(t.rotten_link, 0) AS rotten_link,
+			COALESCE(u.avatar_variant, 0) AS avatar_variant,
 			c.deleted
 		FROM comments AS c
 		LEFT JOIN commentators AS t ON c.commentator_id = t.id
@@ -164,6 +167,7 @@ func (cr *CommentRepository) GetCollectionForUsersByArticleId(articleId int) (*m
 			&comment.CountryCode,
 			&comment.UserAgent,
 			&comment.RottenLink,
+			&comment.AvatarVariant,
 			&comment.Deleted)
 
 		if err != nil {
@@ -173,18 +177,19 @@ func (cr *CommentRepository) GetCollectionForUsersByArticleId(articleId int) (*m
 		comments = append(comments, &comment)
 	}
 
-	return &comments, nil
+	return comments, nil
 }
 
 func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorList, error) {
 	query := `
 		SELECT
 			src.cnt,
-			COALESCE(t.name, u.username) AS username,
+			COALESCE(t.name, u.display_name, u.username) AS username,
 			COALESCE(t.mail, u.mail) AS email,
 			t.website,
-			COALESCE(t.gender, 1) AS gender,
+			COALESCE(t.gender, u.gender) AS gender,
 			COALESCE(t.rotten_link, 0) AS rotten_link,
+			COALESCE(u.avatar_variant, 0) AS avatar_variant,
 			src.commentator_id,
 			src.user_id
 		FROM (
@@ -220,6 +225,7 @@ func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorLis
 			&commentator.Website,
 			&commentator.Gender,
 			&commentator.RottenLink,
+			&commentator.AvatarVariant,
 			&commentator.CommentatorID,
 			&commentator.AuthorID)
 

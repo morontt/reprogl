@@ -449,18 +449,173 @@
     },
     {
       "text": "Регистрация пользователей для комментариев",
-      "priority": "medium",
+      "priority": "high",
       "creation": 1686772368,
       "tasks": [
         {
           "text": "Через соц-сети и т.п.",
           "priority": "medium",
-          "creation": 1686772409
+          "creation": 1686772409,
+          "tasks": [
+            {
+              "text": "Yandex",
+              "priority": "medium",
+              "creation": 1722616679,
+              "completion": 1725090773,
+              "tasks": [
+                {
+                  "text": "https://yandex.ru/id/business",
+                  "priority": "medium",
+                  "creation": 1722616719
+                },
+                {
+                  "text": "https://yandex.ru/dev/id/doc/ru/",
+                  "priority": "medium",
+                  "creation": 1722616732
+                }
+              ]
+            },
+            {
+              "text": "VK",
+              "priority": "medium",
+              "creation": 1722886491
+            }
+          ]
         },
         {
           "text": "Log in with OpenID",
           "priority": "medium",
           "creation": 1717673795
+        },
+        {
+          "text": "Страница профиля",
+          "priority": "medium",
+          "creation": 1722579787,
+          "tasks": [
+            {
+              "text": "Загрузка аватара",
+              "priority": "medium",
+              "creation": 1722579856,
+              "tasks": [
+                {
+                  "text": "Avatar for techbot",
+                  "priority": "medium",
+                  "creation": 1723368044,
+                  "completion": 1724496039,
+                  "tasks": [
+                    {
+                      "text": "https://lexica.art/prompt/537c8c95-2bb5-4730-9cbc-fff04cc26aee",
+                      "priority": "low",
+                      "creation": 1723368066
+                    },
+                    {
+                      "text": "https://lexica.art/prompt/50c096de-8ea3-4dc3-981a-67f1fff4d1fd",
+                      "priority": "low",
+                      "creation": 1723368445
+                    }
+                  ]
+                },
+                {
+                  "text": "Бекап картинок",
+                  "priority": "medium",
+                  "creation": 1724496203
+                }
+              ]
+            },
+            {
+              "text": "Емейл и подтверждение",
+              "priority": "medium",
+              "creation": 1722579887,
+              "tasks": [
+                {
+                  "text": "Возможность отписаться от писем",
+                  "priority": "medium",
+                  "creation": 1724224680
+                },
+                {
+                  "text": "Скрывать фейковый емейл",
+                  "priority": "medium",
+                  "creation": 1724267774
+                }
+              ]
+            },
+            {
+              "text": "Сбросить пароль",
+              "priority": "medium",
+              "creation": 1722579923
+            },
+            {
+              "text": "Обновить комментарии после редактирования профиля",
+              "priority": "medium",
+              "creation": 1724224640,
+              "completion": 1724700260
+            }
+          ]
+        },
+        {
+          "text": "Разделить админские права и обычных пользователей",
+          "priority": "medium",
+          "creation": 1722579824,
+          "completion": 1725031341
+        },
+        {
+          "text": "Аватар в сайдбаре навигации",
+          "priority": "medium",
+          "creation": 1722629150,
+          "completion": 1724524471,
+          "tasks": [
+            {
+              "text": "Проверить Gravatar, если аватара нет",
+              "priority": "medium",
+              "creation": 1722886402
+            },
+            {
+              "text": "Учёт пола для аватара и в админке",
+              "priority": "medium",
+              "creation": 1723232746,
+              "completion": 1723491203
+            }
+          ]
+        },
+        {
+          "text": "Redirect to referer",
+          "priority": "medium",
+          "creation": 1723407736,
+          "completion": 1723491219
+        },
+        {
+          "text": "Страница пользователя",
+          "priority": "medium",
+          "creation": 1723528272,
+          "tasks": [
+            {
+              "text": "Дата регистрации",
+              "priority": "medium",
+              "creation": 1723528301
+            },
+            {
+              "text": "Список комментариев",
+              "priority": "medium",
+              "creation": 1723528312
+            },
+            {
+              "text": "RSS комментариев пользователя",
+              "priority": "medium",
+              "creation": 1723528387
+            }
+          ]
+        },
+        {
+          "text": "Форма регистрация",
+          "priority": "medium",
+          "creation": 1724694192,
+          "tasks": [
+            {
+              "text": "Отправлять ссылку подтверждения на почту, создание пользователя после",
+              "priority": "medium",
+              "creation": 1724694249
+            }
+          ]
         }
       ]
     },
@@ -753,6 +908,7 @@
       "text": "Slow server processing",
       "priority": "medium",
       "creation": 1721379002,
+      "completion": 1724483589,
       "tasks": [
         {
           "text": "https://docs.nginx.com/nginx/admin-guide/monitoring/logging/",

@@ -21,7 +21,7 @@ sub vcl_recv {
             set req.http.X-Varnish-Session = regsub(req.http.Cookie, ".*(^|;| )?session=([a-zA-Z0-9\-_=]+)( |;|$)?.*", "\2");
         }
 
-        if (!(req.url ~ "^/login")) {
+        if (!(req.url ~ "^/login" || req.url ~ "^/oauth")) {
             unset req.http.Cookie;
         }
     }
@@ -38,6 +38,7 @@ sub vcl_hash {
     hash_data(req.url);
     if (req.http.X-Varnish-Session && (
         req.url == "/_fragment/auth-navigation" ||
+        req.url == "/_fragment/menu-auth" ||
         req.url ~ "^/_fragment/comments/")
     ) {
         hash_data(req.http.X-Varnish-Session);

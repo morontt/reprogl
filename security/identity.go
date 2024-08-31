@@ -33,7 +33,7 @@ var (
 
 func CreateIdentity(user *models.LoggedUser) Identity {
 	var role Role
-	if user.Type == "admin" {
+	if user.Role == "admin" {
 		role = Admin
 	} else {
 		role = User

@@ -93,8 +93,27 @@ type LoginPageData struct {
 	HasError     bool
 }
 
+type UnsubscribePageData struct {
+	Meta
+	Settings *models.EmailSubscription
+	Avatar   string
+	Success  bool
+}
+
 type AuthNavigation struct {
 	identityPart
+}
+
+type MenuAuthData struct {
+	User *models.User
+	identityPart
+}
+
+type ProfilePageData struct {
+	Meta
+	User                  *models.User
+	SubscriptionsSettings *models.EmailSubscription
+	DummyArticle          SidebarDummyArticle
 }
 
 type FragmentCategoriesData struct {
@@ -102,7 +121,7 @@ type FragmentCategoriesData struct {
 }
 
 type FragmentCommentsData struct {
-	Comments        *models.CommentList
+	Comments        models.CommentList
 	EnabledComments bool
 	identityPart
 }
@@ -274,8 +293,37 @@ func NewLoginPageData(token, errorMessage string, hasError bool) *LoginPageData 
 	}
 }
 
+func NewUnsubscribePageData(settings *models.EmailSubscription, avatarLink string, success bool) *UnsubscribePageData {
+	meta := defaultMeta()
+	meta.AppendTitle("Отписка от email-уведомлений")
+
+	return &UnsubscribePageData{
+		Meta:     meta,
+		Settings: settings,
+		Avatar:   avatarLink,
+		Success:  success,
+	}
+}
+
 func NewAuthNavigationData() *AuthNavigation {
 	return &AuthNavigation{}
+}
+
+func NewMenuAuthData(user *models.User) *MenuAuthData {
+	return &MenuAuthData{User: user}
+}
+
+func NewProfilePageData(user *models.User, settings *models.EmailSubscription) *ProfilePageData {
+	meta := defaultMeta()
+	meta.AppendTitle("Профиль")
+
+	return &ProfilePageData{
+		Meta:         meta,
+		User:         user,
+		DummyArticle: SidebarDummyArticle{RecentPostsID: "0"},
+
+		SubscriptionsSettings: settings,
+	}
 }
 
 func (apd *ArticlePageData) AcceptWebp() bool {

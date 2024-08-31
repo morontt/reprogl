@@ -1,0 +1,6 @@
+*.png
+*.jpg
+!user.1.jpg
+!user.2.png
+!user.3.png
+!.gitignore

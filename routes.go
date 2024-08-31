@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/handlers"
 	"xelbot.com/reprogl/models"
@@ -32,9 +33,18 @@ func getRoutes(app *container.Application) *mux.Router {
 	siteMux.HandleFunc("/add-ajax-comment", handlers.AddComment(app)).Methods("POST").Name("add-comment")
 	siteMux.HandleFunc("/purge-cache", handlers.PurgeCache(app)).Methods("POST")
 	siteMux.HandleFunc("/images/avatar/{hash:[0-9A-Z]+}.png", handlers.AvatarGenerator(app))
+	siteMux.HandleFunc("/images/avatar/{hash:[0-9A-Z]+}.w{size:[0-9]+}.png", handlers.AvatarGeneratorWithSize(app))
+	siteMux.HandleFunc("/profile", handlers.ProfileAction(app)).Methods("GET").Name("profile")
+	siteMux.HandleFunc("/profile", handlers.UpdateProfile(app)).Methods("POST")
+	siteMux.HandleFunc("/email-unsubscribe/{hash:[0-9A-Z]+}", handlers.EmailUnsubscribe(app)).Methods("GET")
+	siteMux.HandleFunc("/email-unsubscribe/{hash:[0-9A-Z]+}", handlers.EmailUnsubscribePost(app)).Methods("POST")
 	siteMux.HandleFunc("/login", handlers.LoginAction(app)).Methods("GET").Name("login")
 	siteMux.HandleFunc("/login", handlers.LoginCheck(app)).Methods("POST")
 	siteMux.HandleFunc("/logout", handlers.LogoutAction).Name("logout")
+
+	oauthMux := siteMux.PathPrefix("/oauth").Subrouter()
+	oauthMux.HandleFunc("/authorize/{provider}", handlers.OAuthLogin(app)).Name("oauth-authorize")
+	oauthMux.HandleFunc("/verification/{provider}", handlers.OAuthCallback(app)).Name("oauth-verification")
 
 	fragmentsMux := siteMux.PathPrefix("/_fragment").Subrouter()
 	fragmentsMux.HandleFunc("/categories", handlers.CategoriesFragment(app)).Name("fragment-categories")
@@ -47,8 +57,9 @@ func getRoutes(app *container.Application) *mux.Router {
 		handlers.RecentPostsFragment(app),
 	).Name("fragment-recent-posts")
 	fragmentsMux.HandleFunc("/war-in-ukraine", handlers.DaysOfWarCounter).Name("fragment-war")
-	fragmentsMux.HandleFunc("/auth-navigation", handlers.LoginLogoutLinks(app)).Name("auth-navigation")
+	fragmentsMux.HandleFunc("/auth-navigation", handlers.AuthNavigation(app)).Name("auth-navigation")
 	fragmentsMux.HandleFunc("/markdown/{filename}", handlers.MarkdownAction(app)).Name("fragment-markdown")
+	fragmentsMux.HandleFunc("/menu-auth", handlers.MenuAuth(app)).Name("menu-auth")
 
 	return siteMux
 }

@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -24,45 +25,60 @@ func AvatarGenerator(app *container.Application) http.HandlerFunc {
 		vars := mux.Vars(r)
 		hash := vars["hash"]
 
-		hashModel, err := hashid.Decode(hash)
+		writeAvatar(w, app, hash, 80)
+	}
+}
+
+func AvatarGeneratorWithSize(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		hash := vars["hash"]
+		sizeStr := vars["size"]
+
+		size, err := strconv.Atoi(sizeStr)
 		if err != nil {
-			app.ClientError(w, http.StatusBadRequest)
+			app.NotFound(w)
 			return
 		}
 
-		img, err := avatar.GenerateAvatar(hashModel, app)
-		if err != nil {
-			if errors.Is(err, models.RecordNotFound) {
-				app.NotFound(w)
-			} else {
-				app.ServerError(w, err)
-			}
+		writeAvatar(w, app, hash, size)
+	}
+}
 
-			return
-		}
+func writeAvatar(w http.ResponseWriter, app *container.Application, hash string, size int) {
+	hashModel, err := hashid.Decode(hash, true)
+	if err != nil {
+		app.NotFound(w)
+		return
+	}
 
-		expires := time.Now().Add(container.AvatarTTL * time.Second)
-
-		cacheControl(w, container.AvatarTTL)
-		setExpires(w, expires)
-		w.Header().Set("Content-Type", "image/png")
-
-		rawImage, err := pngquantPipe(img)
-		if err != nil {
-			panic(err)
-		}
-
-		filename := "public/images/avatar/" + hash + ".png"
-		f, err := os.Open(filename)
-		if errors.Is(err, fs.ErrNotExist) {
-			_ = os.WriteFile(filename, rawImage, 0644)
-		}
-		_ = f.Close()
-
-		_, err = w.Write(rawImage)
-		if err != nil {
+	img, err := avatar.GenerateAvatar(hashModel, app, size)
+	if err != nil {
+		if errors.Is(err, models.RecordNotFound) || errors.Is(err, avatar.InvalidSize) {
+			app.NotFound(w)
+		} else {
 			app.ServerError(w, err)
 		}
+
+		return
+	}
+
+	expires := time.Now().Add(container.AvatarTTL * time.Second)
+
+	cacheControl(w, container.AvatarTTL)
+	setExpires(w, expires)
+	w.Header().Set("Content-Type", "image/png")
+
+	rawImage, err := pngquantPipe(img)
+	if err != nil {
+		panic(err)
+	}
+
+	saveToFile(hash, size, rawImage)
+
+	_, err = w.Write(rawImage)
+	if err != nil {
+		app.ServerError(w, err)
 	}
 }
 
@@ -86,4 +102,18 @@ func pngquantPipe(avatarImage image.Image) ([]byte, error) {
 	}
 
 	return quantBuf.Bytes(), nil
+}
+
+func saveToFile(hash string, size int, rawImage []byte) {
+	var postfix string
+	if size != 80 {
+		postfix = ".w" + strconv.Itoa(size)
+	}
+
+	filename := "public/images/avatar/" + hash + postfix + ".png"
+	f, err := os.Open(filename)
+	if errors.Is(err, fs.ErrNotExist) {
+		_ = os.WriteFile(filename, rawImage, 0644)
+	}
+	_ = f.Close()
 }

@@ -35,7 +35,7 @@ func TestDecode(t *testing.T) {
 
 	for idx, item := range tests {
 		t.Run(strconv.Itoa(idx), func(t *testing.T) {
-			model, err := Decode(item.hash)
+			model, err := Decode(item.hash, true)
 			if err != nil {
 				t.Errorf("decode error: %s", err.Error())
 				return
@@ -59,8 +59,25 @@ func TestDecodeWithWrongOptions(t *testing.T) {
 
 	for idx, item := range tests {
 		t.Run(strconv.Itoa(idx), func(t *testing.T) {
-			_, err := Decode(item)
-			if err != nil && !errors.Is(err, WrongOptions) {
+			_, err := Decode(item, true)
+			if err != nil {
+				if !errors.Is(err, WrongOptions) {
+					t.Errorf("decode error: %s", err.Error())
+				}
+			} else {
+				t.Errorf("decode error: ignore wrong options")
+			}
+		})
+	}
+}
+
+func TestDecodeNotAvatarWithWrongOptions(t *testing.T) {
+	tests := []string{"NVMW17", "XR5LU6", "ZDMLHM", "4R6HQ3"}
+
+	for idx, item := range tests {
+		t.Run(strconv.Itoa(idx), func(t *testing.T) {
+			_, err := Decode(item, false)
+			if err != nil {
 				t.Errorf("decode error: %s", err.Error())
 			}
 		})

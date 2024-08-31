@@ -20,6 +20,8 @@ const (
 	FlashErrorKey   = "fe"
 	FlashSuccessKey = "fs"
 
+	OAuthStateKey = "ostk"
+
 	varnishSessionHeader = "X-Varnish-Session"
 
 	maxAge = 14 * 24 * time.Hour
