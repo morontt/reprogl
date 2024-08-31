@@ -203,6 +203,10 @@ section.comments {
             float: left;
         }
 
+        .columns:has(.auth_note) {
+            padding-bottom: rem-calc(7);
+        }
+
         .form_note {
             @include note-font;
             text-align: center;
@@ -210,8 +214,12 @@ section.comments {
             border-top: 2px $color-main-light dashed;
         }
 
-        .auth-icon svg {
-            border-radius: rem-calc(5);
+        .auth-icon {
+            display: inline-block;
+            margin-top: -4px;
+            svg {
+                border-radius: rem-calc(5);
+            }
         }
 
         small.error {

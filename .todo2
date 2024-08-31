@@ -461,6 +461,7 @@
               "text": "Yandex",
               "priority": "medium",
               "creation": 1722616679,
+              "completion": 1725090773,
               "tasks": [
                 {
                   "text": "https://yandex.ru/id/business",
@@ -554,7 +555,8 @@
         {
           "text": "Разделить админские права и обычных пользователей",
           "priority": "medium",
-          "creation": 1722579824
+          "creation": 1722579824,
+          "completion": 1725031341
         },
         {
           "text": "Аватар в сайдбаре навигации",

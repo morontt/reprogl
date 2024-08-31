@@ -36,8 +36,15 @@ func ProfileAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		templateData := views.NewProfilePageData(user)
-		err := views.WriteTemplate(w, "profile.gohtml", templateData)
+		subscriptionSettingsRepo := repositories.EmailSubscriptionRepository{DB: app.DB}
+		subscrSettings, err := subscriptionSettingsRepo.FindOrCreate(user.Email, models.SubscriptionReplyComment)
+		if err != nil {
+			app.ServerError(w, err)
+			return
+		}
+
+		templateData := views.NewProfilePageData(user, subscrSettings)
+		err = views.WriteTemplate(w, "profile.gohtml", templateData)
 		if err != nil {
 			app.ServerError(w, err)
 
@@ -100,6 +107,32 @@ func UpdateProfile(app *container.Application) http.HandlerFunc {
 			}
 
 			responseData = result
+
+			if apiResponse.User != nil {
+				subscriptionSettingsRepo := repositories.EmailSubscriptionRepository{DB: app.DB}
+				subscrSettings, err := subscriptionSettingsRepo.FindOrCreate(
+					apiResponse.User.Email,
+					models.SubscriptionReplyComment)
+				if err != nil {
+					app.ServerError(w, err)
+					return
+				}
+
+				formValue := r.PostFormValue("reply_subscribe")
+				if formValue != "" {
+					if subscrSettings.BlockSending {
+						err = subscriptionSettingsRepo.Subscribe(subscrSettings.ID)
+					}
+				} else {
+					if !subscrSettings.BlockSending {
+						err = subscriptionSettingsRepo.Unsubscribe(subscrSettings.ID)
+					}
+				}
+				if err != nil {
+					app.ServerError(w, err)
+					return
+				}
+			}
 		}
 
 		jsonResponse(w, statusCode, responseData)

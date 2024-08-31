@@ -111,8 +111,9 @@ type MenuAuthData struct {
 
 type ProfilePageData struct {
 	Meta
-	User         *models.User
-	DummyArticle SidebarDummyArticle
+	User                  *models.User
+	SubscriptionsSettings *models.EmailSubscription
+	DummyArticle          SidebarDummyArticle
 }
 
 type FragmentCategoriesData struct {
@@ -312,7 +313,7 @@ func NewMenuAuthData(user *models.User) *MenuAuthData {
 	return &MenuAuthData{User: user}
 }
 
-func NewProfilePageData(user *models.User) *ProfilePageData {
+func NewProfilePageData(user *models.User, settings *models.EmailSubscription) *ProfilePageData {
 	meta := defaultMeta()
 	meta.AppendTitle("Профиль")
 
@@ -320,6 +321,8 @@ func NewProfilePageData(user *models.User) *ProfilePageData {
 		Meta:         meta,
 		User:         user,
 		DummyArticle: SidebarDummyArticle{RecentPostsID: "0"},
+
+		SubscriptionsSettings: settings,
 	}
 }
 
