@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/security"
 	"xelbot.com/reprogl/session"
 )
@@ -101,7 +102,7 @@ func LoadViewSet() error {
 
 	customFunctions := template.FuncMap{
 		"raw":           rawHTML,
-		"is_dev":        isDev,
+		"is_dev":        func() bool { return container.IsDevMode() },
 		"path":          urlGenerator,
 		"abs_path":      absUrlGenerator,
 		"render_esi":    renderESI,
@@ -115,7 +116,8 @@ func LoadViewSet() error {
 		"substr":        subString,
 		"time_tag":      timeTag,
 		"asset":         assetTag,
-		"go_version":    goVersion,
+		"go_version":    func() string { return container.GoVersionNumbers },
+		"commit_hash":   func() string { return container.GitRevision },
 		"cnt_comments":  commentsCountString,
 		"cnt_times":     timesCountString,
 		"flag_cnt":      flagCounterImage(true),

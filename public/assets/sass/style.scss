@@ -883,6 +883,14 @@ html.no-csstransforms3d {
             &:hover, &:focus, &:active {
                 color: $color-main-contrast;
             }
+            &.ghash {
+                color: $color-main-contrast;
+                -webkit-transition: color 0.5s;
+                transition: color 0.5s;
+                &:hover, &:focus, &:active {
+                    color: #b84;
+                }
+            }
         }
     }
 }
