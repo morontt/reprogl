@@ -13,11 +13,13 @@ var ProviderNotFound = errors.New("oauth: no matching provider found")
 
 const (
 	yandexProvider = "yandex"
+	vkProvider     = "vkontakte"
 )
 
 func SupportedProvider(name string) (found bool) {
 	switch name {
 	case yandexProvider:
+	case vkProvider:
 		found = true
 	}
 
@@ -35,6 +37,14 @@ func ConfigByProvider(name string) (*oauth2.Config, error) {
 			ClientSecret: cnf.OAuthYandexSecret,
 			Endpoint:     yandex.Endpoint,
 			RedirectURL:  url,
+		}, nil
+	case vkProvider: // invalid code_challenge
+		return &oauth2.Config{
+			ClientID:     cnf.OAuthVkID,
+			ClientSecret: cnf.OAuthVkSecret,
+			Endpoint:     vkEndpoint,
+			RedirectURL:  url,
+			Scopes:       []string{"email"},
 		}, nil
 	}
 
