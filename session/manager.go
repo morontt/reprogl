@@ -20,7 +20,8 @@ const (
 	FlashErrorKey   = "fe"
 	FlashSuccessKey = "fs"
 
-	OAuthStateKey = "ostk"
+	OAuthStateKey    = "ostk"
+	OAuthVerifierKey = "ofk"
 
 	varnishSessionHeader = "X-Varnish-Session"
 

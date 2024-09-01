@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"golang.org/x/oauth2"
 	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models/repositories"
@@ -31,7 +32,10 @@ func OAuthLogin(app *container.Application) http.HandlerFunc {
 		state := generateRandomToken()
 		session.Put(r.Context(), session.OAuthStateKey, state)
 
-		http.Redirect(w, r, oauthConfig.AuthCodeURL(state), http.StatusFound)
+		verifier := oauth2.GenerateVerifier()
+		session.Put(r.Context(), session.OAuthVerifierKey, verifier)
+
+		http.Redirect(w, r, oauthConfig.AuthCodeURL(state, oauth2.S256ChallengeOption(verifier)), http.StatusFound)
 	}
 }
 
@@ -57,6 +61,14 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		var found bool
+		verifier, found := session.Pop[string](r.Context(), session.OAuthVerifierKey)
+		if !found {
+			app.ServerError(w, errors.New("[OAUTH] PKCE verifier not found"))
+
+			return
+		}
+
 		code := r.FormValue("code")
 		if len(code) == 0 {
 			errorCode := r.FormValue("error")
@@ -71,7 +83,7 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		userData, err := oauth.UserDataByCode(providerName, code)
+		userData, err := oauth.UserDataByCode(providerName, code, verifier)
 		if err != nil {
 			app.ServerError(w, err)
 
@@ -119,7 +131,6 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 		}
 
 		var redirectUrl string
-		var found bool
 		if redirectUrl, found = popLoginReferer(w, r); !found {
 			redirectUrl = "/"
 		}

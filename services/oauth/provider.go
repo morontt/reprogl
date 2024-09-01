@@ -19,6 +19,7 @@ const (
 func SupportedProvider(name string) (found bool) {
 	switch name {
 	case yandexProvider:
+		found = true
 	case vkProvider:
 		found = true
 	}
@@ -51,13 +52,13 @@ func ConfigByProvider(name string) (*oauth2.Config, error) {
 	return nil, ProviderNotFound
 }
 
-func UserDataByCode(providerName, code string) (*UserData, error) {
+func UserDataByCode(providerName, code, verifier string) (*UserData, error) {
 	oauthConfig, err := ConfigByProvider(providerName)
 	if err != nil {
 		return nil, err
 	}
 
-	token, err := oauthConfig.Exchange(context.Background(), code)
+	token, err := oauthConfig.Exchange(context.Background(), code, oauth2.VerifierOption(verifier))
 	if err != nil {
 		return nil, err
 	}
