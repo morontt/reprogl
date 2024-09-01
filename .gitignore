@@ -26,3 +26,4 @@ package-lock.json
 yarn.lock
 /var/logs/
 !/var/logs/.gitkeep
+/public/BingSiteAuth.xml
