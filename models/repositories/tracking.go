@@ -7,6 +7,7 @@ import (
 	"github.com/doug-martin/goqu/v9"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/utils"
 	trackmodels "xelbot.com/reprogl/utils/tracking/models"
 )
 
@@ -85,7 +86,7 @@ func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agent
 	if articleId > 0 {
 		data["post_id"] = articleId
 	} else {
-		data["request_uri"] = activity.RequestedURI
+		data["request_uri"] = utils.EllipticalTruncate(activity.RequestedURI, 128)
 	}
 
 	if activity.LocationID > 0 {

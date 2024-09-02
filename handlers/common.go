@@ -77,8 +77,7 @@ func authSuccess(user *models.LoggedUser, app *container.Application, ip string,
 }
 
 func saveLoginReferer(w http.ResponseWriter, referer string) {
-	host := container.GetConfig().Host
-	host = strings.ReplaceAll(host, ".", "\\.")
+	host := strings.ReplaceAll(container.GetConfig().Host, ".", "\\.")
 	matches := regexp.MustCompile(`^https?:\/\/` + host + `(.*)$`).FindStringSubmatch(referer)
 	if matches != nil && matches[1] != "/login" && !strings.HasPrefix(matches[1], "/oauth") {
 		session.WriteSessionCookie(w, session.RefererCookie, matches[1], "/")
