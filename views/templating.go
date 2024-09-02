@@ -100,6 +100,9 @@ func LoadViewSet() error {
 		"unsubscribe.gohtml": {
 			"templates/unsubscribe.gohtml",
 		},
+		"oauth-pending.gohtml": {
+			"templates/oauth/oauth-pending.gohtml",
+		},
 	}
 
 	customFunctions := template.FuncMap{

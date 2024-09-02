@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>{{.BrowserTitle}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: white;
+            font-family: "DejaVu Sans Mono", monospace;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 14px; }
+        .pending-page {
+            width: 400px;
+            padding: 14% 0 0;
+            margin: auto; }
+        .box {
+            position: absolute;
+            box-sizing: border-box;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            max-width: 400px;
+            margin: 0 0 0 -100px;
+            text-align: center; }
+        .box span {
+            font-size: 32px;
+            display: flex;
+            animation: loader 1.25s infinite; }
+        @keyframes loader {
+            0% { rotate: 0deg; }
+            100% { rotate: 360deg; }
+        }
+    </style>
+</head>
+<body>
+<div class="pending-page">
+    <div class="box">
+        Подождите пару секунд... <span>&#x1F60E;</span>
+    </div>
+</div>
+<script>
+    var request_id = '{{.RequestId}}';
+    console.log(request_id);
+</script>
+</body>
+</html>
