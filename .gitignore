@@ -21,7 +21,8 @@
 /public/assets/js/reprogl.min.js
 /public/assets/js/reprogl_temp.min.js
 /public/assets/js/foundation.js
-/public/assets/js/jquery.min.js
+/public/assets/js/reprogl_oauth.js
+/public/assets/js/reprogl_oauth.min.js
 node_modules/
 package-lock.json
 yarn.lock
