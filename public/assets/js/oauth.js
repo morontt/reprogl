@@ -10,13 +10,13 @@ $(function () {
                         clearInterval(interval_id);
                         window.location.assign(data.redirect_url);
                     } else if (data.status === 'error') {
-                        $('.box').html('Непонятная ошибка <span>&#x1F914;</span><br><a href="/">На главную</a>');
+                        $('.box').html('<span>Непонятная ошибка</span>><span class="r">&#x1F914;</span><a href="/">На главную</a>');
                         clearInterval(interval_id);
                     }
                 }
             },
             error: function () {
-                $('.box').html('Непонятная ошибка <span>&#x1F914;</span><br><a href="/">На главную</a>');
+                $('.box').html('<span>Непонятная ошибка</span><span class="r">&#x1F914;</span><a href="/">На главную</a>');
                 clearInterval(interval_id);
             }
         });

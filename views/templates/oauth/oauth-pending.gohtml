@@ -23,10 +23,14 @@
             left: 50%;
             max-width: 400px;
             margin: 0 0 0 -100px;
+            display: flex;
             text-align: center; }
         .box span {
+            margin-right: 16px;
+            display: flex; }
+        .box span.r {
             font-size: 32px;
-            display: flex;
+            margin-top: -10px;
             animation: loader 1.25s infinite; }
         @keyframes loader {
             0% { rotate: 0deg; }
@@ -36,7 +40,7 @@
 <body>
 <div class="pending-page">
     <div class="box" data-request-id="{{.RequestId}}">
-        Подождите пару секунд... <span>&#x1F60E;</span>
+        <span>Подождите пару секунд...</span><span class="r">&#x1F60E;</span>
     </div>
 </div>
 {{asset "assets/js/reprogl_oauth.min.js"}}
