@@ -307,6 +307,9 @@
                     }
                     a {
                         @include corner-link;
+                        &.anima-image-popup:after {
+                            content: '';
+                        }
                     }
                     table {
                         display: block;
@@ -577,6 +580,27 @@ html[data-useragent*='MSIE 9.0'] .post-view .post-view-sidebar .post-view-elems 
         @media only screen and (min-width: 48em) {
             width: 49%;
             margin-bottom: 0;
+        }
+    }
+}
+
+section.powered-by {
+    padding: 0 rem-calc(45);
+    margin-top: rem-calc(20);
+    font-size: rem-calc(14);
+    a {
+        color: #222;
+        -webkit-transition: color 0.5s;
+        transition: color 0.5s;
+        &:hover, &:focus, &:active {
+            color: darken($color-main-contrast, 10%);
+        }
+        &.ghash {
+            color: #b84;
+            background: #eed;
+            border-radius: rem-calc(4);
+            padding: 0.125rem 0.3125rem 0.0625rem;
+            @include corner-link;
         }
     }
 }

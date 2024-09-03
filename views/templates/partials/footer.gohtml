@@ -4,7 +4,9 @@
         {{template "social-icons"}}
     </div>
     <section class="footer-poweredby">
-        <a href="https://github.com/morontt/reprogl">Напрограммировано</a> на Go {{go_version}}
+        <a href="https://gitverse.ru/morontt/reprogl">Напрограммировано</a> на Go {{go_version}},
+        версия движка <a class="ghash"
+                         href="https://gitverse.ru/morontt/reprogl/commit/{{commit_hash}}">{{commit_hash}}</a>
         <br/>{{flag_cnt_mini}}
     </section>
 </footer>

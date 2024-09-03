@@ -116,6 +116,11 @@ type ProfilePageData struct {
 	DummyArticle          SidebarDummyArticle
 }
 
+type OauthPendingPageData struct {
+	Meta
+	RequestId string
+}
+
 type FragmentCategoriesData struct {
 	Categories *models.CategoryList
 }
@@ -323,6 +328,16 @@ func NewProfilePageData(user *models.User, settings *models.EmailSubscription) *
 		DummyArticle: SidebarDummyArticle{RecentPostsID: "0"},
 
 		SubscriptionsSettings: settings,
+	}
+}
+
+func NewOauthPendingPageData(requsetId string) *OauthPendingPageData {
+	meta := defaultMeta()
+	meta.AppendTitle("Ожидайте...")
+
+	return &OauthPendingPageData{
+		Meta:      meta,
+		RequestId: requsetId,
 	}
 }
 

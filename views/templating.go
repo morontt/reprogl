@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 
+	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/security"
 	"xelbot.com/reprogl/session"
 )
@@ -44,6 +45,7 @@ func LoadViewSet() error {
 			"templates/partials/menu.gohtml",
 			"templates/partials/sidebar.gohtml",
 			"templates/partials/social-icons.gohtml",
+			"templates/partials/powered-by.gohtml",
 			"templates/layout/svg-auth.gohtml",
 			"templates/layout/svg-sprites.gohtml",
 			"templates/layout/base.gohtml",
@@ -54,6 +56,7 @@ func LoadViewSet() error {
 			"templates/partials/menu.gohtml",
 			"templates/partials/sidebar.gohtml",
 			"templates/partials/social-icons.gohtml",
+			"templates/partials/powered-by.gohtml",
 			"templates/layout/svg-sprites.gohtml",
 			"templates/layout/base.gohtml",
 		},
@@ -97,11 +100,14 @@ func LoadViewSet() error {
 		"unsubscribe.gohtml": {
 			"templates/unsubscribe.gohtml",
 		},
+		"oauth-pending.gohtml": {
+			"templates/oauth/oauth-pending.gohtml",
+		},
 	}
 
 	customFunctions := template.FuncMap{
 		"raw":           rawHTML,
-		"is_dev":        isDev,
+		"is_dev":        func() bool { return container.IsDevMode() },
 		"path":          urlGenerator,
 		"abs_path":      absUrlGenerator,
 		"render_esi":    renderESI,
@@ -115,7 +121,8 @@ func LoadViewSet() error {
 		"substr":        subString,
 		"time_tag":      timeTag,
 		"asset":         assetTag,
-		"go_version":    goVersion,
+		"go_version":    func() string { return container.GoVersionNumbers },
+		"commit_hash":   func() string { return container.GitRevision },
 		"cnt_comments":  commentsCountString,
 		"cnt_times":     timesCountString,
 		"flag_cnt":      flagCounterImage(true),

@@ -148,10 +148,6 @@ func timeTag(t time.Time) template.HTML {
 	return template.HTML(s)
 }
 
-func goVersion() string {
-	return container.GoVersionNumbers
-}
-
 func commentsCountString(cnt int) (str string) {
 	modulo := cnt % 10
 	if modulo == 1 {
@@ -266,8 +262,4 @@ func infoStyles() template.HTML {
 
 func profileStyles() template.HTML {
 	return template.HTML(style.GenerateProfileStyles())
-}
-
-func isDev() bool {
-	return container.IsDevMode()
 }
