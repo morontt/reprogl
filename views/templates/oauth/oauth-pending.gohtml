@@ -30,19 +30,45 @@
             animation: loader 1.25s infinite; }
         @keyframes loader {
             0% { rotate: 0deg; }
-            100% { rotate: 360deg; }
-        }
+            100% { rotate: 360deg; }}
     </style>
 </head>
 <body>
 <div class="pending-page">
-    <div class="box">
+    <div class="box" data-request-id="{{.RequestId}}">
         Подождите пару секунд... <span>&#x1F60E;</span>
     </div>
 </div>
+{{asset "assets/js/jquery.min.js"}}
 <script>
-    var request_id = '{{.RequestId}}';
-    console.log(request_id);
+    $(function () {
+        var request_id = $('.box').data('request-id');
+        console.log(request_id);
+
+        var interval_id = setInterval(function () {
+            $.ajax({
+                url: '/oauth/check/' + request_id,
+                type: 'GET',
+                success: function(data) {
+                    console.log(data);
+                    if (data.status) {
+                        if (data.status === 'ok' && data.redirect_url) {
+                            clearInterval(interval_id);
+                            window.location.assign(data.redirect_url);
+                        } else if (data.status === 'error') {
+                            $('.box').html('Непонятная ошибка <span>&#x1F914;</span><br><a href="/">На главную</a>');
+                            clearInterval(interval_id);
+                        }
+                    }
+                },
+                error: function () {
+                    console.log('Непонятная ошибка &#x1F914;');
+                    $('.box').html('Непонятная ошибка <span>&#x1F914;</span><br><a href="/">На главную</a>');
+                    clearInterval(interval_id);
+                }
+            });
+        }, 1250);
+    });
 </script>
 </body>
 </html>

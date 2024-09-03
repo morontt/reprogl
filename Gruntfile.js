@@ -112,6 +112,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
+                    'public/assets/js/jquery.min.js': ['node_modules/jquery/dist/jquery.js'],
                     'public/assets/js/<%= pkg.name %>_temp.min.js': ['<%= concat.js.dest %>']
                 }
             }

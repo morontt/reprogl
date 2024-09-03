@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 	"xelbot.com/reprogl/api/backend"
@@ -11,7 +13,19 @@ import (
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/services/oauth"
 	"xelbot.com/reprogl/session"
+	"xelbot.com/reprogl/views"
 )
+
+type oauthCallbackState struct {
+	Status   string `json:"status"`
+	UserName string `json:"username,omitempty"`
+	NickName string `json:"nickname,omitempty"`
+}
+
+type oauthStateResponse struct {
+	Status      string `json:"status"`
+	RedirectURL string `json:"redirect_url,omitempty"`
+}
 
 func OAuthLogin(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -26,7 +40,7 @@ func OAuthLogin(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		saveLoginReferer(w, r.Referer())
+		saveLoginReferer(w, r)
 
 		state := generateRandomToken()
 		session.Put(r.Context(), session.OAuthStateKey, state)
@@ -71,43 +85,119 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		userData, err := oauth.UserDataByCode(providerName, code)
+		requestID := generateRandomToken()
+		go asyncCallback(requestID, providerName, code, r.UserAgent(), container.RealRemoteAddress(r), app)
+
+		templateData := views.NewOauthPendingPageData(requestID)
+		err := views.WriteTemplate(w, "oauth-pending.gohtml", templateData)
+		if err != nil {
+			app.ServerError(w, err)
+
+			return
+		}
+	}
+}
+
+func asyncCallback(
+	requestID,
+	providerName,
+	code,
+	userAgent,
+	ip string,
+	app *container.Application,
+) {
+	cache := app.GetStringCache()
+	cache.Set(requestID, `{"status":"pending"}`, time.Minute)
+
+	userData, err := oauth.UserDataByCode(providerName, code)
+	if err != nil {
+		oauthCallbackError(app, requestID, err)
+
+		return
+	}
+
+	userDataDTO := backend.ExternalUserDTO{
+		UserData:  userData,
+		UserAgent: userAgent,
+		IP:        ip,
+	}
+
+	apiResponse, err := backend.SendUserData(userDataDTO)
+	if err != nil {
+		oauthCallbackError(app, requestID, err)
+
+		return
+	}
+
+	if apiResponse.Violations != nil && len(apiResponse.Violations) > 0 {
+		errorMessage := "[OAUTH] user validation error:\n"
+		for _, formError := range apiResponse.Violations {
+			app.InfoLog.Printf("[OAUTH] validation error: %s - %s\n", formError.Path, formError.Message)
+			errorMessage += fmt.Sprintf("%s: %s\n", formError.Path, formError.Message)
+		}
+
+		oauthCallbackError(app, requestID, err)
+
+		return
+	}
+
+	if apiResponse.User != nil {
+		oauthState := oauthCallbackState{
+			Status:   "ok",
+			UserName: apiResponse.User.Username,
+			NickName: apiResponse.User.Nickname(),
+		}
+
+		jsonBody, err := json.Marshal(oauthState)
+		if err != nil {
+			oauthCallbackError(app, requestID, err)
+
+			return
+		}
+		cache.Set(requestID, string(jsonBody), time.Minute)
+	}
+}
+
+func OAuthCheckState(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		requestID := vars["request_id"]
+
+		var stateString string
+		var found bool
+
+		cache := app.GetStringCache()
+		if stateString, found = cache.Get(requestID); !found {
+			app.InfoLog.Println("[OAUTH] requestID not found: " + requestID)
+			app.NotFound(w)
+
+			return
+		}
+
+		buf := []byte(stateString)
+		if !json.Valid(buf) {
+			app.ServerError(w, errors.New("[OAUTH] invalid JSON state"))
+
+			return
+		}
+
+		var oauthState oauthCallbackState
+		err := json.Unmarshal(buf, &oauthState)
 		if err != nil {
 			app.ServerError(w, err)
 
 			return
 		}
 
-		userDataDTO := backend.ExternalUserDTO{
-			UserData:  userData,
-			UserAgent: r.UserAgent(),
-			IP:        container.RealRemoteAddress(r),
+		responseData := oauthStateResponse{
+			Status: oauthState.Status,
 		}
 
-		apiResponse, err := backend.SendUserData(userDataDTO)
-		if err != nil {
-			app.ServerError(w, err)
-
-			return
-		}
-
-		if apiResponse.Violations != nil && len(apiResponse.Violations) > 0 {
-			errorMessage := "[OAUTH] user validation error:\n"
-			for _, formError := range apiResponse.Violations {
-				app.InfoLog.Printf("[OAUTH] validation error: %s - %s\n", formError.Path, formError.Message)
-				errorMessage += fmt.Sprintf("%s: %s\n", formError.Path, formError.Message)
-			}
-
-			app.ServerError(w, errors.New(errorMessage))
-
-			return
-		}
-
-		if apiResponse.User != nil {
-			session.Put(r.Context(), session.FlashSuccessKey, fmt.Sprintf("Привет, %s :)", apiResponse.User.Nickname()))
+		if oauthState.Status == "ok" && len(oauthState.UserName) > 0 {
+			session.Put(r.Context(), session.FlashSuccessKey, fmt.Sprintf("Привет, %s :)", oauthState.NickName))
 
 			repo := repositories.UserRepository{DB: app.DB}
-			user, err := repo.GetLoggedUserByUsername(apiResponse.User.Username)
+			user, err := repo.GetLoggedUserByUsername(oauthState.UserName)
 			if err != nil {
 				app.ServerError(w, err)
 
@@ -116,14 +206,22 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 
 			app.InfoLog.Printf("[OAUTH] success for \"%s\"\n", user.Username)
 			authSuccess(user, app, container.RealRemoteAddress(r), r.Context())
+
+			var redirectUrl string
+			if redirectUrl, found = popLoginReferer(w, r); !found {
+				redirectUrl = "/"
+			}
+
+			responseData.RedirectURL = redirectUrl
 		}
 
-		var redirectUrl string
-		var found bool
-		if redirectUrl, found = popLoginReferer(w, r); !found {
-			redirectUrl = "/"
-		}
-
-		http.Redirect(w, r, redirectUrl, http.StatusFound)
+		jsonResponse(w, http.StatusOK, responseData)
 	}
+}
+
+func oauthCallbackError(app *container.Application, requestID string, err error) {
+	app.LogError(err)
+
+	cache := app.GetStringCache()
+	cache.Set(requestID, `{"status":"error"}`, time.Minute)
 }

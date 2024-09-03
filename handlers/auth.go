@@ -30,7 +30,7 @@ func LoginAction(app *container.Application) http.HandlerFunc {
 			}
 		}
 
-		saveLoginReferer(w, r.Referer())
+		saveLoginReferer(w, r)
 		errorMessage, hasError := session.Pop[string](r.Context(), session.FlashErrorKey)
 
 		templateData := views.NewLoginPageData(csrfToken, errorMessage, hasError)
