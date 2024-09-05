@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -60,8 +59,6 @@ func (vkro *vkResourceOwner) GetUserData() (*UserData, error) {
 		return nil, errors.New("invalid JSON string")
 	}
 
-	fmt.Println("\n" + string(buf) + "\n")
-
 	result := vkUserInfoResponse{}
 	err = json.Unmarshal(buf, &result)
 	if err != nil {
@@ -80,7 +77,7 @@ func (vkro *vkResourceOwner) GetUserData() (*UserData, error) {
 
 	userData := &UserData{
 		ID:          result.User.ID,
-		DisplayName: result.User.FirstName + " " + result.User.LastName,
+		DisplayName: strings.TrimSpace(result.User.FirstName + " " + result.User.LastName),
 		FirstName:   result.User.FirstName,
 		Gender:      vkGender,
 		Email:       result.User.Email,

@@ -49,7 +49,10 @@ func OAuthLogin(app *container.Application) http.HandlerFunc {
 		verifier := oauth2.GenerateVerifier()
 		session.Put(r.Context(), session.OAuthVerifierKey, verifier)
 
-		http.Redirect(w, r, oauthConfig.AuthCodeURL(state, oauth2.S256ChallengeOption(verifier)), http.StatusFound)
+		redirectURL := oauthConfig.AuthCodeURL(state, oauth2.S256ChallengeOption(verifier))
+		app.InfoLog.Println("[OAUTH] redirect to: " + redirectURL)
+
+		http.Redirect(w, r, redirectURL, http.StatusFound)
 	}
 }
 

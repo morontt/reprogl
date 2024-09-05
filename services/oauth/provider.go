@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -13,12 +14,19 @@ import (
 	"xelbot.com/reprogl/container"
 )
 
-var ProviderNotFound = errors.New("oauth: no matching provider found")
+var (
+	ProviderNotFound = errors.New("oauth: no matching provider found")
+	logger           *log.Logger
+)
 
 const (
 	yandexProvider = "yandex"
 	vkProvider     = "vkontakte"
 )
+
+func SetLogger(l *log.Logger) {
+	logger = l
+}
 
 func SupportedProvider(name string) (found bool) {
 	switch name {
@@ -84,6 +92,10 @@ func UserDataByCode(providerName, code, verifier string, additional map[string]s
 		return nil, err
 	}
 
+	if tokenScope := token.Extra("scope"); tokenScope != nil {
+		logger.Printf("[OAUTH] token scope: %s", tokenScope)
+	}
+
 	resourceOwner, err := resourceOwnerByProvider(providerName, token)
 	if err != nil {
 		return nil, err
@@ -122,6 +134,8 @@ func doRequest(request *http.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	logger.Printf("[OAUTH] user data: %s", buf)
 
 	return buf, nil
 }
