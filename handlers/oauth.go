@@ -97,8 +97,13 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		additional := make(map[string]string)
+		for _, key := range oauth.AdditionalParams(providerName) {
+			additional[key] = r.FormValue(key)
+		}
+
 		requestID := generateRandomToken()
-		go asyncCallback(requestID, providerName, code, verifier, r.UserAgent(), container.RealRemoteAddress(r), app)
+		go asyncCallback(requestID, providerName, code, verifier, r.UserAgent(), container.RealRemoteAddress(r), additional, app)
 
 		templateData := views.NewOauthPendingPageData(requestID)
 		err := views.WriteTemplate(w, "oauth-pending.gohtml", templateData)
@@ -117,12 +122,13 @@ func asyncCallback(
 	verifier,
 	userAgent,
 	ip string,
+	additional map[string]string,
 	app *container.Application,
 ) {
 	cache := app.GetStringCache()
 	cache.Set(requestID, `{"status":"pending"}`, time.Minute)
 
-	userData, err := oauth.UserDataByCode(providerName, code, verifier)
+	userData, err := oauth.UserDataByCode(providerName, code, verifier, additional)
 	if err != nil {
 		oauthCallbackError(app, requestID, err)
 

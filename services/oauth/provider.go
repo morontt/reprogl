@@ -3,6 +3,10 @@ package oauth
 import (
 	"context"
 	"errors"
+	"io"
+	"net/http"
+	"strconv"
+	"time"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/yandex"
@@ -39,26 +43,43 @@ func ConfigByProvider(name string) (*oauth2.Config, error) {
 			Endpoint:     yandex.Endpoint,
 			RedirectURL:  url,
 		}, nil
-	case vkProvider: // invalid code_challenge
+	case vkProvider:
 		return &oauth2.Config{
 			ClientID:     cnf.OAuthVkID,
 			ClientSecret: cnf.OAuthVkSecret,
 			Endpoint:     vkEndpoint,
 			RedirectURL:  url,
-			Scopes:       []string{"email"},
+			Scopes:       []string{"vkid.personal_info", "email"},
 		}, nil
 	}
 
 	return nil, ProviderNotFound
 }
 
-func UserDataByCode(providerName, code, verifier string) (*UserData, error) {
+func AdditionalParams(name string) []string {
+	params := make([]string, 0)
+	switch name {
+	case vkProvider:
+		return []string{"device_id"}
+	}
+
+	return params
+}
+
+func UserDataByCode(providerName, code, verifier string, additional map[string]string) (*UserData, error) {
 	oauthConfig, err := ConfigByProvider(providerName)
 	if err != nil {
 		return nil, err
 	}
 
-	token, err := oauthConfig.Exchange(context.Background(), code, oauth2.VerifierOption(verifier))
+	options := make([]oauth2.AuthCodeOption, 1)
+	options[0] = oauth2.VerifierOption(verifier)
+
+	for key, value := range additional {
+		options = append(options, oauth2.SetAuthURLParam(key, value))
+	}
+
+	token, err := oauthConfig.Exchange(context.Background(), code, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +96,32 @@ func resourceOwnerByProvider(name string, token *oauth2.Token) (ResourceOwnerInt
 	switch name {
 	case yandexProvider:
 		return &yandexResourceOwner{accessToken: token.AccessToken}, nil
+	case vkProvider:
+		return &vkResourceOwner{accessToken: token.AccessToken}, nil
 	}
 
 	return nil, ProviderNotFound
+}
+
+func doRequest(request *http.Request) ([]byte, error) {
+	client := http.Client{
+		Timeout: 5 * time.Second,
+	}
+
+	response, err := client.Do(request)
+	if err != nil {
+		return nil, err
+	}
+
+	if response.StatusCode != http.StatusOK {
+		return nil, errors.New("oauth: response status code is " + strconv.Itoa(response.StatusCode))
+	}
+
+	defer response.Body.Close()
+	buf, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return buf, nil
 }
