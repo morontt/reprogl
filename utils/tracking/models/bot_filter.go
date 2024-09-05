@@ -141,6 +141,7 @@ var engines = []string{
 	"stractbot",
 	"flipboardproxy",
 	"anyevent-http",
+	"repo-lookout",
 }
 
 var (
@@ -174,7 +175,8 @@ func isBot(agent string) bool {
 		return true
 	}
 
-	if strings.Contains(agent, "facebook") && strings.Contains(agent, "externalhit") {
+	if (strings.Contains(agent, "facebook") && strings.Contains(agent, "externalhit")) ||
+		(strings.Contains(agent, "owler") && strings.Contains(agent, "ows.eu")) {
 		return true
 	}
 
