@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"golang.org/x/oauth2"
 	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models/repositories"
@@ -45,7 +46,13 @@ func OAuthLogin(app *container.Application) http.HandlerFunc {
 		state := generateRandomToken()
 		session.Put(r.Context(), session.OAuthStateKey, state)
 
-		http.Redirect(w, r, oauthConfig.AuthCodeURL(state), http.StatusFound)
+		verifier := oauth2.GenerateVerifier()
+		session.Put(r.Context(), session.OAuthVerifierKey, verifier)
+
+		redirectURL := oauthConfig.AuthCodeURL(state, oauth2.S256ChallengeOption(verifier))
+		app.InfoLog.Println("[OAUTH] redirect to: " + redirectURL)
+
+		http.Redirect(w, r, redirectURL, http.StatusFound)
 	}
 }
 
@@ -71,6 +78,14 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		var found bool
+		verifier, found := session.Pop[string](r.Context(), session.OAuthVerifierKey)
+		if !found {
+			app.ServerError(w, errors.New("[OAUTH] PKCE verifier not found"))
+
+			return
+		}
+
 		code := r.FormValue("code")
 		if len(code) == 0 {
 			errorCode := r.FormValue("error")
@@ -85,8 +100,13 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		additional := make(map[string]string)
+		for _, key := range oauth.AdditionalParams(providerName) {
+			additional[key] = r.FormValue(key)
+		}
+
 		requestID := generateRandomToken()
-		go asyncCallback(requestID, providerName, code, r.UserAgent(), container.RealRemoteAddress(r), app)
+		go asyncCallback(requestID, providerName, code, verifier, r.UserAgent(), container.RealRemoteAddress(r), additional, app)
 
 		templateData := views.NewOauthPendingPageData(requestID)
 		err := views.WriteTemplate(w, "oauth-pending.gohtml", templateData)
@@ -102,14 +122,16 @@ func asyncCallback(
 	requestID,
 	providerName,
 	code,
+	verifier,
 	userAgent,
 	ip string,
+	additional map[string]string,
 	app *container.Application,
 ) {
 	cache := app.GetStringCache()
 	cache.Set(requestID, `{"status":"pending"}`, time.Minute)
 
-	userData, err := oauth.UserDataByCode(providerName, code)
+	userData, err := oauth.UserDataByCode(providerName, code, verifier, additional)
 	if err != nil {
 		oauthCallbackError(app, requestID, err)
 

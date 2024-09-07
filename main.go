@@ -15,6 +15,7 @@ import (
 
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/middlewares"
+	"xelbot.com/reprogl/services/oauth"
 	"xelbot.com/reprogl/views"
 )
 
@@ -63,6 +64,8 @@ func main() {
 
 	container.SetURLGenerator(urlGenerator)
 	handleError(views.LoadViewSet(), errorLog)
+
+	oauth.SetLogger(infoLog)
 
 	server := &http.Server{
 		Handler:      handler,

@@ -5,10 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
-	"io"
 	"net/http"
-	"strconv"
-	"time"
 )
 
 type yandexResourceOwner struct {
@@ -23,21 +20,8 @@ func (yro *yandexResourceOwner) GetUserData() (*UserData, error) {
 
 	request.Header.Set("Accept", "application/json")
 	request.Header.Set("Authorization", "OAuth "+yro.accessToken)
-	client := http.Client{
-		Timeout: 5 * time.Second,
-	}
 
-	response, err := client.Do(request)
-	if err != nil {
-		return nil, err
-	}
-
-	if response.StatusCode != http.StatusOK {
-		return nil, errors.New("oauth: response status code is " + strconv.Itoa(response.StatusCode))
-	}
-
-	defer response.Body.Close()
-	buf, err := io.ReadAll(response.Body)
+	buf, err := doRequest(request)
 	if err != nil {
 		return nil, err
 	}

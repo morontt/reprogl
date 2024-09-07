@@ -24,6 +24,8 @@ type AppConfig struct {
 
 	OAuthYandexID     string `app_config:"OAUTH_CLIENT_ID_YANDEX"`
 	OAuthYandexSecret string `app_config:"OAUTH_SECRET_YANDEX"`
+	OAuthVkID         string `app_config:"OAUTH_CLIENT_ID_VK"`
+	OAuthVkSecret     string `app_config:"OAUTH_SECRET_VK"`
 }
 
 var cnf AppConfig
