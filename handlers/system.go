@@ -12,6 +12,9 @@ func PurgeCache(app *container.Application) http.HandlerFunc {
 		app.GetIntCache().Clear()
 		app.InfoLog.Println("[CACHE] integer cache was cleared")
 
+		app.GetStringCache().Clear()
+		app.InfoLog.Println("[CACHE] string cache was cleared")
+
 		w.Header().Set("Content-Type", "text/plain")
 		w.Write([]byte("Cache was cleared\n"))
 	}
