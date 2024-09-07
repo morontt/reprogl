@@ -41,7 +41,7 @@ func (lrw *Response) Write(body []byte) (int, error) {
 
 	lrw.Header().Set("X-Powered-By", fmt.Sprintf(
 		"Reprogl/%s (%s)",
-		container.GitRevision,
+		container.Version,
 		runtime.Version()))
 
 	return lrw.ResponseWriter.Write(body)
