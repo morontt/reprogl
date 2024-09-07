@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/views"
@@ -34,8 +34,7 @@ func CategoriesFragment(app *container.Application) http.HandlerFunc {
 
 func RecentPostsFragment(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		articleId, err := strconv.Atoi(vars["article_id"])
+		articleId, err := strconv.Atoi(chi.URLParam(r, "article_id"))
 		if err != nil {
 			app.ServerError(w, err)
 

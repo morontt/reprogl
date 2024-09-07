@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
@@ -17,9 +17,9 @@ import (
 
 func IndexAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
+		pageStr := chi.URLParam(r, "page")
 
-		page, needsRedirect := pageOrRedirect(vars)
+		page, needsRedirect := pageOrRedirect(pageStr)
 		if needsRedirect {
 			http.Redirect(w, r, "/", 301)
 
@@ -73,8 +73,7 @@ func IndexAction(app *container.Application) http.HandlerFunc {
 
 func CategoryAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		slug := vars["slug"]
+		slug := chi.URLParam(r, "slug")
 
 		categoryRepo := repositories.CategoryRepository{DB: app.DB}
 		category, err := categoryRepo.GetBySlug(slug)
@@ -88,7 +87,8 @@ func CategoryAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		page, needsRedirect := pageOrRedirect(vars)
+		pageStr := chi.URLParam(r, "page")
+		page, needsRedirect := pageOrRedirect(pageStr)
 		if needsRedirect {
 			http.Redirect(w, r, container.GenerateURL("category-first", "slug", slug), http.StatusMovedPermanently)
 
@@ -135,8 +135,7 @@ func CategoryAction(app *container.Application) http.HandlerFunc {
 
 func TagAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		slug := vars["slug"]
+		slug := chi.URLParam(r, "slug")
 
 		tagRepo := repositories.TagRepository{DB: app.DB}
 		tag, err := tagRepo.GetBySlug(slug)
@@ -150,7 +149,8 @@ func TagAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
-		page, needsRedirect := pageOrRedirect(vars)
+		pageStr := chi.URLParam(r, "page")
+		page, needsRedirect := pageOrRedirect(pageStr)
 		if needsRedirect {
 			http.Redirect(w, r, container.GenerateURL("tag-first", "slug", slug), http.StatusMovedPermanently)
 

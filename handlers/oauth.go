@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models/repositories"
@@ -29,8 +29,7 @@ type oauthStateResponse struct {
 
 func OAuthLogin(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		providerName := vars["provider"]
+		providerName := chi.URLParam(r, "provider")
 
 		app.InfoLog.Println("[OAUTH] start authorization by: " + providerName)
 		oauthConfig, err := oauth.ConfigByProvider(providerName)
@@ -51,8 +50,7 @@ func OAuthLogin(app *container.Application) http.HandlerFunc {
 
 func OAuthCallback(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		providerName := vars["provider"]
+		providerName := chi.URLParam(r, "provider")
 
 		app.InfoLog.Println("[OAUTH] callback from: " + providerName)
 		if !oauth.SupportedProvider(providerName) {
@@ -160,8 +158,7 @@ func asyncCallback(
 
 func OAuthCheckState(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		requestID := vars["request_id"]
+		requestID := chi.URLParam(r, "request_id")
 
 		var stateString string
 		var found bool

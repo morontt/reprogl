@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
@@ -16,8 +16,7 @@ import (
 
 func PageAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		slug := vars["slug"]
+		slug := chi.URLParam(r, "slug")
 
 		var isAdmin bool
 		if user, ok := session.GetIdentity(r.Context()); ok {

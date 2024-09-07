@@ -5,15 +5,14 @@ import (
 	"io/fs"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/views"
 )
 
 func MarkdownAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		content, err := views.MarkdownToHTML(vars["filename"])
+		content, err := views.MarkdownToHTML(chi.URLParam(r, "filename"))
 		if err != nil {
 			if errors.Is(err, fs.ErrNotExist) {
 				app.NotFound(w)
