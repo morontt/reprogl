@@ -8,9 +8,8 @@ require (
 	github.com/go-chi/chi/v5 v5.1.0
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/gookit/ini/v2 v2.2.3
-	github.com/gorilla/mux v1.8.1
 	github.com/speps/go-hashids/v2 v2.0.1
-	github.com/xelbot/reverse v0.9.1
+	github.com/xelbot/reverse v1.0.0
 	github.com/xelbot/yetacache v0.9.1
 	github.com/yuin/goldmark v1.7.4
 	github.com/yuin/goldmark-emoji v1.0.3

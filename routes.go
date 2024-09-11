@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/gorilla/mux"
 	"github.com/xelbot/reverse"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/handlers"
@@ -46,35 +45,30 @@ func getRoutes(app *container.Application) *chi.Mux {
 	siteMux.Get(reverse.Add("logout", "/logout"), handlers.LogoutAction)
 
 	oauthMux := chi.NewRouter()
-	siteMux.Mount("/oauth", oauthMux)
+	siteMux.Mount(reverse.Group("oauth", "/oauth"), oauthMux)
 
-	oauthMux.Get(reverse.Add("oauth-authorize", "/authorize/{provider}"), handlers.OAuthLogin(app))
-	oauthMux.Get(reverse.Add("oauth-verification", "/verification/{provider}"), handlers.OAuthCallback(app))
-	oauthMux.Get("/check/{request_id}", handlers.OAuthCheckState(app))
+	oauthMux.Get(reverse.AddGr("oauth-authorize", "oauth", "/authorize/{provider}"), handlers.OAuthLogin(app))
+	oauthMux.Get(reverse.AddGr("oauth-verification", "oauth", "/verification/{provider}"), handlers.OAuthCallback(app))
+	oauthMux.Get(reverse.AddGr("oauth-check", "oauth", "/check/{request_id}"), handlers.OAuthCheckState(app))
 
 	fragmentsMux := chi.NewRouter()
-	siteMux.Mount("/_fragment", fragmentsMux)
+	siteMux.Mount(reverse.Group("fragments", "/_fragment"), fragmentsMux)
 
-	fragmentsMux.Get(reverse.Add("fragment-categories", "/categories"), handlers.CategoriesFragment(app))
-	fragmentsMux.Get(reverse.Add("fragment-comments",
+	fragmentsMux.Get(reverse.AddGr("fragment-categories", "fragments", "/categories"), handlers.CategoriesFragment(app))
+	fragmentsMux.Get(reverse.AddGr("fragment-comments",
+		"fragments",
 		"/comments/{article_id:[0-9]+}/{disabled_flag:(?:e|d)}/{last_time:[0-9]+}"),
 		handlers.CommentsFragment(app),
 	)
-	fragmentsMux.Get(reverse.Add("fragment-recent-posts",
+	fragmentsMux.Get(reverse.AddGr("fragment-recent-posts",
+		"fragments",
 		"/recent-posts/{article_id:[0-9]+}"),
 		handlers.RecentPostsFragment(app),
 	)
-	fragmentsMux.Get(reverse.Add("fragment-war", "/war-in-ukraine"), handlers.DaysOfWarCounter)
-	fragmentsMux.Get(reverse.Add("auth-navigation", "/auth-navigation"), handlers.AuthNavigation(app))
-	fragmentsMux.Get(reverse.Add("fragment-markdown", "/markdown/{filename}"), handlers.MarkdownAction(app))
-	fragmentsMux.Get(reverse.Add("menu-auth", "/menu-auth"), handlers.MenuAuth(app))
-
-	return siteMux
-}
-
-func getRoutesOld(app *container.Application) *mux.Router {
-	siteMux := mux.NewRouter()
-	siteMux.Get("test").URL()
+	fragmentsMux.Get(reverse.AddGr("fragment-war", "fragments", "/war-in-ukraine"), handlers.DaysOfWarCounter)
+	fragmentsMux.Get(reverse.AddGr("auth-navigation", "fragments", "/auth-navigation"), handlers.AuthNavigation(app))
+	fragmentsMux.Get(reverse.AddGr("fragment-markdown", "fragments", "/markdown/{filename}"), handlers.MarkdownAction(app))
+	fragmentsMux.Get(reverse.AddGr("menu-auth", "fragments", "/menu-auth"), handlers.MenuAuth(app))
 
 	return siteMux
 }

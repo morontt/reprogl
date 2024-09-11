@@ -50,15 +50,10 @@ func main() {
 
 	urlGenerator := func(routeName string, absoluteURL bool, pairs ...string) string {
 		var url string
-		if len(pairs) == 0 {
-			url, err = reverse.Get(routeName)
-			if err != nil {
-				errorLog.Printf("[urlGenerator] URL generation error for: %s", routeName)
-				url = "/error"
-			}
-		} else {
-			infoLog.Printf("[urlGenerator] URL generation not implemented for: %s", routeName)
-			url = "/zzz"
+		url, err = reverse.Get(routeName, pairs...)
+		if err != nil {
+			errorLog.Printf("[urlGenerator] URL generation error for: %s", routeName)
+			url = "/error"
 		}
 
 		var prefix string
