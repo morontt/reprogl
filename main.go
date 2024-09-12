@@ -13,6 +13,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/xelbot/reverse"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/middlewares"
 	"xelbot.com/reprogl/services/oauth"
@@ -49,9 +50,11 @@ func main() {
 	cfg := container.GetConfig()
 
 	urlGenerator := func(routeName string, absoluteURL bool, pairs ...string) string {
-		url, err := router.Get(routeName).URL(pairs...)
+		var url string
+		url, err = reverse.Get(routeName, pairs...)
 		if err != nil {
-			panic(err)
+			errorLog.Printf("[urlGenerator] URL generation error for: %s", routeName)
+			url = "/error"
 		}
 
 		var prefix string
@@ -59,7 +62,7 @@ func main() {
 			prefix = "https://" + cfg.Host
 		}
 
-		return prefix + url.String()
+		return prefix + url
 	}
 
 	container.SetURLGenerator(urlGenerator)

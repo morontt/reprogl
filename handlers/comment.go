@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"xelbot.com/reprogl/api/backend"
 	"xelbot.com/reprogl/api/telegram"
 	"xelbot.com/reprogl/container"
@@ -121,8 +121,7 @@ func AddComment(app *container.Application) http.HandlerFunc {
 func CommentsFragment(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err error
-		vars := mux.Vars(r)
-		articleId, err := strconv.Atoi(vars["article_id"])
+		articleId, err := strconv.Atoi(chi.URLParam(r, "article_id"))
 		if err != nil {
 			app.ServerError(w, err)
 
@@ -146,7 +145,7 @@ func CommentsFragment(app *container.Application) http.HandlerFunc {
 
 		templateData := &views.FragmentCommentsData{
 			Comments:        comments,
-			EnabledComments: vars["disabled_flag"] == models.EnabledComments,
+			EnabledComments: chi.URLParam(r, "disabled_flag") == models.EnabledComments,
 		}
 
 		cacheControl(w, container.DefaultEsiTTL)

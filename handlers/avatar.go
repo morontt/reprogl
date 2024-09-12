@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/utils/avatar"
@@ -22,8 +22,7 @@ import (
 
 func AvatarGenerator(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		hash := vars["hash"]
+		hash := chi.URLParam(r, "hash")
 
 		writeAvatar(w, app, hash, 80)
 	}
@@ -31,9 +30,8 @@ func AvatarGenerator(app *container.Application) http.HandlerFunc {
 
 func AvatarGeneratorWithSize(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		hash := vars["hash"]
-		sizeStr := vars["size"]
+		hash := chi.URLParam(r, "hash")
+		sizeStr := chi.URLParam(r, "size")
 
 		size, err := strconv.Atoi(sizeStr)
 		if err != nil {

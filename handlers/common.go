@@ -19,9 +19,8 @@ import (
 	"xelbot.com/reprogl/session"
 )
 
-func pageOrRedirect(params map[string]string) (int, bool) {
+func pageOrRedirect(pageString string) (int, bool) {
 	var page int
-	pageString := params["page"]
 
 	if pageString == "1" {
 		return 1, true

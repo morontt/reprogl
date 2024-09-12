@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
@@ -17,8 +17,7 @@ const successUnsubscribe = "success.unsubscribe"
 
 func EmailUnsubscribe(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		hash := vars["hash"]
+		hash := chi.URLParam(r, "hash")
 
 		data, err := hashid.Decode(hash, false)
 		if err != nil {
@@ -57,8 +56,7 @@ func EmailUnsubscribe(app *container.Application) http.HandlerFunc {
 
 func EmailUnsubscribePost(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		hash := vars["hash"]
+		hash := chi.URLParam(r, "hash")
 
 		data, err := hashid.Decode(hash, false)
 		if err != nil {
