@@ -12,8 +12,8 @@ require (
 	github.com/xelbot/yetacache v0.9.1
 	github.com/yuin/goldmark v1.7.4
 	github.com/yuin/goldmark-emoji v1.0.3
-	golang.org/x/image v0.19.0
-	golang.org/x/oauth2 v0.22.0
+	golang.org/x/image v0.20.0
+	golang.org/x/oauth2 v0.23.0
 )
 
 require (
@@ -25,5 +25,5 @@ require (
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.24.0 // indirect
 	golang.org/x/term v0.23.0 // indirect
-	golang.org/x/text v0.17.0 // indirect
+	golang.org/x/text v0.18.0 // indirect
 )

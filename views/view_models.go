@@ -53,6 +53,7 @@ type ArticlePageData struct {
 	Article      *models.Article
 	CommentKey   string
 	AcceptHeader string
+	AuthorAvatar string
 	flashObjectPart
 	identityPart
 }
