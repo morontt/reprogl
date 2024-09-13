@@ -11,7 +11,6 @@ import (
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/models/repositories"
 	"xelbot.com/reprogl/session"
-	"xelbot.com/reprogl/utils/hashid"
 	"xelbot.com/reprogl/views"
 )
 
@@ -94,7 +93,6 @@ func PageAction(app *container.Application) http.HandlerFunc {
 				templateData.SetOpenGraphProperty("og:image:alt", article.Alt.String)
 			}
 		}
-		templateData.AuthorAvatar = models.AvatarLink(1, hashid.Male|hashid.User, 200)
 
 		err = views.WriteTemplateWithContext(r.Context(), w, "article.gohtml", templateData)
 		if err != nil {

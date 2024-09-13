@@ -10,6 +10,7 @@ import (
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/utils"
+	"xelbot.com/reprogl/utils/hashid"
 	"xelbot.com/reprogl/views/style"
 )
 
@@ -114,6 +115,10 @@ func authorJob() template.HTML {
 	)
 
 	return template.HTML(s)
+}
+
+func authorAvatar() string {
+	return models.AvatarLink(1, hashid.Male|hashid.User, 200)
 }
 
 func renderESI(routeName string, pairs ...string) template.HTML {

@@ -118,6 +118,7 @@ func LoadViewSet() error {
 		"author_data":   authorDataPart,
 		"author_adr":    authorLocation,
 		"author_job":    authorJob,
+		"author_avatar": authorAvatar,
 		"substr":        subString,
 		"time_tag":      timeTag,
 		"asset":         assetTag,
