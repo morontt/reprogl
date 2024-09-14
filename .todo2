@@ -966,6 +966,43 @@
       "priority": "medium",
       "creation": 1723749545,
       "completion": 1723882299
+    },
+    {
+      "text": "Fix fonts for headers for MacOS/Windows",
+      "priority": "medium",
+      "creation": 1726248015
+    },
+    {
+      "text": "Add webp for avatar",
+      "priority": "medium",
+      "creation": 1726304408,
+      "tasks": [
+        {
+          "text": "Support webp for external user providers",
+          "priority": "medium",
+          "creation": 1726304442
+        },
+        {
+          "text": "https://github.com/nickalie/go-webpbin",
+          "priority": "low",
+          "creation": 1726306865
+        },
+        {
+          "text": "https://github.com/gen2brain/webp",
+          "priority": "low",
+          "creation": 1726306886
+        },
+        {
+          "text": "https://github.com/gen2brain/avif",
+          "priority": "low",
+          "creation": 1726306897
+        },
+        {
+          "text": "https://github.com/kolesa-team/go-webp",
+          "priority": "low",
+          "creation": 1726307124
+        }
+      ]
     }
   ]
 }
