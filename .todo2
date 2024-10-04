@@ -970,7 +970,15 @@
     {
       "text": "Fix fonts for headers for MacOS/Windows",
       "priority": "medium",
-      "creation": 1726248015
+      "creation": 1726248015,
+      "completion": 1728066454,
+      "tasks": [
+        {
+          "text": "https://www.cssfontstack.com",
+          "priority": "low",
+          "creation": 1728025755
+        }
+      ]
     },
     {
       "text": "Add webp for avatar",
