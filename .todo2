@@ -1011,6 +1011,23 @@
           "creation": 1726307124
         }
       ]
+    },
+    {
+      "text": "reduce CSS size",
+      "priority": "medium",
+      "creation": 1728148627,
+      "tasks": [
+        {
+          "text": "https://www.smashingmagazine.com/2021/08/refactoring-css-optimizing-size-performance-part3/",
+          "priority": "low",
+          "creation": 1728148649
+        },
+        {
+          "text": "https://prototyp.digital/blog/improving-css-performance-and-file-size-an-in-depth-guide",
+          "priority": "low",
+          "creation": 1728148661
+        }
+      ]
     }
   ]
 }
