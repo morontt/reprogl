@@ -1,7 +1,6 @@
 package oauth
 
 import (
-	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -13,7 +12,7 @@ type yandexResourceOwner struct {
 }
 
 func (yro *yandexResourceOwner) GetUserData() (*UserData, error) {
-	request, err := http.NewRequest(http.MethodGet, "https://login.yandex.ru/info", bytes.NewReader(nil))
+	request, err := http.NewRequest(http.MethodGet, "https://login.yandex.ru/info", http.NoBody)
 	if err != nil {
 		return nil, err
 	}

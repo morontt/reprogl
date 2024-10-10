@@ -87,7 +87,7 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 }
 
 func PingGeolocation() {
-	request, err := http.NewRequest(http.MethodPost, apiURL()+"/api/comments/geo-location", bytes.NewReader(nil))
+	request, err := http.NewRequest(http.MethodPost, apiURL()+"/api/comments/geo-location", http.NoBody)
 	if err != nil {
 		return
 	}
@@ -96,7 +96,7 @@ func PingGeolocation() {
 }
 
 func RefreshComment(id int) (*CreatedCommentDTO, error) {
-	request, err := http.NewRequest(http.MethodGet, apiURL()+"/api/comments/"+strconv.Itoa(id), bytes.NewReader(nil))
+	request, err := http.NewRequest(http.MethodGet, apiURL()+"/api/comments/"+strconv.Itoa(id), http.NoBody)
 	if err != nil {
 		return nil, err
 	}
