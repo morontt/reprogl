@@ -142,6 +142,7 @@ var engines = []string{
 	"flipboardproxy",
 	"anyevent-http",
 	"repo-lookout",
+	"faraday",
 }
 
 var (
