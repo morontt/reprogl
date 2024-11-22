@@ -953,7 +953,19 @@
     {
       "text": "Change project structure",
       "priority": "medium",
-      "creation": 1722945494
+      "creation": 1722945494,
+      "tasks": [
+        {
+          "text": "https://github.com/golang-standards/project-layout",
+          "priority": "low",
+          "creation": 1732282814
+        },
+        {
+          "text": "https://appliedgo.com/blog/go-project-layout",
+          "priority": "low",
+          "creation": 1732282987
+        }
+      ]
     },
     {
       "text": "Replace router library to github.com/go-chi/chi",
@@ -1026,6 +1038,23 @@
           "text": "https://prototyp.digital/blog/improving-css-performance-and-file-size-an-in-depth-guide",
           "priority": "low",
           "creation": 1728148661
+        }
+      ]
+    },
+    {
+      "text": "Monitoring",
+      "priority": "high",
+      "creation": 1732283334,
+      "tasks": [
+        {
+          "text": "prometheus",
+          "priority": "medium",
+          "creation": 1732283406
+        },
+        {
+          "text": "certificate expiration",
+          "priority": "medium",
+          "creation": 1732283428
         }
       ]
     }
