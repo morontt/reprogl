@@ -34,6 +34,25 @@ services:
         networks:
             - blognet
 
+    prometheus:
+        image: prom/prometheus
+        platform: linux/amd64
+        container_name: "reprogl_prometheus"
+        volumes:
+            - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+            - prometheus-data:/prometheus
+        ports:
+            - "9090:9090"
+        links:
+            - gopher
+        depends_on:
+            - gopher
+        networks:
+            - blognet
+
 networks:
     blognet:
         external: true
+
+volumes:
+    prometheus-data:
