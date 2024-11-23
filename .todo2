@@ -1049,7 +1049,14 @@
         {
           "text": "prometheus",
           "priority": "medium",
-          "creation": 1732283406
+          "creation": 1732283406,
+          "tasks": [
+            {
+              "text": "https://antonputra.com/monitoring/monitor-golang-with-prometheus/",
+              "priority": "low",
+              "creation": 1732309262
+            }
+          ]
         },
         {
           "text": "certificate expiration",
