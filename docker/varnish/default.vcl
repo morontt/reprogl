@@ -16,6 +16,10 @@ sub vcl_recv {
         }
     }
 
+    if (req.url == "/metrics") {
+        return (synth(404, "Not Found"));
+    }
+
     if (req.http.Cookie) {
         if (req.http.Cookie ~ ".*(^|;| )?session=([a-zA-Z0-9\-_=]+)( |;|$)?.*") {
             set req.http.X-Varnish-Session = regsub(req.http.Cookie, ".*(^|;| )?session=([a-zA-Z0-9\-_=]+)( |;|$)?.*", "\2");
