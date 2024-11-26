@@ -32,7 +32,7 @@ func main() {
 	infoLog.Printf("Build time: %s", container.BuildTimeRFC1123())
 	infoLog.Printf("Go version: %s", runtime.Version())
 
-	handleError(container.Load("app.ini"), errorLog)
+	handleError(container.Load("config/app.ini"), errorLog)
 
 	app := &container.Application{
 		ErrorLog: errorLog,

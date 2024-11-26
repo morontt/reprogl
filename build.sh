@@ -8,4 +8,4 @@ LDFLAGS="$LDFLAGS -X 'xelbot.com/reprogl/container.Version=$BUILD_VERSION'"
 LDFLAGS="$LDFLAGS -X 'xelbot.com/reprogl/container.GitRevision=$BUILD_COMMIT'"
 
 go fmt ./...
-env GOOS=linux GOARCH=amd64 go build -v -ldflags "$LDFLAGS" -tags dev
+env GOOS=linux GOARCH=amd64 go build -v -ldflags "$LDFLAGS" -tags dev ./cmd/reprogl

@@ -12,7 +12,7 @@
 *.out
 /reprogl
 .env
-/app.ini
+/config/app.ini
 /public/assets/css/*.css
 /public/assets/css/*.map
 !/public/assets/css/vendors
