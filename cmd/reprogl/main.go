@@ -13,9 +13,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/collectors"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/xelbot/reverse"
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/middlewares"
@@ -40,6 +37,7 @@ func main() {
 	}
 
 	handleError(app.SetupDatabase(), errorLog)
+	app.SetupMetrics()
 
 	router := getRoutes(app)
 	handler := middlewares.Session(router, infoLog)
@@ -73,14 +71,8 @@ func main() {
 
 	oauth.SetLogger(infoLog)
 
-	reg := prometheus.NewRegistry()
-	reg.MustRegister(
-		collectors.NewGoCollector(),
-		collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}),
-	)
-
 	mux := http.NewServeMux()
-	mux.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
+	mux.Handle("/metrics", getPrometheusMetricsHandler(app.Metrics.Collectors()...))
 	mux.Handle("/", handler)
 
 	server := &http.Server{

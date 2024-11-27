@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/xelbot/yetacache"
+	"xelbot.com/reprogl/utils/metrics"
 )
 
 var Version string
@@ -24,6 +25,8 @@ type Application struct {
 	ErrorLog *log.Logger
 	InfoLog  *log.Logger
 	DB       *sql.DB
+
+	Metrics *metrics.Metrics
 
 	intCache *yetacache.Cache[string, int]
 	strCache *yetacache.Cache[string, string]
@@ -106,6 +109,11 @@ func (app *Application) GetStringCache() *yetacache.Cache[string, string] {
 	}
 
 	return app.strCache
+}
+
+func (app *Application) SetupMetrics() {
+	app.Metrics = metrics.New()
+	app.Metrics.Generic.SetInfo(Version, BuildTimeRFC1123())
 }
 
 func (app *Application) Stop() error {
