@@ -7,15 +7,16 @@ type GenericMetrics struct {
 }
 
 func NewGenericMetrics() *GenericMetrics {
-	m := &GenericMetrics{
-		Info: prometheus.NewGaugeVec(prometheus.GaugeOpts{
-			Namespace: namespace,
-			Name:      "info",
-			Help:      "Info about blog engine",
-		}, []string{"version", "build_time"}),
+	return &GenericMetrics{
+		Info: prometheus.NewGaugeVec(
+			prometheus.GaugeOpts{
+				Namespace: namespace,
+				Name:      "info",
+				Help:      "Info about blog engine",
+			},
+			[]string{"version", "build_time"},
+		),
 	}
-
-	return m
 }
 
 func (m *GenericMetrics) SetInfo(version, buildTime string) {
