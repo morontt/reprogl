@@ -19,10 +19,6 @@ func NewGenericMetrics() *GenericMetrics {
 	}
 }
 
-func (m *GenericMetrics) SetInfo(version, buildTime string) {
-	m.Info.With(prometheus.Labels{"version": version, "build_time": buildTime}).Set(1.0)
-}
-
 func (m *GenericMetrics) Collectors() []prometheus.Collector {
 	return []prometheus.Collector{m.Info}
 }

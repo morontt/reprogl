@@ -28,6 +28,10 @@ func (m *Metrics) Collectors() []prometheus.Collector {
 	return cs
 }
 
+func (m *Metrics) SetInfo(version, buildTime string) {
+	m.Generic.Info.With(prometheus.Labels{"version": version, "build_time": buildTime}).Set(1.0)
+}
+
 func (m *Metrics) IncrementRequestCount(statusCode int, method string) {
 	m.Requests.Counter.With(
 		prometheus.Labels{

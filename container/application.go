@@ -113,7 +113,7 @@ func (app *Application) GetStringCache() *yetacache.Cache[string, string] {
 
 func (app *Application) SetupMetrics() {
 	app.Metrics = metrics.New()
-	app.Metrics.Generic.SetInfo(Version, BuildTimeRFC1123())
+	app.Metrics.SetInfo(Version, BuildTimeRFC1123())
 }
 
 func (app *Application) Stop() error {
