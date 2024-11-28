@@ -3,12 +3,12 @@ package metrics
 import "github.com/prometheus/client_golang/prometheus"
 
 type GenericMetrics struct {
-	Info *prometheus.GaugeVec
+	info *prometheus.GaugeVec
 }
 
 func NewGenericMetrics() *GenericMetrics {
 	return &GenericMetrics{
-		Info: prometheus.NewGaugeVec(
+		info: prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
 				Namespace: namespace,
 				Name:      "info",
@@ -20,5 +20,5 @@ func NewGenericMetrics() *GenericMetrics {
 }
 
 func (m *GenericMetrics) Collectors() []prometheus.Collector {
-	return []prometheus.Collector{m.Info}
+	return []prometheus.Collector{m.info}
 }
