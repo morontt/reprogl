@@ -50,9 +50,27 @@ services:
         networks:
             - blognet
 
+    grafana:
+        image: grafana/grafana:11.3.1
+        ports:
+            - "3000:3000"
+        environment:
+            - GF_SECURITY_ADMIN_USER=admin
+            - GF_SECURITY_ADMIN_PASSWORD=admin123
+        volumes:
+            - ./docker/grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+            - grafana:/var/lib/grafana
+        links:
+            - prometheus
+        depends_on:
+            - prometheus
+        networks:
+            - blognet
+
 networks:
     blognet:
         external: true
 
 volumes:
     prometheus-data:
+    grafana:

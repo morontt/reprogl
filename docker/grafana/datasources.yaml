@@ -1,0 +1,7 @@
+---
+apiVersion: 1
+datasources:
+  - name: prom-blog
+    type: prometheus
+    url: http://reprogl_prometheus:9090
+    isDefault: true
