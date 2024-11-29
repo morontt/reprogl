@@ -11,12 +11,15 @@ const namespace = "reprogl"
 type Metrics struct {
 	generic  *GenericMetrics
 	requests *HttpRequestsMetrics
+
+	uptime prometheus.Counter
 }
 
 func New() *Metrics {
 	return &Metrics{
 		generic:  NewGenericMetrics(),
 		requests: NewHttpRequestsMetrics(),
+		uptime:   NewUptimeMetrics(),
 	}
 }
 
@@ -24,6 +27,7 @@ func (m *Metrics) Collectors() []prometheus.Collector {
 	cs := make([]prometheus.Collector, 0)
 	cs = append(cs, m.generic.Collectors()...)
 	cs = append(cs, m.requests.Collectors()...)
+	cs = append(cs, prometheus.Collector(m.uptime))
 
 	return cs
 }

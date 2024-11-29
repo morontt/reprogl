@@ -18,8 +18,6 @@ func Track(next http.Handler, app *container.Application) http.Handler {
 			if ok {
 				activity.Status = lrw.Status()
 				activity.Duration = lrw.Duration()
-
-				app.Metrics.IncrementRequestCount(activity.Status, r.Method)
 			}
 
 			go tracking.SaveActivity(activity, app)

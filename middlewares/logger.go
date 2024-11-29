@@ -15,6 +15,8 @@ func AccessLog(next http.Handler, app *container.Application) http.Handler {
 		lrw, ok := w.(pkghttp.LogResponseWriter)
 		if ok {
 			app.InfoLog.Printf("[%s] %s, %s %d %s\n", r.Method, addr, r.URL.RequestURI(), lrw.Status(), lrw.Duration())
+
+			app.Metrics.IncrementRequestCount(lrw.Status(), r.Method)
 		} else {
 			app.InfoLog.Printf("[%s] %s, %s\n", r.Method, addr, r.URL.RequestURI())
 		}
