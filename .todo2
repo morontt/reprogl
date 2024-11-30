@@ -1055,6 +1055,16 @@
               "text": "https://antonputra.com/monitoring/monitor-golang-with-prometheus/",
               "priority": "low",
               "creation": 1732309262
+            },
+            {
+              "text": "https://www.geeksforgeeks.org/prometheus-metric-types",
+              "priority": "low",
+              "creation": 1732963585
+            },
+            {
+              "text": "https://www.cherryservers.com/blog/install-prometheus-ubuntu",
+              "priority": "low",
+              "creation": 1732997962
             }
           ]
         },

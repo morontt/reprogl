@@ -1,12 +1,17 @@
 package metrics
 
 import (
+	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-const namespace = "reprogl"
+const (
+	namespace        = "reprogl"
+	requestSubsystem = "http_requests"
+)
 
 type Metrics struct {
 	generic  *GenericMetrics
@@ -42,4 +47,15 @@ func (m *Metrics) IncrementRequestCount(statusCode int, method string) {
 			"code":   strconv.Itoa(statusCode),
 			"method": method,
 		}).Inc()
+}
+
+func (m *Metrics) Duration(handlerName string, handlerFn http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		handlerFn(w, r)
+
+		m.requests.handlerDuration.
+			With(prometheus.Labels{"handler": handlerName}).
+			Observe(0.001 * time.Since(start).Seconds())
+	}
 }

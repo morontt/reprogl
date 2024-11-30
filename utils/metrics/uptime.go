@@ -19,7 +19,7 @@ func NewUptimeMetrics() prometheus.Counter {
 		var last, current int
 		start := time.Now()
 
-		ticker := time.NewTicker(10 * time.Second)
+		ticker := time.NewTicker(30 * time.Second)
 		for {
 			select {
 			case <-ticker.C:
