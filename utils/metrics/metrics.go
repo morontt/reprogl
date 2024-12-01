@@ -56,6 +56,6 @@ func (m *Metrics) Duration(handlerName string, handlerFn http.HandlerFunc) http.
 
 		m.requests.handlerDuration.
 			With(prometheus.Labels{"handler": handlerName}).
-			Observe(0.001 * time.Since(start).Seconds())
+			Observe(1000 * time.Since(start).Seconds())
 	}
 }

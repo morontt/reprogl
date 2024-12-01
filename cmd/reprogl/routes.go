@@ -31,20 +31,16 @@ func getRoutes(app *container.Application) *chi.Mux {
 	siteMux.Get("/info", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/about", http.StatusMovedPermanently)
 	})
-	siteMux.Get(reverse.Add("statistics", "/statistika"),
-		app.Metrics.Duration("GET /statistika", handlers.StatisticsAction(app)))
+	siteMux.Get(reverse.Add("statistics", "/statistika"), handlers.StatisticsAction(app))
 	siteMux.Get("/robots.txt", handlers.RobotsTXTAction)
 	siteMux.Get("/humans.txt", handlers.HumansTXTAction)
 	siteMux.Get("/favicon.ico", handlers.FavIconAction)
 	siteMux.Get("/headers", handlers.HeadersDebug)
 	siteMux.Get("/sitemap.xml", handlers.SitemapAction(app))
-	siteMux.Get(reverse.Add("feed-atom", "/feed/atom"),
-		app.Metrics.Duration("GET /feed/atom", handlers.FeedAction(app, models.AtomFeedType)))
-	siteMux.Get(reverse.Add("feed-rss", "/feed/rss"),
-		app.Metrics.Duration("GET /feed/rss", handlers.FeedAction(app, models.RssFeedType)))
+	siteMux.Get(reverse.Add("feed-atom", "/feed/atom"), handlers.FeedAction(app, models.AtomFeedType))
+	siteMux.Get(reverse.Add("feed-rss", "/feed/rss"), handlers.FeedAction(app, models.RssFeedType))
 	siteMux.Post(reverse.Add("add-comment-dummy", "/add-comment"), handlers.AddCommentDummy)
-	siteMux.Post(reverse.Add("add-comment", "/add-ajax-comment"),
-		app.Metrics.Duration("POST /add-ajax-comment", handlers.AddComment(app)))
+	siteMux.Post(reverse.Add("add-comment", "/add-ajax-comment"), handlers.AddComment(app))
 	siteMux.Post("/purge-cache", handlers.PurgeCache(app))
 	siteMux.Get("/images/avatar/{hash:[0-9A-Z]+}.png", handlers.AvatarGenerator(app))
 	siteMux.Get("/images/avatar/{hash:[0-9A-Z]+}.w{size:[0-9]+}.png", handlers.AvatarGeneratorWithSize(app))
@@ -70,7 +66,7 @@ func getRoutes(app *container.Application) *chi.Mux {
 	fragmentsMux.Get(reverse.AddGr("fragment-comments",
 		"fragments",
 		"/comments/{article_id:[0-9]+}/{disabled_flag:(?:e|d)}/{last_time:[0-9]+}"),
-		app.Metrics.Duration("GET /_fragment/comments/:article", handlers.CommentsFragment(app)),
+		handlers.CommentsFragment(app),
 	)
 	fragmentsMux.Get(reverse.AddGr("fragment-recent-posts",
 		"fragments",
