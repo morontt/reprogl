@@ -14,3 +14,9 @@ scrape_configs:
   - job_name: "reprogl"
     static_configs:
       - targets: ["gopher:8080"]
+
+  - job_name: "cron_tasks"
+    scrape_interval: 1m
+    honor_labels: true
+    static_configs:
+      -   targets: ["prom_pushgateway:9091"]
