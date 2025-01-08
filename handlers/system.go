@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"sort"
 
 	"xelbot.com/reprogl/container"
 )
@@ -21,10 +22,17 @@ func PurgeCache(app *container.Application) http.HandlerFunc {
 }
 
 func HeadersDebug(w http.ResponseWriter, r *http.Request) {
+	keys := make([]string, 0, len(r.Header))
+
+	for k := range r.Header {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
 	var body string
-	for name, values := range r.Header {
-		for _, value := range values {
-			body += fmt.Sprintf("%s: %s\n", name, value)
+	for _, key := range keys {
+		for _, value := range r.Header[key] {
+			body += fmt.Sprintf("%s: %s\n", key, value)
 		}
 	}
 
