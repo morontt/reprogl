@@ -51,6 +51,7 @@ func getRoutes(app *container.Application) *chi.Mux {
 	siteMux.Get(reverse.Add("login", "/login"), handlers.LoginAction(app))
 	siteMux.Post("/login", handlers.LoginCheck(app))
 	siteMux.Get(reverse.Add("logout", "/logout"), handlers.LogoutAction)
+	siteMux.Get("/.well-known/traffic-advice", handlers.TrafficAdvice)
 
 	oauthMux := chi.NewRouter()
 	siteMux.Mount(reverse.Group("oauth", "/oauth"), oauthMux)

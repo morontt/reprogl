@@ -145,3 +145,8 @@ func FavIconAction(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "image/x-icon")
 	w.Write(body)
 }
+
+func TrafficAdvice(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "application/trafficadvice+json")
+	w.Write([]byte("[{\"user_agent\": \"prefetch-proxy\",\"google_prefetch_proxy_eap\": {\"fraction\": 1.0}}]\n"))
+}
