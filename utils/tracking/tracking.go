@@ -17,9 +17,10 @@ import (
 )
 
 var (
-	regexpArticle = regexp.MustCompile(`^\/article\/(?P<slug>[^/?#]+)`)
-	slugIndex     = regexpArticle.SubexpIndex("slug")
-	trackingCache *yetacache.Cache[string, int8]
+	regexpArticle  = regexp.MustCompile(`^\/article\/(?P<slug>[^/?#]+)`)
+	slugIndex      = regexpArticle.SubexpIndex("slug")
+	trackingCache  *yetacache.Cache[string, int8]
+	regexpVersions = regexp.MustCompile(`(.*\/\d+\.\d+\.)\d+\.\d+$`)
 )
 
 func init() {
@@ -36,7 +37,7 @@ func CreateActivity(req *http.Request) *trackmodels.Activity {
 		Time:         time.Now(),
 		IsCDN:        container.IsCDN(req),
 		Addr:         ip,
-		UserAgent:    req.UserAgent(),
+		UserAgent:    callousVersions(req.UserAgent()),
 		RequestedURI: req.URL.RequestURI(),
 		Method:       req.Method,
 	}
@@ -138,4 +139,13 @@ func setupBrowserPassiveFingerprint(req *http.Request, a *trackmodels.Activity) 
 
 func ipAddrKey(ip net.IP) string {
 	return "IP_" + ip.String()
+}
+
+func callousVersions(agentName string) string {
+	parts := strings.Split(agentName, " ")
+	for idx, part := range parts {
+		parts[idx] = regexpVersions.ReplaceAllString(part, "${1}x.x")
+	}
+
+	return strings.Join(parts, " ")
 }
