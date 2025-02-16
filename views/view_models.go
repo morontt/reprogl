@@ -146,7 +146,10 @@ func defaultMeta() Meta {
 	ogp["og:image:height"] = "376"
 	ogp["og:locale"] = "ru_RU"
 
-	return Meta{Host: cfg.Host, HeaderText: cfg.HeaderText, Ogp: ogp}
+	meta := Meta{Host: cfg.Host, HeaderText: cfg.HeaderText, Ogp: ogp}
+	meta.AppendName("fediverse:creator", cfg.AppData.Author.FediverseID)
+
+	return meta
 }
 
 func (m *Meta) AppendTitle(str string) {

@@ -8,6 +8,7 @@ github = "morontt"
 telegram = "xelbotcom"
 mastodon = "https://mastodon.online/@morontt"
 gitverse = "morontt"
+fediverse = "@morontt@mastodon.online"
 
 [author_location]
 city    = "Симферополь"

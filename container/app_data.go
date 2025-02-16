@@ -26,6 +26,7 @@ type Author struct {
 	TelegramChannel string `toml:"telegram"`
 	MastodonLink    string `toml:"mastodon"`
 	GitVerseUser    string `toml:"gitverse"`
+	FediverseID     string `toml:"fediverse"`
 }
 
 type Location struct {
