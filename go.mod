@@ -5,7 +5,7 @@ go 1.22
 require (
 	github.com/BurntSushi/toml v1.4.0
 	github.com/doug-martin/goqu/v9 v9.19.0
-	github.com/go-chi/chi/v5 v5.1.0
+	github.com/go-chi/chi/v5 v5.2.1
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/gookit/ini/v2 v2.2.3
 	github.com/prometheus/client_golang v1.20.5
@@ -14,8 +14,8 @@ require (
 	github.com/xelbot/yetacache v0.9.1
 	github.com/yuin/goldmark v1.7.8
 	github.com/yuin/goldmark-emoji v1.0.4
-	golang.org/x/image v0.22.0
-	golang.org/x/oauth2 v0.24.0
+	golang.org/x/image v0.24.0
+	golang.org/x/oauth2 v0.26.0
 )
 
 require (
@@ -31,9 +31,9 @@ require (
 	github.com/prometheus/common v0.55.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
-	golang.org/x/sync v0.9.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/term v0.26.0 // indirect
-	golang.org/x/text v0.20.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 	google.golang.org/protobuf v1.35.2 // indirect
 )
