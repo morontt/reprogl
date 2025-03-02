@@ -122,7 +122,7 @@ type OauthPendingPageData struct {
 }
 
 type FragmentCategoriesData struct {
-	Categories *models.CategoryList
+	Categories models.CategoryList
 }
 
 type FragmentCommentsData struct {

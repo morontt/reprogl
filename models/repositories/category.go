@@ -44,7 +44,7 @@ func (cr *CategoryRepository) GetBySlug(slug string) (*models.Category, error) {
 	return category, nil
 }
 
-func (cr *CategoryRepository) GetCategoryTree() (*models.CategoryList, error) {
+func (cr *CategoryRepository) GetCategoryTree() (models.CategoryList, error) {
 	query := `
 		SELECT c.id,
 			c.name,
@@ -86,5 +86,5 @@ func (cr *CategoryRepository) GetCategoryTree() (*models.CategoryList, error) {
 		categories = append(categories, category)
 	}
 
-	return &categories, nil
+	return categories, nil
 }
