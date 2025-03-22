@@ -143,6 +143,7 @@ var engines = []string{
 	"repo-lookout",
 	"faraday",
 	"hackney",
+	"bw/",
 }
 
 var (

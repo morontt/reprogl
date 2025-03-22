@@ -114,6 +114,10 @@ func TestBotFilter(t *testing.T) {
 			name: "Mozilla/5.0 (compatible; U; AnyEvent-HTTP/2.241; +http://software.schmorp.de/pkg/AnyEvent",
 			want: true,
 		},
+		{
+			name: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko; compatible; BW/1.1; bit.ly/3eZNDnO; a904d9523c) Chrome/84.0.4147.105 Safari/537.36",
+			want: true,
+		},
 	}
 
 	for idx, item := range tests {
