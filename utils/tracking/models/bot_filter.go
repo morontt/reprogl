@@ -140,10 +140,11 @@ var engines = []string{
 	"stractbot",
 	"flipboardproxy",
 	"anyevent-http",
-	"repo-lookout",
+	"lookoutbot",
 	"faraday",
 	"hackney",
 	"bw/",
+	"windowspowershell/",
 }
 
 var (

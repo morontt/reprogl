@@ -115,6 +115,10 @@ func TestBotFilter(t *testing.T) {
 			want: true,
 		},
 		{
+			name: "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell/5.1.x.x",
+			want: true,
+		},
+		{
 			name: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko; compatible; BW/1.1; bit.ly/3eZNDnO; a904d9523c) Chrome/84.0.4147.105 Safari/537.36",
 			want: true,
 		},
