@@ -75,6 +75,7 @@ var engines = []string{
 	"bw/",
 	"windowspowershell/",
 	"perplexity",
+	"seolyt",
 }
 
 var (
