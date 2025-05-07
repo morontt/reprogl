@@ -39,7 +39,7 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (models.Com
 			c.user_id,
 			c.text,
 			c.tree_depth,
-			c.time_created,
+			COALESCE(c.force_created_at, c.time_created) AS time_created,
 			COALESCE(t.rotten_link, 0) AS rotten_link,
 			COALESCE(u.avatar_variant, 0) AS avatar_variant,
 			c.deleted
@@ -111,7 +111,7 @@ func (cr *CommentRepository) GetCollectionWithExtraDataByArticleId(articleId int
 			c.user_id,
 			c.text,
 			c.tree_depth,
-			c.time_created,
+			COALESCE(c.force_created_at, c.time_created) AS time_created,
 			c.ip_addr,
 			COALESCE(gco.country_code, '-') AS country_code,
 			ta.user_agent,
