@@ -460,6 +460,16 @@ html.no-csstransforms3d {
                     &[href^="mailto:"]:after {
                         content: "";
                     }
+                    &.lj-user {
+                        font-weight: 600;
+                        &:after {
+                            content: '';
+                        }
+                        &:before {
+                            // https://www.w3schools.com/charsets/ref_emoji_body.asp
+                            content: '\1F464';
+                        }
+                    }
                 }
             }
             // image hover effects based on great article
