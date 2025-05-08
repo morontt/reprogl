@@ -126,8 +126,6 @@ func LoadViewSet() error {
 		"commit_hash":   func() string { return container.GitRevision },
 		"cnt_comments":  commentsCountString,
 		"cnt_times":     timesCountString,
-		"flag_cnt":      flagCounterImage(true),
-		"flag_cnt_mini": flagCounterImage(false),
 		"emojiFlag":     emojiFlag,
 
 		"articleStyles":    articleStyles,

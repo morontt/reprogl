@@ -197,38 +197,6 @@ func timesCountString(cnt int) (str string) {
 	return
 }
 
-func flagCounterImage(fullSize bool) func() template.HTML {
-	var (
-		url  string
-		w, h int
-	)
-
-	w = 162
-	h = 82
-	cdn := container.GetConfig().CDNBaseURL
-	if container.IsDevMode() || true {
-		url = cdn + "/images/flagcounter.png"
-		if !fullSize {
-			url = cdn + "/images/flagcounter_mini.png"
-			w = 160
-			h = 20
-		}
-	} else {
-		url = "//s05.flagcounter.com/count2/D9g3/bg_23222D/txt_FFFFFF/border_FFFFFF/columns_2/maxflags_4/viewers_3/labels_0/pageviews_1/flags_0/percent_1/"
-		if !fullSize {
-			url = "//s05.flagcounter.com/mini/D9g3/bg_23222D/txt_FFFFFF/border_23222D/flags_0/"
-			w = 160
-			h = 20
-		}
-	}
-
-	return func() template.HTML {
-		return template.HTML(
-			fmt.Sprintf("<img src=\"%s\" alt=\"Free counters!\" width=\"%d\" height=\"%d\">", url, w, h),
-		)
-	}
-}
-
 func emojiFlag(countryCode string) string {
 	if countryCode == "-" {
 		// https://apps.timwhitlock.info/unicode/inspect?s=%F0%9F%8F%B4%E2%80%8D%E2%98%A0%EF%B8%8F
