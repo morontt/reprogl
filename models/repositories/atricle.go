@@ -23,7 +23,7 @@ func (ar *ArticleRepository) GetBySlug(slug string, isAdmin bool) (*models.Artic
 		"p.url",
 		"p.text_post",
 		"p.description",
-		"p.time_created",
+		goqu.L("COALESCE(p.force_created_at, p.time_created)").As("time_created"),
 		"p.last_update",
 		"p.comments_count",
 		"p.views_count",
@@ -109,8 +109,11 @@ func (ar *ArticleRepository) GetCollection(page int, isAdmin bool) (*models.Arti
 	countQuery := `
 		SELECT
 			COUNT(p.id) AS cnt
-		FROM posts AS p
-		WHERE p.hide = 0`
+		FROM posts AS p`
+
+	if !isAdmin {
+		countQuery += " WHERE p.hide = 0"
+	}
 
 	ds := goqu.Dialect("mysql8").From(goqu.T("posts").As("p")).Select(
 		"p.id",
@@ -118,7 +121,7 @@ func (ar *ArticleRepository) GetCollection(page int, isAdmin bool) (*models.Arti
 		"p.url",
 		"p.text_post",
 		"p.preview",
-		"p.time_created",
+		goqu.L("COALESCE(p.force_created_at, p.time_created)").As("time_created"),
 		"p.comments_count",
 		"p.hide",
 		"mf.picture_tag",
@@ -135,7 +138,7 @@ func (ar *ArticleRepository) GetCollection(page int, isAdmin bool) (*models.Arti
 			"mf.post_id":       goqu.I("p.id"),
 			"mf.default_image": goqu.L("1"),
 		}),
-	).Order(goqu.I("p.time_created").Desc())
+	).Order(goqu.I("p.timestamp_sort").Desc())
 
 	if !isAdmin {
 		ds = ds.Where(goqu.Ex{
@@ -168,7 +171,7 @@ func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, 
 			p.url,
 			p.text_post,
 			p.preview,
-			p.time_created,
+			COALESCE(p.force_created_at, p.time_created) AS time_created,
 			p.comments_count,
 			p.hide,
 			mf.picture_tag,
@@ -180,7 +183,7 @@ func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, 
 		WHERE p.hide = 0
 			AND c.tree_left_key >= ?
 			AND c.tree_right_key <= ?
-		ORDER BY time_created DESC
+		ORDER BY timestamp_sort DESC
 		LIMIT 10 OFFSET ?`
 
 	params := make([]interface{}, 0)
@@ -205,7 +208,7 @@ func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (*mod
 			p.url,
 			p.text_post,
 			p.preview,
-			p.time_created,
+			COALESCE(p.force_created_at, p.time_created) AS time_created,
 			p.comments_count,
 			p.hide,
 			mf.picture_tag,
@@ -217,7 +220,7 @@ func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (*mod
 		INNER JOIN relation_topictag AS at ON p.id = at.post_id
 		WHERE p.hide = 0
 			AND at.tag_id = ?
-		ORDER BY time_created DESC
+		ORDER BY timestamp_sort DESC
 		LIMIT 10 OFFSET ?`
 
 	params := make([]interface{}, 0)
@@ -234,7 +237,7 @@ func (ar *ArticleRepository) GetSitemapCollection() (models.SitemapItemList, err
 		FROM posts
 		WHERE
 			hide = 0
-		ORDER BY time_created DESC
+		ORDER BY timestamp_sort DESC
 `
 
 	rows, err := ar.DB.Query(query)
@@ -271,12 +274,12 @@ func (ar *ArticleRepository) GetFeedCollection() (models.FeedItemList, error) {
 			p.text_post,
 			mf.src_set,
 			p.updated_at,
-			p.time_created
+			COALESCE(p.force_created_at, p.time_created) AS time_created
 		FROM posts AS p
 		LEFT JOIN media_file AS mf ON (p.id = mf.post_id AND mf.default_image = 1)
 		WHERE
 			hide = 0
-		ORDER BY time_created DESC
+		ORDER BY timestamp_sort DESC
 		LIMIT 25
 `
 
@@ -319,7 +322,7 @@ func (ar *ArticleRepository) GetRecentPostsCollection(articleId int) (*models.Re
 		WHERE
 			hide = 0
 			AND id != ?
-		ORDER BY time_created DESC
+		ORDER BY timestamp_sort DESC
 		LIMIT %d`, RecentPostsCount)
 
 	rows, err := ar.DB.Query(query, articleId)
@@ -355,7 +358,7 @@ func (ar *ArticleRepository) GetLastRecentPostsID() (int, error) {
 			SELECT id
 			FROM posts
 			WHERE hide = 0
-			ORDER BY time_created DESC
+			ORDER BY timestamp_sort DESC
 			LIMIT %d) AS src`, RecentPostsCount)
 
 	var id int
