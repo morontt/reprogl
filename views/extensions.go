@@ -206,7 +206,7 @@ func flagCounterImage(fullSize bool) func() template.HTML {
 	w = 162
 	h = 82
 	cdn := container.GetConfig().CDNBaseURL
-	if container.IsDevMode() {
+	if container.IsDevMode() || true {
 		url = cdn + "/images/flagcounter.png"
 		if !fullSize {
 			url = cdn + "/images/flagcounter_mini.png"
