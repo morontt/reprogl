@@ -48,6 +48,13 @@ section.comments {
                     &:hover, &:focus, &:active {
                         color: darken($color-main-contrast, 10%);
                     }
+                    &.lj-user {
+                        font-weight: 600;
+                        &:before {
+                            // https://www.w3schools.com/charsets/ref_emoji_body.asp
+                            content: '\1F464';
+                        }
+                    }
                 }
 
                 @media only screen and (min-width: 48em) {
