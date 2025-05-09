@@ -9,10 +9,10 @@ import (
 	xdraw "golang.org/x/image/draw"
 )
 
-func tryUserSource(id, size int) (image.Image, error) {
+func tryAvatarSource(prefix string, id, size int) (image.Image, error) {
 	extensions := []string{".png", ".jpg"}
 	for _, ext := range extensions {
-		filename := "public/data/pictures/user." + strconv.Itoa(id) + ext
+		filename := "public/data/pictures/" + prefix + "." + strconv.Itoa(id) + ext
 		img, err := loadImage(filename)
 		if err != nil {
 			continue

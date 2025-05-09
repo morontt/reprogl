@@ -55,17 +55,22 @@ func GenerateAvatar(hashData hashid.HashData, app *container.Application, size i
 	}
 
 	app.InfoLog.Printf("[IMG] avatar generation by %+v\n", hashData)
+	var sourcePrefix string
 	if hashData.IsUser() {
-		imageSrc, err := tryUserSource(hashData.ID, size)
-		if err == nil && imageSrc != nil {
-			app.InfoLog.Printf("[IMG] avatar %s found on public/data/pictures\n", hashData.Hash)
+		sourcePrefix = "user"
+	} else {
+		sourcePrefix = "commentator"
+	}
 
-			return imageSrc, nil
-		}
+	var err error
+	imageSrc, err := tryAvatarSource(sourcePrefix, hashData.ID, size)
+	if err == nil && imageSrc != nil {
+		app.InfoLog.Printf("[IMG] avatar %s found on public/data/pictures\n", hashData.Hash)
+
+		return imageSrc, nil
 	}
 
 	var object MaybeGravatar
-	var err error
 	if !hashData.IsUser() {
 		repository := repositories.CommentRepository{DB: app.DB}
 		object, err = repository.FindForGravatar(hashData.ID)
