@@ -300,6 +300,15 @@
                                 content: '\1F464';
                             }
                         }
+                        &.lj-comm {
+                            font-weight: 600;
+                            &:after {
+                                content: '';
+                            }
+                            &:before {
+                                content: '\1F5E9';
+                            }
+                        }
                     }
                     table {
                         display: block;

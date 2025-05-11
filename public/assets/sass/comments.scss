@@ -55,6 +55,12 @@ section.comments {
                             content: '\1F464';
                         }
                     }
+                    &.lj-comm {
+                        font-weight: 600;
+                        &:before {
+                            content: '\1F5E9';
+                        }
+                    }
                 }
 
                 @media only screen and (min-width: 48em) {
