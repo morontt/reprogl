@@ -199,7 +199,7 @@ func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorLis
 				MAX(c.time_created) AS last_time
 			FROM comments AS c
 			WHERE
-				NOT (c.deleted = 1 AND c.tree_right_key - c.tree_left_key = 1)
+				c.deleted = 0
 				AND (c.user_id IS NULL OR c.user_id <> 1)
 			GROUP BY commentator_id, user_id) AS src
 		LEFT JOIN commentators AS t ON src.commentator_id = t.id
