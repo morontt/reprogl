@@ -366,6 +366,16 @@
                         }
                     }
                 }
+                .exported-from {
+                    //color: lighten($color-main-dark, 35%);
+                    font-size: 85%;
+                    float: right;
+                    a {
+                        &:hover, &:focus, &:active {
+                            color: darken($color-main-contrast, 10%);
+                        }
+                    }
+                }
                 width: 100%;
                 max-width: rem-calc(920);
                 padding: rem-calc(60) 0;
