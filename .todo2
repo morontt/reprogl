@@ -1081,6 +1081,11 @@
       "text": "Custom images for commentators",
       "priority": "high",
       "creation": 1746689927
+    },
+    {
+      "text": "Limit comments depth",
+      "priority": "medium",
+      "creation": 1747166895
     }
   ]
 }
