@@ -39,9 +39,11 @@
             {{- else -}}
                 {{- raw (nl2br .Text) -}}
             {{- end -}}
-            {{if and $.IsAdmin .UserAgent.Valid -}}
+            {{if $.IsAdmin -}}
                 <hr>
-                <span class="ua-note">{{.UserAgent.String}}</span>
+                <span class="ua-note">
+                    [ID: {{.ID}}] {{if .UserAgent.Valid }}{{.UserAgent.String}}{{end}}
+                </span>
             {{- end -}}
         </div>
         {{if $.EnabledComments -}}
