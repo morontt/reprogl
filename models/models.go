@@ -39,6 +39,7 @@ type Article struct {
 	DisabledComments bool
 	RecentPostsID    string
 	Views            int
+	LjItemID         sql.NullInt32
 }
 
 type ArticleListItem struct {

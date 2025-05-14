@@ -44,7 +44,9 @@
                         <div class="post-article-content">
                             {{raw .Article.Text}}
                         </div>
-                        <div class="exported-from">Копия из livejournal: <a href="#">122150.html</a></div>
+                        {{if .Article.LjItemID.Valid -}}
+                            <div class="exported-from">Копия из LiveJournal: <a href="https://morontt.livejournal.com/{{ .Article.LjItemID.Int32 }}.html">{{ .Article.LjItemID.Int32 }}.html</a></div>
+                        {{- end}}
                     </div>
                 </section>
                 {{/* #is "post" */}}

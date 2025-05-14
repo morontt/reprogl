@@ -32,6 +32,7 @@ func (ar *ArticleRepository) GetBySlug(slug string, isAdmin bool) (*models.Artic
 		goqu.I("mf.width").As("image_width"),
 		"mf.src_set",
 		goqu.I("mf.description").As("image_alt"),
+		goqu.I("ljp.lj_item_id"),
 		goqu.I("c.name").As("cat_name"),
 		goqu.I("c.url").As("cat_url"),
 	).InnerJoin(
@@ -44,6 +45,11 @@ func (ar *ArticleRepository) GetBySlug(slug string, isAdmin bool) (*models.Artic
 		goqu.On(goqu.Ex{
 			"mf.post_id":       goqu.I("p.id"),
 			"mf.default_image": goqu.L("1"),
+		}),
+	).LeftJoin(
+		goqu.T("lj_posts").As("ljp"),
+		goqu.On(goqu.Ex{
+			"ljp.post_id": goqu.I("p.id"),
 		}),
 	).Where(
 		goqu.Ex{
@@ -76,6 +82,7 @@ func (ar *ArticleRepository) GetBySlug(slug string, isAdmin bool) (*models.Artic
 		&article.Width,
 		&article.SrcSet,
 		&article.Alt,
+		&article.LjItemID,
 		&article.CategoryName,
 		&article.CategorySlug)
 
