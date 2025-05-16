@@ -53,6 +53,10 @@ func (c *Comment) Avatar() (src string) {
 	return c.Commentator.Avatar()
 }
 
+func (c *Comment) LimitedDepth() int {
+	return min(c.Depth, 25)
+}
+
 func (ctt *Commentator) Avatar() string {
 	var id int
 	var options hashid.Option
