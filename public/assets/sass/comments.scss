@@ -153,6 +153,14 @@ section.comments {
                 margin-left: round(10000 * (24.0 - 192.0/($idx + 7.0))) * 0.0001rem;
             }
         }
+
+        @media only screen and (max-width: 40.0625em) {
+            @for $idx from 1 through 25 {
+                &.depth-#{$idx} {
+                    margin-left: round(1000 * (66.0 - 528.0/($idx + 7.0))) * 0.001%;
+                }
+            }
+        }
     }
 
     #topic-reply {
