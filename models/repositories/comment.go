@@ -41,7 +41,7 @@ func (cr *CommentRepository) GetCollectionByArticleId(articleId int) (models.Com
 			c.tree_depth,
 			COALESCE(c.force_created_at, c.time_created) AS time_created,
 			COALESCE(t.rotten_link, 0) AS rotten_link,
-			COALESCE(u.avatar_variant, 0) AS avatar_variant,
+			COALESCE(u.avatar_variant, t.avatar_variant) AS avatar_variant,
 			c.deleted
 		FROM comments AS c
 		LEFT JOIN commentators AS t ON c.commentator_id = t.id
@@ -116,7 +116,7 @@ func (cr *CommentRepository) GetCollectionWithExtraDataByArticleId(articleId int
 			COALESCE(gco.country_code, '-') AS country_code,
 			ta.user_agent,
 			COALESCE(t.rotten_link, 0) AS rotten_link,
-			COALESCE(u.avatar_variant, 0) AS avatar_variant,
+			COALESCE(u.avatar_variant, t.avatar_variant) AS avatar_variant,
 			c.deleted
 		FROM comments AS c
 		LEFT JOIN commentators AS t ON c.commentator_id = t.id
@@ -189,7 +189,7 @@ func (cr *CommentRepository) GetMostActiveCommentators() (*models.CommentatorLis
 			t.website,
 			COALESCE(t.gender, u.gender) AS gender,
 			COALESCE(t.rotten_link, 0) AS rotten_link,
-			COALESCE(u.avatar_variant, 0) AS avatar_variant,
+			COALESCE(u.avatar_variant, t.avatar_variant) AS avatar_variant,
 			src.commentator_id,
 			src.user_id
 		FROM (

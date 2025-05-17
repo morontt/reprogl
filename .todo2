@@ -1080,7 +1080,8 @@
     {
       "text": "Custom images for commentators",
       "priority": "high",
-      "creation": 1746689927
+      "creation": 1746689927,
+      "completion": 1747477528
     },
     {
       "text": "Limit comments depth",
