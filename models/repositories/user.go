@@ -18,7 +18,7 @@ func (ur *UserRepository) GetLoggedUserByUsername(username string) (*models.Logg
 			u.id,
 			u.username,
 			u.user_type,
-			u.password,
+			u.password_hash,
 			u.password_salt
 		FROM users AS u
 		WHERE (u.username = ?)`
