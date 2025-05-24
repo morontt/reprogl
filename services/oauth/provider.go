@@ -57,7 +57,7 @@ func ConfigByProvider(name string) (*oauth2.Config, error) {
 			ClientSecret: cnf.OAuthVkSecret,
 			Endpoint:     vkEndpoint,
 			RedirectURL:  url,
-			Scopes:       []string{"vkid.personal_info", "email"},
+			Scopes:       []string{"vkid.personal_info"},
 		}, nil
 	}
 

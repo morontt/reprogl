@@ -30,7 +30,6 @@ type vkUser struct {
 	FirstName string `json:"first_name,omitempty"`
 	LastName  string `json:"last_name,omitempty"`
 	Gender    int    `json:"sex,omitempty"`
-	Email     string `json:"email,omitempty"`
 	Avatar    string `json:"avatar,omitempty"`
 }
 
@@ -80,7 +79,6 @@ func (vkro *vkResourceOwner) GetUserData() (*UserData, error) {
 		DisplayName: strings.TrimSpace(result.User.FirstName + " " + result.User.LastName),
 		FirstName:   result.User.FirstName,
 		Gender:      vkGender,
-		Email:       result.User.Email,
 		Avatar:      result.User.Avatar,
 		RawData:     base64.URLEncoding.EncodeToString(buf),
 		Provider:    vkProvider,
