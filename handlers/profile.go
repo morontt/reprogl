@@ -72,11 +72,16 @@ func UpdateProfile(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		emailFromForm := r.PostFormValue("email")
+		if len(emailFromForm) == 0 && !user.HasEmail() {
+			emailFromForm = user.Email
+		}
+
 		profileData := backend.ProfileDTO{
 			ID:          user.ID,
 			Role:        user.Role,
 			Username:    r.PostFormValue("username"),
-			Email:       r.PostFormValue("email"),
+			Email:       emailFromForm,
 			DisplayName: r.PostFormValue("displayName"),
 		}
 

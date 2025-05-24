@@ -67,9 +67,13 @@ func (u *User) IsMale() bool {
 }
 
 func (u *User) NeedToCheckGravatar() bool {
-	return !strings.Contains(u.Email, "@xelbot.fake")
+	return u.HasEmail()
 }
 
 func (u *User) GetEmail() string {
 	return u.Email
+}
+
+func (u *User) HasEmail() bool {
+	return !strings.Contains(u.Email, "@xelbot.fake")
 }

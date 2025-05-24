@@ -35,7 +35,7 @@
                     <input type="email"
                            name="email"
                            id="email"
-                           value="{{.User.Email}}"
+                           value="{{if .User.HasEmail}}{{.User.Email}}{{end}}"
                            placeholder="mail@example.org">
                 </div>
             </div>

@@ -41,7 +41,9 @@
                             <h2>{{.User.Nickname}}</h2>
                             <p>
                                 {{if .User.HasDisplayName}}{{.User.Username}}{{end}}
-                                <span class="author-label">{{.User.Email}}</span>
+                                <span class="author-label">
+                                    {{if .User.HasEmail}}{{.User.Email}}{{else}}email не указан{{end}}
+                                </span>
                                 <br>На сайте с {{time_tag .User.CreatedAt}}
                             </p>
                         </section>

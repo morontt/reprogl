@@ -553,12 +553,14 @@
                 {
                   "text": "Возможность отписаться от писем",
                   "priority": "medium",
-                  "creation": 1724224680
+                  "creation": 1724224680,
+                  "completion": 1748085758
                 },
                 {
                   "text": "Скрывать фейковый емейл",
                   "priority": "medium",
-                  "creation": 1724267774
+                  "creation": 1724267774,
+                  "completion": 1748086073
                 }
               ]
             },
