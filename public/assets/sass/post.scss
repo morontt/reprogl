@@ -285,10 +285,11 @@
                             text-align: right;
                         }
                         &.problem-stmt {
-                            background:#FFFFE0;
-                            color:black;
-                            padding:1rem;
-                            border-radius:1rem;
+                            background: #FFFFE0;
+                            color: black;
+                            padding: 1rem;
+                            border-radius: 1rem;
+                            font-style: italic;
                         }
                     }
                     a {
