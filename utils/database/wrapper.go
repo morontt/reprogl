@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"log"
+	"time"
 )
 
 type DB struct {
@@ -18,17 +19,40 @@ func Wrap(db *sql.DB, logger *log.Logger) *DB {
 }
 
 func (dbw *DB) Query(query string, args ...any) (*sql.Rows, error) {
-	return dbw.db.Query(query, args...)
+	start := time.Now()
+	rows, err := dbw.db.Query(query, args...)
+	dbw.logQuery(query, args...)
+	dbw.logDuration(start)
+
+	return rows, err
 }
 
 func (dbw *DB) QueryRow(query string, args ...any) *sql.Row {
-	return dbw.db.QueryRow(query, args...)
+	start := time.Now()
+	row := dbw.db.QueryRow(query, args...)
+	dbw.logQuery(query, args...)
+	dbw.logDuration(start)
+
+	return row
 }
 
 func (dbw *DB) Exec(query string, args ...any) (sql.Result, error) {
-	return dbw.db.Exec(query, args...)
+	start := time.Now()
+	result, err := dbw.db.Exec(query, args...)
+	dbw.logQuery(query, args...)
+	dbw.logDuration(start)
+
+	return result, err
 }
 
 func (dbw *DB) Close() error {
 	return dbw.db.Close()
+}
+
+func (dbw *DB) logQuery(query string, args ...any) {
+	dbw.logger.Printf("[SQL] query:%s\nparams: %+v\n", query, args)
+}
+
+func (dbw *DB) logDuration(t time.Time) {
+	dbw.logger.Printf("[SQL] duration %s\n", time.Since(t))
 }
