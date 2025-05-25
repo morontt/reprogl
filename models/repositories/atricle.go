@@ -200,8 +200,8 @@ func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, 
 			"mf.default_image": goqu.L("1"),
 		}),
 	).Where(
-		goqu.I("c.tree_left_key").Gte(category.LeftKey),
-		goqu.I("c.tree_right_key").Lte(category.RightKey),
+		goqu.I("c.tree_left_key").Gte(category.LeftKey.Int32),
+		goqu.I("c.tree_right_key").Lte(category.RightKey.Int32),
 	).Order(goqu.I("p.timestamp_sort").Desc())
 
 	if !isAdmin {
@@ -216,39 +216,58 @@ func (ar *ArticleRepository) GetCollectionByCategory(category *models.Category, 
 	return ar.newPaginator(countQuery, query, page, params...)
 }
 
-func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int) (*models.ArticlesPaginator, error) {
+func (ar *ArticleRepository) GetCollectionByTag(tag *models.Tag, page int, isAdmin bool) (*models.ArticlesPaginator, error) {
 	countQuery := `
 		SELECT
 			COUNT(p.id) AS cnt
 		FROM posts AS p
 		INNER JOIN relation_topictag AS at ON p.id = at.post_id
-		WHERE p.hide = 0
-			AND at.tag_id = ?`
+		WHERE at.tag_id = ?`
 
-	query := `
-		SELECT
-			p.id,
-			p.title,
-			p.url,
-			p.text_post,
-			p.preview,
-			COALESCE(p.force_created_at, p.time_created) AS time_created,
-			p.comments_count,
-			p.hide,
-			mf.picture_tag,
-			c.name AS cat_name,
-			c.url AS cat_url
-		FROM posts AS p
-		INNER JOIN category AS c ON c.id = p.category_id
-		LEFT JOIN media_file mf ON (p.id = mf.post_id AND mf.default_image = 1)
-		INNER JOIN relation_topictag AS at ON p.id = at.post_id
-		WHERE p.hide = 0
-			AND at.tag_id = ?
-		ORDER BY timestamp_sort DESC
-		LIMIT 10 OFFSET ?`
+	if !isAdmin {
+		countQuery += " AND p.hide = 0"
+	}
 
-	params := make([]interface{}, 0)
-	params = append(params, tag.ID)
+	ds := goqu.Dialect("mysql8").From(goqu.T("posts").As("p")).Select(
+		"p.id",
+		"p.title",
+		"p.url",
+		"p.text_post",
+		"p.preview",
+		goqu.L("COALESCE(p.force_created_at, p.time_created)").As("time_created"),
+		"p.comments_count",
+		"p.hide",
+		"mf.picture_tag",
+		goqu.I("c.name").As("cat_name"),
+		goqu.I("c.url").As("cat_url"),
+	).InnerJoin(
+		goqu.T("category").As("c"),
+		goqu.On(goqu.Ex{
+			"c.id": goqu.I("p.category_id"),
+		}),
+	).LeftJoin(
+		goqu.T("media_file").As("mf"),
+		goqu.On(goqu.Ex{
+			"mf.post_id":       goqu.I("p.id"),
+			"mf.default_image": goqu.L("1"),
+		}),
+	).InnerJoin(
+		goqu.T("relation_topictag").As("at"),
+		goqu.On(goqu.Ex{
+			"p.id": goqu.I("at.post_id"),
+		}),
+	).Where(
+		goqu.I("at.tag_id").Eq(tag.ID),
+	).Order(goqu.I("p.timestamp_sort").Desc())
+
+	if !isAdmin {
+		ds = ds.Where(goqu.Ex{
+			"p.hide": goqu.L("0"),
+		})
+	}
+
+	query, params, _ := ds.Prepared(true).ToSQL()
+	query += " LIMIT 10 OFFSET ?"
 
 	return ar.newPaginator(countQuery, query, page, params...)
 }

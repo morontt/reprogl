@@ -54,8 +54,8 @@ type Category struct {
 	ID       int
 	Name     string
 	Slug     string
-	LeftKey  sql.NullInt64
-	RightKey sql.NullInt64
+	LeftKey  sql.NullInt32
+	RightKey sql.NullInt32
 	Depth    int
 }
 
