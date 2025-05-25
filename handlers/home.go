@@ -95,8 +95,13 @@ func CategoryAction(app *container.Application) http.HandlerFunc {
 			return
 		}
 
+		var isAdmin bool
+		if user, ok := session.GetIdentity(r.Context()); ok {
+			isAdmin = user.IsAdmin()
+		}
+
 		repo := repositories.ArticleRepository{DB: app.DB}
-		articlesPaginator, err := repo.GetCollectionByCategory(category, page)
+		articlesPaginator, err := repo.GetCollectionByCategory(category, page, isAdmin)
 		if err != nil {
 			if errors.Is(err, models.RecordNotFound) {
 				app.NotFound(w)
