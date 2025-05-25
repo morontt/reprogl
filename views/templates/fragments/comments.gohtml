@@ -7,7 +7,11 @@
                  height="80"
                  alt="avatar"/>
         </div>
-        {{time_tag .CreatedAt}}
+        {{if .Deleted -}}
+            <time>?? ??? 20??, --:--:--.???</time>
+        {{- else -}}
+            {{time_tag .CreatedAt}}
+        {{- end}}
         {{if .Deleted -}}
             (⊙_⊙)
         {{- else -}}
