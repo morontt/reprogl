@@ -2,6 +2,7 @@ package container
 
 import (
 	"database/sql"
+	"io"
 	"log"
 	"time"
 
@@ -17,7 +18,14 @@ func (app *Application) SetupDatabase() error {
 		return err
 	}
 
-	app.DB = database.Wrap(db, app.InfoLog)
+	var logger *log.Logger
+	if IsDevMode() {
+		logger = app.InfoLog
+	} else {
+		logger = log.New(io.Discard, "", log.LstdFlags)
+	}
+
+	app.DB = database.Wrap(db, logger)
 	goqu.SetTimeLocation(time.Local)
 
 	return nil
