@@ -6,10 +6,11 @@ import (
 	"strings"
 
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/utils/database"
 )
 
 type TagRepository struct {
-	DB *sql.DB
+	DB *database.DB
 }
 
 func (tr *TagRepository) GetBySlug(slug string) (*models.Tag, error) {

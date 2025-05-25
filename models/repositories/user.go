@@ -6,10 +6,11 @@ import (
 	"time"
 
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/utils/database"
 )
 
 type UserRepository struct {
-	DB *sql.DB
+	DB *database.DB
 }
 
 func (ur *UserRepository) GetLoggedUserByUsername(username string) (*models.LoggedUser, error) {

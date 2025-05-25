@@ -8,12 +8,13 @@ import (
 
 	"github.com/doug-martin/goqu/v9"
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/utils/database"
 )
 
 const RecentPostsCount = 6
 
 type ArticleRepository struct {
-	DB *sql.DB
+	DB *database.DB
 }
 
 func (ar *ArticleRepository) GetBySlug(slug string, isAdmin bool) (*models.Article, error) {

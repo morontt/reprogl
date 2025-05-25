@@ -8,11 +8,12 @@ import (
 	"xelbot.com/reprogl/container"
 	"xelbot.com/reprogl/models"
 	"xelbot.com/reprogl/utils"
+	"xelbot.com/reprogl/utils/database"
 	trackmodels "xelbot.com/reprogl/utils/tracking/models"
 )
 
 type TrackingRepository struct {
-	DB *sql.DB
+	DB *database.DB
 }
 
 func (tr *TrackingRepository) GetAgentByHash(hash string) (*models.TrackingAgent, error) {

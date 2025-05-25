@@ -5,10 +5,11 @@ import (
 	"errors"
 
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/utils/database"
 )
 
 type CategoryRepository struct {
-	DB *sql.DB
+	DB *database.DB
 }
 
 func (cr *CategoryRepository) GetBySlug(slug string) (*models.Category, error) {

@@ -5,10 +5,11 @@ import (
 	"errors"
 
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/utils/database"
 )
 
 type CommentRepository struct {
-	DB *sql.DB
+	DB *database.DB
 }
 
 func (cr *CommentRepository) GetLastUpdate(articleId int) (string, error) {

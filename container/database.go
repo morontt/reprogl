@@ -8,6 +8,7 @@ import (
 	"github.com/doug-martin/goqu/v9"
 	_ "github.com/doug-martin/goqu/v9/dialect/mysql"
 	_ "github.com/go-sql-driver/mysql"
+	"xelbot.com/reprogl/utils/database"
 )
 
 func (app *Application) SetupDatabase() error {
@@ -16,7 +17,7 @@ func (app *Application) SetupDatabase() error {
 		return err
 	}
 
-	app.DB = db
+	app.DB = database.Wrap(db, app.InfoLog)
 	goqu.SetTimeLocation(time.Local)
 
 	return nil
