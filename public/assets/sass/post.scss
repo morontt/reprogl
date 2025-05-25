@@ -284,6 +284,12 @@
                             padding: rem-calc(10) rem-calc(20);
                             text-align: right;
                         }
+                        &.problem-stmt {
+                            background:#FFFFE0;
+                            color:black;
+                            padding:1rem;
+                            border-radius:1rem;
+                        }
                     }
                     a {
                         @include corner-link;
