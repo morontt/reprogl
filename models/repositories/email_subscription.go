@@ -6,10 +6,11 @@ import (
 	"time"
 
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/utils/database"
 )
 
 type EmailSubscriptionRepository struct {
-	DB *sql.DB
+	DB *database.DB
 }
 
 func (es *EmailSubscriptionRepository) Find(id int) (*models.EmailSubscription, error) {

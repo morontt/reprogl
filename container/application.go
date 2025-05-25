@@ -1,7 +1,6 @@
 package container
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,6 +10,7 @@ import (
 	"time"
 
 	"github.com/xelbot/yetacache"
+	"xelbot.com/reprogl/utils/database"
 	"xelbot.com/reprogl/utils/metrics"
 )
 
@@ -24,7 +24,7 @@ type URLGenerator func(string, bool, ...string) string
 type Application struct {
 	ErrorLog *log.Logger
 	InfoLog  *log.Logger
-	DB       *sql.DB
+	DB       *database.DB
 
 	Metrics *metrics.Metrics
 

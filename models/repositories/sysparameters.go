@@ -5,10 +5,11 @@ import (
 	"errors"
 
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/utils/database"
 )
 
 type SystemParametersRepository struct {
-	DB *sql.DB
+	DB *database.DB
 }
 
 func (sp *SystemParametersRepository) FindByKey(key string) (string, error) {

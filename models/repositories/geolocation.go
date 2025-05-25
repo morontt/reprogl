@@ -6,10 +6,11 @@ import (
 	"net"
 
 	"xelbot.com/reprogl/models"
+	"xelbot.com/reprogl/utils/database"
 )
 
 type GeolocationRepository struct {
-	DB *sql.DB
+	DB *database.DB
 }
 
 func (gr *GeolocationRepository) FindByIP(ip net.IP) (*models.Geolocation, error) {
