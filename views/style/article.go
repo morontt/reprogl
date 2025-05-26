@@ -13,6 +13,8 @@ func GenerateArticleStyles(article *models.Article, acceptAvif, acceptWebp bool)
 	style += commonStyle() + "\n"
 	if article.HasImage() {
 		style += styleWithImage(article.FeaturedImage, acceptAvif, acceptWebp)
+	} else if article.LjItemID.Valid {
+		style += defaultStyleLj() + "\n"
 	} else {
 		style += defaultStyleWithoutImage() + "\n"
 	}

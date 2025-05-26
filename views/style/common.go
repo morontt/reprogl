@@ -22,6 +22,12 @@ func defaultStyleWithoutImage() string {
       @media only screen and (max-width:320px){.post-view .post-view-sidebar{background-image:url(%cdn%/images/mantis/mantis_320w.webp)}}}`
 }
 
+func defaultStyleLj() string {
+	return `      .post-view .post-view-sidebar{background-image:url(%cdn%/images/blackpattern.png);background-repeat:repeat !important;
+      background-size:256px auto !important}
+      .post-view .post-view-sidebar .post-view-elems{background-color:unset !important}`
+}
+
 func glyphiconsFont() string {
 	return `      @font-face{font-family:"Glyphicons Halflings";
       src:url(%cdn%/assets/fonts/glyphicons-halflings-regular.eot);src:url(%cdn%/assets/fonts/glyphicons-halflings-regular.eot?#iefix) format("embedded-opentype"),
