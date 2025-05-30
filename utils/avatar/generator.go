@@ -40,8 +40,10 @@ var (
 	validSizes = map[int]bool{
 		32:  true,
 		80:  true,
+		120: true,
 		160: true,
 		200: true,
+		300: true,
 		400: true,
 	}
 

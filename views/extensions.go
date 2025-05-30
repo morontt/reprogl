@@ -222,8 +222,9 @@ func avatarPictureTag(url string) template.HTML {
 
 	if !strings.Contains(url, "clown.png") {
 		if idx := strings.Index(url, ".png"); idx != -1 {
-			url2x := url[:idx] + ".w160.png"
-			tag += `<source srcset="` + url + ` 1x, ` + url2x + ` 2x" type="image/png"/>`
+			url15x := url[:idx] + ".w120.png"
+			url20x := url[:idx] + ".w160.png"
+			tag += `<source srcset="` + url + ` 1x, ` + url15x + ` 1.5x, ` + url20x + ` 2x" type="image/png"/>`
 		}
 	}
 
