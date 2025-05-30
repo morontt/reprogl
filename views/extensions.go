@@ -117,8 +117,8 @@ func authorJob() template.HTML {
 	return template.HTML(s)
 }
 
-func authorAvatar() string {
-	return models.AvatarLink(1, hashid.Male|hashid.User, 200)
+func authorAvatar(size int) string {
+	return models.AvatarLink(1, hashid.Male|hashid.User, size)
 }
 
 func renderESI(routeName string, pairs ...string) template.HTML {
@@ -215,6 +215,21 @@ func emojiFlag(countryCode string) string {
 	}
 
 	return string(resultBytes)
+}
+
+func avatarPictureTag(url string) template.HTML {
+	tag := "<picture>"
+
+	if !strings.Contains(url, "clown.png") {
+		if idx := strings.Index(url, ".png"); idx != -1 {
+			url2x := url[:idx] + ".w160.png"
+			tag += `<source srcset="` + url + ` 1x, ` + url2x + ` 2x" type="image/png"/>`
+		}
+	}
+
+	tag += `<img src="` + url + `" width="80" height="80" alt="avatar"/></picture>`
+
+	return template.HTML(tag)
 }
 
 func articleStyles(article *models.Article, acceptAvif, acceptWebp bool) template.HTML {

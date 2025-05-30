@@ -2,10 +2,7 @@
 <div class="comment-item depth-{{.LimitedDepth}}">
     <div class="comment-header">
         <div class="avatar">
-            <img src="{{.Avatar}}"
-                 width="80"
-                 height="80"
-                 alt="avatar"/>
+            {{avatar_picture .Avatar}}
         </div>
         {{if .Deleted -}}
             <time>?? ??? 20??, --:--:--.???</time>
@@ -32,10 +29,7 @@
     </div>
     <div class="comment-body">
         <div class="avatar">
-            <img src="{{.Avatar}}"
-                 width="80"
-                 height="80"
-                 alt="avatar"/>
+            {{avatar_picture .Avatar}}
         </div>
         <div class="comment-text" {{if .Deleted}}style="color: grey;"{{end}}>
             {{- if .Deleted -}}

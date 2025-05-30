@@ -3,11 +3,13 @@
     <div class="row">
         <section class="post-author small-12 columns vcard">
             <picture>
-                <img src="{{author_avatar}}"
+                <source srcset="{{author_avatar 200}} 1x, {{author_avatar 400}} 2x"
+                        type="image/png"/>
+                <img src="{{author_avatar 200}}"
                      class="post-author-avatar"
                      width="200"
                      height="200"
-                     alt="{{author_data "name"}}">
+                     alt="{{author_data "name"}}"/>
             </picture>
             <span class="author-label">Автор</span>
             <h2><a href="{{path "info-page"}}"

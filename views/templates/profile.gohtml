@@ -33,11 +33,15 @@
                 <section class="author-info profile-info" id="profile_info">
                     <div class="row">
                         <section class="post-author small-12 columns">
-                            <img src="{{.User.Avatar 200}}"
-                                 class="post-author-avatar"
-                                 width="200"
-                                 height="200"
-                                 alt="avatar"/>
+                            <picture>
+                                <source srcset="{{.User.Avatar 200}} 1x, {{.User.Avatar 400}} 2x"
+                                        type="image/png"/>
+                                <img src="{{.User.Avatar 200}}"
+                                     class="post-author-avatar"
+                                     width="200"
+                                     height="200"
+                                     alt="avatar"/>
+                            </picture>
                             <h2>{{.User.Nickname}}</h2>
                             <p>
                                 {{if .User.HasDisplayName}}{{.User.Username}}{{end}}

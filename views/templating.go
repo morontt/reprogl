@@ -133,6 +133,8 @@ func LoadViewSet() error {
 		"indexStyles":      indexStyles,
 		"infoStyles":       infoStyles,
 		"profileStyles":    profileStyles,
+
+		"avatar_picture": avatarPictureTag,
 	}
 
 	for key, files := range templatesMap {

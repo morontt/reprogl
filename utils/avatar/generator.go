@@ -42,6 +42,7 @@ var (
 		80:  true,
 		160: true,
 		200: true,
+		400: true,
 	}
 
 	InvalidSize = errors.New("avatar: invalid size")
