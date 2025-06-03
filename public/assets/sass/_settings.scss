@@ -76,12 +76,12 @@ $color-error: #EF3B3A;
     border: $color-main-light 3px solid;
     background: $color-main-light;
     padding: 0;
-    height: 80px;
-    width: 80px;
     margin-right: 0.6em;
     float: left;
     border-radius: rem-calc(7);
     img {
+        height: rem-calc(80);
+        width: rem-calc(80);
         border-radius: rem-calc(6);
     }
 }
