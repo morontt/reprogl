@@ -149,7 +149,7 @@ func asyncCallback(
 		return
 	}
 
-	if apiResponse.Violations != nil && len(apiResponse.Violations) > 0 {
+	if len(apiResponse.Violations) > 0 {
 		errorMessage := "[OAUTH] user validation error:\n"
 		for _, formError := range apiResponse.Violations {
 			app.InfoLog.Printf("[OAUTH] validation error: %s - %s\n", formError.Path, formError.Message)

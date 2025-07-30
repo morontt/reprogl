@@ -107,7 +107,7 @@ func UpdateProfile(app *container.Application) http.HandlerFunc {
 				Errors: apiResponse.Violations,
 			}
 
-			if apiResponse.Violations != nil && len(apiResponse.Violations) > 0 {
+			if len(apiResponse.Violations) > 0 {
 				result.Valid = false
 			}
 
