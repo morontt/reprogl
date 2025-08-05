@@ -900,7 +900,14 @@
     {
       "text": "5 неудачных попыток ввода пароля и блокировка на полчаса",
       "priority": "medium",
-      "creation": 1720600352
+      "creation": 1720600352,
+      "tasks": [
+        {
+          "text": "Rate limit for 404",
+          "priority": "medium",
+          "creation": 1754415882
+        }
+      ]
     },
     {
       "text": "New favicons",
