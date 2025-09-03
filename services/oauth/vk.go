@@ -13,8 +13,8 @@ import (
 )
 
 var vkEndpoint = oauth2.Endpoint{
-	AuthURL:  "https://id.vk.com/authorize",
-	TokenURL: "https://id.vk.com/oauth2/auth",
+	AuthURL:  "https://id.vk.ru/authorize",
+	TokenURL: "https://id.vk.ru/oauth2/auth",
 }
 
 type vkResourceOwner struct {
@@ -40,7 +40,7 @@ func (vkro *vkResourceOwner) GetUserData() (*UserData, error) {
 
 	request, err := http.NewRequest(
 		http.MethodPost,
-		"https://id.vk.com/oauth2/user_info",
+		"https://id.vk.ru/oauth2/user_info",
 		strings.NewReader(data.Encode()))
 	if err != nil {
 		return nil, err
