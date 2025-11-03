@@ -166,23 +166,23 @@ func RenderTemplate(name string, data interface{}) (string, error) {
 	return buf.String(), nil
 }
 
-func WriteTemplate(w http.ResponseWriter, name string, data any) error {
+func WriteTemplate(w http.ResponseWriter, name string, data any) (error, bool) {
 	content, err := RenderTemplate(name, data)
 	if err != nil {
-		return err
+		return err, false
 	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Surrogate-Control", "content=\"ESI/1.0\"")
 	_, err = w.Write([]byte(content))
 	if err != nil {
-		return err
+		return err, true
 	}
 
-	return nil
+	return nil, false
 }
 
-func WriteTemplateWithContext(ctx context.Context, w http.ResponseWriter, name string, data any) error {
+func WriteTemplateWithContext(ctx context.Context, w http.ResponseWriter, name string, data any) (error, bool) {
 	if flashObjectPart, ok := data.(DataWithFlashMessage); ok {
 		if flashSuccessMessage, found := session.Pop[string](ctx, session.FlashSuccessKey); found {
 			flashObjectPart.SetSuccessFlash(flashSuccessMessage)

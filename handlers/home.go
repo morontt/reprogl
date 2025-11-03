@@ -64,9 +64,13 @@ func IndexAction(app *container.Application) http.HandlerFunc {
 		}
 		templateData.AppendName("description", metaDescription)
 
-		err = views.WriteTemplateWithContext(r.Context(), w, "index.gohtml", templateData)
+		err, wh := views.WriteTemplateWithContext(r.Context(), w, "index.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }
@@ -131,9 +135,13 @@ func CategoryAction(app *container.Application) http.HandlerFunc {
 			templateData.SetCanonical(container.GenerateAbsoluteURL("category-first", "slug", slug))
 		}
 
-		err = views.WriteTemplateWithContext(r.Context(), w, "index.gohtml", templateData)
+		err, wh := views.WriteTemplateWithContext(r.Context(), w, "index.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }
@@ -197,9 +205,13 @@ func TagAction(app *container.Application) http.HandlerFunc {
 			templateData.SetCanonical(container.GenerateAbsoluteURL("tag-first", "slug", slug))
 		}
 
-		err = views.WriteTemplateWithContext(r.Context(), w, "index.gohtml", templateData)
+		err, wh := views.WriteTemplateWithContext(r.Context(), w, "index.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }

@@ -25,9 +25,13 @@ func CategoriesFragment(app *container.Application) http.HandlerFunc {
 		templateData := &views.FragmentCategoriesData{Categories: categories}
 
 		cacheControl(w, container.DefaultEsiTTL)
-		err = views.WriteTemplate(w, "categories.gohtml", templateData)
+		err, wh := views.WriteTemplate(w, "categories.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }
@@ -52,9 +56,13 @@ func RecentPostsFragment(app *container.Application) http.HandlerFunc {
 		templateData := &views.FragmentRecentPostsData{RecentPosts: articles}
 
 		cacheControl(w, container.DefaultEsiTTL)
-		err = views.WriteTemplate(w, "recent-posts.gohtml", templateData)
+		err, wh := views.WriteTemplate(w, "recent-posts.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }

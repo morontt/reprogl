@@ -149,9 +149,13 @@ func CommentsFragment(app *container.Application) http.HandlerFunc {
 		}
 
 		cacheControl(w, container.DefaultEsiTTL)
-		err = views.WriteTemplateWithContext(r.Context(), w, "comments.gohtml", templateData)
+		err, wh := views.WriteTemplateWithContext(r.Context(), w, "comments.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }

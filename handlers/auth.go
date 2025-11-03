@@ -34,9 +34,13 @@ func LoginAction(app *container.Application) http.HandlerFunc {
 		errorMessage, hasError := session.Pop[string](r.Context(), session.FlashErrorKey)
 
 		templateData := views.NewLoginPageData(csrfToken, errorMessage, hasError)
-		err := views.WriteTemplate(w, "login.gohtml", templateData)
+		err, wh := views.WriteTemplate(w, "login.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 
 			return
 		}
@@ -117,9 +121,13 @@ func AuthNavigation(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cacheControl(w, container.DefaultEsiTTL)
 		templateData := views.NewAuthNavigationData()
-		err := views.WriteTemplateWithContext(r.Context(), w, "auth-navigation.gohtml", templateData)
+		err, wh := views.WriteTemplateWithContext(r.Context(), w, "auth-navigation.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }
@@ -135,9 +143,13 @@ func MenuAuth(app *container.Application) http.HandlerFunc {
 		templateData := views.NewMenuAuthData(user)
 		cacheControl(w, container.DefaultEsiTTL)
 
-		err := views.WriteTemplateWithContext(r.Context(), w, "menu-auth.gohtml", templateData)
+		err, wh := views.WriteTemplateWithContext(r.Context(), w, "menu-auth.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }

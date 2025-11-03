@@ -15,11 +15,13 @@ func InfoAction(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		templateData := views.NewInfoPageData()
 		templateData.SetCanonical(container.GenerateAbsoluteURL("info-page"))
-		err := views.WriteTemplateWithContext(r.Context(), w, "about.gohtml", templateData)
+		err, wh := views.WriteTemplateWithContext(r.Context(), w, "about.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
-
-			return
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }
@@ -56,11 +58,13 @@ func StatisticsAction(app *container.Application) http.HandlerFunc {
 		templateData.SetCanonical(container.GenerateAbsoluteURL("statistics"))
 
 		cacheControl(w, container.StatisticsTTL)
-		err = views.WriteTemplate(w, "statistics.gohtml", templateData)
+		err, wh := views.WriteTemplate(w, "statistics.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
-
-			return
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }

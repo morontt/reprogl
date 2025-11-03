@@ -78,8 +78,7 @@ func (app *Application) NotFound(w http.ResponseWriter) {
 }
 
 func (app *Application) ServerError(w http.ResponseWriter, err error) {
-	trace := fmt.Sprintf("%s\n%s", err.Error(), debug.Stack())
-	app.ErrorLog.Println(trace)
+	app.LogError(err)
 
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 }

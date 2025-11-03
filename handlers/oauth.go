@@ -107,11 +107,13 @@ func OAuthCallback(app *container.Application) http.HandlerFunc {
 		go asyncCallback(requestID, providerName, code, verifier, r.UserAgent(), container.RealRemoteAddress(r), additional, app)
 
 		templateData := views.NewOauthPendingPageData(requestID)
-		err := views.WriteTemplate(w, "oauth-pending.gohtml", templateData)
+		err, wh := views.WriteTemplate(w, "oauth-pending.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
-
-			return
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }

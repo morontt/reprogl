@@ -22,8 +22,14 @@ import (
 
 func main() {
 	var err error
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	infoLog := log.New(os.Stdout, "INFO\t", log.LstdFlags|log.Lmicroseconds)
+
+	errLogFile, err := os.OpenFile("var/logs/error.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("Failed to open log file: %v", err)
+	}
+	defer errLogFile.Close()
+	errorLog := log.New(errLogFile, "ERROR\t", log.LstdFlags|log.Lshortfile)
 
 	infoLog.Printf("Version: %s (tag: %s)", container.Version, container.GetBuildTag())
 	infoLog.Printf("Build time: %s", container.BuildTimeRFC1123())

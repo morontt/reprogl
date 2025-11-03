@@ -45,11 +45,13 @@ func EmailUnsubscribe(app *container.Application) http.HandlerFunc {
 			models.AvatarLink(3, hashid.Male|hashid.User, 160),
 			ok || settings.BlockSending,
 		)
-		err = views.WriteTemplate(w, "unsubscribe.gohtml", templateData)
+		err, wh := views.WriteTemplate(w, "unsubscribe.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
-
-			return
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }

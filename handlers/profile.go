@@ -44,11 +44,13 @@ func ProfileAction(app *container.Application) http.HandlerFunc {
 		}
 
 		templateData := views.NewProfilePageData(user, subscrSettings)
-		err = views.WriteTemplate(w, "profile.gohtml", templateData)
+		err, wh := views.WriteTemplate(w, "profile.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
-
-			return
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }

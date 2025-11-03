@@ -94,9 +94,13 @@ func PageAction(app *container.Application) http.HandlerFunc {
 			}
 		}
 
-		err = views.WriteTemplateWithContext(r.Context(), w, "article.gohtml", templateData)
+		err, wh := views.WriteTemplateWithContext(r.Context(), w, "article.gohtml", templateData)
 		if err != nil {
-			app.ServerError(w, err)
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
 		}
 	}
 }

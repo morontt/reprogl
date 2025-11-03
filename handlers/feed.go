@@ -18,7 +18,10 @@ func SitemapAction(app *container.Application) http.HandlerFunc {
 		if container.IsCDN(r) {
 			w.Header().Set("Content-Type", "application/xml")
 			cacheControl(w, container.FeedTTL)
-			w.Write([]byte(xml.Header + "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"></urlset>\n"))
+			_, err := w.Write([]byte(xml.Header + "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"></urlset>\n"))
+			if err != nil {
+				app.LogError(err)
+			}
 
 			return
 		}
@@ -62,14 +65,14 @@ func SitemapAction(app *container.Application) http.HandlerFunc {
 		cacheControl(w, container.FeedTTL)
 		_, err = w.Write([]byte(xml.Header + `<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>` + "\n"))
 		if err != nil {
-			app.ServerError(w, err)
+			app.LogError(err)
 
 			return
 		}
 
 		_, err = w.Write(bytes)
 		if err != nil {
-			app.ServerError(w, err)
+			app.LogError(err)
 		}
 	}
 }
@@ -112,14 +115,14 @@ func FeedAction(app *container.Application, feedType int) http.HandlerFunc {
 		cacheControl(w, container.FeedTTL)
 		_, err = w.Write([]byte(xml.Header))
 		if err != nil {
-			app.ServerError(w, err)
+			app.LogError(err)
 
 			return
 		}
 
 		_, err = w.Write(bytes)
 		if err != nil {
-			app.ServerError(w, err)
+			app.LogError(err)
 		}
 	}
 }
