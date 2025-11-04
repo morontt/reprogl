@@ -40,7 +40,7 @@ func AddComment(app *container.Application) http.HandlerFunc {
 		}
 
 		repo := repositories.ArticleRepository{DB: app.DB}
-		article, err := repo.GetByIdForComment(topicId)
+		article, err := repo.GetByIdForComment(topicId >> 7)
 		if err != nil {
 			if errors.Is(err, models.RecordNotFound) {
 				app.NotFound(w)

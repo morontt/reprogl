@@ -3,7 +3,7 @@
         <form id="comment_form" class="ym-form ym-columnar" method="POST"
               data-url="{{path "add-comment"}}"
               action="{{path "add-comment-dummy"}}">
-            <input type="hidden" name="topicId" value="{{.Article.ID}}" id="topicId">
+            <input type="hidden" name="topicId" value="{{.Article.HashedID}}" id="topicId">
             <input type="hidden" name="parentId" value="0" id="parentId">
             {{- if not .HasIdentity -}}
             {{- template "svg-auth" -}}

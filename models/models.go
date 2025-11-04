@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"errors"
+	"hash/crc32"
 	"strconv"
 	"strings"
 	"time"
@@ -117,6 +118,10 @@ func (a *ArticleBasePart) IdString() string {
 
 func (a *ArticleBasePart) IsArticle() bool {
 	return true
+}
+
+func (a *ArticleBasePart) HashedID() int {
+	return a.ID<<7 + int(crc32.ChecksumIEEE([]byte(a.Slug)))&0b1111111
 }
 
 func (a *Article) DisabledCommentsFlag() (flag string) {
