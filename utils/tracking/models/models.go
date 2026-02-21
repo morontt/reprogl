@@ -2,6 +2,7 @@ package models
 
 import (
 	"net"
+	"strings"
 	"time"
 )
 
@@ -20,4 +21,8 @@ type Activity struct {
 
 func (a *Activity) IsBot() bool {
 	return isBot(a.UserAgent)
+}
+
+func (a *Activity) IsInternalRequest() bool {
+	return strings.HasPrefix(a.RequestedURI, "/_fragment/")
 }
