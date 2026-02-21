@@ -62,7 +62,7 @@ var engines = []string{
 	"leakix.net",
 	"http.rb/",
 	"headless",
-	"scrapy",
+	"scrap",
 	"axios/",
 	"googleother",
 	"friendica",
