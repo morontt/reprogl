@@ -36,6 +36,8 @@ func Clacks() ClacksSet {
 		"Dennis Ritchie",
 		"Niklaus Wirth",
 		"Дарья Дугина",
+		"Андрей Морозов",
+		"Игорь Мангушев",
 	}
 
 	tData := make(ClacksSet, len(data))
