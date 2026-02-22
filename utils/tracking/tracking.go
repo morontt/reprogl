@@ -52,7 +52,7 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 		userAgentId, articleId int
 	)
 
-	if strings.HasPrefix(activity.RequestedURI, "/_fragment/") && activity.Status == http.StatusOK {
+	if activity.IsInternalRequest() && activity.Status == http.StatusOK {
 		return
 	}
 
