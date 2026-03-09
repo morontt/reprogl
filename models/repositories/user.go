@@ -81,14 +81,10 @@ func (ur *UserRepository) Find(id int) (*models.User, error) {
 
 func (ur *UserRepository) SaveLoginEvent(id int, ip string) error {
 	query := `
-		UPDATE
-			users
-		SET
-			last_login = ?,
-			login_count = login_count + 1,
-			ip_last = ?
-		WHERE
-			id = ?`
+		INSERT INTO
+			user_login_histories (time_created, ip_addr, user_id)
+		VALUES
+			(?, ?, ?)`
 
 	_, err := ur.DB.Exec(
 		query,
