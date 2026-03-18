@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -66,6 +67,10 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 
 	if response.StatusCode == http.StatusForbidden {
 		return nil, NotAllowedComment
+	}
+
+	if response.StatusCode != http.StatusCreated && response.StatusCode != http.StatusUnprocessableEntity {
+		return nil, fmt.Errorf("Unexpected status code: %d", response.StatusCode)
 	}
 
 	defer response.Body.Close()

@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -117,7 +116,7 @@ func main() {
 
 func handleError(err error, logger *log.Logger) {
 	if err != nil {
-		logger.Println(fmt.Sprintf("%s", debug.Stack()))
+		logger.Printf("%s\n", debug.Stack())
 		logger.Fatal(err)
 	}
 }
