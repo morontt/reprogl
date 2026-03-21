@@ -1,10 +1,10 @@
 package telegram
 
 import (
-	"bytes"
-	"encoding/json"
+	//"bytes"
+	//"encoding/json"
 	"fmt"
-	"io"
+	//"io"
 	"net/http"
 	"regexp"
 	"sync"
@@ -33,37 +33,39 @@ func SendNotification(
 	text := generateText(comment, article)
 	app.InfoLog.Printf("Telegram notification text:\n%s", text)
 
-	jsonBody, err := json.Marshal(createMessage(text))
-	if err != nil {
-		app.LogError(err)
-		return
-	}
+	/*
+		jsonBody, err := json.Marshal(createMessage(text))
+		if err != nil {
+			app.LogError(err)
+			return
+		}
 
-	request, err := http.NewRequest(
-		http.MethodPost,
-		"https://api.telegram.org/bot"+container.GetConfig().TelegramToken+"/sendMessage",
-		bytes.NewReader(jsonBody))
-	if err != nil {
-		app.LogError(err)
-		return
-	}
+		request, err := http.NewRequest(
+			http.MethodPost,
+			"https://api.telegram.org/bot"+container.GetConfig().TelegramToken+"/sendMessage",
+			bytes.NewReader(jsonBody))
+		if err != nil {
+			app.LogError(err)
+			return
+		}
 
-	request.Header.Set("Content-Type", "application/json")
+		request.Header.Set("Content-Type", "application/json")
 
-	resp, err := send(request)
-	if err != nil {
-		app.LogError(err)
-		return
-	}
+		resp, err := send(request)
+		if err != nil {
+			app.LogError(err)
+			return
+		}
 
-	defer resp.Body.Close()
-	buf, err := io.ReadAll(resp.Body)
-	if err != nil {
-		app.LogError(err)
-		return
-	}
+		defer resp.Body.Close()
+		buf, err := io.ReadAll(resp.Body)
+		if err != nil {
+			app.LogError(err)
+			return
+		}
 
-	app.InfoLog.Printf("Telegram answer:\nStatus: %s\n\n%s", resp.Status, string(buf))
+		app.InfoLog.Printf("Telegram answer:\nStatus: %s\n\n%s", resp.Status, string(buf))
+	*/
 }
 
 func createMessage(text string) message {
