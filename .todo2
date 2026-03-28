@@ -203,7 +203,6 @@
       "text": "Tracking #17",
       "priority": "low",
       "creation": 1686424373,
-      "completion": 1721496271,
       "tasks": [
         {
           "text": "first step - implement tracking like the tracking system in the old blog",
@@ -238,7 +237,13 @@
         {
           "text": "Save method, caching only GET",
           "priority": "medium",
-          "creation": 1686954076
+          "creation": 1686954076,
+          "completion": 1721496271
+        },
+        {
+          "text": "Retry (by qeue), duplicate error",
+          "priority": "medium",
+          "creation": 1774671622
         }
       ]
     },
