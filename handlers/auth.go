@@ -134,10 +134,19 @@ func AuthNavigation(app *container.Application) http.HandlerFunc {
 
 func MenuAuth(app *container.Application) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var user *models.User
+		var (
+			user *models.User
+			err  error
+		)
+
 		if identity, ok := session.GetIdentity(r.Context()); ok {
 			repo := repositories.UserRepository{DB: app.DB}
-			user, _ = repo.Find(identity.ID)
+			user, err = repo.Find(identity.ID)
+			if err != nil {
+				app.ServerError(w, err)
+
+				return
+			}
 		}
 
 		templateData := views.NewMenuAuthData(user)
