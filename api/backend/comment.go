@@ -91,13 +91,18 @@ func SendComment(comment CommentDTO) (*CreateCommentResponse, error) {
 	return &result, nil
 }
 
-func PingGeolocation() {
+func PingGeolocation() error {
 	request, err := http.NewRequest(http.MethodPost, apiURL()+"/api/comments/geo-location", http.NoBody)
 	if err != nil {
-		return
+		return err
 	}
 
-	_, _ = send(request)
+	_, err = send(request)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func RefreshComment(id int) (*CreatedCommentDTO, error) {

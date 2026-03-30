@@ -167,9 +167,14 @@ func afterCommentHook(
 ) {
 	var updatedComment *backend.CreatedCommentDTO
 
-	backend.PingGeolocation()
+	err := backend.PingGeolocation()
+	if err != nil {
+		app.LogError(err)
+	}
+
 	refreshedComment, err := backend.RefreshComment(comment.ID)
 	if err != nil {
+		app.LogError(err)
 		updatedComment = comment
 	} else {
 		updatedComment = refreshedComment
