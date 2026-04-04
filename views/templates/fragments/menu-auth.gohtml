@@ -5,4 +5,12 @@
         <span>Профиль</span>
     </a>
 </li>
+{{if .IsAdmin }}
+    <li>
+        <a href="/admin">
+            <span class="glyphicon glyph-fw glyphicon-cog"></span>
+            <span>Админка</span>
+        </a>
+    </li>
+{{end}}
 {{- end}}

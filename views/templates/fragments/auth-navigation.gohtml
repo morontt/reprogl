@@ -3,6 +3,12 @@
     <span class="glyphicon glyph-fw glyphicon-user"></span>
     <span>Профиль</span>
 </a>
+{{if .IsAdmin }}
+    <a href="/admin">
+        <span class="glyphicon glyph-fw glyphicon-cog"></span>
+        <span>Админка</span>
+    </a>
+{{end}}
 <a href="{{path "logout"}}">
     <span class="glyphicon glyph-fw glyphicon-off"></span>
     <span>Logout</span>
