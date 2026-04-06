@@ -1,6 +1,7 @@
 package session
 
 import (
+	"bytes"
 	"crypto/cipher"
 	"crypto/des"
 	"crypto/hmac"
@@ -79,7 +80,7 @@ func (sc *SecureCookie) decode(value string) (internalData, error) {
 		return data, err
 	}
 
-	if err = verifyMac(b, sc.hashKey); err != nil {
+	if b, err = verifyMac(b, sc.hashKey); err != nil {
 		return data, err
 	}
 
@@ -136,14 +137,19 @@ func createMac(value, key []byte) []byte {
 	return h.Sum(nil)
 }
 
-func verifyMac(value, key []byte) error {
+func verifyMac(value, key []byte) ([]byte, error) {
 	h := (hashFunc())()
-	mac := createMac(value[:len(value)-h.Size()], key)
-	if subtle.ConstantTimeCompare(value[len(value)-h.Size():], mac) == 1 {
-		return nil
+	if len(value) <= h.Size() {
+		return nil, ErrMacInvalid
 	}
 
-	return ErrMacInvalid
+	data := value[:len(value)-h.Size()]
+	mac := createMac(data, key)
+	if subtle.ConstantTimeCompare(value[len(value)-h.Size():], mac) == 1 {
+		return data, nil
+	}
+
+	return nil, ErrMacInvalid
 }
 
 // For testing purposes
@@ -158,10 +164,13 @@ func encrypt(block cipher.Block, value []byte) ([]byte, error) {
 		return nil, EncryptionError
 	}
 
-	stream := cipher.NewCTR(block, iv)
-	stream.XORKeyStream(value, value)
+	mode := cipher.NewCBCEncrypter(block, iv)
 
-	return append(iv, value...), nil
+	plaintext := pad(value, block.BlockSize())
+	ciphertext := make([]byte, len(plaintext))
+	mode.CryptBlocks(ciphertext, plaintext)
+
+	return append(iv, ciphertext...), nil
 }
 
 func decrypt(block cipher.Block, value []byte) ([]byte, error) {
@@ -169,9 +178,13 @@ func decrypt(block cipher.Block, value []byte) ([]byte, error) {
 	if len(value) > size {
 		iv := value[:size]
 		value = value[size:]
-		stream := cipher.NewCTR(block, iv)
-		stream.XORKeyStream(value, value)
-		return value, nil
+
+		mode := cipher.NewCBCDecrypter(block, iv)
+		plaintext := make([]byte, len(value))
+		mode.CryptBlocks(plaintext, value)
+		plaintext = unpad(plaintext)
+
+		return plaintext, nil
 	}
 
 	return nil, DecryptionError
@@ -179,4 +192,17 @@ func decrypt(block cipher.Block, value []byte) ([]byte, error) {
 
 func hashFunc() func() hash.Hash {
 	return sha256.New224
+}
+
+func pad(src []byte, blockSize int) []byte {
+	padLen := blockSize - len(src)%blockSize
+	padding := bytes.Repeat([]byte{byte(padLen)}, padLen)
+
+	return append(src, padding...)
+}
+
+func unpad(src []byte) []byte {
+	padLen := src[len(src)-1]
+
+	return src[:len(src)-int(padLen)]
 }
