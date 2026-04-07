@@ -174,15 +174,24 @@ func encrypt(block cipher.Block, value []byte) ([]byte, error) {
 }
 
 func decrypt(block cipher.Block, value []byte) ([]byte, error) {
+	var err error
 	size := block.BlockSize()
 	if len(value) > size {
 		iv := value[:size]
 		value = value[size:]
 
+		// input not full blocks
+		if len(value)%size != 0 {
+			return nil, DecryptionError
+		}
+
 		mode := cipher.NewCBCDecrypter(block, iv)
 		plaintext := make([]byte, len(value))
 		mode.CryptBlocks(plaintext, value)
-		plaintext = unpad(plaintext)
+		plaintext, err = unpad(plaintext, size)
+		if err != nil {
+			return nil, err
+		}
 
 		return plaintext, nil
 	}
@@ -201,8 +210,13 @@ func pad(src []byte, blockSize int) []byte {
 	return append(src, padding...)
 }
 
-func unpad(src []byte) []byte {
-	padLen := src[len(src)-1]
+func unpad(src []byte, blockSize int) ([]byte, error) {
+	padLen := int(src[len(src)-1])
 
-	return src[:len(src)-int(padLen)]
+	// slice bounds out of range
+	if padLen < 1 || padLen > blockSize {
+		return nil, DecryptionError
+	}
+
+	return src[:len(src)-padLen], nil
 }
