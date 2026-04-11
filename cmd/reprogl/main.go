@@ -116,6 +116,9 @@ func main() {
 
 func handleError(err error, logger *log.Logger) {
 	if err != nil {
+		stdErrLog := log.New(os.Stderr, "ERROR\t", log.LstdFlags|log.Lmicroseconds)
+		stdErrLog.Print(err)
+
 		logger.Printf("%s\n", debug.Stack())
 		logger.Fatal(err)
 	}
