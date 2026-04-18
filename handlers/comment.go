@@ -75,7 +75,7 @@ func AddComment(app *container.Application) http.HandlerFunc {
 			IP:          container.RealRemoteAddress(r),
 		}
 
-		var responseData any
+		var responseData addCommentResponse
 		statusCode := http.StatusCreated
 
 		apiResponse, err := backend.SendComment(commentData)
