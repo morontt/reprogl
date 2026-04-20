@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Ошибки валидации</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: white;
+            font-family: "DejaVu Sans Mono", monospace;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 14px; }
+        .pending-page {
+            width: 400px;
+            padding: 14% 0 0;
+            margin: auto; }
+        .box {
+            position: absolute;
+            box-sizing: border-box;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            max-width: 400px;
+            margin: 0 0 0 -100px;
+            display: flex;
+            text-align: center; }
+    </style>
+</head>
+<body>
+<div class="pending-page">
+    <div class="box" >
+        <ul>
+            {{range .Errors}}
+                <li>
+                    {{.Path}} - {{.Message}}
+                </li>
+            {{end}}
+        </ul>
+    </div>
+</div>
+</body>
+</html>

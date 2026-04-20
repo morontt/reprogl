@@ -39,7 +39,7 @@ func getRoutes(app *container.Application) *chi.Mux {
 	siteMux.Get("/sitemap.xml", handlers.SitemapAction(app))
 	siteMux.Get(reverse.Add("feed-atom", "/feed/atom"), handlers.FeedAction(app, models.AtomFeedType))
 	siteMux.Get(reverse.Add("feed-rss", "/feed/rss"), handlers.FeedAction(app, models.RssFeedType))
-	siteMux.Post(reverse.Add("add-comment-dummy", "/add-comment"), handlers.AddCommentDummy)
+	siteMux.Post(reverse.Add("add-comment-dummy", "/add-comment"), handlers.AddCommentDummy(app))
 	siteMux.Post(reverse.Add("add-comment", "/add-ajax-comment"), handlers.AddComment(app))
 	siteMux.Post("/purge-cache", handlers.PurgeCache(app))
 	siteMux.Get("/images/avatar/{hash:[0-9A-Z]+}.png", handlers.AvatarGenerator(app))

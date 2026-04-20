@@ -103,6 +103,9 @@ func LoadViewSet() error {
 		"oauth-pending.gohtml": {
 			"templates/oauth/oauth-pending.gohtml",
 		},
+		"comment-errors.gohtml": {
+			"templates/comment-errors.gohtml",
+		},
 	}
 
 	customFunctions := template.FuncMap{

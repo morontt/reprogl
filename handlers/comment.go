@@ -20,9 +20,103 @@ type addCommentResponse struct {
 	Errors []backend.FormError `json:"errors,omitempty"`
 }
 
-func AddCommentDummy(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain")
-	w.Write([]byte("Silence is gold"))
+func AddCommentDummy(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if !container.IsDevMode() {
+			w.Header().Set("Content-Type", "text/plain")
+			w.Write([]byte("Silence is gold"))
+		}
+
+		topicId, err := strconv.Atoi(r.PostFormValue("topicId"))
+		if err != nil {
+			app.ClientError(w, http.StatusBadRequest)
+			return
+		}
+
+		parentId, err := strconv.Atoi(r.PostFormValue("parentId"))
+		if err != nil {
+			app.ClientError(w, http.StatusBadRequest)
+			return
+		}
+
+		repo := repositories.ArticleRepository{DB: app.DB}
+		article, err := repo.GetByIdForComment(topicId >> 7)
+		if err != nil {
+			if errors.Is(err, models.RecordNotFound) {
+				app.NotFound(w)
+			} else {
+				app.ServerError(w, err)
+			}
+
+			return
+		}
+
+		var commentator *backend.CommentatorDTO
+		var user *backend.CommentUserDTO
+		if identity, hasIdentity := session.GetIdentity(r.Context()); hasIdentity {
+			user = &backend.CommentUserDTO{
+				ID: identity.ID,
+			}
+		} else {
+			commentator = &backend.CommentatorDTO{
+				Name:    r.PostFormValue("name"),
+				Email:   r.PostFormValue("mail"),
+				Website: r.PostFormValue("website"),
+			}
+		}
+
+		commentData := backend.CommentDTO{
+			Commentator: commentator,
+			User:        user,
+			Text:        r.PostFormValue("comment_text"),
+			TopicID:     topicId,
+			ParentID:    parentId,
+			UserAgent:   r.UserAgent(),
+			IP:          container.RealRemoteAddress(r),
+		}
+
+		var responseData addCommentResponse
+
+		apiResponse, err := backend.SendComment(commentData)
+		if err != nil {
+			if errors.Is(err, backend.NotAllowedComment) {
+				responseData = addCommentResponse{
+					Errors: []backend.FormError{
+						{
+							Path:    "comment_text",
+							Message: "Добавление комментариев тут отключено 😐",
+						},
+					},
+				}
+			} else {
+				app.LogError(err)
+				app.ClientError(w, http.StatusBadRequest)
+
+				return
+			}
+		}
+
+		if apiResponse != nil {
+			if len(apiResponse.Violations) == 0 {
+				http.Redirect(w, r, container.GenerateURL("article", "slug", article.Slug), http.StatusFound)
+
+				return
+			}
+
+			responseData = addCommentResponse{
+				Errors: apiResponse.Violations,
+			}
+		}
+
+		err, wh := views.WriteTemplate(w, "comment-errors.gohtml", responseData)
+		if err != nil {
+			if wh {
+				app.LogError(err)
+			} else {
+				app.ServerError(w, err)
+			}
+		}
+	}
 }
 
 func AddComment(app *container.Application) http.HandlerFunc {
