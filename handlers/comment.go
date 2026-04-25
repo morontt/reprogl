@@ -25,6 +25,8 @@ func AddCommentDummy(app *container.Application) http.HandlerFunc {
 		if !container.IsDevMode() {
 			w.Header().Set("Content-Type", "text/plain")
 			w.Write([]byte("Silence is gold"))
+
+			return
 		}
 
 		topicId, err := strconv.Atoi(r.PostFormValue("topicId"))
