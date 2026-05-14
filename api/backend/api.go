@@ -29,5 +29,5 @@ func send(req *http.Request) (*http.Response, error) {
 }
 
 func apiURL() string {
-	return container.GetConfig().BackendApiUrl
+	return "https://" + container.GetConfig().Host
 }

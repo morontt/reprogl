@@ -14,7 +14,6 @@ type AppConfig struct {
 	DatabaseDSN       string `app_config:"DB"`
 	Host              string `app_config:"HOST"`
 	Port              string `app_config:"PORT"`
-	BackendApiUrl     string `app_config:"BACKEND_API_URL"`
 	BackendApiUser    string `app_config:"BACKEND_API_USER"`
 	BackendApiWsseKey string `app_config:"BACKEND_API_WSSE_KEY"`
 	TelegramToken     string `app_config:"TELEGRAM_TOKEN"`
