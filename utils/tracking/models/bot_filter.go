@@ -78,6 +78,7 @@ var engines = []string{
 	"seolyt",
 	"wordpress",
 	"okhttp/",
+	"baditaflorin",
 }
 
 var (
