@@ -9,6 +9,7 @@ var engines = []string{
 	"bot",
 	"spider",
 	"crawler",
+	"scan",
 	"aport",
 	"rambler",
 	"yahoo",
