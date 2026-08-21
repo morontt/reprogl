@@ -31,6 +31,7 @@ func getRoutes(app *container.Application) *chi.Mux {
 	siteMux.Get("/info", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/about", http.StatusMovedPermanently)
 	})
+	siteMux.Post(reverse.Add("trk", "/trk/{slug}"), handlers.TrackAction(app))
 	siteMux.Get(reverse.Add("statistics", "/statistika"), handlers.StatisticsAction(app))
 	siteMux.Get("/robots.txt", handlers.RobotsTXTAction)
 	siteMux.Get("/humans.txt", handlers.HumansTXTAction)

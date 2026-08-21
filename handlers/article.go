@@ -104,3 +104,17 @@ func PageAction(app *container.Application) http.HandlerFunc {
 		}
 	}
 }
+
+func TrackAction(app *container.Application) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		slug := chi.URLParam(r, "slug")
+
+		repo := repositories.ArticleRepository{DB: app.DB}
+		articleId := repo.GetIdBySlug(slug)
+		if articleId == 0 {
+			app.NotFound(w)
+
+			return
+		}
+	}
+}
