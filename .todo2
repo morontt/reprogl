@@ -962,7 +962,8 @@
     {
       "text": "handlers.AddCommentDummy for production environment (for testing purposes)",
       "priority": "medium",
-      "creation": 1722926032
+      "creation": 1722926032,
+      "completion": 1792251312
     },
     {
       "text": "Change project structure",
