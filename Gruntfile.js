@@ -93,6 +93,7 @@ module.exports = function (grunt) {
                     'public/assets/js/anima.js',
                     'public/assets/js/comments.js',
                     'public/assets/js/profile.js',
+                    'public/assets/js/track.js',
                 ],
                 dest: 'public/assets/js/<%= pkg.name %>.js'
             }

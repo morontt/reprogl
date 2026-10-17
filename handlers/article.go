@@ -116,5 +116,7 @@ func TrackAction(app *container.Application) http.HandlerFunc {
 
 			return
 		}
+
+		jsonResponse(w, http.StatusOK, "ok")
 	}
 }

@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	regexpArticle  = regexp.MustCompile(`^\/article\/(?P<slug>[^/?#]+)`)
+	regexpArticle  = regexp.MustCompile(`^\/(?:trk|article)\/(?P<slug>[^/?#]+)`)
 	slugIndex      = regexpArticle.SubexpIndex("slug")
 	trackingCache  *yetacache.Cache[string, int8]
 	regexpVersions = regexp.MustCompile(`(.*\/\d+\.\d+\.)\d+\.\d+$`)
@@ -49,7 +49,7 @@ func CreateActivity(req *http.Request) *trackmodels.Activity {
 
 func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 	var (
-		userAgentId, articleId int
+		userAgentId int
 	)
 
 	if activity.IsInternalRequest() && activity.Status == http.StatusOK {
@@ -81,13 +81,15 @@ func SaveActivity(activity *trackmodels.Activity, app *container.Application) {
 	matches := regexpArticle.FindStringSubmatch(activity.RequestedURI)
 	if matches != nil {
 		articleRepo := repositories.ArticleRepository{DB: app.DB}
-		articleId = articleRepo.GetIdBySlug(matches[slugIndex])
+		activity.ArticleId = articleRepo.GetIdBySlug(matches[slugIndex])
 	}
+
+	activity.IsJS = strings.HasPrefix(activity.RequestedURI, "/trk/")
 
 	if !trackingCache.Has(activity.FingerPrint) ||
 		activity.Status != http.StatusOK ||
-		activity.Method != "GET" {
-		err = repo.SaveTracking(activity, userAgentId, articleId)
+		(activity.Method != "GET" && !activity.IsJS) {
+		err = repo.SaveTracking(activity, userAgentId)
 		if err != nil {
 			app.LogError(err)
 

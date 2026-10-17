@@ -71,7 +71,7 @@ func (tr *TrackingRepository) SaveTrackingAgent(activity *trackmodels.Activity) 
 	return int(id), nil
 }
 
-func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agentId, articleId int) error {
+func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agentId int) error {
 	data := goqu.Record{
 		"ip_addr":     activity.Addr.String(),
 		"is_cdn":      activity.IsCDN,
@@ -84,14 +84,18 @@ func (tr *TrackingRepository) SaveTracking(activity *trackmodels.Activity, agent
 	if agentId > 0 {
 		data["user_agent_id"] = agentId
 	}
-	if articleId > 0 {
-		data["post_id"] = articleId
+	if activity.ArticleId > 0 {
+		data["post_id"] = activity.ArticleId
 	} else {
 		data["request_uri"] = utils.EllipticalTruncate(activity.RequestedURI, 128)
 	}
 
 	if activity.LocationID > 0 {
 		data["ip_long"] = activity.LocationID
+	}
+
+	if activity.IsJS {
+		data["is_js"] = 1
 	}
 
 	if activity.Method != "GET" {
