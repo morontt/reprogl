@@ -5,7 +5,6 @@ $(function () {
         if (submit_url) {
             $.ajax({
                 url: submit_url,
-                data: '',
                 type: 'POST',
             });
         }
