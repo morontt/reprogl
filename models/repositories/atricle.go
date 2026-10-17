@@ -486,8 +486,8 @@ func (ar *ArticleRepository) GetMostVisitedArticlesOfMonth() ([]models.ArticleSt
 		WHERE t.time_created > ?
 			AND ta.is_bot = 0
 			AND (
-				(t.time_created > '2026-04-10 20:00:00' AND t.is_js = 1)
-				OR (t.time_created < '2026-04-10 20:00:00' AND t.is_js = 0))
+				(t.time_created > '2026-10-17 20:00:00' AND t.is_js = 1)
+				OR (t.time_created < '2026-10-17 20:00:00' AND t.is_js = 0))
 		GROUP BY p.id
 		ORDER BY cnt DESC
 		LIMIT 6`
