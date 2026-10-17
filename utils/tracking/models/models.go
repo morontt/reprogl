@@ -17,6 +17,8 @@ type Activity struct {
 	LocationID   int
 	Duration     time.Duration
 	Method       string
+	ArticleId    int
+	IsJS         bool
 }
 
 func (a *Activity) IsBot() bool {
